@@ -41,6 +41,9 @@ importers:
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
         version: link:../../packages/interactive-engine
+      '@knowledgeassemble/timeline-engine':
+        specifier: workspace:*
+        version: link:../../packages/timeline-engine
       '@knowledgeassemble/visual-engine':
         specifier: workspace:*
         version: link:../../packages/visual-engine
@@ -54,6 +57,22 @@ importers:
 
   packages/interactive-engine:
     dependencies:
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+    devDependencies:
+      '@knowledgeassemble/timeline-engine':
+        specifier: workspace:*
+        version: link:../timeline-engine
+      '@knowledgeassemble/visual-engine':
+        specifier: workspace:*
+        version: link:../visual-engine
+
+  packages/timeline-engine:
+    dependencies:
+      '@knowledgeassemble/interactive-engine':
+        specifier: workspace:*
+        version: link:../interactive-engine
       zod:
         specifier: ^3.23.0
         version: 3.25.76

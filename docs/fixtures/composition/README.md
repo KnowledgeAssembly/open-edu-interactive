@@ -12,6 +12,7 @@ The product differentiator vs widgets is cross-engine reasoning (e.g. a timeline
 | File | Pattern | Schema |
 |------|---------|--------|
 | `narrative-timeline-visual.json` | Timeline `event-selected` → Visual `focus` (minimal two-engine lesson) | `composition.schema.json` |
+| `skill-example.json` | Composition skill's canonical example (timeline → visual) | `composition.schema.json` |
 
 ## Rules (D5, D6, D8)
 
@@ -21,10 +22,8 @@ The product differentiator vs widgets is cross-engine reasoning (e.g. a timeline
 
 ## Validation
 
-```bash
-# Composition envelope (L1)
-validate composition.schema.json against narrative-timeline-visual.json
+Validated programmatically by `packages/interactive-engine/test/skill-example.test.ts` (Zod-port composition schema + embedded L1 per engine spec). Run:
 
-# Embedded engine specs (L1)
-validate interactive-engine.schema.json against each engines[].spec
+```bash
+pnpm --filter @knowledgeassemble/interactive-engine test skill-example
 ```

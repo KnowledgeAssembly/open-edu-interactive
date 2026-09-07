@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { type EngineAction } from '../src/index.js';
 import { Lesson } from '../src/composition/lesson.js';
@@ -36,17 +36,8 @@ describe('Golden event log parity', () => {
 
   it('output byte-matches the checked-in golden file', () => {
     const output = runSmoke();
-    const outputStr = JSON.stringify(output, null, 2);
-
-    if (!existsSync(GOLDEN_URL)) {
-      const dir = new URL('.', GOLDEN_URL).pathname;
-      mkdirSync(dir, { recursive: true });
-      writeFileSync(GOLDEN_URL, outputStr + '\n', 'utf8');
-      expect(true).toBe(true);
-      return;
-    }
-
+    const outputStr = JSON.stringify(output, null, 2) + '\n';
     const golden = readFileSync(GOLDEN_URL, 'utf8');
-    expect(outputStr + '\n').toBe(golden);
+    expect(outputStr).toBe(golden);
   });
 });
