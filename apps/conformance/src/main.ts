@@ -3,6 +3,7 @@ import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import type { EngineAction, EngineSpec } from '@knowledgeassemble/interactive-engine';
 import { mountComposition } from './composition.js';
 import { mountChart } from './chart.js';
+import { mountGeomap } from './geomap.js';
 
 interface HarnessRemote {
   dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void;
@@ -45,6 +46,8 @@ if (engineParam === 'composition') {
   mountComposition(app);
 } else if (engineParam === 'chart') {
   mountChart(app);
+} else if (engineParam === 'geomap') {
+  mountGeomap(app);
 } else if (engineParam === 'visual') {
   const SPEC: EngineSpec = {
     type: 'visual',

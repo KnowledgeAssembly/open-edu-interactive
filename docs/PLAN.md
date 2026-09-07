@@ -379,7 +379,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P2 — Visual Engine | DONE |
 | P2.5 — Composition smoke test | DONE |
 | P3 — Chart Engine | DONE |
-| P4 — GeoMap Engine | NOT STARTED |
+| P4 — GeoMap Engine | DONE |
 | P5 — Timeline Engine | NOT STARTED |
 | P6 — Diagram Engine | NOT STARTED |
 | P7 — OpenEdu integration | NOT STARTED |
@@ -413,3 +413,8 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | Chart-D5: `sources[]` required at engine level (stricter than envelope). |
 | 2026-09-07 | Chart-D5 reconciliation: `sources[].class` (DESIGN §9 accuracy class, `{authoritative,illustrative,simulated}`) added to the shared envelope `SourceSchema`; chart L2 requires `sources[]` and validates `class`. Envelope `type` stays for broader provenance enumeration. |
 | 2026-09-07 | P3 DONE: @knowledgeassemble/chart-engine bar + line slices through full pipeline (scene → layout → SVG → a11y → tabular → validation → e2e), closed kind enum `["bar","line"]`, deterministic scales without d3, namespaced result events, golden fixtures, conformance `?engine=chart`, quantitative-chart authoring skill — full exit gate green. |
+| 2026-09-08 | GeoMap-D1 — Closed P4 layer/entity sets: layer type is a closed enum `["region","marker","route","label"]`; entity `type` is a closed enum `["country","state","province","region","city","town","village","river","lake","mountain","landmark","place"]`. `flow`/`heatmap`/`animation`/`timeline`/`areas`/`scenes`/`assessment` are future and OUT. |
+| 2026-09-08 | GeoMap-D2 — One deterministic projection: `content.projection.type` is a closed enum `["equirectangular"]` at P4. `viewport.fit` is `"content"` (deterministic bbox + padding) with optional `center`/`zoom`. No d3-geo. |
+| 2026-09-08 | GeoMap-D3 — Namespaced result events: `select` → `geomap.entity-selected`; `focus` → `geomap.entity-focused`. Payload carries full resolved entity record (+ `links`). |
+| 2026-09-08 | GeoMap-D4 — Geographic ground-truth binding: entity location binds to `{source, featureId}` OR `{coordinates: {lat, lon}}`. Route `path` refs point-like entities. Unresolved ref → `INVALID_REFERENCE`; invalid lat/lon/geometry → `INVALID_ENTITY`. |
+| 2026-09-08 | P4 DONE: @knowledgeassemble/geomap-engine region → marker → route slice through full pipeline (scene → layout → SVG → a11y → alternative → validation → e2e), closed entity/layer types per GeoMap-D1, deterministic equirectangular projection (no d3), namespaced result events `geomap.entity-selected`/`geomap.entity-focused` per GeoMap-D3, golden fixtures (region/marker/route/odisha-coastal), conformance `?engine=geomap`, geographic-map authoring skill — full exit gate green. |

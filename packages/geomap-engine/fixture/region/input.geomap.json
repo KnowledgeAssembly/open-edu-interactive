@@ -1,0 +1,30 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "region-only",
+  "metadata": { "title": "Region only" },
+  "purpose": { "learningObjective": "Identify a region" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [
+        {
+          "id": "src",
+          "type": "geojson",
+          "class": "authoritative",
+          "data": { "type": "FeatureCollection", "features": [{ "id": "r1", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]] } }] }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "r1", "type": "region", "name": "Region One", "location": { "source": "src", "featureId": "r1" } }
+    ],
+    "layers": [
+      { "id": "regions", "type": "region", "items": [{ "entity": "r1", "interactive": true }] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus"] },
+  "questions": [],
+  "sources": [{ "class": "authoritative" }],
+  "accessibility": { "label": "Region only map" }
+}

@@ -41,6 +41,9 @@ importers:
       '@knowledgeassemble/chart-engine':
         specifier: workspace:*
         version: link:../../packages/chart-engine
+      '@knowledgeassemble/geomap-engine':
+        specifier: workspace:*
+        version: link:../../packages/geomap-engine
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
         version: link:../../packages/interactive-engine
@@ -59,6 +62,15 @@ importers:
         version: 6.4.3(@types/node@22.20.1)
 
   packages/chart-engine:
+    dependencies:
+      '@knowledgeassemble/interactive-engine':
+        specifier: workspace:*
+        version: link:../interactive-engine
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+
+  packages/geomap-engine:
     dependencies:
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
