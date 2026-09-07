@@ -360,7 +360,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 
 ## 9. Open Items / Decision Gates
 
-1. **P0 → P1 gate:** standalone `@knowledgeassemble/*` now, or plan for immediate monorepo integration (`@open-edu/*`)? (D2 default: standalone first.)
+1. ~~**P0 → P1 gate:** standalone `@knowledgeassemble/*` now, or plan for immediate monorepo integration (`@open-edu/*`)?~~ **Resolved (2026-09-07):** standalone `@knowledgeassemble/*` now; host integration and any `@open-edu/*` rename happen at P7 (D2 default confirmed).
 2. **P6 → P7 gate:** integrate into the OpenEdu monorepo, or publish and consume as external packages?
 3. Tooling: playground + CLI are in-scope for engine phases; Interactive Studio is **out** (D6 — extend OpenEdu Course Creator Studio).
 4. Extension engines (Simulation/Equation/3D, §89) — deliberately deferred.
@@ -394,3 +394,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | D6: OpenEdu host seam; P1 must not rebuild telemetry/i18n/Studio/scoring; P7 hosts via EngineHost. |
 | 2026-09-07 | D7–D9: assessment seam, P2.5 composition, Visual closed set; thin chart/timeline/diagram SPEC.md. |
 | 2026-09-07 | D5 Visual interaction examples migrated; `composition.schema.json` stub for P2.5 fixtures. |
+| 2026-09-07 | P0→P1 gate resolved: standalone `@knowledgeassemble/*`; host integration + `@open-edu/*` rename deferred to P7. |
