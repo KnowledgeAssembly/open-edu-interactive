@@ -14,17 +14,18 @@ export const VISUAL_KINDS = [
 export type VisualKind = (typeof VISUAL_KINDS)[number];
 
 const ID_PATTERN = /^[a-zA-Z][a-zA-Z0-9._-]*$/;
+const TOKEN_PATTERN = /^[a-z]+\.[a-z]+$/;
+const tokenRecord = z.record(z.string().regex(TOKEN_PATTERN));
 
 export const ElementSchema: z.ZodType<ElementSpec> = z.lazy(() =>
   z.object({
     id: z.string().min(1).max(128).regex(ID_PATTERN),
-    type: z.enum(['group', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'path', 'text', 'arrow', 'image']),
+    type: z.enum(['line', 'tick', 'text', 'circle', 'rect', 'group', 'shape', 'marker', 'axis']),
     role: z.string().optional(),
     value: z.number().optional(),
     interactive: z.boolean().optional(),
     acceptsActions: z.array(z.string()).optional(),
-    style: z.record(z.unknown()).optional(),
-    geometry: z.record(z.unknown()).optional(),
+    style: tokenRecord.optional(),
     children: z.array(ElementSchema).optional(),
   }).strict()
 );
@@ -36,8 +37,7 @@ export interface ElementSpec {
   value?: number;
   interactive?: boolean;
   acceptsActions?: string[];
-  style?: Record<string, unknown>;
-  geometry?: Record<string, unknown>;
+  style?: Record<string, string>;
   children?: ElementSpec[];
 }
 
@@ -55,7 +55,7 @@ export const ComponentInstanceSchema = z
     type: z.string(),
     props: z.record(z.unknown()).optional(),
     layout: z.record(z.unknown()).optional(),
-    style: z.record(z.unknown()).optional(),
+    style: tokenRecord.optional(),
     accessibility: z.record(z.unknown()).optional(),
     interaction: z.record(z.unknown()).optional(),
   })

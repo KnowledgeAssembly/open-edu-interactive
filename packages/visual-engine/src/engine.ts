@@ -58,9 +58,8 @@ export class VisualEngine implements Engine {
       }
     }
 
-    // Build scene + layout + SVG
-    let scene = buildScene(visualSpec.content);
-    scene = layout(scene, {
+    // Build scene + layout + SVG (deterministic; computed once at instantiation)
+    const scene = layout(buildScene(visualSpec.content), {
       width: 800,
       height: 600,
       minTouchTarget: 44,
@@ -78,6 +77,13 @@ export class VisualEngine implements Engine {
     emit(mounted as Parameters<EngineHost['onEvent']>[0]);
     emit(ready as Parameters<EngineHost['onEvent']>[0]);
 
+    const resultSuffix: Record<string, string> = {
+      select: 'selected',
+      deselect: 'deselected',
+      focus: 'focused',
+      unfocus: 'unfocused',
+    };
+
     return {
       id: instanceId,
       engine: this.type,
@@ -91,7 +97,8 @@ export class VisualEngine implements Engine {
         const changed = log.append('state-changed', instanceId, undefined, action);
         emit(changed as Parameters<EngineHost['onEvent']>[0]);
 
-        const evtName = `visual.${action.target?.id ?? 'unknown'}-${action.type}`;
+        const suffix = resultSuffix[action.type] ?? action.type;
+        const evtName = `visual.${action.target?.id ?? 'unknown'}-${suffix}`;
         const nsEvent = log.append(evtName, instanceId, { selection: state.selection }, action);
         emit(nsEvent as Parameters<EngineHost['onEvent']>[0]);
 
@@ -107,7 +114,11 @@ export class VisualEngine implements Engine {
         }
       },
       snapshot() {
-        return state;
+        return {
+          ...state,
+          scene,
+          svgResult,
+        };
       },
       subscribe(fn: Parameters<EngineInstance['subscribe']>[0]): () => void {
         listeners.add(fn);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { EngineRegistry, EngineError } from '@knowledgeassemble/interactive-engine';
+import { EngineRegistry } from '@knowledgeassemble/interactive-engine';
 import type { EngineHost } from '@knowledgeassemble/interactive-engine';
 import { VisualEngine } from '../src/engine.js';
 
@@ -10,7 +10,7 @@ function stubHost(): EngineHost {
     reducedMotion: false,
     announce: () => {},
     onEvent: () => {},
-    resolveAsset: (_id: string) => '',
+    resolveAsset: () => '',
   };
 }
 

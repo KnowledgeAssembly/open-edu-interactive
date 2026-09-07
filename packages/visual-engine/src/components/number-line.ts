@@ -27,13 +27,16 @@ export function createNumberLine(props: Record<string, unknown>, parentId: strin
 
   const nodes: SceneNode[] = [];
 
-  // Axis
+  // Axis carries the semantic scale so layout can map values to positions
   const axisId = `${parentId}-axis`;
   nodes.push({
     id: axisId,
     role: 'axis',
     kind: 'line',
     children: [],
+    metadata: {
+      scale: { min, max, step, direction: props.direction === 'vertical' ? 'vertical' : 'horizontal' },
+    },
   });
 
   // Ticks + labels

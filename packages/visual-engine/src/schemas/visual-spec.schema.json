@@ -39,13 +39,12 @@
         "required": ["id", "type"],
         "properties": {
           "id": { "$ref": "#/$defs/idPattern" },
-          "type": { "type": "string", "enum": ["group", "rect", "circle", "ellipse", "line", "polyline", "polygon", "path", "text", "arrow", "image"] },
+          "type": { "type": "string", "enum": ["line", "tick", "text", "circle", "rect", "group", "shape", "marker", "axis"] },
           "role": { "type": "string" },
           "value": { "type": "number" },
           "interactive": { "type": "boolean" },
           "acceptsActions": { "type": "array", "items": { "type": "string" } },
-          "style": { "type": "object", "additionalProperties": true },
-          "geometry": { "type": "object", "additionalProperties": true },
+          "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
           "children": {
             "type": "array",
             "items": { "$ref": "#/$defs/element" }
@@ -64,7 +63,7 @@
           "type": { "type": "string" },
           "props": { "type": "object", "additionalProperties": false },
           "layout": { "type": "object", "additionalProperties": true },
-          "style": { "type": "object", "additionalProperties": true },
+          "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
           "accessibility": { "type": "object", "additionalProperties": true },
           "interaction": { "type": "object", "additionalProperties": true }
         }
@@ -117,13 +116,12 @@
       "required": ["id", "type"],
       "properties": {
         "id": { "$ref": "#/$defs/idPattern" },
-        "type": { "type": "string", "enum": ["group", "rect", "circle", "ellipse", "line", "polyline", "polygon", "path", "text", "arrow", "image"] },
+        "type": { "type": "string", "enum": ["line", "tick", "text", "circle", "rect", "group", "shape", "marker", "axis"] },
         "role": { "type": "string" },
         "value": { "type": "number" },
-        "interactive": { "type": "boolean" },
+         "interactive": { "type": "boolean" },
         "acceptsActions": { "type": "array", "items": { "type": "string" } },
-        "style": { "type": "object", "additionalProperties": true },
-        "geometry": { "type": "object", "additionalProperties": true },
+        "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
         "children": {
           "type": "array",
           "items": { "$ref": "#/$defs/element" }

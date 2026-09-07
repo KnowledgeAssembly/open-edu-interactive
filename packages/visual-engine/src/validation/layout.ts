@@ -1,5 +1,5 @@
 import type { ValidationResult } from '@knowledgeassemble/interactive-engine';
-import type { VisualSpec, VisualContent } from '../schema.js';
+import type { VisualSpec } from '../schema.js';
 import { buildScene } from '../scene/build.js';
 import { layout } from '../layout/engine.js';
 import { contained, rect } from '../layout/geometry.js';

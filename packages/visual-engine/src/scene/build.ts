@@ -78,7 +78,7 @@ export function buildScene(content: VisualContent): Scene {
         value: elem.value,
         interactive: elem.interactive,
         acceptsActions: elem.acceptsActions,
-        geometry: elem.geometry,
+        metadata: elem.style ? { style: elem.style } : undefined,
         children: [],
       };
       nodes.push(node);
