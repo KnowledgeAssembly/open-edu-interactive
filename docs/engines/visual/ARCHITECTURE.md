@@ -679,17 +679,25 @@ The engine SHOULD avoid blindly applying ARIA roles where native semantics are s
 
 # 22. Interaction Architecture
 
-Interaction is represented declaratively.
+Interaction is represented declaratively using D5 semantic actions on the envelope and per-entity `acceptsActions`. Renderer input (click, hover, keydown) is translated at runtime — it MUST NOT appear in specifications.
 
 Example:
 
 ```json
 {
   "id": "number-7",
+  "interactive": true,
+  "acceptsActions": ["select"]
+}
+```
+
+With envelope:
+
+```json
+{
   "interaction": {
-    "click": {
-      "action": "select"
-    }
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
   }
 }
 ```
@@ -707,43 +715,40 @@ Instead:
 ```text
 Visual Engine
      ↓
-Interaction Contract
+D5 action reducer
      ↓
-Consumer application
+Namespaced result events
      ↓
-Actual behavior
+Host (OpenEdu)
 ```
 
 ---
 
 # 23. Interaction Contract
 
-Example:
-
-```ts
-interface InteractionContract {
-  click?: Action;
-  hover?: Action;
-  focus?: Action;
-  drag?: DragContract;
-  drop?: DropContract;
-}
-```
-
-Actions should be semantic:
+Semantic actions MUST come from the D5 enum (`interactive-engine.schema.json` `$defs.actionType`):
 
 ```text
 select
-highlight
-show-explanation
-reveal-answer
-mark-correct
-mark-incorrect
-navigate
+focus
+open-annotation
+close-annotation
 toggle
+drag
+drop
+reset
+…
 ```
 
-The action vocabulary SHOULD be extensible.
+Superseded vocabulary (`highlight`, `show-explanation`, `click` bindings in specs) MUST NOT be used in new specifications.
+
+The renderer MAY map pointer activation to `select`:
+
+```text
+Runtime: click on number-7 → dispatch { "type": "select", "target": { "id": "number-7" } }
+```
+
+That mapping is implementation detail, not specification content.
 
 ---
 

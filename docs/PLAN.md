@@ -177,16 +177,17 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 **Scope (in order)**
 
-1. **Composition harness** in `interactive-engine` — load lesson fixture, register two engine instances, route namespaced events to D5 actions on a peer instance.
-2. **Fixture** — `docs/fixtures/composition/narrative-timeline-visual.json` (timeline stub spec + visual spec + bindings).
-3. **Timeline stub** — minimal Timeline engine adapter: parse thin `engines/timeline/SPEC.md` event list, emit `timeline.event-selected` on `select`; no full timeline renderer required for exit.
-4. **Visual target** — existing P2 number-line or illustration entity receives `focus` from binding (`targetIdFrom`: `links.visualEntityId`).
+1. **Composition schema** — `docs/schemas/composition.schema.json` (lesson `{ id, engines[], bindings[] }`; binding actions use D5 `$defs.actionType`).
+2. **Composition harness** in `interactive-engine` — load lesson fixture, register two engine instances, route namespaced events to D5 actions on a peer instance.
+3. **Fixture** — `docs/fixtures/composition/narrative-timeline-visual.json` (timeline stub spec + visual spec + bindings).
+4. **Timeline stub** — minimal Timeline engine adapter: parse thin `engines/timeline/SPEC.md` event list, emit `timeline.event-selected` on `select`; no full timeline renderer required for exit.
+5. **Visual target** — existing P2 number-line or illustration entity receives `focus` from binding (`targetIdFrom`: `links.visualEntityId`).
 
 **Exit criteria (all green)**
 
 1. Playwright (or unit) test: select timeline event → visual entity focused; event log replayable.
 2. No engine-to-engine package imports; routing only through harness bindings.
-3. Fixture validates as JSON; embedded engine specs pass L1 on envelope schema.
+3. Fixture validates against `composition.schema.json`; embedded engine specs pass L1 on envelope schema.
 
 **Not in scope:** Full Timeline/GeoMap/Chart UI; lesson-level quiz scoring (D7).
 
@@ -306,6 +307,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 |------------|------|------|
 | Docs backlog: chart/timeline/diagram JSON schemas; geomap schema | engine phases | P3–P6 |
 | Composition fixtures + harness | `docs/fixtures/composition/` | P2.5 |
+| Composition schema | `schemas/composition.schema.json` | P2.5 |
 | Legacy envelope migration (`geomap` wrapper, `schemaVersion`) | DESIGN D1 | Done (P0) |
 | Thin normative SPEC.md (chart, timeline, diagram) | `engines/*/SPEC.md` | Done (P0 doc gate) |
 | Vision prose expansion | `engines/*/VISION.md` | **Frozen** until P2 number-line green |
@@ -391,3 +393,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | D5: single semantic action enum and namespaced events; STRUCTURE pointer events marked renderer-only. |
 | 2026-09-07 | D6: OpenEdu host seam; P1 must not rebuild telemetry/i18n/Studio/scoring; P7 hosts via EngineHost. |
 | 2026-09-07 | D7–D9: assessment seam, P2.5 composition, Visual closed set; thin chart/timeline/diagram SPEC.md. |
+| 2026-09-07 | D5 Visual interaction examples migrated; `composition.schema.json` stub for P2.5 fixtures. |

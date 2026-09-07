@@ -13,6 +13,7 @@ Shared infrastructure for turning declarative JSON into interactive, accessible,
 | Structure | [`STRUCTURE.md`](STRUCTURE.md) | Repository layout, package separation, tech stack, platform phases. Package naming per DESIGN D2. |
 | Plan | [`PLAN.md`](PLAN.md) | Living implementation plan: exit-gated phases P0-P7, working model, status board. |
 | Schema | [`schemas/interactive-engine.schema.json`](schemas/interactive-engine.schema.json) | Machine-readable envelope (`type`/`version`/`id`). |
+| Composition | [`schemas/composition.schema.json`](schemas/composition.schema.json) | Lesson-level `{ engines[], bindings[] }` (P2.5). |
 
 ## Engines
 

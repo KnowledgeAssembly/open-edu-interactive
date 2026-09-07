@@ -1020,124 +1020,114 @@ Relationships MUST reference valid IDs.
 
 ---
 
-# 37. `interactions`
+# 37. `interaction` (envelope)
 
-Defines semantic interaction contracts.
+Interaction is declared at the **envelope** level using D5 semantic actions (`DESIGN §7.4`; `interactive-engine.schema.json` `$defs.actionType`). Specifications declare **what the learner may do**, not how the renderer maps pointer or keyboard input.
 
 Example:
 
 ```json
 {
-  "interactions": [
-    {
-      "target": "number-7",
-      "events": {
-        "click": {
-          "action": "select"
-        }
+  "interaction": {
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
+  },
+  "content": {
+    "kind": "number-line",
+    "entities": [
+      {
+        "id": "number-7",
+        "interactive": true,
+        "acceptsActions": ["select"]
       }
-    }
-  ]
+    ]
+  }
 }
 ```
+
+Interactive entities MAY declare which D5 actions they accept via `acceptsActions`. The renderer maps pointer activation (click, tap, Enter) to those semantic actions at runtime — that mapping MUST NOT appear in the specification.
 
 Interactions MUST NOT contain executable code.
 
 ---
 
-# 38. Interaction Events
+# 38. Renderer input (non-normative)
 
-Initial events:
+Pointer, keyboard, and DOM events are **renderer input**. They MUST NOT appear in Visual specifications.
 
 ```text
-click
-hover
-focus
-blur
-drag-start
-drag
-drag-end
-drop
-keydown
+click          → maps to select / focus / open-annotation (runtime)
+pointer.enter  → maps to focus (runtime)
+keydown        → maps to select / step / … (runtime)
 ```
 
-Additional events MAY be introduced.
+See `STRUCTURE.md` §25 and the shared contract §15. Authors specify semantic actions only.
 
 ---
 
 # 39. Interaction Actions
 
-Initial semantic actions:
+Visual Engine instances MUST use the **closed D5 action enum** from the shared envelope schema. Superseded names (`highlight`, `show`, `show-explanation`, `annotate`, `play`, …) MUST NOT appear in new specifications.
 
-```text
-select
-deselect
-toggle
-highlight
-unhighlight
-show
-hide
-reveal-answer
-show-explanation
-mark-correct
-mark-incorrect
-focus
-navigate
-```
+| Superseded | D5 replacement |
+|---|---|
+| `highlight` | `select` or `focus` |
+| `show-explanation` | `open-annotation` |
+| `show` / `hide` | `open-annotation` / `close-annotation` |
+| `play` | `play-pause` |
 
-Actions describe intent.
-
-The consumer decides implementation.
+Full enum: DESIGN §7.4 and `interactive-engine.schema.json` `$defs/actionType`.
 
 ---
 
 # 40. Interaction Example
 
+Opening an annotation when the learner selects a diagram part:
+
 ```json
 {
-  "target": "leaf",
-  "events": {
-    "click": {
-      "action": "show-explanation",
-      "target": "leaf-explanation"
-    }
+  "interaction": {
+    "mode": "explore",
+    "actions": ["select", "open-annotation", "close-annotation"]
+  },
+  "content": {
+    "entities": [
+      {
+        "id": "leaf",
+        "interactive": true,
+        "acceptsActions": ["select", "open-annotation"],
+        "annotationId": "leaf-explanation"
+      }
+    ]
   }
 }
 ```
 
-The Visual Engine does not implement the explanation.
-
-It only declares the contract.
+The Visual Engine declares the semantic contract. The host renders explanation UI when it receives namespaced result events (e.g. `visual.leaf-selected`).
 
 ---
 
 # 41. Drag-and-Drop
 
-Example:
-
-```json
-{
-  "target": "apple-1",
-  "events": {
-    "drag-end": {
-      "action": "drop"
-    }
-  }
-}
-```
-
-Additional semantic configuration:
+Drag-and-drop uses D5 manipulation actions on the envelope:
 
 ```json
 {
   "interaction": {
-    "draggable": true,
-    "group": "counting-objects"
+    "mode": "construct",
+    "actions": ["drag", "drop", "place", "reset"]
+  },
+  "content": {
+    "kind": "interactive-scene",
+    "elements": [
+      { "id": "apple-1", "role": "draggable", "acceptsActions": ["drag"] },
+      { "id": "fruit-bin", "role": "drop-target", "acceptsActions": ["drop"] }
+    ]
   }
 }
 ```
 
-The exact runtime semantics belong to the consuming application.
+The renderer translates pointer drag gestures to `drag` / `drop` actions. Drop validation belongs to the engine reducer and host.
 
 ---
 
@@ -1578,18 +1568,8 @@ semantic IDs
       {
         "id": "fruit-bin",
         "type": "rect",
-        "role": "drop-target"
-      }
-    ],
-    "interactions": [
-      {
-        "target": "apple-1",
-        "events": {
-          "drag-end": {
-            "action": "drop",
-            "target": "fruit-bin"
-          }
-        }
+        "role": "drop-target",
+        "acceptsActions": ["drop"]
       }
     ]
   },
@@ -2459,24 +2439,6 @@ The Visual Specification should not contain runtime context.
         "type": "compares-with",
         "source": "three-fourths",
         "target": "one-half"
-      }
-    ],
-    "interactions": [
-      {
-        "target": "one-half",
-        "events": {
-          "click": {
-            "action": "select"
-          }
-        }
-      },
-      {
-        "target": "three-fourths",
-        "events": {
-          "click": {
-            "action": "select"
-          }
-        }
       }
     ],
     "constraints": {

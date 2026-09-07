@@ -394,7 +394,7 @@ However, semantic separation between specification and rendering MUST remain.
 
 # 10. Interaction Contracts
 
-Visual elements MAY expose interaction metadata.
+Visual elements MAY expose which D5 semantic actions they accept. Pointer and keyboard input are mapped to those actions by the renderer at runtime (DESIGN D5) — they MUST NOT appear in specifications.
 
 Example:
 
@@ -402,13 +402,18 @@ Example:
 {
   "id": "root",
   "role": "diagram-part",
+  "interactive": true,
+  "acceptsActions": ["select", "open-annotation", "focus"]
+}
+```
+
+Envelope-level declaration:
+
+```json
+{
   "interaction": {
-    "click": {
-      "action": "show-explanation"
-    },
-    "hover": {
-      "action": "highlight"
-    }
+    "mode": "explore",
+    "actions": ["select", "open-annotation", "close-annotation", "focus"]
   }
 }
 ```
