@@ -205,6 +205,8 @@ export const ResourceSchema = z
   })
   .strict();
 
+export const SOURCE_CLASSES = ['authoritative', 'illustrative', 'simulated'] as const;
+
 export const SourceSchema = z
   .object({
     type: z.enum([
@@ -214,7 +216,8 @@ export const SourceSchema = z
       'simulated',
       'learner-generated',
       'ai-generated',
-    ]),
+    ]).optional(),
+    class: z.enum(SOURCE_CLASSES).optional(),
     title: z.string().optional(),
     citation: z.string().optional(),
     url: z.string().url().optional(),

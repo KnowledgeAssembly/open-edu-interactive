@@ -378,7 +378,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P1 — Platform skeleton | DONE |
 | P2 — Visual Engine | DONE |
 | P2.5 — Composition smoke test | DONE |
-| P3 — Chart Engine | NOT STARTED |
+| P3 — Chart Engine | DONE |
 | P4 — GeoMap Engine | NOT STARTED |
 | P5 — Timeline Engine | NOT STARTED |
 | P6 — Diagram Engine | NOT STARTED |
@@ -406,3 +406,10 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | P2.5 T0 decision: Gap B — timeline stub MUST attach full event record (including `links`) to emitted `timeline.event-selected` payload so `targetIdFrom` resolves. |
 | 2026-09-07 | P2.5 DONE: composition runtime (`Lesson` load/start/route/replay) + `@knowledgeassemble/timeline-engine` stub + Visual `illustration` kind, frozen fixtures with golden event log, conformance `?engine=composition` e2e, composition authoring skill — full exit gate green. |
 | 2026-09-07 | P3–P7 review patches (docs only, pre-`feat/p3`): core seams now explicit so later phases nominate real hooks/types — `ValidationHooks` keeps an optional extra slot (extra named hooks become deterministic-error cases, not new fields); `EngineInstance.snapshot()` is widened for cross-cutting scene/scene IDs once heading into P3; `tokens`→`LayoutContext` consumption is a Visual responsibility carried by each injected vector (not a shared `format` session); sync `resolveAsset` confirmed against `EngineHost`; decided to add `format(key, vars?)` on `EngineHost` (no message-key/`t()` convention exists yet) in the pre-P3 core patch. P7 exit-1 amended (in-repo host-simulation; real `CourseRuntime` run is `docs/p7-acceptance.md`). `apps/playground`/`apps/cli` claims (P2/P3 scope) deferred to a later tooling phase — conformance app is the only demo surface. |
+| 2026-09-07 | Chart-D1: closed `content.kind` at P3 = `["bar","line"]`; area/scatter deferred. |
+| 2026-09-07 | Chart-D2: derived scales, fixed baseline (bar y=0, line padded 10%); nice ticks via `1,2,2.5,5×10^k` ladder. |
+| 2026-09-07 | Chart-D3: namespaced result events `chart.data-point-selected` / `chart.data-point-focused`; payload = full row. |
+| 2026-09-07 | Chart-D4: line requires ≥ 2 data points at L2 (`INVALID_ENTITY`). |
+| 2026-09-07 | Chart-D5: `sources[]` required at engine level (stricter than envelope). |
+| 2026-09-07 | Chart-D5 reconciliation: `sources[].class` (DESIGN §9 accuracy class, `{authoritative,illustrative,simulated}`) added to the shared envelope `SourceSchema`; chart L2 requires `sources[]` and validates `class`. Envelope `type` stays for broader provenance enumeration. |
+| 2026-09-07 | P3 DONE: @knowledgeassemble/chart-engine bar + line slices through full pipeline (scene → layout → SVG → a11y → tabular → validation → e2e), closed kind enum `["bar","line"]`, deterministic scales without d3, namespaced result events, golden fixtures, conformance `?engine=chart`, quantitative-chart authoring skill — full exit gate green. |

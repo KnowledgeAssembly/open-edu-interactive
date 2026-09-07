@@ -1,0 +1,10 @@
+export { CHART_KINDS, SOURCE_CLASSES, validateChartContent } from './schema.js';
+export type { ChartContent, ChartSpec, ChartKind, SourceClass, Dimension, Measure } from './schema.js';
+export type { SceneNode, Scene, ChartSemanticRole, Bounds } from './scene/types.js';
+export { buildScene } from './scene/build.js';
+export { layout } from './layout/engine.js';
+export type { LayoutContext } from './layout/engine.js';
+export { linearScale, bandScale, niceTicks, barDomain, lineDomain } from './layout/scales.js';
+export { svgFrom } from './render/svg.js';
+export type { SvgResult, TabularRow, A11yNode } from './render/types.js';
+export { ChartEngine } from './engine.js';
