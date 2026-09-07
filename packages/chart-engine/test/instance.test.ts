@@ -42,7 +42,7 @@ const BAR_SPEC = {
   },
   interaction: { mode: 'explore', actions: ['select', 'focus', 'reset'] },
   accessibility: { label: 'Bar chart' },
-  sources: [{ type: 'authoritative' as const }],
+  sources: [{ class: 'authoritative' as const }],
 };
 
 const LINE_SPEC = {
@@ -60,7 +60,7 @@ const LINE_SPEC = {
   },
   interaction: { mode: 'explore', actions: ['select', 'focus', 'reset'] },
   accessibility: { label: 'Line chart' },
-  sources: [{ type: 'authoritative' as const }],
+  sources: [{ class: 'authoritative' as const }],
 };
 
 describe('ChartEngine', () => {
@@ -138,5 +138,42 @@ describe('ChartEngine', () => {
     const engine = new ChartEngine();
     const instance = engine.instantiate(BAR_SPEC as never, stubHost());
     instance.teardown();
+  });
+
+  it('filter restricts rendered rows to the id subset and clear-filter restores all', () => {
+    const engine = new ChartEngine();
+    const { host } = collectingHost();
+    const instance = engine.instantiate(BAR_SPEC as never, host, 'chart-filter');
+
+    const all = (instance.snapshot() as unknown as { tabular: Array<{ rowLabel: string }> }).tabular;
+    expect(all.map((r) => r.rowLabel)).toEqual(['Jan', 'May']);
+
+    instance.dispatch({ type: 'filter', payload: { ids: ['row-jan'] } } as EngineAction);
+    const filtered = (instance.snapshot() as unknown as { tabular: Array<{ rowLabel: string }> }).tabular;
+    expect(filtered.map((r) => r.rowLabel)).toEqual(['Jan']);
+    expect((instance.snapshot() as unknown as { filter: string[] }).filter).toEqual(['row-jan']);
+
+    instance.dispatch({ type: 'clear-filter' } as EngineAction);
+    const restored = (instance.snapshot() as unknown as { tabular: Array<{ rowLabel: string }> }).tabular;
+    expect(restored).toHaveLength(2);
+  });
+
+  it('filter with an empty id list renders no rows (literal subset semantics)', () => {
+    const engine = new ChartEngine();
+    const { host } = collectingHost();
+    const instance = engine.instantiate(BAR_SPEC as never, host, 'chart-filter-empty');
+
+    instance.dispatch({ type: 'filter', payload: { ids: [] } } as EngineAction);
+    const snapshot = instance.snapshot() as unknown as { tabular: Array<{ rowLabel: string }> };
+    expect(snapshot.tabular).toEqual([]);
+  });
+
+  it('filter does not emit a chart.* result event (select/focus only)', () => {
+    const engine = new ChartEngine();
+    const { host, events } = collectingHost();
+    const instance = engine.instantiate(BAR_SPEC as never, host, 'chart-filter-events');
+
+    instance.dispatch({ type: 'filter', payload: { ids: ['row-jan'] } } as EngineAction);
+    expect(events.filter((e) => e.name.startsWith('chart.'))).toEqual([]);
   });
 });

@@ -410,4 +410,5 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | Chart-D3: namespaced result events `chart.data-point-selected` / `chart.data-point-focused`; payload = full row. |
 | 2026-09-07 | Chart-D4: line requires ≥ 2 data points at L2 (`INVALID_ENTITY`). |
 | 2026-09-07 | Chart-D5: `sources[]` required at engine level (stricter than envelope). |
+| 2026-09-07 | Chart-D5 reconciliation: `sources[].class` (DESIGN §9 accuracy class, `{authoritative,illustrative,simulated}`) added to the shared envelope `SourceSchema`; chart L2 requires `sources[]` and validates `class`. Envelope `type` stays for broader provenance enumeration. |
 | 2026-09-07 | P3 DONE: @knowledgeassemble/chart-engine bar + line slices through full pipeline (scene → layout → SVG → a11y → tabular → validation → e2e), closed kind enum `["bar","line"]`, deterministic scales without d3, namespaced result events, golden fixtures, conformance `?engine=chart`, quantitative-chart authoring skill — full exit gate green. |

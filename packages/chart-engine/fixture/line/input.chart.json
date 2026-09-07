@@ -15,5 +15,5 @@
   },
   "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
   "accessibility": { "label": "Line chart of quarterly temperatures" },
-  "sources": [{ "type": "authoritative" }]
+  "sources": [{ "class": "authoritative" }]
 }

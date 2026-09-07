@@ -21,15 +21,64 @@ import { buildScene } from './scene/build.js';
 import { layout } from './layout/engine.js';
 import type { LayoutContext } from './layout/engine.js';
 import { svgFrom } from './render/svg.js';
+import type { Scene } from './scene/types.js';
+import type { SvgResult } from './render/types.js';
+
+const DEFAULT_LAYOUT: LayoutContext = {
+  width: 800,
+  height: 600,
+  minTouchTarget: 44,
+  textStyle: 'normal',
+};
+
+function layoutContextFrom(tokens: Record<string, string>): LayoutContext {
+  const numberToken = (key: string, fallback: number): number => {
+    const raw = tokens[key];
+    const value = raw === undefined ? NaN : Number(raw);
+    return Number.isFinite(value) && value > 0 ? value : fallback;
+  };
+  return {
+    width: numberToken('width', DEFAULT_LAYOUT.width),
+    height: numberToken('height', DEFAULT_LAYOUT.height),
+    minTouchTarget: numberToken('minTouchTarget', DEFAULT_LAYOUT.minTouchTarget),
+    textStyle: tokens['textStyle'] ?? DEFAULT_LAYOUT.textStyle,
+  };
+}
+
+function rowIdOf(row: Record<string, string | number>, index: number): string {
+  const id = row['id'];
+  if (typeof id === 'string' && id) return id;
+  return String(index).padStart(4, '0');
+}
+
+function render(content: ChartContent, ctx: LayoutContext, label?: string, description?: string): { scene: Scene; svgResult: SvgResult } {
+  const scene = layout(buildScene(content), content, ctx);
+  const svgResult = svgFrom(scene, ctx, label, description);
+  return { scene, svgResult };
+}
 
 export class ChartEngine implements Engine {
   readonly type: EngineType = 'chart';
 
   validate(spec: EngineSpec): ValidationResult {
+    const chartSpec = spec as unknown as ChartSpec;
+    let artifacts: { scene: Scene; svgResult: SvgResult } | null = null;
     return runPipeline(spec, {
       semantic: (s) => validateSemantic(s as unknown as ChartSpec),
-      layout: () => validateLayout(),
-      accessibility: (s) => validateAccessibility(s as unknown as ChartSpec),
+      layout: () => {
+        if (!artifacts && chartSpec.content) {
+          artifacts = render(chartSpec.content, DEFAULT_LAYOUT, chartSpec.accessibility?.label, chartSpec.accessibility?.description);
+        }
+        if (!artifacts) return { valid: true, issues: [] };
+        return validateLayout(artifacts.scene, DEFAULT_LAYOUT);
+      },
+      accessibility: () => {
+        if (!artifacts && chartSpec.content) {
+          artifacts = render(chartSpec.content, DEFAULT_LAYOUT, chartSpec.accessibility?.label, chartSpec.accessibility?.description);
+        }
+        if (!artifacts) return { valid: true, issues: [] };
+        return validateAccessibility(chartSpec, artifacts.svgResult);
+      },
     });
   }
 
@@ -45,21 +94,23 @@ export class ChartEngine implements Engine {
     const instanceId = id ?? spec.id;
     const chartSpec = spec as unknown as ChartSpec;
     const content = chartSpec.content as ChartContent;
+    const ctx = layoutContextFrom(host.tokens);
     const log = new EventLog();
     const listeners = new Set<Parameters<EngineInstance['subscribe']>[0]>();
 
     let state: EngineState = { ...initialState(instanceId, this.type), phase: 'running' };
 
-    const ctx: LayoutContext = {
-      width: 800,
-      height: 600,
-      minTouchTarget: 44,
-      textStyle: 'normal',
-    };
+    let laidOut: Scene = { nodes: [], semantics: {} };
+    let svgResult: SvgResult = { svg: '', a11y: [], interactive: [], tabular: [] };
 
-    const scene = buildScene(content);
-    const laidOut = layout(scene, content, ctx);
-    const svgResult = svgFrom(laidOut, ctx, chartSpec.accessibility?.label, chartSpec.accessibility?.description);
+    function recompute(rows: ChartContent['data']): void {
+      const filtered = { ...content, data: rows };
+      const result = render(filtered, ctx, chartSpec.accessibility?.label, chartSpec.accessibility?.description);
+      laidOut = result.scene;
+      svgResult = result.svgResult;
+    }
+
+    recompute(content.data);
 
     function emit(event: Parameters<EngineHost['onEvent']>[0]): void {
       host.onEvent(event);
@@ -96,6 +147,19 @@ export class ChartEngine implements Engine {
         const rowPayload = findRowPayload(action);
         const reduced = baseReducer(state, action);
         state = reduced;
+
+        if (action.type === 'filter') {
+          const requested = (action.payload as { ids?: unknown } | undefined)?.ids;
+          const ids = new Set(Array.isArray(requested) ? (requested as string[]) : []);
+          if (ids.size > 0) {
+            const rows = content.data.filter((row) => ids.has(rowIdOf(row as Record<string, string | number>, content.data.indexOf(row))));
+            recompute(rows);
+          } else {
+            recompute([]);
+          }
+        } else if (action.type === 'clear-filter') {
+          recompute(content.data);
+        }
 
         const started = log.append('interaction-started', instanceId, undefined, action);
         emit(started as Parameters<EngineHost['onEvent']>[0]);

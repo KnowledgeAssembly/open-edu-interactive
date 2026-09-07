@@ -1,5 +1,5 @@
-export { CHART_KINDS, validateChartContent } from './schema.js';
-export type { ChartContent, ChartSpec, ChartKind, Dimension, Measure } from './schema.js';
+export { CHART_KINDS, SOURCE_CLASSES, validateChartContent } from './schema.js';
+export type { ChartContent, ChartSpec, ChartKind, SourceClass, Dimension, Measure } from './schema.js';
 export type { SceneNode, Scene, ChartSemanticRole, Bounds } from './scene/types.js';
 export { buildScene } from './scene/build.js';
 export { layout } from './layout/engine.js';

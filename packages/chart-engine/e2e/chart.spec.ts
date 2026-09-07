@@ -68,4 +68,17 @@ test.describe('Chart Engine — bar chart e2e', () => {
     });
     expect(result.ok).toBe(false);
   });
+
+  test('filter: dispatching filter restricts tabular rows and clear-filter restores all', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const h = (window as unknown as { __chartHarness: { dispatch(a: unknown): void; tabular(): Array<{ rowLabel: string }> } }).__chartHarness;
+      h.dispatch({ type: 'filter', payload: { ids: ['row-feb', 'row-nov'] } });
+      const filtered = h.tabular().map((r) => r.rowLabel);
+      h.dispatch({ type: 'clear-filter' });
+      const restored = h.tabular().map((r) => r.rowLabel);
+      return { filtered, restored };
+    });
+    expect(result.filtered).toEqual(['Feb', 'Nov']);
+    expect(result.restored.sort()).toEqual(['Aug', 'Feb', 'May', 'Nov']);
+  });
 });

@@ -15,5 +15,5 @@
   },
   "interaction": { "mode": "explore", "actions": ["select", "focus", "filter", "reset"] },
   "accessibility": { "label": "Bar chart of monthly rainfall" },
-  "sources": [{ "type": "authoritative" }]
+  "sources": [{ "class": "authoritative" }]
 }

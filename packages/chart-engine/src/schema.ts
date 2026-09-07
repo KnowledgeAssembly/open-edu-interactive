@@ -3,6 +3,9 @@ import { z } from 'zod';
 export const CHART_KINDS = ['bar', 'line'] as const;
 export type ChartKind = (typeof CHART_KINDS)[number];
 
+export const SOURCE_CLASSES = ['authoritative', 'illustrative', 'simulated'] as const;
+export type SourceClass = (typeof SOURCE_CLASSES)[number];
+
 const ID_PATTERN = /^[a-zA-Z][a-zA-Z0-9._-]*$/;
 export const DIMENSION_TYPES = ['ordinal', 'categorical', 'quantitative', 'time'] as const;
 export type DimensionType = (typeof DIMENSION_TYPES)[number];
@@ -45,7 +48,7 @@ export interface ChartSpec {
   interaction?: { mode?: string; actions?: string[] };
   metadata?: { title?: string };
   accessibility?: { label: string; description?: string };
-  sources?: Array<{ class: string }>;
+  sources?: Array<{ class: SourceClass; title?: string; citation?: string; url?: string }>;
   [key: string]: unknown;
 }
 

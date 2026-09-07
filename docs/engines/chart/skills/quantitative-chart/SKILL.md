@@ -32,7 +32,7 @@ Use the shared Interactive Engine envelope (`type: "chart"`, `version`, `id`). C
     ]
   },
   "interaction": { "mode": "explore", "actions": ["select", "focus", "filter", "reset"] },
-  "sources": [{ "type": "authoritative" }],
+  "sources": [{ "class": "authoritative" }],
   "accessibility": { "label": "Bar chart of monthly rainfall in millimeters" }
 }
 ```
@@ -43,7 +43,7 @@ Use the shared Interactive Engine envelope (`type: "chart"`, `version`, `id`). C
 - `dimensions[]` defines the independent axis (ordinal, categorical, quantitative, or time). At least 1 dimension.
 - `measures[]` defines the quantitative values. `type` MUST be `"quantitative"`. At least 1 measure.
 - `data[]` rows contain values for each dimension and measure. Every row MUST include every declared dimension and measure id. Row keys that reference undeclared ids are invalid.
-- `sources[]` is **required** for provenance (DESIGN §9). Use `{ "type": "authoritative" | "illustrative" | "simulated" }`.
+- `sources[]` is **required** for provenance (DESIGN §9). Each source carries `class`, one of `"authoritative"` (canonical for the lesson), `"illustrative"` (simplified for teaching), or `"simulated"` (hypothetical). Use `{ "class": "authoritative" | "illustrative" | "simulated" }`.
 - Never invent data or derived numbers. Values come only from `content.data` + declared measures.
 - Never author `x`, `y`, `width`, `height`, `color` — axes, ticks, bars, and points are derived by the layout engine. Scales are deterministic (no d3).
 - A line chart needs at least 2 data points (1 point is degenerate).

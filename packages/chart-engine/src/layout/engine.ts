@@ -11,15 +11,23 @@ export interface LayoutContext {
 }
 
 export function layout(scene: Scene, content: ChartContent, ctx: LayoutContext): Scene {
-  const pad = { top: 20, right: 20, bottom: 40, left: 50 };
+  const pad = { top: 20, right: 20, bottom: 60, left: 50 };
   const plotX = pad.left;
   const plotY = pad.top;
   const plotW = ctx.width - pad.left - pad.right;
   const plotH = ctx.height - pad.top - pad.bottom;
 
-  const nodes = scene.nodes.filter((n) => n.role !== 'axis');
-  const bars = nodes.filter((n) => n.kind === 'bar');
-  const points = nodes.filter((n) => n.kind === 'point');
+  const bars = scene.nodes.filter((n) => n.kind === 'bar');
+  const points = scene.nodes.filter((n) => n.kind === 'point');
+  const axes = scene.nodes.filter((n) => n.role === 'axis');
+  for (const axis of axes) {
+    if (axis.id === 'axis-x') {
+      axis.bounds = rect(plotX, plotY + plotH, plotW, 2);
+    } else if (axis.id === 'axis-y') {
+      axis.bounds = rect(plotX, plotY, 2, plotH);
+    }
+  }
+  const nodes = [...bars, ...points];
 
   const categories: string[] = [];
   const seen = new Set<string>();
