@@ -6,7 +6,7 @@ const SCHEMA_URL = new URL('../src/schemas/visual-spec.schema.json', import.meta
 const schema = JSON.parse(readFileSync(SCHEMA_URL, 'utf8')) as {
   additionalProperties?: boolean;
   required?: string[];
-  properties?: Record<string, { enum?: string[] }>;
+  properties?: Record<string, Record<string, unknown>>;
 };
 
 describe('schema parity guardrail — visual', () => {
@@ -21,6 +21,16 @@ describe('schema parity guardrail — visual', () => {
 
   it('content has additionalProperties === false', () => {
     expect(schema.additionalProperties).toBe(false);
+  });
+
+it('content.entities exists for illustration entities', () => {
+    const entities = schema.properties?.entities as
+      | { items?: { additionalProperties?: boolean; required?: string[] } }
+      | undefined;
+    expect(entities).toBeDefined();
+    expect(entities!.items?.additionalProperties).toBe(false);
+    expect(entities!.items?.required).toContain('id');
+    expect(entities!.items?.required).toContain('label');
   });
 
   it('schema text does not contain LLM-pleaser props', () => {

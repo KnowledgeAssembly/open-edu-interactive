@@ -9,6 +9,7 @@ import { clockComponent } from '../components/clock.js';
 import { coordinateGridComponent } from '../components/coordinate-grid.js';
 import { geometryShapeComponent } from '../components/geometry-shape.js';
 import { comparisonComponent } from '../components/comparison.js';
+import { illustrationComponent } from '../components/illustration.js';
 
 const registry = new ComponentRegistry();
 registry.register(numberLineComponent);
@@ -19,6 +20,7 @@ registry.register(clockComponent);
 registry.register(coordinateGridComponent);
 registry.register(geometryShapeComponent);
 registry.register(comparisonComponent);
+registry.register(illustrationComponent);
 
 export { registry as componentRegistry };
 
@@ -31,6 +33,7 @@ export function registerDefaultComponents(reg: ComponentRegistry): void {
   reg.register(coordinateGridComponent);
   reg.register(geometryShapeComponent);
   reg.register(comparisonComponent);
+  reg.register(illustrationComponent);
 }
 
 export function buildScene(content: VisualContent): Scene {
@@ -83,6 +86,35 @@ export function buildScene(content: VisualContent): Scene {
       };
       nodes.push(node);
       semantics[elem.id] = node;
+    }
+  }
+
+  if (content.entities) {
+    const groupId = `${content.entities[0]?.id ?? 'entities'}-illustration`;
+    assertUnique(groupId);
+    const children: SceneNode[] = [];
+    for (const entity of content.entities) {
+      assertUnique(entity.id);
+      children.push({
+        id: entity.id,
+        role: 'selectable',
+        kind: 'entity',
+        label: entity.label,
+        interactive: true,
+        acceptsActions: ['select', 'focus'],
+        children: [],
+      });
+    }
+    const group: SceneNode = {
+      id: groupId,
+      role: 'visual',
+      kind: 'illustration',
+      children,
+    };
+    nodes.push(group);
+    semantics[groupId] = group;
+    for (const child of children) {
+      semantics[child.id] = child;
     }
   }
 
