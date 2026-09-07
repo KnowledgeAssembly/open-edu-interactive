@@ -171,13 +171,34 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 ---
 
+### P2.5 — Composition smoke test (D8)
+
+**Goal.** Prove cross-engine value **before** building Chart, GeoMap, Timeline, and Diagram renderers. A timeline selection drives a visual focus via the shared event bus — not package imports.
+
+**Scope (in order)**
+
+1. **Composition harness** in `interactive-engine` — load lesson fixture, register two engine instances, route namespaced events to D5 actions on a peer instance.
+2. **Fixture** — `docs/fixtures/composition/narrative-timeline-visual.json` (timeline stub spec + visual spec + bindings).
+3. **Timeline stub** — minimal Timeline engine adapter: parse thin `engines/timeline/SPEC.md` event list, emit `timeline.event-selected` on `select`; no full timeline renderer required for exit.
+4. **Visual target** — existing P2 number-line or illustration entity receives `focus` from binding (`targetIdFrom`: `links.visualEntityId`).
+
+**Exit criteria (all green)**
+
+1. Playwright (or unit) test: select timeline event → visual entity focused; event log replayable.
+2. No engine-to-engine package imports; routing only through harness bindings.
+3. Fixture validates as JSON; embedded engine specs pass L1 on envelope schema.
+
+**Not in scope:** Full Timeline/GeoMap/Chart UI; lesson-level quiz scoring (D7).
+
+---
+
 ### P3 — Chart Engine
 
 **Goal.** Quantitative reasoning (`how much / how does it compare`).
 
 **Scope (in order)**
 
-1. Author normative `SPEC.md` (currently missing) + `schemas/chart-spec.schema.json`.
+1. Author `schemas/chart-spec.schema.json` from thin [`engines/chart/SPEC.md`](engines/chart/SPEC.md) (normative doc done — do not expand vision prose before code).
 2. Slices: **bar** and **line** through the full pipeline (spec → scene → layout → accessible SVG → fixtures).
 3. Scales, ticks, axes as derived layout — semantics only in the spec (DESIGN §8, P2).
 4. Component surface: bar, line, (future: area, scatter) — conformance-gated.
@@ -214,7 +235,7 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 **Scope (in order)**
 
-1. Author normative `SPEC.md` (currently missing) + `schemas/timeline-spec.schema.json`.
+1. Author `schemas/timeline-spec.schema.json` from thin [`engines/timeline/SPEC.md`](engines/timeline/SPEC.md) (stub used in P2.5 may be upgraded to full renderer).
 2. Slice: **events / periods / tracks** end-to-end.
 3. Playback (`play-pause`, `step`) via the shared runtime, not an engine-private mechanism (§7.4).
 4. Agent skill + fixtures.
@@ -232,7 +253,7 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 **Scope (in order)**
 
-1. Author normative `SPEC.md` (currently missing) + `schemas/diagram-spec.schema.json`.
+1. Author `schemas/diagram-spec.schema.json` from thin [`engines/diagram/SPEC.md`](engines/diagram/SPEC.md).
 2. Slice: **nodes / edges / auto-layout** (detect cycles → clean layout; label the layout as illustrative, DESIGN §9).
 3. No internal imports of other engines (DESIGN §6).
 4. Agent skill + fixtures.
@@ -244,19 +265,19 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 ---
 
-### P7 — Composition and OpenEdu Integration
+### P7 — OpenEdu Integration
 
-**Goal.** Engines compose in a lesson; OpenEdu **hosts** them through `EngineHost` (D6); widget compatibility; ADR re-recording.
+**Goal.** OpenEdu **hosts** engines through `EngineHost` (D6); `{ type: "interactive" }` lesson node; widget compatibility; ADR re-recording. Composition is proven at P2.5 — P7 extends hosting and authoring, not first composition.
 
 **Scope (in order)**
 
-1. **Composition proof** — *Narrative* example: Timeline (`timeline.event-selected` / `play-pause` / `step`) drives GeoMap (`focus`) and Visual, via the shared event bus, not package coupling (DESIGN §13, D5).
-2. **`interactive-react`** — thin React mount that implements `EngineHost` from OpenEdu theme, i18n, a11y, and telemetry session. Core stays framework-independent and MUST NOT import OpenEdu.
-3. **OpenEdu consumption proof** — a lesson node `{ "type": "interactive", "engine": "…", "spec": {…} }` in `@open-edu/schemas`; learner `CourseRuntime` hosts one engine.
-4. **Do not reconcile a shadow runtime** — there is no second telemetry, i18n, token, or scoring stack to throw away. Wire `onEvent` → OpenEdu telemetry; tokens → design-system; locale → i18n; assets → `.oep`. Namespace MAY flip to `@open-edu/*` per D2.
-5. **Widget compatibility** (§95): keep widgets running; add shims or parallel node types (`math.number-line` stays valid). Migration is progressive, not a flag day.
-6. **Authoring** — extend OpenEdu Course Creator Studio (and the course-authoring skill) to emit engine specs. Do not ship `apps/studio` as a product.
-7. **Governance** — re-record D1–D6 as ADRs per `openedu-way/ADR.md`.
+1. **`interactive-react`** — thin React mount that implements `EngineHost` from OpenEdu theme, i18n, a11y, and telemetry session. Core stays framework-independent and MUST NOT import OpenEdu.
+2. **OpenEdu consumption proof** — lesson node `{ "type": "interactive", "engine": "…", "spec": {…} }` in `@open-edu/schemas`; learner `CourseRuntime` hosts one engine; composed lessons reuse P2.5 binding model at lesson level.
+3. **Wire host services** — `onEvent` → OpenEdu telemetry; tokens → design-system; locale → i18n; assets → `.oep`. No shadow runtime (D6).
+4. **Widget compatibility** (§95): keep widgets running; shims or parallel node types (`math.number-line` stays valid). Migration progressive.
+5. **Authoring** — extend Course Creator Studio + course-authoring skill to emit engine specs. No `apps/studio` product.
+6. **Extended composition** (optional) — Timeline + GeoMap narrative once P4 GeoMap exists; not a gate for first OpenEdu proof.
+7. **Governance** — re-record D1–D9 as ADRs per `openedu-way/ADR.md`.
 
 **Exit criteria (all green)**
 
@@ -283,8 +304,11 @@ The **Spec** step is where the per-engine normative documents missing today are 
 
 | Workstream | Home | When |
 |------------|------|------|
-| Docs backlog: chart/timeline/diagram SPEC.md; geomap schema | engine phases | P3-P6 |
+| Docs backlog: chart/timeline/diagram JSON schemas; geomap schema | engine phases | P3–P6 |
+| Composition fixtures + harness | `docs/fixtures/composition/` | P2.5 |
 | Legacy envelope migration (`geomap` wrapper, `schemaVersion`) | DESIGN D1 | Done (P0) |
+| Thin normative SPEC.md (chart, timeline, diagram) | `engines/*/SPEC.md` | Done (P0 doc gate) |
+| Vision prose expansion | `engines/*/VISION.md` | **Frozen** until P2 number-line green |
 | Conformance suite + golden fixtures | `interactive-engine` harness | P1, per engine |
 | Theming tokens | DESIGN §12.1 / EngineHost | P1 stub host; OpenEdu design-system is source of truth |
 | A11y L4 checks, keyboard, reduced motion | DESIGN §12 / STRUCTURE §37 | per engine; prefs from host |
@@ -322,9 +346,12 @@ The **Spec** step is where the per-engine normative documents missing today are 
 - **Legacy envelopes must not be copied forward** (D1). Every ported example is restated in the shared envelope.
 - **Missing normative specs gate their phases.** Chart/Timeline/Diagram have none today; spec-first prevents drift.
 - **Schema technology.** JSON Schema is the canonical public contract; Zod provides runtime validation (STRUCTURE §11). That matches OpenEdu; engines still MUST NOT import `@open-edu/*` (D6).
-- **Engine isolation.** Engines never import each other; composition is via the event bus (P7).
+- **Engine isolation.** Engines never import each other; composition is via the event bus (P2.5+).
 - **Provenance and fixtures.** Renderer upgrades can only change output with reviewed fixture changes (DESIGN §11).
 - **Duplicate-runtime risk (D6).** If P1 grows a telemetry store, i18n app, or Studio, stop and delete it. OpenEdu already has those.
+- **Composition deferred (D8).** If P3 starts before P2.5 is green, stop — isolated engines replicate the widget catalog.
+- **Dual assessment (D7).** Do not add scoring logic to engine packages; wire quiz nodes in OpenEdu only.
+- **Visual scope creep (D9).** Reject timeline/flowchart/label-diagram in Visual PRs; use Timeline/Diagram engines.
 - **Namespace.** Standalone `@knowledgeassemble/*` until host integration; D2 still applies.
 
 ---
@@ -345,11 +372,12 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P0 — Foundation and consolidation | IN PROGRESS |
 | P1 — Platform skeleton | NOT STARTED |
 | P2 — Visual Engine | NOT STARTED |
+| P2.5 — Composition smoke test | NOT STARTED |
 | P3 — Chart Engine | NOT STARTED |
 | P4 — GeoMap Engine | NOT STARTED |
 | P5 — Timeline Engine | NOT STARTED |
 | P6 — Diagram Engine | NOT STARTED |
-| P7 — Composition + integration | NOT STARTED |
+| P7 — OpenEdu integration | NOT STARTED |
 
 ---
 
@@ -362,3 +390,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | D1: Visual and GeoMap engine docs migrated off `schemaVersion` / `{ "geomap": {} }` wrappers. |
 | 2026-09-07 | D5: single semantic action enum and namespaced events; STRUCTURE pointer events marked renderer-only. |
 | 2026-09-07 | D6: OpenEdu host seam; P1 must not rebuild telemetry/i18n/Studio/scoring; P7 hosts via EngineHost. |
+| 2026-09-07 | D7–D9: assessment seam, P2.5 composition, Visual closed set; thin chart/timeline/diagram SPEC.md. |

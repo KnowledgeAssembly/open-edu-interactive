@@ -47,14 +47,13 @@ AI coding and course-authoring agents frequently need to create visuals such as:
 - counting objects
 - fraction diagrams
 - geometric figures
-- timelines
-- labelled diagrams
 - coordinate grids
-- flowcharts
 - comparison diagrams
 - science diagrams
 - sorting/matching boards
 - interactive learning scenes
+
+**Out of Visual scope (D9):** timelines, labelled diagrams, and flowcharts belong to Timeline and Diagram engines — not Visual components.
 
 Current approaches have several problems:
 
@@ -209,7 +208,6 @@ number-line
 fraction-bar
 clock
 ten-frame
-label-diagram
 coordinate-grid
 ```
 
@@ -331,7 +329,7 @@ The engine MUST support deterministic label placement.
 
 # 8. Educational Components
 
-MVP educational component library:
+MVP educational component library (closed set — DESIGN D9):
 
 ### Mathematics
 
@@ -345,12 +343,11 @@ MVP educational component library:
 
 ### General
 
-8. `timeline`
-9. `label-diagram`
-10. `flowchart`
-11. `comparison`
+8. `comparison`
 
-The component architecture MUST allow additional domains later.
+**Not Visual components:** `timeline`, `label-diagram`, and `flowchart` — use Timeline or Diagram engines.
+
+The component architecture MUST allow additional **Visual-domain** kinds later without absorbing other engines' reasoning spaces.
 
 ---
 
@@ -1146,7 +1143,7 @@ Implement:
 
 ## Phase 4 — Educational Components
 
-Implement:
+Implement (closed set — DESIGN D9):
 
 1. number line
 2. counting set
@@ -1155,12 +1152,9 @@ Implement:
 5. clock
 6. coordinate grid
 7. geometry shape
-8. timeline
-9. label diagram
-10. flowchart
-11. comparison
+8. comparison
 
-Each component requires tests and examples.
+Each component requires tests and examples. Timeline, label diagram, and flowchart are **not** Phase 4 — see Timeline and Diagram engine phases.
 
 ---
 

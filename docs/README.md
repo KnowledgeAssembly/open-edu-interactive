@@ -2,7 +2,7 @@
 
 Shared infrastructure for turning declarative JSON into interactive, accessible, educational learning experiences. Five engines, one contract.
 
-**Start here:** [`DESIGN.md`](DESIGN.md) — the overall design, principles, and system-wide decisions (D1–D6).
+**Start here:** [`DESIGN.md`](DESIGN.md) — the overall design, principles, and system-wide decisions (D1–D9).
 
 ## Document map
 
@@ -20,17 +20,17 @@ Shared infrastructure for turning declarative JSON into interactive, accessible,
 |--------|-----------------|--------|------|----------------|
 | Visual | Spatial / visual objects | — | [`engines/visual/SPEC.md`](engines/visual/SPEC.md) | [`ARCHITECTURE.md`](engines/visual/ARCHITECTURE.md) · [`COMPONENTS.md`](engines/visual/COMPONENTS.md) · [`PROJECT.md`](engines/visual/PROJECT.md) |
 | GeoMap | Geographic / where | [`engines/geomap/VISION.md`](engines/geomap/VISION.md) | [`engines/geomap/SPEC.md`](engines/geomap/SPEC.md) | — |
-| Chart | Quantitative / how much | [`engines/chart/VISION.md`](engines/chart/VISION.md) | missing | — |
-| Timeline | Temporal / when | [`engines/timeline/VISION.md`](engines/timeline/VISION.md) | missing | — |
-| Diagram | Structural / how connected | [`engines/diagram/VISION.md`](engines/diagram/VISION.md) | missing | — |
+| Chart | Quantitative / how much | [`engines/chart/VISION.md`](engines/chart/VISION.md) | [`engines/chart/SPEC.md`](engines/chart/SPEC.md) (thin) | — |
+| Timeline | Temporal / when | [`engines/timeline/VISION.md`](engines/timeline/VISION.md) | [`engines/timeline/SPEC.md`](engines/timeline/SPEC.md) (thin) | — |
+| Diagram | Structural / how connected | [`engines/diagram/VISION.md`](engines/diagram/VISION.md) | [`engines/diagram/SPEC.md`](engines/diagram/SPEC.md) (thin) | — |
 
-Status key: **missing** = to be written as part of the implementation plan (Chart/Timeline/Diagram specs and schemas), **GeoMap schema + agent tooling** = TODO.
+Status key: **thin** = normative envelope + MVP slice only (gates P3–P6 code); expand in schemas/code, not unbounded vision prose. **GeoMap schema + agent tooling** = TODO.
 
 ## Status matrix
 
 | Document | Status | Canonical? |
 |----------|--------|-----------|
-| DESIGN.md | Proposed | Yes — supersedes conflicting envelope/repo/phase/`purpose`/action/runtime-ownership forms (see D1–D6) |
+| DESIGN.md | Proposed | Yes — supersedes conflicting envelope/repo/phase/`purpose`/action/runtime/composition/visual-scope forms (see D1–D9) |
 | CONTRACT → INTERACTIVE-ENGINE-SPEC.md | Draft | Yes for shared contract |
 | STRUCTURE.md | Proposed | Yes for packaging/platform |
 | engines/visual/SPEC.md | Proposed v1.0 | Yes (envelope per D1) |
@@ -39,7 +39,10 @@ Status key: **missing** = to be written as part of the implementation plan (Char
 | engines/visual/PROJECT.md | Proposed | Process/phases per D3 |
 | engines/geomap/SPEC.md | v1.0.0 | Envelope per D1 |
 | engines/geomap/VISION.md | Foundational | Context |
-| engines/chart, timeline, diagram/VISION.md | Draft | Context — normative specs TODO |
+| engines/chart/SPEC.md | Proposed thin | Yes (envelope + P3 MVP) |
+| engines/timeline/SPEC.md | Proposed thin | Yes (envelope + P5 MVP; P2.5 stub) |
+| engines/diagram/SPEC.md | Proposed thin | Yes (envelope + P6 MVP) |
+| engines/chart, timeline, diagram/VISION.md | Draft | Context only — non-normative |
 
 ## Conventions
 

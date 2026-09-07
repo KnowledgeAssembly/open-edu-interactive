@@ -6,6 +6,8 @@
 **Schema Version:** `visual-component/v1`  
 **Parent Specification:** `SPEC.md`
 
+> **Normative scope (DESIGN D9).** MVP Visual components are the seven math kinds plus `comparison` only. Sections describing `timeline`, `flowchart`, and `label-diagram` are **historical reference** for widget migration — implement those patterns in Timeline or Diagram engines, not Visual.
+
 ---
 
 ## 1. Purpose

@@ -36,7 +36,7 @@ These principles are normative. Every engine and every change MUST satisfy them.
 | P6 | **Accessible by default** | Semantics carry the structure, roles, and labels needed for a11y. Accessibility is produced, not patched on. |
 | P7 | **Localizable** | All user-facing strings are selectable and localizable. No engine hard-codes natural language. |
 | P8 | **Composable** | Engines are composable within a lesson. A timeline can drive a map; a chart can annotate a diagram. |
-| P9 | **Educational intent** | Every artifact declares a purpose and may carry questions, activities, answers, and feedback. |
+| P9 | **Educational intent** | Every artifact declares a purpose and may carry optional `questions` / `completion` hints (D7); OpenEdu owns scoring and feedback. |
 | P10 | **Secure by construction** | Unknown properties are rejected, not ignored. No scripting surfaces reach learners. |
 | P11 | **Validation over trust** | Input passes through layered validation (schema → semantic → layout → accessibility) before rendering. |
 | P12 | **Library-first, service-optional** | Engines are npm/type packages usable offline. Remote services MAY exist but are never required. |
@@ -68,16 +68,18 @@ All five engines share:
 |--------|--------|----------------|-------------|
 | Visual | — | `SPEC.md` (v1.0) | inline in spec |
 | GeoMap | `VISION.md` | `SPEC.md` (v1.0.0) | missing (TODO) |
-| Chart | `VISION.md` | missing (TODO) | missing (TODO) |
-| Timeline | `VISION.md` | missing (TODO) | missing (TODO) |
-| Diagram | `VISION.md` | missing (TODO) | missing (TODO) |
+| Chart | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
+| Timeline | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
+| Diagram | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
 
 **Relationship to OpenEdu widgets.** OpenEdu already ships a widget system (`core.multiple-choice`, `social.map`, `math.number-line`, …) — UI components answering *"How do I display this UI?"*. Engines are a separate, richer layer: semantic interactive systems answering *"What does this interactive educational object mean, and how can the learner reason through it?"* (shared contract §96).
 
 - Widgets REMAIN as lightweight presentation primitives (§95).
 - Engines are embedded in lessons by the OpenEdu Course Specification, not registered as widgets (§94).
-- Existing widgets SHOULD progressively migrate toward engines where appropriate: `core.timeline` → Timeline Engine; `science.label-diagram` → Diagram/Visual Engine; `core.hotspot`, `core.image-compare` → Visual Engine (§95).
+- Existing widgets SHOULD progressively migrate toward engines where appropriate: `core.timeline` → Timeline Engine; `science.label-diagram` → Diagram Engine; `core.hotspot`, `core.image-compare` → Visual Engine (§95).
 - The five engines are complementary reasoning spaces — "not five unrelated widgets" (§99).
+
+**Visual closed component set (D9).** Visual MVP has eight kinds: seven mathematics components (`number-line` through `geometry-shape`) plus `comparison`. Timeline, flowchart, and label-diagram are **not** Visual components — use Timeline or Diagram engines. See `engines/visual/PROJECT.md` §8.
 
 ---
 
@@ -360,7 +362,7 @@ Interactive Engine SHALL NOT rebuild those as a parallel runtime. P1–P6 implem
 | PWA, auth, `.oep`, storage | OpenEdu | None |
 | Spec validation, scene, layout, SVG, D5 reducer | Interactive Engine | Exclusive |
 
-Envelope `questions` and `completion` are **optional authoring hints**. OpenEdu evaluates activities. Engines MUST remain correct with empty `questions`.
+Envelope `questions` and `completion` are **optional authoring hints** (D7). OpenEdu quiz nodes, workflow, and Pipili evaluate and tutor; engines emit D5 events and expose snapshot state. Engines MUST remain correct with empty `questions` and without envelope `completion`.
 
 Host adapter (framework-independent; engines MUST NOT import OpenEdu packages):
 
@@ -384,6 +386,7 @@ Multiple engines MAY coexist in a single lesson, composed through the shared run
 
 - Each engine instance owns its state and events; the runtime routes **domain events** between instances through a shared event bus.
 - Composition is explicit: an event emitted by one instance (`timeline.event-selected`, `geomap.region-focused`) is bound by the lesson to another's action (`focus`). Namespaced engine actions (`geomap.focus-place`) are allowed when documented.
+- **P2.5 (D8)** proves composition immediately after the Visual slice — before the Chart/GeoMap fleet. Canonical fixture: `docs/fixtures/composition/narrative-timeline-visual.json` (timeline stub spec + visual spec + lesson bindings). Waiting until P7 risks building five isolated widgets.
 - Canonical composition patterns (to be developed as conformance-tested examples):
   - *Narrative*: Timeline drives GeoMap and Visual (event on timeline → place highlighted on map → figure comes alive).
   - *Explanatory*: Diagram → Chart - a node's detail chart opens beside it.
@@ -410,11 +413,12 @@ Program phases and exit criteria:
 | P0 | This design + ADR-equivalent decisions (D1–D6) + one envelope | DESIGN.md stable; envelope enforced in schema package |
 | P1 | Thin platform: schema, core, D5 DSL, host adapter stub, conformance | envelope + events/state through Playwright; **no** telemetry/i18n/Studio/scoring products; no engine yet |
 | P2 | Visual Engine | number-line vertical slice: spec → scene → layout → accessible SVG → fixtures + agent skill |
+| P2.5 | Composition smoke test | harness routes `timeline.event-selected` → Visual `focus` using composition fixture; no full Timeline renderer required |
 | P3 | Chart Engine | bar + line slices through full pipeline |
 | P4 | GeoMap Engine | GeoJSON regions/markers/routes — MVP list (`engines/geomap/SPEC.md` §82) |
 | P5 | Timeline Engine | events/periods/tracks slice |
 | P6 | Diagram Engine | nodes/edges/auto-layout slice |
-| P7 | Composition + integration | cross-engine example (compose pattern), `interactive-react`, OpenEdu consumption proof |
+| P7 | OpenEdu integration | `EngineHost` in learner app, `{ type: "interactive" }` node, widget compatibility, ADRs |
 
 Every engine runs the same lifecycle, mapped from `engines/visual/PROJECT.md`:
 
@@ -462,6 +466,9 @@ This repository is starting fresh (no prior production code), so decisions are r
 | D4 | `purpose` is `$defs.purpose` in `interactive-engine.schema.json`: `learningObjective` (required), `interactionGoal`, `reasoningMode`. `skill` / `statement` superseded | Aligns DESIGN/PLAN examples with the envelope schema and shared contract §10 |
 | D5 | One semantic action enum (`$defs.actionType`) and namespaced result events. Pointer/click/keyboard are renderer input, not spec vocabulary. `highlight` / `annotate` / `blur` / `play` / `show` superseded | Aligns DESIGN §7.4, shared contract §15/§82, STRUCTURE §25–26, envelope schema |
 | D6 | OpenEdu host seam: engines emit D5 events + snapshot and consume `EngineHost`. OpenEdu owns workflow, scoring, Pipili, telemetry store, tokens, i18n, Studio, PWA. No second Interactive Studio or assessment engine | Supersedes PLAN P7 “then reuse OpenEdu runtime” as a late surprise |
+| D7 | Assessment seam: envelope `questions` / `completion` are hints for authoring and AI; **OpenEdu owns scoring, feedback, hints, and progression**. Engines MUST NOT require envelope questions to function | Prevents dual quiz systems (F6) |
+| D8 | Composition proof at **P2.5** (after Visual), not P7-only. Fixture: `docs/fixtures/composition/narrative-timeline-visual.json` | Product proof before engine fleet (F5) |
+| D9 | Visual **closed component set** (7 math/general kinds). Timeline, flowchart, and label-diagram belong to Timeline/Diagram engines — not Visual (F8) | Supersedes Visual PROJECT §8 items 8–11 |
 
 **Governance.** This register is the decision record for the standalone project, sitting below the shared contract per its spec hierarchy (§91). When this work integrates with the OpenEdu monorepo, these decisions are additionally re-recorded as ADRs following `openedu-way/ADR.md` (sequential numbering, lifecycle, supersede rules).
 

@@ -1014,18 +1014,17 @@ Composition MUST happen through semantic contracts.
 
 # 26. Questions
 
-Interactive Engines SHOULD support pedagogical questions.
+Envelope `questions` are **optional authoring hints** (DESIGN D7). OpenEdu quiz nodes, workflow, and Pipili evaluate learner responses, score activities, and deliver hints. Engines MUST remain correct with an empty `questions` array and MUST NOT require envelope questions to function.
 
-Questions may define:
+Questions MAY still appear in specifications to:
 
-* prompt
-* target
-* expected interaction
-* expected reasoning
-* success condition
-* feedback
+* document intended prompts for authors and AI agents;
+* declare expected interaction targets for validation;
+* carry non-normative success conditions for preview tooling.
 
-Example:
+They MUST NOT be treated as the runtime scoring source of truth.
+
+Example (authoring hint):
 
 ```json
 {
@@ -1042,7 +1041,7 @@ Example:
 }
 ```
 
-The engine SHOULD expose enough semantic state for the lesson runtime to evaluate activities.
+Engines SHOULD expose enough semantic state (snapshot + D5 events) for OpenEdu to evaluate activities. Evaluation logic lives in OpenEdu, not in engine packages.
 
 ---
 
@@ -2404,7 +2403,7 @@ Example:
 
 # 80. Interaction Completion
 
-Engines MAY expose completion state.
+Envelope `completion` is an **optional authoring hint** (DESIGN D7). OpenEdu workflow and quiz nodes determine lesson progression and mastery. Engines MAY expose a serializable snapshot (including semantic selections and mode) but MUST NOT require envelope `completion` to function.
 
 ```json
 {
@@ -2414,16 +2413,16 @@ Engines MAY expose completion state.
 }
 ```
 
-Completion SHOULD be based on semantic conditions.
+When present, `completion` MAY describe intended semantic conditions for authors and validators — not click counts or renderer internals.
 
-Example:
+Example (authoring hint):
 
 ```text
 Required nodes connected
 +
 Required relationships identified
 +
-Required question answered
+Required selections made
 ```
 
 Not:
@@ -2436,9 +2435,9 @@ User clicked 5 times
 
 # 81. Determining Completion
 
-Completion rules SHOULD be declarative.
+When envelope `completion` is present, rules SHOULD be declarative **hints for authoring and validation**. OpenEdu evaluates whether a learner has satisfied lesson goals; engines emit D5 events and maintain snapshot state.
 
-Example:
+Example (authoring hint):
 
 ```json
 {
@@ -2457,7 +2456,7 @@ Example:
 }
 ```
 
-Complex completion semantics may be defined by individual engines.
+Engine-specific completion vocabulary MAY extend this for preview tooling only. It MUST NOT duplicate OpenEdu quiz scoring.
 
 ---
 

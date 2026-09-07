@@ -893,11 +893,10 @@ packages/components/src/
 ├── language/
 │
 └── general/
-    ├── timeline/
-    ├── flowchart/
-    ├── comparison/
-    └── label-diagram/
+    └── comparison/
 ```
+
+Timeline, flowchart, and label-diagram packages belong under Timeline/Diagram engines (DESIGN D9), not Visual.
 
 Components should compose smaller primitives and components.
 
@@ -1575,7 +1574,7 @@ fixtures/
   fraction-bar/
   clock/
   flower/
-  timeline/
+  comparison/
 ```
 
 Each fixture SHOULD include:
