@@ -1,0 +1,23 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "simple-flow",
+  "metadata": { "title": "Simple flow" },
+  "purpose": { "learningObjective": "Understand a linear flow" },
+  "content": {
+    "kind": "flow",
+    "nodes": [
+      { "id": "start", "label": "Start" },
+      { "id": "process", "label": "Process" },
+      { "id": "end", "label": "End" }
+    ],
+    "edges": [
+      { "from": "start", "to": "process", "relationship": "leads-to" },
+      { "from": "process", "to": "end", "relationship": "leads-to" }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Simple flow from Start through Process to End" }
+}

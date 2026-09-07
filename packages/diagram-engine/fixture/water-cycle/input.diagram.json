@@ -1,0 +1,28 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "water-cycle",
+  "metadata": { "title": "Water cycle" },
+  "purpose": { "learningObjective": "Understand how water moves through the cycle", "reasoningMode": "explore" },
+  "content": {
+    "kind": "cycle",
+    "profile": "process",
+    "nodes": [
+      { "id": "evaporation", "label": "Evaporation", "description": "Liquid becomes vapour", "links": { "visualEntityId": "water-figure" } },
+      { "id": "condensation", "label": "Condensation" },
+      { "id": "precipitation", "label": "Precipitation" },
+      { "id": "collection", "label": "Collection" }
+    ],
+    "edges": [
+      { "from": "evaporation", "to": "condensation", "relationship": "leads-to" },
+      { "from": "condensation", "to": "precipitation", "relationship": "leads-to" },
+      { "from": "precipitation", "to": "collection", "relationship": "leads-to" },
+      { "from": "collection", "to": "evaporation", "relationship": "leads-to" }
+    ]
+  },
+  "layout": { "type": "radial" },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "expand", "collapse", "follow", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Water cycle diagram: evaporation, condensation, precipitation, collection." }
+}

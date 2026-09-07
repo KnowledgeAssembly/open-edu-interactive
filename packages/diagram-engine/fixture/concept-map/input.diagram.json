@@ -1,0 +1,23 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "simple-concept-map",
+  "metadata": { "title": "Simple concept map" },
+  "purpose": { "learningObjective": "Explore conceptual relationships" },
+  "content": {
+    "kind": "concept-map",
+    "nodes": [
+      { "id": "gravity", "label": "Gravity", "description": "A force that attracts mass" },
+      { "id": "mass", "label": "Mass", "description": "Amount of matter" },
+      { "id": "weight", "label": "Weight", "description": "Force due to gravity" }
+    ],
+    "edges": [
+      { "from": "gravity", "to": "weight", "relationship": "influences" },
+      { "from": "mass", "to": "weight", "relationship": "influences" }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Concept map: Gravity and Mass influence Weight" }
+}

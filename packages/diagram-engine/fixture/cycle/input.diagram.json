@@ -1,0 +1,22 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "simple-cycle",
+  "metadata": { "title": "Simple cycle" },
+  "purpose": { "learningObjective": "Understand a cyclical process" },
+  "content": {
+    "kind": "cycle",
+    "nodes": [
+      { "id": "a", "label": "Stage A" },
+      { "id": "b", "label": "Stage B" }
+    ],
+    "edges": [
+      { "from": "a", "to": "b", "relationship": "leads-to" },
+      { "from": "b", "to": "a", "relationship": "leads-to" }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Simple cycle between Stage A and Stage B" }
+}
