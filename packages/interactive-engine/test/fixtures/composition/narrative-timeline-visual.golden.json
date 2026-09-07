@@ -73,21 +73,21 @@
       }
     },
     {
-      "id": "visual-independence:7",
+      "id": "timeline-independence:7",
       "seq": 7,
-      "name": "interaction-started",
-      "instanceId": "visual-independence",
+      "name": "interaction-completed",
+      "instanceId": "timeline-independence",
       "action": {
-        "type": "focus",
+        "type": "select",
         "target": {
-          "id": "figure-independence"
+          "id": "event-1947"
         }
       }
     },
     {
       "id": "visual-independence:8",
       "seq": 8,
-      "name": "state-changed",
+      "name": "interaction-started",
       "instanceId": "visual-independence",
       "action": {
         "type": "focus",
@@ -99,6 +99,18 @@
     {
       "id": "visual-independence:9",
       "seq": 9,
+      "name": "state-changed",
+      "instanceId": "visual-independence",
+      "action": {
+        "type": "focus",
+        "target": {
+          "id": "figure-independence"
+        }
+      }
+    },
+    {
+      "id": "visual-independence:10",
+      "seq": 10,
       "name": "visual.figure-independence-focused",
       "instanceId": "visual-independence",
       "action": {
@@ -112,26 +124,14 @@
       }
     },
     {
-      "id": "visual-independence:10",
-      "seq": 10,
+      "id": "visual-independence:11",
+      "seq": 11,
       "name": "interaction-completed",
       "instanceId": "visual-independence",
       "action": {
         "type": "focus",
         "target": {
           "id": "figure-independence"
-        }
-      }
-    },
-    {
-      "id": "timeline-independence:11",
-      "seq": 11,
-      "name": "interaction-completed",
-      "instanceId": "timeline-independence",
-      "action": {
-        "type": "select",
-        "target": {
-          "id": "event-1947"
         }
       }
     }

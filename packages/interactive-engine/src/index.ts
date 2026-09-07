@@ -1,3 +1,5 @@
+import { ENGINE_TYPES, NAMESPACED_EVENT_PATTERN } from './composition/schema.js';
+
 export type { A11yNode } from './accessibility/primitives.js';
 export { a11yTreeOf } from './accessibility/primitives.js';
 export type { EngineAction } from './core/action.js';
@@ -22,9 +24,9 @@ export { validateEnvelope } from './validation/validate.js';
 export { Lesson } from './composition/lesson.js';
 export type { LessonRuntime } from './composition/lesson.js';
 export { Router } from './composition/router.js';
-export { LessonSchema, ENGINE_TYPES } from './composition/schema.js';
+export { LessonSchema, ENGINE_TYPES, NAMESPACED_EVENT_PATTERN } from './composition/schema.js';
 export type { LessonDefinition, EngineEntry, BindingAction, Binding } from './composition/schema.js';
 export const COMPOSITION = {
-  ENGINE_TYPES: ['visual', 'geomap', 'chart', 'timeline', 'diagram'] as const,
-  EVENT_NAME_PATTERN: '^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$',
+  ENGINE_TYPES,
+  EVENT_NAME_PATTERN: NAMESPACED_EVENT_PATTERN.source,
 } as const;

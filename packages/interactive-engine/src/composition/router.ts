@@ -13,7 +13,13 @@ function resolvePath(obj: unknown, path: string): unknown {
   return current;
 }
 
+interface PendingRoute {
+  binding: Binding;
+  event: EngineEvent;
+}
+
 export class Router {
+  private pending: PendingRoute[] = [];
   private unsubscribers: Array<() => void> = [];
 
   constructor(
@@ -30,7 +36,6 @@ export class Router {
           `composition: binding "${binding.on}" from instance "${binding.from}" not found`,
         );
       }
-
       const to = this.instances.get(binding.dispatch.to);
       if (!to) {
         throw new EngineError(
@@ -38,34 +43,50 @@ export class Router {
           `composition: binding "${binding.on}" to instance "${binding.dispatch.to}" not found`,
         );
       }
+      const hasFrom = binding.dispatch.targetIdFrom !== undefined;
+      const hasStatic = binding.dispatch.targetId !== undefined;
+      if (hasFrom === hasStatic) {
+        throw new EngineError(
+          'INVALID_SPEC',
+          `composition: binding "${binding.on}" must define exactly one of targetIdFrom or targetId`,
+        );
+      }
 
       const unsub = from.subscribe((event: EngineEvent) => {
-        if (event.name !== binding.on) return;
-
-        let targetId: string | undefined;
-        if (binding.dispatch.targetIdFrom) {
-          const resolved = resolvePath(
-            event.action?.payload ?? event.data,
-            binding.dispatch.targetIdFrom,
-          );
-          if (typeof resolved === 'string') {
-            targetId = resolved;
-          }
-        } else if (binding.dispatch.targetId) {
-          targetId = binding.dispatch.targetId;
+        if (event.name === binding.on) {
+          this.pending.push({ binding, event });
         }
-
-        if (!targetId) {
-          throw new EngineError(
-            'INVALID_REFERENCE',
-            `composition: binding "${binding.on}" target id not resolvable from payload`,
-          );
-        }
-
-        to.dispatch({ type: binding.dispatch.action, target: { id: targetId } } as EngineAction);
       });
-
       this.unsubscribers.push(unsub);
+    }
+  }
+
+  run(): void {
+    while (this.pending.length > 0) {
+      const { binding, event } = this.pending.shift() as PendingRoute;
+      const to = this.instances.get(binding.dispatch.to) as EngineInstance;
+
+      let targetId: string | undefined;
+      if (binding.dispatch.targetIdFrom) {
+        const resolved = resolvePath(
+          event.action?.payload ?? event.data,
+          binding.dispatch.targetIdFrom,
+        );
+        if (typeof resolved === 'string') {
+          targetId = resolved;
+        }
+      } else {
+        targetId = binding.dispatch.targetId;
+      }
+
+      if (!targetId) {
+        throw new EngineError(
+          'INVALID_REFERENCE',
+          `composition: binding "${binding.on}" target id not resolvable from payload`,
+        );
+      }
+
+      to.dispatch({ type: binding.dispatch.action, target: { id: targetId } } as EngineAction);
     }
   }
 
@@ -74,5 +95,6 @@ export class Router {
       unsub();
     }
     this.unsubscribers = [];
+    this.pending = [];
   }
 }

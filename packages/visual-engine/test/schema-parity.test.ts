@@ -23,7 +23,7 @@ describe('schema parity guardrail — visual', () => {
     expect(schema.additionalProperties).toBe(false);
   });
 
-it('content.entities exists for illustration entities', () => {
+  it('content.entities exists for illustration entities', () => {
     const entities = schema.properties?.entities as
       | { items?: { additionalProperties?: boolean; required?: string[] } }
       | undefined;

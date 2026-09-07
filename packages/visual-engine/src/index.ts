@@ -9,5 +9,3 @@ export type { SvgResult } from './render/types.js';
 export type { VisualComponent } from './components/types.js';
 export { ComponentRegistry } from './components/registry.js';
 export { VisualEngine } from './engine.js';
-export { illustrationComponent } from './components/illustration.js';
-export type { EntitySpec } from './components/illustration.js';

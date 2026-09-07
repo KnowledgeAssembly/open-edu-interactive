@@ -47,6 +47,31 @@ export class Lesson {
       }
     }
 
+    for (const binding of def.bindings) {
+      const hasFrom = binding.dispatch.targetIdFrom !== undefined;
+      const hasStatic = binding.dispatch.targetId !== undefined;
+      if (hasFrom === hasStatic) {
+        throw new EngineError(
+          'INVALID_SPEC',
+          `composition: binding "${binding.on}" must define exactly one of targetIdFrom or targetId`,
+        );
+      }
+      const target = def.engines.find((entry) => entry.instanceId === binding.dispatch.to);
+      if (!target) {
+        throw new EngineError(
+          'INVALID_REFERENCE',
+          `composition: binding "${binding.on}" references unknown target instance "${binding.dispatch.to}"`,
+        );
+      }
+      const declared = (target.spec as { interaction?: { actions?: string[] } }).interaction?.actions;
+      if (declared && !declared.includes(binding.dispatch.action)) {
+        throw new EngineError(
+          'INVALID_ACTION',
+          `composition: binding "${binding.on}" dispatches action "${binding.dispatch.action}" on "${binding.dispatch.to}" but that instance does not declare it in interaction.actions`,
+        );
+      }
+    }
+
     return new Lesson(def, registry);
   }
 
@@ -109,6 +134,7 @@ export class Lesson {
           );
         }
         inst.dispatch(action);
+        router.run();
       },
       snapshot(instanceId: string): unknown {
         const inst = instances.get(instanceId);

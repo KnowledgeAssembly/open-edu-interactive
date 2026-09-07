@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ActionTypeSchema } from '../schemas/envelope.zod.js';
 
 const ID_PATTERN = /^[a-zA-Z][a-zA-Z0-9._-]*$/;
-const NAMESPACED_EVENT_PATTERN = /^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/;
+export const NAMESPACED_EVENT_PATTERN = /^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/;
 
 export const ENGINE_TYPES = ['visual', 'geomap', 'chart', 'timeline', 'diagram'] as const;
 

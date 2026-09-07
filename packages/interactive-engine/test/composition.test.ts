@@ -6,7 +6,7 @@ import {
   type EngineEvent,
 } from '../src/index.js';
 import { Lesson } from '../src/composition/lesson.js';
-import { makeHost, makeRegistry } from './helpers/composition-stubs.js';
+import { makeHost, makeRegistry } from './helpers/composition.js';
 
 const FIXTURE_URL = new URL('../../../docs/fixtures/composition/narrative-timeline-visual.json', import.meta.url);
 const canonicalFixture = JSON.parse(readFileSync(FIXTURE_URL, 'utf8')) as {
@@ -96,19 +96,23 @@ describe('Lesson (composition runtime)', () => {
     expect(caught!.code).toBe('INVALID_REFERENCE');
   });
 
-  it('rejects an unresolved targetIdFrom with INVALID_REFERENCE', () => {
+  it('an unresolved targetIdFrom raises INVALID_REFERENCE without truncating the source stream', () => {
     const bad = structuredClone(canonicalFixture);
     (bad.bindings[0] as { dispatch: { targetIdFrom: string } }).dispatch.targetIdFrom = 'links.missingField';
     let caught: EngineError | null = null;
+    const { host, events } = makeHost();
     try {
       const lesson = Lesson.load(bad as never, makeRegistry());
-      const runtime = lesson.start(makeHost().host);
+      const runtime = lesson.start(host);
       runtime.dispatch('timeline-independence', { type: 'select', target: { id: 'event-1947' } } as EngineAction);
     } catch (e) {
       caught = e as EngineError;
     }
     expect(caught).toBeInstanceOf(EngineError);
     expect(caught!.code).toBe('INVALID_REFERENCE');
+    const names = events.map((e) => e.name);
+    expect(names.filter((n) => n === 'interaction-completed')).toHaveLength(1);
+    expect(names.indexOf('timeline.event-selected')).toBeLessThan(names.indexOf('interaction-completed'));
   });
 
   it('unknown from instance on the binding rejects at start', () => {
@@ -123,5 +127,46 @@ describe('Lesson (composition runtime)', () => {
     }
     expect(caught).toBeInstanceOf(EngineError);
     expect(caught!.code).toBe('INVALID_REFERENCE');
+  });
+
+  it('rejects a binding dispatch action not declared on the target with INVALID_ACTION', () => {
+    const bad = structuredClone(canonicalFixture);
+    (bad.bindings[0] as { dispatch: { action: string } }).dispatch.action = 'step';
+    let caught: EngineError | null = null;
+    try {
+      Lesson.load(bad as never, makeRegistry());
+    } catch (e) {
+      caught = e as EngineError;
+    }
+    expect(caught).toBeInstanceOf(EngineError);
+    expect(caught!.code).toBe('INVALID_ACTION');
+  });
+
+  it('rejects a binding with both targetIdFrom and targetId with INVALID_SPEC', () => {
+    const bad = structuredClone(canonicalFixture);
+    (bad.bindings[0] as { dispatch: { targetIdFrom: string } }).dispatch.targetIdFrom = 'links.visualEntityId';
+    (bad.bindings[0] as { dispatch: { targetId?: string } }).dispatch.targetId = 'figure-independence';
+    let caught: EngineError | null = null;
+    try {
+      Lesson.load(bad as never, makeRegistry());
+    } catch (e) {
+      caught = e as EngineError;
+    }
+    expect(caught).toBeInstanceOf(EngineError);
+    expect(caught!.code).toBe('INVALID_SPEC');
+  });
+
+  it('routes a static targetId binding to the declared target', () => {
+    const fixture = structuredClone(canonicalFixture);
+    const dispatch = (fixture.bindings[0] as { dispatch: { targetIdFrom?: string; targetId?: string } }).dispatch;
+    delete dispatch.targetIdFrom;
+    dispatch.targetId = 'figure-independence';
+    const lesson = Lesson.load(fixture as never, makeRegistry());
+    const { host } = makeHost();
+    const runtime = lesson.start(host);
+    runtime.dispatch('timeline-independence', { type: 'select', target: { id: 'event-1947' } } as EngineAction);
+    const visualSnapshot = runtime.snapshot('visual-independence') as { focus: string | null };
+    expect(visualSnapshot.focus).toBe('figure-independence');
+    runtime.stop();
   });
 });

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { type EngineAction } from '../src/index.js';
 import { Lesson } from '../src/composition/lesson.js';
-import { makeHost, makeRegistry } from './helpers/composition-stubs.js';
+import { makeHost, makeRegistry } from './helpers/composition.js';
 
 const FIXTURE_URL = new URL('../../../docs/fixtures/composition/narrative-timeline-visual.json', import.meta.url);
 const GOLDEN_URL = new URL('./fixtures/composition/narrative-timeline-visual.golden.json', import.meta.url);

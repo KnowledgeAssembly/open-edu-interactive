@@ -9,7 +9,6 @@ import { clockComponent } from '../components/clock.js';
 import { coordinateGridComponent } from '../components/coordinate-grid.js';
 import { geometryShapeComponent } from '../components/geometry-shape.js';
 import { comparisonComponent } from '../components/comparison.js';
-import { illustrationComponent } from '../components/illustration.js';
 
 const registry = new ComponentRegistry();
 registry.register(numberLineComponent);
@@ -20,21 +19,6 @@ registry.register(clockComponent);
 registry.register(coordinateGridComponent);
 registry.register(geometryShapeComponent);
 registry.register(comparisonComponent);
-registry.register(illustrationComponent);
-
-export { registry as componentRegistry };
-
-export function registerDefaultComponents(reg: ComponentRegistry): void {
-  reg.register(numberLineComponent);
-  reg.register(countingSetComponent);
-  reg.register(fractionBarComponent);
-  reg.register(fractionCircleComponent);
-  reg.register(clockComponent);
-  reg.register(coordinateGridComponent);
-  reg.register(geometryShapeComponent);
-  reg.register(comparisonComponent);
-  reg.register(illustrationComponent);
-}
 
 export function buildScene(content: VisualContent): Scene {
   const semantics: Record<string, SceneNode> = {};
