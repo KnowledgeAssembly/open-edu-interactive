@@ -19,3 +19,12 @@ export type { EngineSpec } from './schemas/envelope.js';
 export type { ValidationHooks, ValidationIssue, ValidationLevel, ValidationResult } from './validation/pipeline.js';
 export { runPipeline } from './validation/pipeline.js';
 export { validateEnvelope } from './validation/validate.js';
+export { Lesson } from './composition/lesson.js';
+export type { LessonRuntime } from './composition/lesson.js';
+export { Router } from './composition/router.js';
+export { LessonSchema, ENGINE_TYPES } from './composition/schema.js';
+export type { LessonDefinition, EngineEntry, BindingAction, Binding } from './composition/schema.js';
+export const COMPOSITION = {
+  ENGINE_TYPES: ['visual', 'geomap', 'chart', 'timeline', 'diagram'] as const,
+  EVENT_NAME_PATTERN: '^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$',
+} as const;
