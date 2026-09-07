@@ -314,6 +314,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | Thin normative SPEC.md (chart, timeline, diagram) | `engines/*/SPEC.md` | Done (P0 doc gate) |
 | Vision prose expansion | `engines/*/VISION.md` | **Frozen** until P2 number-line green |
 | Conformance suite + golden fixtures | `interactive-engine` harness | P1, per engine |
+| GitHub Actions CI gate | `.github/workflows/ci.yml` | P1 (delivered as P1 gap-closing follow-up) |
 | Theming tokens | DESIGN §12.1 / EngineHost | P1 stub host; OpenEdu design-system is source of truth |
 | A11y L4 checks, keyboard, reduced motion | DESIGN §12 / STRUCTURE §37 | per engine; prefs from host |
 | CLI (`generate·validate·preview·inspect·components·recipes`) | PROJECT Phase 7 | P2 scaffold |
@@ -399,3 +400,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | P0→P1 gate resolved: standalone `@knowledgeassemble/*`; host integration + `@open-edu/*` rename deferred to P7. |
 | 2026-09-07 | P1 DONE: `@knowledgeassemble/interactive-engine` skeleton (envelope+Zod, D5 reducer, EventLog, EngineHost, L1–L4 pipeline, a11y primitives) green via unit tests and browser conformance e2e. |
 | 2026-09-07 | P0 marked DONE (exit criteria verified); P1 review fixes: dispatch validates before emitting (no dangling `interaction-started`), emits `interaction-completed`, `teardown` sets `phase: torn-down`, Zod `source.url` enforces URI. |
+| 2026-09-07 | P1 CI gate (scope item 1) delivered as a gap-closing follow-up: GitHub Actions workflow runs the full exit gate (`typecheck` + `lint` + `-w test` + `playwright`) on every PR and on pushes to `main` (STRUCTURE §47). |
