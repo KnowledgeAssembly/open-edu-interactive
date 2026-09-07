@@ -87,6 +87,8 @@ Technology (DESIGN §8, STRUCTURE §8-16):
 
 ### P1 — Platform Skeleton (no engines yet)
 
+**Detailed task breakdown:** [`PLAN-P1.md`](PLAN-P1.md).
+
 **Goal.** Thin platform contract: envelope, registry, D5 reducer, host adapter stub, conformance — **with no engine and no duplicate OpenEdu products** (DESIGN D6).
 
 **Scope (in order)**
