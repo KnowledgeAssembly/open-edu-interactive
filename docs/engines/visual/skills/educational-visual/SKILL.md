@@ -14,6 +14,7 @@ Use the Visual Engine when you need to create an interactive educational visuali
 | `coordinate-grid` | Teach coordinate systems, plotting points |
 | `geometry` | Teach shape recognition, sides, vertices |
 | `comparison` | Compare two values (greater-than, less-than, equal) |
+| `illustration` | Labeled, selectable/focusable visual entities for narrative scenes |
 
 ## Spec structure
 

@@ -9,7 +9,7 @@
   "properties": {
     "kind": {
       "type": "string",
-      "enum": ["number-line", "counting-set", "fraction", "fraction-comparison", "clock", "coordinate-grid", "geometry", "comparison"]
+      "enum": ["number-line", "counting-set", "fraction", "fraction-comparison", "clock", "coordinate-grid", "geometry", "comparison", "illustration"]
     },
     "canvas": {
       "type": "object",
@@ -82,6 +82,19 @@
           },
           "source": { "$ref": "#/$defs/idPattern" },
           "target": { "$ref": "#/$defs/idPattern" }
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "description": "Semantic entities for content.kind: illustration; each becomes a focusable/selectable node.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label"],
+        "properties": {
+          "id": { "$ref": "#/$defs/idPattern" },
+          "label": { "type": "string", "minLength": 1 }
         }
       }
     },

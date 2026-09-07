@@ -51,4 +51,17 @@ describe('buildScene', () => {
       }),
     ).toThrow('INVALID_ENTITY');
   });
+
+  it('builds an illustration scene from entities', () => {
+    const scene = buildScene({
+      kind: 'illustration',
+      entities: [{ id: 'figure-independence', label: 'Independence celebration' }],
+    });
+    const node = scene.semantics['figure-independence'];
+    expect(node).toBeDefined();
+    expect(node!.role).toBe('selectable');
+    expect(node!.interactive).toBe(true);
+    expect(node!.acceptsActions).toEqual(['select', 'focus']);
+    expect(node!.label).toBe('Independence celebration');
+  });
 });

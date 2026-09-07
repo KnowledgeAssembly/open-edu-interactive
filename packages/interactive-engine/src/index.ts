@@ -1,3 +1,5 @@
+import { ENGINE_TYPES, NAMESPACED_EVENT_PATTERN } from './composition/schema.js';
+
 export type { A11yNode } from './accessibility/primitives.js';
 export { a11yTreeOf } from './accessibility/primitives.js';
 export type { EngineAction } from './core/action.js';
@@ -19,3 +21,12 @@ export type { EngineSpec } from './schemas/envelope.js';
 export type { ValidationHooks, ValidationIssue, ValidationLevel, ValidationResult } from './validation/pipeline.js';
 export { runPipeline } from './validation/pipeline.js';
 export { validateEnvelope } from './validation/validate.js';
+export { Lesson } from './composition/lesson.js';
+export type { LessonRuntime } from './composition/lesson.js';
+export { Router } from './composition/router.js';
+export { LessonSchema, ENGINE_TYPES, NAMESPACED_EVENT_PATTERN } from './composition/schema.js';
+export type { LessonDefinition, EngineEntry, BindingAction, Binding } from './composition/schema.js';
+export const COMPOSITION = {
+  ENGINE_TYPES,
+  EVENT_NAME_PATTERN: NAMESPACED_EVENT_PATTERN.source,
+} as const;

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openedu.org/schemas/composition.schema.json",
   "title": "OpenEdu Interactive Lesson Composition",
-  "description": "Lesson-level composition: multiple engine instances and event-to-action bindings (DESIGN D8). Stub frozen at P2.5; embedded engine specs MUST also validate against interactive-engine.schema.json.",
+  "description": "Lesson-level composition: multiple engine instances and event-to-action bindings (DESIGN D8). Normative at P2.5; embedded engine specs MUST also validate against interactive-engine.schema.json.",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "engines", "bindings"],

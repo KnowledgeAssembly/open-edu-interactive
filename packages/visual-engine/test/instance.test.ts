@@ -46,6 +46,43 @@ describe('VisualEngine', () => {
     expect(result.valid).toBe(false);
   });
 
+  it('validates an illustration spec with entities', () => {
+    const engine = new VisualEngine();
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'illustration-test',
+      content: {
+        kind: 'illustration',
+        entities: [{ id: 'figure-independence', label: 'Independence celebration' }],
+      },
+      accessibility: { label: 'Historical illustration' },
+    };
+    const result = engine.validate(spec as never);
+    expect(result.valid).toBe(true);
+  });
+
+  it('instantiate on an illustration spec yields focusable, labeled entity nodes', () => {
+    const engine = new VisualEngine();
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'visual-independence',
+      content: {
+        kind: 'illustration',
+        entities: [{ id: 'figure-independence', label: 'Independence celebration' }],
+      },
+      accessibility: { label: 'Historical illustration' },
+    };
+    const instance = engine.instantiate(spec as never, stubHost());
+    const snapshot = instance.snapshot() as unknown as { scene: { semantics: Record<string, { acceptsActions?: string[]; label?: string; interactive?: boolean }> } };
+    const node = snapshot.scene.semantics['figure-independence'];
+    expect(node).toBeDefined();
+    expect(node!.acceptsActions).toEqual(['select', 'focus']);
+    expect(node!.interactive).toBe(true);
+    expect(node!.label).toBe('Independence celebration');
+  });
+
   it('instantiate creates a running instance', () => {
     const engine = new VisualEngine();
     const instance = engine.instantiate(NL_SPEC as never, stubHost());

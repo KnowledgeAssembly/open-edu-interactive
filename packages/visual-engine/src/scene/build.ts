@@ -20,19 +20,6 @@ registry.register(coordinateGridComponent);
 registry.register(geometryShapeComponent);
 registry.register(comparisonComponent);
 
-export { registry as componentRegistry };
-
-export function registerDefaultComponents(reg: ComponentRegistry): void {
-  reg.register(numberLineComponent);
-  reg.register(countingSetComponent);
-  reg.register(fractionBarComponent);
-  reg.register(fractionCircleComponent);
-  reg.register(clockComponent);
-  reg.register(coordinateGridComponent);
-  reg.register(geometryShapeComponent);
-  reg.register(comparisonComponent);
-}
-
 export function buildScene(content: VisualContent): Scene {
   const semantics: Record<string, SceneNode> = {};
   const nodes: SceneNode[] = [];
@@ -83,6 +70,35 @@ export function buildScene(content: VisualContent): Scene {
       };
       nodes.push(node);
       semantics[elem.id] = node;
+    }
+  }
+
+  if (content.entities) {
+    const groupId = `${content.entities[0]?.id ?? 'entities'}-illustration`;
+    assertUnique(groupId);
+    const children: SceneNode[] = [];
+    for (const entity of content.entities) {
+      assertUnique(entity.id);
+      children.push({
+        id: entity.id,
+        role: 'selectable',
+        kind: 'entity',
+        label: entity.label,
+        interactive: true,
+        acceptsActions: ['select', 'focus'],
+        children: [],
+      });
+    }
+    const group: SceneNode = {
+      id: groupId,
+      role: 'visual',
+      kind: 'illustration',
+      children,
+    };
+    nodes.push(group);
+    semantics[groupId] = group;
+    for (const child of children) {
+      semantics[child.id] = child;
     }
   }
 

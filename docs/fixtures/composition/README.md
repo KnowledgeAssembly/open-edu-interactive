@@ -1,6 +1,6 @@
 # Composition fixtures
 
-**Status:** Proposed — validates against `schemas/composition.schema.json` (normative at P2.5 freeze, DESIGN D8)  
+**Status:** Normative (P2.5) — validates against `schemas/composition.schema.json` (DESIGN D8)  
 **Audience:** P2.5 conformance harness, lesson authors, AI agents
 
 These files describe **lesson-level** composition: multiple engine instances plus event→action bindings. They validate against `docs/schemas/composition.schema.json`. Embedded engine `spec` objects MUST also pass L1 on `interactive-engine.schema.json`.
@@ -12,6 +12,7 @@ The product differentiator vs widgets is cross-engine reasoning (e.g. a timeline
 | File | Pattern | Schema |
 |------|---------|--------|
 | `narrative-timeline-visual.json` | Timeline `event-selected` → Visual `focus` (minimal two-engine lesson) | `composition.schema.json` |
+| `skill-example.json` | Composition skill's canonical example (timeline → visual) | `composition.schema.json` |
 
 ## Rules (D5, D6, D8)
 
@@ -21,10 +22,8 @@ The product differentiator vs widgets is cross-engine reasoning (e.g. a timeline
 
 ## Validation
 
-```bash
-# Composition envelope (L1)
-validate composition.schema.json against narrative-timeline-visual.json
+Validated programmatically by `packages/interactive-engine/test/skill-example.test.ts` (Zod-port composition schema + embedded L1 per engine spec). Run:
 
-# Embedded engine specs (L1)
-validate interactive-engine.schema.json against each engines[].spec
+```bash
+pnpm --filter @knowledgeassemble/interactive-engine test skill-example
 ```

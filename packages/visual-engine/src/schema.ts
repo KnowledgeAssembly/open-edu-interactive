@@ -9,6 +9,7 @@ export const VISUAL_KINDS = [
   'coordinate-grid',
   'geometry',
   'comparison',
+  'illustration',
 ] as const;
 
 export type VisualKind = (typeof VISUAL_KINDS)[number];
@@ -82,6 +83,16 @@ export const VisualContentSchema = z
     elements: z.array(ElementSchema).optional(),
     components: z.array(ComponentInstanceSchema).optional(),
     relationships: z.array(RelationshipSchema).optional(),
+    entities: z
+      .array(
+        z
+          .object({
+            id: z.string().min(1).max(128).regex(ID_PATTERN),
+            label: z.string().min(1),
+          })
+          .strict(),
+      )
+      .optional(),
     range: z
       .object({
         min: z.number(),

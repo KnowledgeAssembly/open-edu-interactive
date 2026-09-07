@@ -29,6 +29,11 @@ export function validateSemantic(spec: VisualSpec): ValidationResult {
       allIds.add(comp.id);
     }
   }
+  if (spec.content?.entities) {
+    for (const entity of spec.content.entities) {
+      allIds.add(entity.id);
+    }
+  }
 
   if (spec.content?.relationships) {
     for (const rel of spec.content.relationships) {
