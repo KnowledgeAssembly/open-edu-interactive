@@ -16,8 +16,10 @@ test('replay: emitted events are ordered by seq and replay preserves original or
     '1:engine-ready',
     '2:interaction-started',
     '3:state-changed',
-    '4:interaction-started',
-    '5:state-changed',
+    '4:interaction-completed',
+    '5:interaction-started',
+    '6:state-changed',
+    '7:interaction-completed',
   ]);
 
   const seqs = events.map((e) => e.seq);

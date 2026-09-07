@@ -74,9 +74,39 @@ describe('createPlatformInstance', () => {
     instance.dispatch({ type: 'select', target: { id: 'a' } });
 
     const names = events.map((e) => e.name);
-    expect(names).toEqual(['engine-mounted', 'engine-ready', 'interaction-started', 'state-changed']);
-    expect(subscribed.map((e) => e.name)).toEqual(['interaction-started', 'state-changed']);
+    expect(names).toEqual([
+      'engine-mounted',
+      'engine-ready',
+      'interaction-started',
+      'state-changed',
+      'interaction-completed',
+    ]);
+    expect(subscribed.map((e) => e.name)).toEqual([
+      'interaction-started',
+      'state-changed',
+      'interaction-completed',
+    ]);
     expect(events[3]!.action).toEqual({ type: 'select', target: { id: 'a' } });
+  });
+
+  it('does not emit events for an unsupported action', () => {
+    const events: EngineEvent[] = [];
+    const instance = createPlatformInstance(SPEC, stubHost({ onEvent: (e) => events.push(e) }));
+    expect(events.map((e) => e.name)).toEqual(['engine-mounted', 'engine-ready']);
+    try {
+      instance.dispatch({ type: 'not-an-action' } as never);
+      expect.unreachable('unknown action should throw');
+    } catch (error) {
+      expect(error).toBeInstanceOf(EngineError);
+    }
+    expect(events.map((e) => e.name)).toEqual(['engine-mounted', 'engine-ready']);
+  });
+
+  it('teardown marks the instance phase as torn-down', () => {
+    const instance = createPlatformInstance(SPEC, stubHost());
+    expect(instance.snapshot().phase).toBe('running');
+    instance.teardown();
+    expect(instance.snapshot().phase).toBe('torn-down');
   });
 
   it('announces selection/focus changes only when reducedMotion is enabled', () => {

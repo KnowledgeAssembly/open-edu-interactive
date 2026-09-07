@@ -217,7 +217,7 @@ export const SourceSchema = z
     ]),
     title: z.string().optional(),
     citation: z.string().optional(),
-    url: z.string().optional(),
+    url: z.string().url().optional(),
     author: z.string().optional(),
     date: z.string().optional(),
   })

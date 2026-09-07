@@ -69,6 +69,9 @@ export function createPlatformInstance(
     id: instanceId,
     engine,
     dispatch(action: EngineAction): void {
+      const before = state;
+      const reduced = baseReducer(state, action); // throws on invalid/unsupported before any event
+
       const started = log.append(
         'interaction-started',
         instanceId,
@@ -77,12 +80,13 @@ export function createPlatformInstance(
       );
       emit(started);
 
-      const before = state;
-      const reduced = baseReducer(state, action);
       state = reduced;
 
       const changed = log.append('state-changed', instanceId, undefined, action);
       emit(changed);
+
+      const completed = log.append('interaction-completed', instanceId, undefined, action);
+      emit(completed);
 
       if (host.reducedMotion) {
         const message = reducedMotionAnnounceOn(action.type, before, state);
@@ -101,6 +105,7 @@ export function createPlatformInstance(
       };
     },
     teardown(): void {
+      state = { ...state, phase: 'torn-down' };
       for (const listener of listeners) {
         listeners.delete(listener);
       }
