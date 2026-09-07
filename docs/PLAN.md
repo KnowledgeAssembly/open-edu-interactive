@@ -205,7 +205,7 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 2. Slices: **bar** and **line** through the full pipeline (spec → scene → layout → accessible SVG → fixtures).
 3. Scales, ticks, axes as derived layout — semantics only in the spec (DESIGN §8, P2).
 4. Component surface: bar, line, (future: area, scatter) — conformance-gated.
-5. Agent skill + playground tab; fixtures.
+5. Agent skill + fixtures (playground/cli tab deferred to a later tooling phase — conformance app is the only demo surface).
 
 **Exit criteria (all green)**
 
@@ -284,7 +284,7 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 **Exit criteria (all green)**
 
-1. Cross-engine composed lesson runs in a real OpenEdu lesson from an AI-authored spec, no renderer code written.
+1. Cross-engine composed lesson runs from an AI-authored spec with no renderer code written — proven in-repo by the host-simulation conformance route (`?engine=lesson`); the real learner-`CourseRuntime` run is an OpenEdu-repo acceptance item (see `docs/p7-acceptance.md`).
 2. All engines pass the common conformance suite on the installed packages.
 3. ADRs recorded; DESIGN §16 register links to them.
 
@@ -405,6 +405,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | P2.5 T0 decision: Gap A — add `illustration` to VISUAL_KINDS (default path, recommended). |
 | 2026-09-07 | P2.5 T0 decision: Gap B — timeline stub MUST attach full event record (including `links`) to emitted `timeline.event-selected` payload so `targetIdFrom` resolves. |
 | 2026-09-07 | P2.5 DONE: composition runtime (`Lesson` load/start/route/replay) + `@knowledgeassemble/timeline-engine` stub + Visual `illustration` kind, frozen fixtures with golden event log, conformance `?engine=composition` e2e, composition authoring skill — full exit gate green. |
+| 2026-09-07 | P3–P7 review patches (docs only, pre-`feat/p3`): core seams now explicit so later phases nominate real hooks/types — `ValidationHooks` keeps an optional extra slot (extra named hooks become deterministic-error cases, not new fields); `EngineInstance.snapshot()` is widened for cross-cutting scene/scene IDs once heading into P3; `tokens`→`LayoutContext` consumption is a Visual responsibility carried by each injected vector (not a shared `format` session); sync `resolveAsset` confirmed against `EngineHost`; decided to add `format(key, vars?)` on `EngineHost` (no message-key/`t()` convention exists yet) in the pre-P3 core patch. P7 exit-1 amended (in-repo host-simulation; real `CourseRuntime` run is `docs/p7-acceptance.md`). `apps/playground`/`apps/cli` claims (P2/P3 scope) deferred to a later tooling phase — conformance app is the only demo surface. |
 | 2026-09-07 | Chart-D1: closed `content.kind` at P3 = `["bar","line"]`; area/scatter deferred. |
 | 2026-09-07 | Chart-D2: derived scales, fixed baseline (bar y=0, line padded 10%); nice ticks via `1,2,2.5,5×10^k` ladder. |
 | 2026-09-07 | Chart-D3: namespaced result events `chart.data-point-selected` / `chart.data-point-focused`; payload = full row. |
