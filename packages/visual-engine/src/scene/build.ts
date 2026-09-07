@@ -1,0 +1,101 @@
+import type { SceneNode, Scene } from './types.js';
+import type { VisualContent } from '../schema.js';
+import { ComponentRegistry } from '../components/registry.js';
+import { numberLineComponent } from '../components/number-line.js';
+import { countingSetComponent } from '../components/counting-set.js';
+import { fractionBarComponent } from '../components/fraction-bar.js';
+import { fractionCircleComponent } from '../components/fraction-circle.js';
+import { clockComponent } from '../components/clock.js';
+import { coordinateGridComponent } from '../components/coordinate-grid.js';
+import { geometryShapeComponent } from '../components/geometry-shape.js';
+import { comparisonComponent } from '../components/comparison.js';
+
+const registry = new ComponentRegistry();
+registry.register(numberLineComponent);
+registry.register(countingSetComponent);
+registry.register(fractionBarComponent);
+registry.register(fractionCircleComponent);
+registry.register(clockComponent);
+registry.register(coordinateGridComponent);
+registry.register(geometryShapeComponent);
+registry.register(comparisonComponent);
+
+export { registry as componentRegistry };
+
+export function registerDefaultComponents(reg: ComponentRegistry): void {
+  reg.register(numberLineComponent);
+  reg.register(countingSetComponent);
+  reg.register(fractionBarComponent);
+  reg.register(fractionCircleComponent);
+  reg.register(clockComponent);
+  reg.register(coordinateGridComponent);
+  reg.register(geometryShapeComponent);
+  reg.register(comparisonComponent);
+}
+
+export function buildScene(content: VisualContent): Scene {
+  const semantics: Record<string, SceneNode> = {};
+  const nodes: SceneNode[] = [];
+
+  const seen = new Set<string>();
+
+  function assertUnique(id: string): void {
+    if (seen.has(id)) {
+      throw new Error(`INVALID_ENTITY: duplicate id "${id}"`);
+    }
+    seen.add(id);
+  }
+
+  if (content.components) {
+    for (const comp of content.components) {
+      assertUnique(comp.id);
+      const component = registry.get(comp.type);
+      if (!component) {
+        throw new Error(`INVALID_ENTITY: unknown component type "${comp.type}"`);
+      }
+      const childNodes = component.create((comp.props ?? {}) as Record<string, unknown>, comp.id);
+      const group: SceneNode = {
+        id: comp.id,
+        role: 'group',
+        kind: comp.type,
+        children: childNodes,
+      };
+      nodes.push(group);
+      semantics[comp.id] = group;
+      for (const child of childNodes) {
+        semantics[child.id] = child;
+      }
+    }
+  }
+
+  if (content.elements) {
+    for (const elem of content.elements) {
+      assertUnique(elem.id);
+      const node: SceneNode = {
+        id: elem.id,
+        role: (elem.role ?? 'visual') as SceneNode['role'],
+        kind: elem.type,
+        value: elem.value,
+        interactive: elem.interactive,
+        acceptsActions: elem.acceptsActions,
+        geometry: elem.geometry,
+        children: [],
+      };
+      nodes.push(node);
+      semantics[elem.id] = node;
+    }
+  }
+
+  if (content.relationships) {
+    for (const rel of content.relationships) {
+      if (!semantics[rel.source]) {
+        throw new Error(`INVALID_REFERENCE: relationship source "${rel.source}" not found`);
+      }
+      if (!semantics[rel.target]) {
+        throw new Error(`INVALID_REFERENCE: relationship target "${rel.target}" not found`);
+      }
+    }
+  }
+
+  return { nodes, semantics };
+}

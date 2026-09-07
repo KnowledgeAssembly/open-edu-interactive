@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@knowledgeassemble/interactive-engine": "workspace:*"
+    "@knowledgeassemble/interactive-engine": "workspace:*",
+    "@knowledgeassemble/visual-engine": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

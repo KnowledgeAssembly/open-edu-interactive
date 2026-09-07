@@ -41,6 +41,9 @@ importers:
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
         version: link:../../packages/interactive-engine
+      '@knowledgeassemble/visual-engine':
+        specifier: workspace:*
+        version: link:../../packages/visual-engine
     devDependencies:
       typescript:
         specifier: ^5.6.3
@@ -51,6 +54,15 @@ importers:
 
   packages/interactive-engine:
     dependencies:
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
+
+  packages/visual-engine:
+    dependencies:
+      '@knowledgeassemble/interactive-engine':
+        specifier: workspace:*
+        version: link:../interactive-engine
       zod:
         specifier: ^3.23.0
         version: 3.25.76

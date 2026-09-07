@@ -1,0 +1,11 @@
+export { VISUAL_KINDS } from './schema.js';
+export type { VisualContent, VisualSpec } from './schema.js';
+export type { SceneNode, Scene, SemanticRole, Bounds } from './scene/types.js';
+export { buildScene } from './scene/build.js';
+export type { LayoutContext, LayoutResult } from './layout/types.js';
+export { layout } from './layout/engine.js';
+export { svgFrom } from './render/svg.js';
+export type { SvgResult } from './render/types.js';
+export type { VisualComponent } from './components/types.js';
+export { ComponentRegistry } from './components/registry.js';
+export { VisualEngine } from './engine.js';
