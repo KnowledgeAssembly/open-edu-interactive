@@ -1,0 +1,19 @@
+{
+  "type": "chart",
+  "version": "1.0.0",
+  "id": "temperature-quarterly",
+  "content": {
+    "kind": "line",
+    "dimensions": [{ "id": "month", "type": "ordinal" }],
+    "measures": [{ "id": "temp", "type": "quantitative", "unit": "°C" }],
+    "data": [
+      { "id": "row-jan", "month": "Jan", "temp": 5 },
+      { "id": "row-apr", "month": "Apr", "temp": 14 },
+      { "id": "row-jul", "month": "Jul", "temp": 22 },
+      { "id": "row-oct", "month": "Oct", "temp": 11 }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "accessibility": { "label": "Line chart of quarterly temperatures" },
+  "sources": [{ "type": "authoritative" }]
+}

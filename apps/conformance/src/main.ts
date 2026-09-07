@@ -2,6 +2,7 @@ import { a11yTreeOf, createPlatformInstance } from '@knowledgeassemble/interacti
 import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import type { EngineAction, EngineSpec } from '@knowledgeassemble/interactive-engine';
 import { mountComposition } from './composition.js';
+import { mountChart } from './chart.js';
 
 interface HarnessRemote {
   dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void;
@@ -42,6 +43,8 @@ const engineParam = new URLSearchParams(window.location.search).get('engine') ??
 
 if (engineParam === 'composition') {
   mountComposition(app);
+} else if (engineParam === 'chart') {
+  mountChart(app);
 } else if (engineParam === 'visual') {
   const SPEC: EngineSpec = {
     type: 'visual',

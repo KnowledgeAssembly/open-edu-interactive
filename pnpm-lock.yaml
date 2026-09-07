@@ -38,6 +38,9 @@ importers:
 
   apps/conformance:
     dependencies:
+      '@knowledgeassemble/chart-engine':
+        specifier: workspace:*
+        version: link:../../packages/chart-engine
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
         version: link:../../packages/interactive-engine
@@ -54,6 +57,15 @@ importers:
       vite:
         specifier: ^6.0.7
         version: 6.4.3(@types/node@22.20.1)
+
+  packages/chart-engine:
+    dependencies:
+      '@knowledgeassemble/interactive-engine':
+        specifier: workspace:*
+        version: link:../interactive-engine
+      zod:
+        specifier: ^3.23.0
+        version: 3.25.76
 
   packages/interactive-engine:
     dependencies:
