@@ -640,7 +640,7 @@ Cross-engine references SHOULD remain semantic.
 
 # 15. Interaction Model
 
-All engines SHALL expose a common interaction vocabulary.
+All engines SHALL expose the D5 semantic action vocabulary (DESIGN §7.4; schema `$defs.actionType`).
 
 Core actions:
 
@@ -648,24 +648,37 @@ Core actions:
 select
 deselect
 focus
-highlight
+unfocus
 filter
+clear-filter
+open-annotation
+close-annotation
+answer
 compare
-zoom
-pan
-drag
-drop
 toggle
 expand
 collapse
+zoom
+pan
 scrub
-annotate
+jump-to
+play-pause
+step
+drag
+drop
+place
+move
+connect
+disconnect
+follow
 reset
 ```
 
 Not every engine must support every action.
 
-Individual engines SHALL define which actions are valid.
+Individual engines SHALL declare which of these actions are valid in `interaction.actions`.
+
+`highlight`, `annotate`, `blur`, `play`, and `show` are superseded (D5). Pointer events (`click`, `pointer.enter`) are renderer input and MUST NOT appear in specifications.
 
 ---
 
@@ -864,7 +877,7 @@ Events SHOULD follow a common structure:
 
 ```json
 {
-  "type": "event-selected",
+  "type": "timeline.event-selected",
   "engineId": "timeline-independence",
   "target": {
     "id": "event-1947",
@@ -891,7 +904,7 @@ Prefer:
 
 ```json
 {
-  "type": "event-selected",
+  "type": "timeline.event-selected",
   "target": {
     "id": "event-1947"
   }
@@ -2214,28 +2227,9 @@ The engine provides structured evidence without exposing renderer internals.
 
 # 72. Authoring UX
 
-OpenEdu Studio SHOULD provide a visual editor over the semantic model.
+OpenEdu Course Creator Studio SHOULD edit engine specifications over the semantic model. Interactive Engine SHALL NOT ship a competing Studio (DESIGN D6).
 
-Conceptually:
-
-```text
-┌───────────────────────────────────────┐
-│ Interactive Engine Editor             │
-├───────────────┬───────────────────────┤
-│ Semantic      │                       │
-│ Properties    │       Preview         │
-│               │                       │
-│ Content       │                       │
-│ Interaction   │                       │
-│ Questions     │                       │
-│ Accessibility │                       │
-│               │                       │
-└───────────────┴───────────────────────┘
-```
-
-Authors should be able to edit semantics without manually editing JSON.
-
-AI assistants can operate on the same semantic model.
+The engine playground MAY preview a spec. Authors and AI assistants operate on the same JSON the learner runtime hosts.
 
 ---
 
@@ -2474,18 +2468,18 @@ Event names SHOULD use semantic language.
 Recommended pattern:
 
 ```text
-<entity>-<action>
+<engine>.<entity>-<result>
 ```
 
 Examples:
 
 ```text
-node-selected
-event-selected
-region-selected
-data-point-selected
-object-focused
-relationship-followed
+diagram.node-selected
+timeline.event-selected
+geomap.region-selected
+chart.data-point-selected
+visual.object-focused
+diagram.relationship-followed
 ```
 
 Lifecycle events may use:

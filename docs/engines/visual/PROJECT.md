@@ -360,24 +360,27 @@ Example:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "numbers-0-10",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
-  },
-  "objects": [
-    {
-      "id": "number-7",
-      "role": "number",
-      "value": 7,
-      "interactive": true
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "objects": [
+      {
+        "id": "number-7",
+        "role": "number",
+        "value": 7,
+        "interactive": true
+      }
+    ],
+    "style": {
+      "theme": "openedu-calm"
     }
-  ],
-  "style": {
-    "theme": "openededu-calm"
   },
   "accessibility": {
     "label": "Number line from zero to ten",
@@ -1467,14 +1470,18 @@ The first successful example should be:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-01",
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "highlight": [7]
   },
-  "highlight": [7],
   "accessibility": {
     "label": "Number line from zero to ten",
     "description": "The number seven is highlighted."

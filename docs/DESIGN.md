@@ -112,8 +112,12 @@ Canonical engine-specification shape:
   "type": "visual",
   "version": "2.1.0",
   "id": "number-line-02",
-  "metadata": { "createdWith": "openedu-agent" },
-  "purpose": { "skill": "estimating-magnitude", "statement": "Estimate where fractions sit between 0 and 1" },
+  "metadata": { "author": "openedu-agent" },
+  "purpose": {
+    "learningObjective": "Estimate where fractions sit between 0 and 1",
+    "interactionGoal": "Place or select a value on the number line",
+    "reasoningMode": "estimate"
+  },
   "content": { },
   "layout": { },
   "interaction": { },
@@ -127,6 +131,8 @@ Envelope rules (from `docs/schemas/interactive-engine.schema.json`):
 - `version` — REQUIRED. Semver of the *engine specification*, not of the document.
 - `id` — REQUIRED. Stable identifier within the lesson, pattern `^[a-zA-Z][a-zA-Z0-9._-]*$`, ≤ 128 chars.
 - `metadata`, `purpose`, `content`, `layout`, `interaction`, `questions` — OPTIONAL (per engine requirements). `content` is engine-specific semantic content.
+- `purpose` — when present, MUST match schema `$defs.purpose` (D4): `learningObjective` REQUIRED; `interactionGoal` and `reasoningMode` OPTIONAL. `skill` and `statement` are invalid.
+- `interaction` — when present, MUST match schema `$defs.interaction` (`mode`, `actions`, `guided`, `allowReset`, `allowUndo`, `allowRedo`). Engine-specific targets (what is selectable) live in `content`, not here.
 - `additionalProperties: false` at the envelope level. Unknown keys are a validation error (P11).
 
 Each engine's `content`, `interaction`, and layout semantics are the exclusive concern of that engine's spec — the envelope only guarantees that every engine speaks the same interface.
@@ -205,7 +211,7 @@ These terms have identical meaning in every engine:
 
 - **entity** — a thing in the scene (a point, a bar, a node, a place, an event) with semantic roles.
 - **relationship** — a semantic link between entities (compare, contains, causes, connects).
-- **action** — an operation invoked by the learner or the engine (`select`, `focus`, `filter`, `play`, `answer`).
+- **action** — an operation invoked by the learner or the engine from the D5 set (`select`, `focus`, `filter`, `play-pause`, `answer`, …).
 - **event** — an immutable, timestamped record of something that happened. Events are the only way state changes.
 - **state** — the current, derived observable condition of the scene (selection, focus, phase, playback).
 - **annotation** — explanatory text bound to an entity with a role (hint, fact, question, feedback).
@@ -227,9 +233,34 @@ These terms have identical meaning in every engine:
 4. **Run** — render, wire events, begin state.
 5. **Teardown** — release, preserve final state snapshot.
 
-### 7.4 Actions
+### 7.4 Actions and events (D5)
 
-Standard action set shared by all engines: `select`, `deselect`, `focus`, `unfocus`, `filter`, `clear-filter`, `open-annotation`, `close-annotation`, `answer`, `reset`, `play-pause`, `step`. Engines MAY define additional actions with their own namespace; they MUST document them in their spec.
+JSON specifications and `dispatch()` use **semantic actions** only. Renderer input (`click`, `pointer.enter`, `keyboard`) MUST be translated into a semantic action before it enters the engine reducer. Renderer input MUST NOT appear in specifications.
+
+Standard action set (closed enum; schema `$defs.actionType`):
+
+| Group | Actions |
+|---|---|
+| Selection | `select`, `deselect`, `focus`, `unfocus` |
+| Filter | `filter`, `clear-filter` |
+| Annotation | `open-annotation`, `close-annotation` |
+| Assessment | `answer`, `compare` |
+| Disclosure | `toggle`, `expand`, `collapse` |
+| View | `zoom`, `pan`, `scrub`, `jump-to` |
+| Playback | `play-pause`, `step` |
+| Manipulation | `drag`, `drop`, `place`, `move`, `connect`, `disconnect`, `follow` |
+| Session | `reset` |
+
+Not every engine supports every action. Engines declare the subset they accept in `interaction.actions`. Additional actions MUST be namespaced (`geomap.focus-place`) and documented in that engine’s spec.
+
+Superseded names (MUST NOT appear in new specs): `highlight` (use `select` or `focus`), `annotate` (use `open-annotation` / `close-annotation`), `blur` (use `unfocus`), `play` (use `play-pause`), `show` (use `open-annotation`).
+
+Semantic **events** are the only way state changes (§7.2). Naming:
+
+- Lifecycle (unqualified): `engine-mounted`, `engine-ready`, `engine-reset`, `state-changed`, `interaction-started`, `interaction-completed`.
+- Action results: `<engine>.<entity>-<result>` (e.g. `timeline.event-selected`, `geomap.region-focused`).
+
+Composition binds an emitted event to another instance’s semantic action (Section 13). Pointer coordinates and DOM ids MUST NOT appear on events.
 
 ---
 
@@ -306,9 +337,44 @@ All engines validate in four accumulating layers. An input fails the pipeline if
 
 ## 12. Accessibility, Theming, Localization
 
-- **Accessibility** — the a11y tree is a first-class pipeline output (Section 8). Interactive entities get roles, labels, keyboard reachability, and focus management. Nothing is conveyed by color alone; screen-reader and keyboard paths are tested in conformance (L4).
-- **Theming** — tokens are layered: shared tokens → engine tokens → lesson theme. Learners/lessons may override themes without touching semantics.
-- **Localization** — all strings separate from semantics. Engines resolve UI strings at runtime from locale data; numeric/date/time formatting follows locale. No engine hard-codes English.
+- **Accessibility** — the a11y tree is a first-class pipeline output (Section 8). Interactive entities get roles, labels, keyboard reachability, and focus management. Nothing is conveyed by color alone; screen-reader and keyboard paths are tested in conformance (L4). Host accessibility preferences (`reducedMotion`, contrast, language) are consumed, not re-owned (D6).
+- **Theming** — engines consume a **host token set**. They MAY add engine-local tokens that alias host tokens. They MUST NOT ship a second design-system source of truth. OpenEdu’s design-system / learner theme is the host when running in OpenEdu.
+- **Localization** — all strings separate from semantics. The host supplies locale and resolved catalogs (OpenEdu `@open-edu/i18n` when embedded). Engines MUST NOT ship a parallel i18n product.
+
+### 12.1 OpenEdu host seam (D6)
+
+OpenEdu already owns course packages, Zod schemas, XState workflow, quiz/reflection nodes, widget catalog, sandboxed community widgets, Course Creator Studio, Pipili, telemetry, tokens, i18n, PWA, and `.oep` distribution.
+
+Interactive Engine SHALL NOT rebuild those as a parallel runtime. P1–P6 implement **engine capabilities**; they do not reimplement the learner application.
+
+| Concern | Owner | Engine role |
+|---|---|---|
+| Course, lesson, workflow, mastery | OpenEdu (`@open-edu/workflow`) | None |
+| Quiz scoring, rewards, Knowledge Cards | OpenEdu | Emit D5 events and a serializable snapshot; do not score |
+| Hints and tutoring | OpenEdu Pipili | Snapshot + events are context; engines do not hint |
+| Telemetry persistence | OpenEdu (`@open-edu/telemetry`) | Emit events only; no store, no JSONL, no RxJS product |
+| Theme tokens | OpenEdu design-system | Consume `EngineHost.tokens` |
+| Locale and copy | OpenEdu (`@open-edu/i18n`) | Consume `EngineHost.locale` / resolved strings |
+| Authoring | OpenEdu Course Creator Studio | Playground/CLI for engine developers only |
+| Widgets | OpenEdu catalog | New lesson node `interactive`; widgets remain until migrated |
+| PWA, auth, `.oep`, storage | OpenEdu | None |
+| Spec validation, scene, layout, SVG, D5 reducer | Interactive Engine | Exclusive |
+
+Envelope `questions` and `completion` are **optional authoring hints**. OpenEdu evaluates activities. Engines MUST remain correct with empty `questions`.
+
+Host adapter (framework-independent; engines MUST NOT import OpenEdu packages):
+
+```text
+EngineHost
+├── locale
+├── tokens
+├── reducedMotion
+├── announce(message)
+├── onEvent(semanticEvent)
+└── resolveAsset(id) → URL | bytes
+```
+
+Standalone playground implements a stub host. The learner app implements the real host.
 
 ---
 
@@ -317,7 +383,7 @@ All engines validate in four accumulating layers. An input fails the pipeline if
 Multiple engines MAY coexist in a single lesson, composed through the shared runtime, not through engine-to-engine imports (Section 6).
 
 - Each engine instance owns its state and events; the runtime routes **domain events** between instances through a shared event bus.
-- Composition is explicit: an event emitted by one instance (`timeline.play`, `geomap.focus-place`) is bound by the lesson to another's action (`geomap.focus`).
+- Composition is explicit: an event emitted by one instance (`timeline.event-selected`, `geomap.region-focused`) is bound by the lesson to another's action (`focus`). Namespaced engine actions (`geomap.focus-place`) are allowed when documented.
 - Canonical composition patterns (to be developed as conformance-tested examples):
   - *Narrative*: Timeline drives GeoMap and Visual (event on timeline → place highlighted on map → figure comes alive).
   - *Explanatory*: Diagram → Chart - a node's detail chart opens beside it.
@@ -341,8 +407,8 @@ Program phases and exit criteria:
 
 | Phase | Scope | Exit criteria (all MUST be green) |
 |-------|-------|------------------------------------|
-| P0 | This design + ADR-equivalent decisions (D1-D3) + one envelope | DESIGN.md stable; envelope enforced in schema package |
-| P1 | Platform: `schema`, `core`, `primitives`, conformance harness | envelope + interaction DSL + events/state through Playwright; no engine yet |
+| P0 | This design + ADR-equivalent decisions (D1–D6) + one envelope | DESIGN.md stable; envelope enforced in schema package |
+| P1 | Thin platform: schema, core, D5 DSL, host adapter stub, conformance | envelope + events/state through Playwright; **no** telemetry/i18n/Studio/scoring products; no engine yet |
 | P2 | Visual Engine | number-line vertical slice: spec → scene → layout → accessible SVG → fixtures + agent skill |
 | P3 | Chart Engine | bar + line slices through full pipeline |
 | P4 | GeoMap Engine | GeoJSON regions/markers/routes — MVP list (`engines/geomap/SPEC.md` §82) |
@@ -370,6 +436,7 @@ Phase planning is maintained in a living document (`docs/PLAN.md`), not in this 
 - NOT a geographic information system. Maps are for learning, not analysis.
 - NOT a code editor. Learners interact with rendered experiences, never with JSON.
 - NOT a rendering framework. Engines compose *experiences*, not widgets.
+- NOT a second OpenEdu: not Course Creator Studio, not Pipili, not telemetry storage, not workflow/scoring, not PWA (D6).
 - No server is required to render a lesson. Services are optional.
 
 ### Anti-patterns (prohibited)
@@ -392,6 +459,9 @@ This repository is starting fresh (no prior production code), so decisions are r
 | D1 | Engine-specification envelope (`type`/`version`/`id`, base schema) embedded in lessons as `{ "type": "interactive", "engine", "spec" }` per shared contract §94; `geomap` wrapper and `schemaVersion` superseded | Supersedes GeoMap §7, Visual §7 envelope forms |
 | D2 | Package structure per shared contract §90; namespace follows the host repository; standalone `@knowledgeassemble/visual-*` packaging superseded | Supersedes Visual ARCHITECTURE §41-42, Visual PROJECT §18, and STRUCTURE §7 naming when integrated |
 | D3 | Platform-first program sequence (STRUCTURE §49) with per-engine lifecycle (Visual PROJECT phases) mapped as an exit-gated cycle | Reconciles STRUCTURE §49 and Visual PROJECT §Phases |
+| D4 | `purpose` is `$defs.purpose` in `interactive-engine.schema.json`: `learningObjective` (required), `interactionGoal`, `reasoningMode`. `skill` / `statement` superseded | Aligns DESIGN/PLAN examples with the envelope schema and shared contract §10 |
+| D5 | One semantic action enum (`$defs.actionType`) and namespaced result events. Pointer/click/keyboard are renderer input, not spec vocabulary. `highlight` / `annotate` / `blur` / `play` / `show` superseded | Aligns DESIGN §7.4, shared contract §15/§82, STRUCTURE §25–26, envelope schema |
+| D6 | OpenEdu host seam: engines emit D5 events + snapshot and consume `EngineHost`. OpenEdu owns workflow, scoring, Pipili, telemetry store, tokens, i18n, Studio, PWA. No second Interactive Studio or assessment engine | Supersedes PLAN P7 “then reuse OpenEdu runtime” as a late surprise |
 
 **Governance.** This register is the decision record for the standalone project, sitting below the shared contract per its spec hierarchy (§91). When this work integrates with the OpenEdu monorepo, these decisions are additionally re-recorded as ADRs following `openedu-way/ADR.md` (sequential numbering, lifecycle, supersede rules).
 
@@ -404,12 +474,15 @@ Terms are normative. Engine specs may extend, never redefine.
 - **Engine** — one of five semantic reasoners (visual, geomap, chart, timeline, diagram).
 - **Specification** — a JSON document validated by the envelope + engine schema (`type`/`version`/`id` + content/interaction/layout/questions).
 - **Scene / semantic model** — the resolved in-memory graph of entities and relationships produced from a specification.
-- **Entity / relationship / action / event / state / annotation / source / activity** — see §7.1.
+- **Entity / relationship / state / annotation / source / activity** — see §7.1.
+- **Action** — a D5 semantic operation (`select`, `play-pause`, …). Not a pointer event.
+- **Event** — an immutable record of a state change; action results are namespaced `<engine>.<entity>-<result>`.
 - **Provenance class** — `authoritative` | `illustrative` | `simulated` (§9).
 - **Conformance** — the shared automated suite defining "done" for an engine (§11).
 - **Lesson** — one or more composed engine instances plus routing, questions, and completion, presented to a learner.
 - **Widget** — an OpenEdu UI component answering "how do I display this UI?"; remains a lightweight presentation primitive, distinct from engines (§3, shared contract §96).
-- **OpenEdu** — the consumer application; embeds engines in lessons and consumes their packages, never relied upon by engines.
+- **Host / EngineHost** — the embedding application (OpenEdu learner, or a playground stub) that supplies tokens, locale, assets, and receives events (D6).
+- **OpenEdu** — the consumer application; owns workflow, scoring, Studio, and persistence; embeds engines and MUST never be imported by engine packages (D6).
 
 ---
 

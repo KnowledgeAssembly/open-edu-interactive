@@ -170,21 +170,24 @@ It MUST NOT know about:
 
 # 5. Layer 2 — Visual Specification
 
-The Visual Specification is the public declarative representation.
+The Visual Specification is the public declarative representation. It uses the shared envelope; visual kind and scene data live in `content`.
 
 Example:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "number-line-01",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
-  },
-  "highlight": [7]
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "highlight": [7]
+  }
 }
 ```
 
@@ -206,10 +209,10 @@ It SHOULD NOT directly prescribe renderer-specific coordinates unless explicitly
 
 # 6. Schema Design
 
-The schema should be versioned.
+The schema should be versioned with the envelope `version` field (semver). `schemaVersion` is superseded (DESIGN D1).
 
 ```text
-schemaVersion: "1.0"
+version: "1.0.0"
 ```
 
 Schema evolution MUST be backward-conscious.
@@ -1183,10 +1186,13 @@ Assets SHOULD record:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "engineVersion": "0.2.0"
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-01"
 }
 ```
+
+Implementation/engine versions belong to package metadata, not the specification envelope.
 
 This enables deterministic regeneration and migration.
 
