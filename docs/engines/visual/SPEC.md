@@ -97,37 +97,38 @@ Those concerns belong to other layers.
 
 A `VisualSpecification` has the following structure:
 
+The serialized document MUST use the shared Interactive Engine envelope (DESIGN D1). Visual-specific fields live under `content`.
+
 ```text
 VisualSpecification
 │
-├── schemaVersion
+├── type                  // always "visual"
+├── version               // semver of this specification, e.g. "1.0.0"
 ├── id
-├── type
-├── metadata
-├── canvas
-├── theme
-├── data
-├── definitions
-├── elements
-├── components
-├── relationships
-├── interactions
-├── accessibility
-├── localization
-├── constraints
-└── extensions
+├── metadata              // envelope metadata only
+├── purpose
+├── content               // kind + visual scene (canvas, elements, components, …)
+├── layout
+├── interaction           // shared action/mode object
+├── questions
+└── accessibility
 ```
 
 Minimal valid example:
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "number-line-01",
-  "type": "number-line",
-  "elements": []
+  "content": {
+    "kind": "number-line",
+    "elements": []
+  }
 }
 ```
+
+The former top-level `schemaVersion` field and using `type` for the visual kind (e.g. `"number-line"`) are superseded. Do not copy those forms forward.
 
 ---
 
@@ -151,54 +152,43 @@ and MAY be used for experimental functionality.
 
 | Field | Required | Type |
 |---|---|---|
-| `schemaVersion` | YES | string |
+| `type` | YES | `"visual"` |
+| `version` | YES | semver string |
 | `id` | YES | identifier |
-| `type` | YES | visual type |
-| `metadata` | NO | object |
-| `canvas` | NO | CanvasSpec |
-| `theme` | NO | ThemeSpec |
-| `data` | NO | object |
-| `definitions` | NO | object |
-| `elements` | NO | Element[] |
-| `components` | NO | ComponentInstance[] |
-| `relationships` | NO | Relationship[] |
-| `interactions` | NO | Interaction[] |
-| `accessibility` | NO | AccessibilitySpec |
-| `localization` | NO | LocalizationSpec |
-| `constraints` | NO | ConstraintSpec |
-| `extensions` | NO | object |
+| `metadata` | NO | envelope metadata |
+| `purpose` | NO | envelope purpose (D4) |
+| `content` | YES | visual content object |
+| `content.kind` | YES | visual kind (see §9) |
+| `layout` | NO | envelope layout |
+| `interaction` | NO | envelope interaction |
+| `questions` | NO | envelope questions |
+| `accessibility` | NO | envelope accessibility |
+
+Visual scene fields (`canvas`, `theme`, `data`, `definitions`, `elements`, `components`, `relationships`, visual `interactions`, `localization`, `constraints`, `extensions`) belong under `content`, not at the envelope root.
 
 ---
 
-# 7. `schemaVersion`
+# 7. `version`
 
-Identifies the version of the Visual Specification.
+Identifies the version of this Visual Specification (DESIGN D1). Same meaning as the shared envelope `version` field.
 
 ```json
 {
-  "schemaVersion": "1.0"
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "example-01"
 }
 ```
 
-Format:
-
-```text
-MAJOR.MINOR
-```
+Format: semantic version (`MAJOR.MINOR.PATCH`).
 
 Rules:
 
 - MAJOR changes may introduce breaking changes.
 - MINOR changes add backward-compatible functionality.
-- Patch versions belong to implementation/engine versions rather than the schema.
+- Patch versions fix specification mistakes without new capability.
 
-Examples:
-
-```text
-1.0
-1.1
-2.0
-```
+The superseded `schemaVersion` field (`"1.0"`, `"1.1"`) MUST NOT appear in new specifications.
 
 ---
 
@@ -237,15 +227,14 @@ generated-at-1728392
 
 ---
 
-# 9. `type`
+# 9. `content.kind`
 
-Identifies the semantic type of the visual.
+The envelope `type` is always `"visual"`. The semantic kind of the visual is `content.kind`.
 
 Initial vocabulary:
 
 ```text
 generic
-diagram
 illustration
 number-line
 counting-set
@@ -254,16 +243,15 @@ fraction-comparison
 clock
 coordinate-grid
 geometry
-timeline
-flowchart
 comparison
-label-diagram
 interactive-scene
 ```
 
-The vocabulary is extensible.
+`timeline`, `flowchart`, and `label-diagram` as Visual kinds are superseded (DESIGN §15). Use the Timeline or Diagram engines.
 
-A component-specific type MAY be used where a dedicated semantic visual type exists.
+The vocabulary is extensible within Visual’s reasoning space.
+
+A component-specific kind MAY be used where a dedicated semantic visual kind exists.
 
 ---
 
@@ -277,18 +265,16 @@ Optional descriptive metadata.
     "title": "Comparing Fractions",
     "description": "A visual comparison of one-half and three-quarters.",
     "subject": "mathematics",
-    "topic": "fractions",
     "tags": [
       "fraction",
       "comparison"
     ],
-    "audience": "school",
-    "difficulty": "beginner",
-    "creator": "agent",
-    "createdWith": "knowledgeassemble-visual-engine"
+    "author": "agent"
   }
 }
 ```
+
+Envelope metadata MAY only use fields defined in `interactive-engine.schema.json` (`title`, `description`, `language`, `locale`, `tags`, `subject`, `educationalLevel`, `estimatedInteractionTime`, `author`). Topic, audience, difficulty, and tool provenance belong in `content` if needed.
 
 Recommended fields:
 
@@ -1034,124 +1020,114 @@ Relationships MUST reference valid IDs.
 
 ---
 
-# 37. `interactions`
+# 37. `interaction` (envelope)
 
-Defines semantic interaction contracts.
+Interaction is declared at the **envelope** level using D5 semantic actions (`DESIGN §7.4`; `interactive-engine.schema.json` `$defs.actionType`). Specifications declare **what the learner may do**, not how the renderer maps pointer or keyboard input.
 
 Example:
 
 ```json
 {
-  "interactions": [
-    {
-      "target": "number-7",
-      "events": {
-        "click": {
-          "action": "select"
-        }
+  "interaction": {
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
+  },
+  "content": {
+    "kind": "number-line",
+    "entities": [
+      {
+        "id": "number-7",
+        "interactive": true,
+        "acceptsActions": ["select"]
       }
-    }
-  ]
+    ]
+  }
 }
 ```
+
+Interactive entities MAY declare which D5 actions they accept via `acceptsActions`. The renderer maps pointer activation (click, tap, Enter) to those semantic actions at runtime — that mapping MUST NOT appear in the specification.
 
 Interactions MUST NOT contain executable code.
 
 ---
 
-# 38. Interaction Events
+# 38. Renderer input (non-normative)
 
-Initial events:
+Pointer, keyboard, and DOM events are **renderer input**. They MUST NOT appear in Visual specifications.
 
 ```text
-click
-hover
-focus
-blur
-drag-start
-drag
-drag-end
-drop
-keydown
+click          → maps to select / focus / open-annotation (runtime)
+pointer.enter  → maps to focus (runtime)
+keydown        → maps to select / step / … (runtime)
 ```
 
-Additional events MAY be introduced.
+See `STRUCTURE.md` §25 and the shared contract §15. Authors specify semantic actions only.
 
 ---
 
 # 39. Interaction Actions
 
-Initial semantic actions:
+Visual Engine instances MUST use the **closed D5 action enum** from the shared envelope schema. Superseded names (`highlight`, `show`, `show-explanation`, `annotate`, `play`, …) MUST NOT appear in new specifications.
 
-```text
-select
-deselect
-toggle
-highlight
-unhighlight
-show
-hide
-reveal-answer
-show-explanation
-mark-correct
-mark-incorrect
-focus
-navigate
-```
+| Superseded | D5 replacement |
+|---|---|
+| `highlight` | `select` or `focus` |
+| `show-explanation` | `open-annotation` |
+| `show` / `hide` | `open-annotation` / `close-annotation` |
+| `play` | `play-pause` |
 
-Actions describe intent.
-
-The consumer decides implementation.
+Full enum: DESIGN §7.4 and `interactive-engine.schema.json` `$defs/actionType`.
 
 ---
 
 # 40. Interaction Example
 
+Opening an annotation when the learner selects a diagram part:
+
 ```json
 {
-  "target": "leaf",
-  "events": {
-    "click": {
-      "action": "show-explanation",
-      "target": "leaf-explanation"
-    }
+  "interaction": {
+    "mode": "explore",
+    "actions": ["select", "open-annotation", "close-annotation"]
+  },
+  "content": {
+    "entities": [
+      {
+        "id": "leaf",
+        "interactive": true,
+        "acceptsActions": ["select", "open-annotation"],
+        "annotationId": "leaf-explanation"
+      }
+    ]
   }
 }
 ```
 
-The Visual Engine does not implement the explanation.
-
-It only declares the contract.
+The Visual Engine declares the semantic contract. The host renders explanation UI when it receives namespaced result events (e.g. `visual.leaf-selected`).
 
 ---
 
 # 41. Drag-and-Drop
 
-Example:
-
-```json
-{
-  "target": "apple-1",
-  "events": {
-    "drag-end": {
-      "action": "drop"
-    }
-  }
-}
-```
-
-Additional semantic configuration:
+Drag-and-drop uses D5 manipulation actions on the envelope:
 
 ```json
 {
   "interaction": {
-    "draggable": true,
-    "group": "counting-objects"
+    "mode": "construct",
+    "actions": ["drag", "drop", "place", "reset"]
+  },
+  "content": {
+    "kind": "interactive-scene",
+    "elements": [
+      { "id": "apple-1", "role": "draggable", "acceptsActions": ["drag"] },
+      { "id": "fruit-bin", "role": "drop-target", "acceptsActions": ["drop"] }
+    ]
   }
 }
 ```
 
-The exact runtime semantics belong to the consuming application.
+The renderer translates pointer drag gestures to `drag` / `drop` actions. Drop validation belongs to the engine reducer and host.
 
 ---
 
@@ -1424,48 +1400,45 @@ Stable extensions may eventually be promoted into the core schema.
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "flower-diagram-01",
-  "type": "label-diagram",
-
   "metadata": {
     "title": "Parts of a Flower",
-    "subject": "science",
-    "topic": "plants"
+    "subject": "science"
   },
-
-  "canvas": {
-    "aspectRatio": "4:3"
-  },
-
-  "theme": {
-    "name": "opened u-calm"
-  },
-
-  "elements": [
-    {
-      "id": "flower",
-      "type": "group",
-      "role": "diagram"
+  "content": {
+    "kind": "illustration",
+    "topic": "plants",
+    "canvas": {
+      "aspectRatio": "4:3"
     },
-    {
-      "id": "petal-label",
-      "type": "text",
-      "role": "label",
-      "text": {
-        "key": "flower.petal"
+    "theme": {
+      "name": "openedu-calm"
+    },
+    "elements": [
+      {
+        "id": "flower",
+        "type": "group",
+        "role": "diagram"
+      },
+      {
+        "id": "petal-label",
+        "type": "text",
+        "role": "label",
+        "text": {
+          "key": "flower.petal"
+        }
       }
-    }
-  ],
-
-  "relationships": [
-    {
-      "type": "labels",
-      "source": "petal-label",
-      "target": "flower"
-    }
-  ],
-
+    ],
+    "relationships": [
+      {
+        "type": "labels",
+        "source": "petal-label",
+        "target": "flower"
+      }
+    ]
+  },
   "accessibility": {
     "label": "Parts of a flower",
     "description": "A diagram showing the main parts of a flower."
@@ -1481,23 +1454,24 @@ Canonical example:
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "number-line-01",
-  "type": "number-line",
-
-  "components": [
-    {
-      "id": "line",
-      "type": "number-line",
-      "props": {
-        "min": 0,
-        "max": 10,
-        "step": 1,
-        "highlight": [7]
+  "content": {
+    "kind": "number-line",
+    "components": [
+      {
+        "id": "line",
+        "type": "number-line",
+        "props": {
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "highlight": [7]
+        }
       }
-    }
-  ],
-
+    ]
+  },
   "accessibility": {
     "label": "Number line from zero to ten",
     "description": "Number seven is highlighted."
@@ -1521,21 +1495,22 @@ semantic IDs
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "fraction-3-4",
-  "type": "fraction",
-
-  "components": [
-    {
-      "id": "fraction",
-      "type": "fraction-bar",
-      "props": {
-        "numerator": 3,
-        "denominator": 4
+  "content": {
+    "kind": "fraction",
+    "components": [
+      {
+        "id": "fraction",
+        "type": "fraction-bar",
+        "props": {
+          "numerator": 3,
+          "denominator": 4
+        }
       }
-    }
-  ],
-
+    ]
+  },
   "accessibility": {
     "label": "Three quarters",
     "description": "A fraction divided into four equal parts, with three parts represented."
@@ -1549,25 +1524,27 @@ semantic IDs
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "flower-01",
-  "type": "label-diagram",
-
-  "components": [
-    {
-      "id": "flower",
-      "type": "flower-diagram",
-      "props": {
-        "parts": [
-          "petal",
-          "stigma",
-          "anther",
-          "stem",
-          "root"
-        ]
+  "content": {
+    "kind": "illustration",
+    "components": [
+      {
+        "id": "flower",
+        "type": "flower-diagram",
+        "props": {
+          "parts": [
+            "petal",
+            "stigma",
+            "anther",
+            "stem",
+            "root"
+          ]
+        }
       }
-    }
-  ]
+    ]
+  }
 }
 ```
 
@@ -1577,34 +1554,29 @@ semantic IDs
 
 ```json
 {
-  "schemaVersion": "1.0",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "sorting-scene-01",
-  "type": "interactive-scene",
-
-  "elements": [
-    {
-      "id": "apple-1",
-      "type": "circle",
-      "role": "draggable"
-    },
-    {
-      "id": "fruit-bin",
-      "type": "rect",
-      "role": "drop-target"
-    }
-  ],
-
-  "interactions": [
-    {
-      "target": "apple-1",
-      "events": {
-        "drag-end": {
-          "action": "drop",
-          "target": "fruit-bin"
-        }
+  "content": {
+    "kind": "interactive-scene",
+    "elements": [
+      {
+        "id": "apple-1",
+        "type": "circle",
+        "role": "draggable"
+      },
+      {
+        "id": "fruit-bin",
+        "type": "rect",
+        "role": "drop-target",
+        "acceptsActions": ["drop"]
       }
-    }
-  ]
+    ]
+  },
+  "interaction": {
+    "mode": "construct",
+    "actions": ["drag", "drop", "reset"]
+  }
 }
 ```
 
@@ -2422,91 +2394,70 @@ The Visual Specification should not contain runtime context.
 
 ```json
 {
-  "schemaVersion": "1.0",
-
+  "type": "visual",
+  "version": "1.0.0",
   "id": "fraction-comparison-01",
-
-  "type": "fraction-comparison",
-
   "metadata": {
     "title": "Comparing One Half and Three Quarters",
     "subject": "mathematics",
-    "topic": "fractions",
     "tags": [
       "fractions",
       "comparison"
     ]
   },
-
-  "canvas": {
-    "aspectRatio": "16:9"
-  },
-
-  "theme": {
-    "name": "opened u-calm",
-    "mode": "light",
-    "density": "comfortable"
-  },
-
-  "components": [
-    {
-      "id": "one-half",
-      "type": "fraction-bar",
-      "props": {
-        "numerator": 1,
-        "denominator": 2
-      }
+  "content": {
+    "kind": "fraction-comparison",
+    "topic": "fractions",
+    "canvas": {
+      "aspectRatio": "16:9"
     },
-    {
-      "id": "three-fourths",
-      "type": "fraction-bar",
-      "props": {
-        "numerator": 3,
-        "denominator": 4
-      }
-    }
-  ],
-
-  "relationships": [
-    {
-      "type": "compares-with",
-      "source": "three-fourths",
-      "target": "one-half"
-    }
-  ],
-
-  "interactions": [
-    {
-      "target": "one-half",
-      "events": {
-        "click": {
-          "action": "select"
+    "theme": {
+      "name": "openedu-calm",
+      "mode": "light",
+      "density": "comfortable"
+    },
+    "components": [
+      {
+        "id": "one-half",
+        "type": "fraction-bar",
+        "props": {
+          "numerator": 1,
+          "denominator": 2
+        }
+      },
+      {
+        "id": "three-fourths",
+        "type": "fraction-bar",
+        "props": {
+          "numerator": 3,
+          "denominator": 4
         }
       }
-    },
-    {
-      "target": "three-fourths",
-      "events": {
-        "click": {
-          "action": "select"
-        }
+    ],
+    "relationships": [
+      {
+        "type": "compares-with",
+        "source": "three-fourths",
+        "target": "one-half"
       }
+    ],
+    "constraints": {
+      "avoidOverlap": true,
+      "keepLabelsInsideCanvas": true,
+      "minimumTouchTarget": 44
     }
-  ],
-
+  },
+  "interaction": {
+    "mode": "compare",
+    "actions": ["select", "deselect", "reset"]
+  },
   "accessibility": {
     "label": "Comparing one half and three quarters",
     "description": "Two fraction bars compare one half and three quarters. Three quarters represents the larger fraction.",
-    "readingOrder": [
+    "focusOrder": [
       "one-half",
       "three-fourths"
     ]
-  },
-
-  "constraints": {
-    "avoidOverlap": true,
-    "keepLabelsInsideCanvas": true,
-    "minimumTouchTarget": 44
   }
 }
 ```
@@ -2521,11 +2472,21 @@ Conceptual types:
 
 ```ts
 export interface VisualSpecification {
-  schemaVersion: "1.0";
+  type: "visual";
+  version: string;
   id: string;
-  type: string;
 
   metadata?: VisualMetadata;
+  purpose?: VisualPurpose;
+  content: VisualContent;
+  layout?: LayoutSpec;
+  interaction?: InteractionSpec;
+  questions?: QuestionSpec[];
+  accessibility?: AccessibilitySpec;
+}
+
+export interface VisualContent {
+  kind: string;
   canvas?: CanvasSpec;
   theme?: ThemeSpec;
   data?: Record<string, unknown>;
@@ -2534,7 +2495,6 @@ export interface VisualSpecification {
   components?: ComponentInstance[];
   relationships?: Relationship[];
   interactions?: Interaction[];
-  accessibility?: AccessibilitySpec;
   localization?: LocalizationSpec;
   constraints?: ConstraintSpec;
   extensions?: Record<string, unknown>;
@@ -2667,7 +2627,9 @@ A Visual Specification MAY declare:
 
 ```json
 {
-  "schemaVersion": "1.0"
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "example-01"
 }
 ```
 
@@ -2675,15 +2637,17 @@ The engine MUST reject unsupported major versions.
 
 Minor versions SHOULD support backward compatibility where possible.
 
+A `schemaVersion` field without envelope `type`/`version` is invalid.
+
 ---
 
 # 104. Validation Rules — Core
 
 At minimum:
 
-1. `schemaVersion` must be supported.
+1. Envelope `type` MUST be `"visual"` and `version` MUST be a supported semver.
 2. `id` must be valid.
-3. `type` must be known or explicitly extensible.
+3. `content.kind` must be known or explicitly extensible.
 4. element IDs must be unique.
 5. component IDs must be unique.
 6. relationship references must resolve.

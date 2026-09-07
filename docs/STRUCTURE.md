@@ -42,26 +42,25 @@ It SHALL provide:
 
 - declarative JSON specifications
 - schema validation
-- rendering
-- interaction
-- state management
-- animation
-- accessibility
-- responsive behavior
+- semantic scene, layout, and rendering
+- D5 interaction reducer and serializable snapshot
+- derived accessibility tree
 - visualization primitives
 - engine-specific rendering
+- an `EngineHost` adapter (consume tokens/locale/assets; emit events)
 
 OpenEdu SHALL provide:
 
-- courses
-- lessons
-- learning experiences
-- authoring
-- learner progress
-- authentication
-- course storage
-- course publishing
-- educational orchestration
+- courses, lessons, workflow, mastery
+- quiz scoring, rewards, Knowledge Cards
+- authoring (Course Creator Studio, course-authoring skill)
+- Pipili hints
+- telemetry persistence
+- design tokens, i18n, a11y preferences
+- PWA, authentication, `.oep` storage and publishing
+- widget catalog (until engines replace a given widget)
+
+See DESIGN D6. Engines MUST NOT reimplement the OpenEdu column.
 
 ---
 
@@ -256,10 +255,6 @@ openedu-interactive/
 │   ├── documentation/
 │   │   ├── src/
 │   │   └── package.json
-│   │
-│   └── studio/
-│       ├── src/
-│       └── package.json
 │
 ├── examples/
 │   ├── visual/
@@ -828,14 +823,13 @@ else if (type === "visual") ...
 
 # 25. Interaction System
 
-Interaction SHALL be declarative.
+Interaction in specifications SHALL be declarative and semantic (DESIGN D5).
 
-Course specifications SHALL describe:
+Specifications SHALL describe:
 
 ```text
-trigger
+semantic trigger (action or condition)
 target
-condition
 action
 ```
 
@@ -843,15 +837,15 @@ Example:
 
 ```json
 {
-  "trigger": "click",
+  "trigger": "select",
   "target": "mars",
   "actions": [
     {
-      "type": "highlight",
+      "type": "select",
       "target": "mars"
     },
     {
-      "type": "show",
+      "type": "open-annotation",
       "target": "mars-fact"
     }
   ]
@@ -860,13 +854,13 @@ Example:
 
 The runtime SHALL execute these actions.
 
-Arbitrary JavaScript SHALL NOT be embedded in course interactive specifications.
+The renderer MAY map `click` / pointer / keyboard to `select`. That mapping is an implementation detail. Specifications MUST NOT embed `click`, `pointer.*`, or arbitrary JavaScript.
 
 ---
 
-# 26. Common Interaction Events
+# 26. Renderer Input vs Semantic Events
 
-The runtime SHOULD support:
+The renderer SHOULD listen for host-level input such as:
 
 ```text
 pointer.enter
@@ -875,25 +869,17 @@ pointer.down
 pointer.up
 click
 doubleClick
-
-focus
-blur
-select
-deselect
-
+keyboard
 drag.start
 drag
 drag.end
-
-zoom
-pan
-
-keyboard
-
-custom
 ```
 
-Engine-specific events MAY be introduced while preserving the common event model.
+These MUST be translated into D5 semantic actions (`select`, `focus`, `drag`, `drop`, …) before they enter the engine reducer.
+
+Semantic events emitted on the bus are D5 lifecycle and `<engine>.<entity>-<result>` names (DESIGN §7.4). They are not pointer events.
+
+Engine-specific **namespaced** actions MAY be introduced (`geomap.focus-place`) while preserving this split.
 
 ---
 
@@ -1121,6 +1107,8 @@ Used for:
 apps/playground
 ```
 
+The playground implements a **stub** `EngineHost`. It is not the learner app.
+
 ## Documentation
 
 Used for:
@@ -1137,15 +1125,11 @@ apps/documentation
 
 ## Studio
 
-The optional Interactive Studio SHALL provide:
+There SHALL NOT be a product Interactive Studio (DESIGN D6).
 
-- visual inspection
-- specification editing
-- live preview
-- interaction testing
-- schema validation
+Authoring of engine specifications belongs in **OpenEdu Course Creator Studio** (`apps/dev-server` in the OpenEdu monorepo) and the `openedu-course-authoring` skill.
 
-It SHALL remain a development/authoring tool for the Interactive Engine and SHALL NOT become OpenEdu Studio.
+A local preview in `apps/playground` MAY inspect specs. It SHALL NOT become a second course authoring shell.
 
 ---
 
@@ -1394,22 +1378,24 @@ OpenEdu SHALL remain responsible for:
 ```text
 course lifecycle
 lesson lifecycle
-learning state
-learner progress
-authoring
-publishing
-storage
+workflow / mastery
+quiz scoring / rewards
+Pipili
+telemetry persistence
+authoring (Course Creator Studio)
+publishing / .oep / storage
+theme tokens / i18n / a11y prefs
 ```
 
 Interactive Engine SHALL remain responsible for:
 
 ```text
-rendering
-interaction
-visual state
-animation
-accessibility
+spec validation
+semantic scene / layout / SVG
+D5 actions + snapshot
+derived accessibility tree
 visualization
+onEvent → host
 ```
 
 ---
@@ -1519,7 +1505,10 @@ The initial Interactive Engine SHALL NOT attempt to become:
 - a full animation editor
 - a generic game engine
 - an LMS
-- a course authoring platform
+- a course authoring platform (OpenEdu Course Creator Studio already exists)
+- a second telemetry, i18n, or design-token product
+- an LMS assessment engine
+- Pipili / AI companion
 - a database
 - a cloud rendering service
 - an AI agent framework

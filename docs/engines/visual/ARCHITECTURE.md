@@ -170,21 +170,24 @@ It MUST NOT know about:
 
 # 5. Layer 2 — Visual Specification
 
-The Visual Specification is the public declarative representation.
+The Visual Specification is the public declarative representation. It uses the shared envelope; visual kind and scene data live in `content`.
 
 Example:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "number-line-01",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
-  },
-  "highlight": [7]
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "highlight": [7]
+  }
 }
 ```
 
@@ -206,10 +209,10 @@ It SHOULD NOT directly prescribe renderer-specific coordinates unless explicitly
 
 # 6. Schema Design
 
-The schema should be versioned.
+The schema should be versioned with the envelope `version` field (semver). `schemaVersion` is superseded (DESIGN D1).
 
 ```text
-schemaVersion: "1.0"
+version: "1.0.0"
 ```
 
 Schema evolution MUST be backward-conscious.
@@ -676,17 +679,25 @@ The engine SHOULD avoid blindly applying ARIA roles where native semantics are s
 
 # 22. Interaction Architecture
 
-Interaction is represented declaratively.
+Interaction is represented declaratively using D5 semantic actions on the envelope and per-entity `acceptsActions`. Renderer input (click, hover, keydown) is translated at runtime — it MUST NOT appear in specifications.
 
 Example:
 
 ```json
 {
   "id": "number-7",
+  "interactive": true,
+  "acceptsActions": ["select"]
+}
+```
+
+With envelope:
+
+```json
+{
   "interaction": {
-    "click": {
-      "action": "select"
-    }
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
   }
 }
 ```
@@ -704,43 +715,40 @@ Instead:
 ```text
 Visual Engine
      ↓
-Interaction Contract
+D5 action reducer
      ↓
-Consumer application
+Namespaced result events
      ↓
-Actual behavior
+Host (OpenEdu)
 ```
 
 ---
 
 # 23. Interaction Contract
 
-Example:
-
-```ts
-interface InteractionContract {
-  click?: Action;
-  hover?: Action;
-  focus?: Action;
-  drag?: DragContract;
-  drop?: DropContract;
-}
-```
-
-Actions should be semantic:
+Semantic actions MUST come from the D5 enum (`interactive-engine.schema.json` `$defs.actionType`):
 
 ```text
 select
-highlight
-show-explanation
-reveal-answer
-mark-correct
-mark-incorrect
-navigate
+focus
+open-annotation
+close-annotation
 toggle
+drag
+drop
+reset
+…
 ```
 
-The action vocabulary SHOULD be extensible.
+Superseded vocabulary (`highlight`, `show-explanation`, `click` bindings in specs) MUST NOT be used in new specifications.
+
+The renderer MAY map pointer activation to `select`:
+
+```text
+Runtime: click on number-7 → dispatch { "type": "select", "target": { "id": "number-7" } }
+```
+
+That mapping is implementation detail, not specification content.
 
 ---
 
@@ -890,11 +898,10 @@ packages/components/src/
 ├── language/
 │
 └── general/
-    ├── timeline/
-    ├── flowchart/
-    ├── comparison/
-    └── label-diagram/
+    └── comparison/
 ```
+
+Timeline, flowchart, and label-diagram packages belong under Timeline/Diagram engines (DESIGN D9), not Visual.
 
 Components should compose smaller primitives and components.
 
@@ -1183,10 +1190,13 @@ Assets SHOULD record:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "engineVersion": "0.2.0"
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-01"
 }
 ```
+
+Implementation/engine versions belong to package metadata, not the specification envelope.
 
 This enables deterministic regeneration and migration.
 
@@ -1569,7 +1579,7 @@ fixtures/
   fraction-bar/
   clock/
   flower/
-  timeline/
+  comparison/
 ```
 
 Each fixture SHOULD include:

@@ -640,7 +640,7 @@ Cross-engine references SHOULD remain semantic.
 
 # 15. Interaction Model
 
-All engines SHALL expose a common interaction vocabulary.
+All engines SHALL expose the D5 semantic action vocabulary (DESIGN §7.4; schema `$defs.actionType`).
 
 Core actions:
 
@@ -648,24 +648,37 @@ Core actions:
 select
 deselect
 focus
-highlight
+unfocus
 filter
+clear-filter
+open-annotation
+close-annotation
+answer
 compare
-zoom
-pan
-drag
-drop
 toggle
 expand
 collapse
+zoom
+pan
 scrub
-annotate
+jump-to
+play-pause
+step
+drag
+drop
+place
+move
+connect
+disconnect
+follow
 reset
 ```
 
 Not every engine must support every action.
 
-Individual engines SHALL define which actions are valid.
+Individual engines SHALL declare which of these actions are valid in `interaction.actions`.
+
+`highlight`, `annotate`, `blur`, `play`, and `show` are superseded (D5). Pointer events (`click`, `pointer.enter`) are renderer input and MUST NOT appear in specifications.
 
 ---
 
@@ -864,7 +877,7 @@ Events SHOULD follow a common structure:
 
 ```json
 {
-  "type": "event-selected",
+  "type": "timeline.event-selected",
   "engineId": "timeline-independence",
   "target": {
     "id": "event-1947",
@@ -891,7 +904,7 @@ Prefer:
 
 ```json
 {
-  "type": "event-selected",
+  "type": "timeline.event-selected",
   "target": {
     "id": "event-1947"
   }
@@ -1001,18 +1014,17 @@ Composition MUST happen through semantic contracts.
 
 # 26. Questions
 
-Interactive Engines SHOULD support pedagogical questions.
+Envelope `questions` are **optional authoring hints** (DESIGN D7). OpenEdu quiz nodes, workflow, and Pipili evaluate learner responses, score activities, and deliver hints. Engines MUST remain correct with an empty `questions` array and MUST NOT require envelope questions to function.
 
-Questions may define:
+Questions MAY still appear in specifications to:
 
-* prompt
-* target
-* expected interaction
-* expected reasoning
-* success condition
-* feedback
+* document intended prompts for authors and AI agents;
+* declare expected interaction targets for validation;
+* carry non-normative success conditions for preview tooling.
 
-Example:
+They MUST NOT be treated as the runtime scoring source of truth.
+
+Example (authoring hint):
 
 ```json
 {
@@ -1029,7 +1041,7 @@ Example:
 }
 ```
 
-The engine SHOULD expose enough semantic state for the lesson runtime to evaluate activities.
+Engines SHOULD expose enough semantic state (snapshot + D5 events) for OpenEdu to evaluate activities. Evaluation logic lives in OpenEdu, not in engine packages.
 
 ---
 
@@ -2214,28 +2226,9 @@ The engine provides structured evidence without exposing renderer internals.
 
 # 72. Authoring UX
 
-OpenEdu Studio SHOULD provide a visual editor over the semantic model.
+OpenEdu Course Creator Studio SHOULD edit engine specifications over the semantic model. Interactive Engine SHALL NOT ship a competing Studio (DESIGN D6).
 
-Conceptually:
-
-```text
-┌───────────────────────────────────────┐
-│ Interactive Engine Editor             │
-├───────────────┬───────────────────────┤
-│ Semantic      │                       │
-│ Properties    │       Preview         │
-│               │                       │
-│ Content       │                       │
-│ Interaction   │                       │
-│ Questions     │                       │
-│ Accessibility │                       │
-│               │                       │
-└───────────────┴───────────────────────┘
-```
-
-Authors should be able to edit semantics without manually editing JSON.
-
-AI assistants can operate on the same semantic model.
+The engine playground MAY preview a spec. Authors and AI assistants operate on the same JSON the learner runtime hosts.
 
 ---
 
@@ -2410,7 +2403,7 @@ Example:
 
 # 80. Interaction Completion
 
-Engines MAY expose completion state.
+Envelope `completion` is an **optional authoring hint** (DESIGN D7). OpenEdu workflow and quiz nodes determine lesson progression and mastery. Engines MAY expose a serializable snapshot (including semantic selections and mode) but MUST NOT require envelope `completion` to function.
 
 ```json
 {
@@ -2420,16 +2413,16 @@ Engines MAY expose completion state.
 }
 ```
 
-Completion SHOULD be based on semantic conditions.
+When present, `completion` MAY describe intended semantic conditions for authors and validators — not click counts or renderer internals.
 
-Example:
+Example (authoring hint):
 
 ```text
 Required nodes connected
 +
 Required relationships identified
 +
-Required question answered
+Required selections made
 ```
 
 Not:
@@ -2442,9 +2435,9 @@ User clicked 5 times
 
 # 81. Determining Completion
 
-Completion rules SHOULD be declarative.
+When envelope `completion` is present, rules SHOULD be declarative **hints for authoring and validation**. OpenEdu evaluates whether a learner has satisfied lesson goals; engines emit D5 events and maintain snapshot state.
 
-Example:
+Example (authoring hint):
 
 ```json
 {
@@ -2463,7 +2456,7 @@ Example:
 }
 ```
 
-Complex completion semantics may be defined by individual engines.
+Engine-specific completion vocabulary MAY extend this for preview tooling only. It MUST NOT duplicate OpenEdu quiz scoring.
 
 ---
 
@@ -2474,18 +2467,18 @@ Event names SHOULD use semantic language.
 Recommended pattern:
 
 ```text
-<entity>-<action>
+<engine>.<entity>-<result>
 ```
 
 Examples:
 
 ```text
-node-selected
-event-selected
-region-selected
-data-point-selected
-object-focused
-relationship-followed
+diagram.node-selected
+timeline.event-selected
+geomap.region-selected
+chart.data-point-selected
+visual.object-focused
+diagram.relationship-followed
 ```
 
 Lifecycle events may use:

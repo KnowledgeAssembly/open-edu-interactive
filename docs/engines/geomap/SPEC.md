@@ -91,13 +91,15 @@ The renderer determines how that specification becomes an interactive experience
 
 All externally persisted, exchanged, generated, validated, and packaged GeoMap specifications SHALL use JSON.
 
-The canonical representation is:
+The canonical representation uses the shared Interactive Engine envelope (DESIGN D1). GeoMap-specific fields live under `content`.
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {},
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "example-map",
+  "metadata": {},
+  "content": {
     "viewport": {},
     "projection": {},
     "geography": {},
@@ -108,11 +110,12 @@ The canonical representation is:
     "animations": [],
     "timeline": {},
     "assessment": {},
-    "accessibility": {},
     "theme": {}
   }
 }
 ```
+
+The former `{ "geomap": { … } }` wrapper is superseded. Do not copy that form forward.
 
 ## 3.2 Other serialization formats
 
@@ -353,13 +356,15 @@ It can become the learning environment itself.
 
 # 7. Top-Level Specification
 
-The top-level object SHALL contain `geomap`.
+The top-level object SHALL be a shared-envelope GeoMap specification: `type` MUST be `"geomap"`, with `version` and `id` required.
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {},
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "example-map",
+  "metadata": {},
+  "content": {
     "viewport": {},
     "projection": {},
     "geography": {},
@@ -370,13 +375,12 @@ The top-level object SHALL contain `geomap`.
     "animations": [],
     "timeline": {},
     "assessment": {},
-    "accessibility": {},
     "theme": {}
   }
 }
 ```
 
-All top-level properties are optional unless required by the selected feature.
+GeoMap scene properties are optional unless required by the selected feature. They MUST NOT appear as siblings of `type`/`version`/`id` except for shared envelope keys.
 
 ---
 
@@ -384,13 +388,15 @@ All top-level properties are optional unless required by the selected feature.
 
 ```json
 {
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "india-rivers",
   "metadata": {
-    "id": "india-rivers",
     "title": "Major Rivers of India",
     "description": "Explore major rivers of India.",
     "language": "en",
     "subject": "geography",
-    "gradeBand": "middle-school",
+    "educationalLevel": "middle-school",
     "tags": [
       "india",
       "rivers",
@@ -399,6 +405,8 @@ All top-level properties are optional unless required by the selected feature.
   }
 }
 ```
+
+`id` is an envelope field, not nested in `metadata`. Envelope metadata MAY only use fields defined in `interactive-engine.schema.json`. `gradeBand` maps to `educationalLevel`. License, timestamps, and extra provenance belong in `content` or `sources`.
 
 Supported metadata MAY include:
 
@@ -1058,7 +1066,7 @@ Relationships MAY be declared at the entity level or inferred by the engine.
 
 # 29. Interactions
 
-Interactions define what learners can do.
+Interactions define what learners can do. Specifications use D5 semantic actions (DESIGN §7.4). `click` / hover are renderer input and MUST be mapped to `select` / `focus` before dispatch.
 
 ```json
 {
@@ -1066,10 +1074,10 @@ Interactions define what learners can do.
     {
       "id": "select-state",
       "target": "states",
-      "trigger": "click",
+      "trigger": "select",
       "actions": [
         {
-          "type": "highlight"
+          "type": "select"
         }
       ]
     }
@@ -1077,46 +1085,44 @@ Interactions define what learners can do.
 }
 ```
 
-Supported triggers:
+Semantic triggers (subset of D5):
 
 ```text
-click
-tap
-hover
-focus
-keyboard
-enter
 select
+focus
 drag
 drop
-timeline-change
-scene-enter
+play-pause
+step
 ```
+
+Renderer input (`click`, `tap`, `hover`, `keyboard`) is not stored in the specification.
 
 ---
 
 # 30. Interaction Actions
 
-Supported actions SHOULD include:
+GeoMap MUST use the D5 action enum. Typical GeoMap subset:
 
 ```text
-highlight
 select
+deselect
 focus
-show
-hide
-reveal
+unfocus
+filter
+clear-filter
+open-annotation
+close-annotation
 zoom
 pan
-center
-open-info
-show-label
-hide-label
-play-animation
-pause-animation
-set-variable
-show-feedback
+scrub
+jump-to
+play-pause
+step
+reset
 ```
+
+Namespaced GeoMap extensions MAY include `geomap.center` when documented. `highlight`, `show`, `hide`, `open-info`, and `play-animation` are superseded (`select` / `focus` / `open-annotation` / `play-pause`).
 
 Example:
 
@@ -1124,11 +1130,11 @@ Example:
 {
   "actions": [
     {
-      "type": "highlight",
+      "type": "select",
       "target": "odisha"
     },
     {
-      "type": "show-info",
+      "type": "open-annotation",
       "target": "odisha"
     }
   ]
@@ -2083,12 +2089,13 @@ geomap.preview
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {
-      "id": "india-rivers",
-      "title": "Major Rivers of India"
-    },
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "india-rivers",
+  "metadata": {
+    "title": "Major Rivers of India"
+  },
+  "content": {
     "projection": {
       "type": "geographic"
     },
@@ -2097,15 +2104,9 @@ geomap.preview
         "id": "rivers",
         "type": "river",
         "items": [
-          {
-            "entity": "ganges"
-          },
-          {
-            "entity": "yamuna"
-          },
-          {
-            "entity": "brahmaputra"
-          }
+          { "entity": "ganges" },
+          { "entity": "yamuna" },
+          { "entity": "brahmaputra" }
         ]
       }
     ]
@@ -2119,20 +2120,19 @@ geomap.preview
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {
-      "id": "locate-odisha",
-      "title": "Locate Odisha"
-    },
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "locate-odisha",
+  "metadata": {
+    "title": "Locate Odisha"
+  },
+  "content": {
     "layers": [
       {
         "id": "states",
         "type": "region",
         "items": [
-          {
-            "entity": "odisha"
-          }
+          { "entity": "odisha" }
         ]
       }
     ],
@@ -2156,12 +2156,13 @@ geomap.preview
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {
-      "id": "maurya-empire",
-      "title": "The Mauryan Empire"
-    },
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "maurya-empire",
+  "metadata": {
+    "title": "The Mauryan Empire"
+  },
+  "content": {
     "projection": {
       "type": "geographic"
     },
@@ -2176,19 +2177,17 @@ geomap.preview
         "id": "maurya",
         "type": "region",
         "items": [
-          {
-            "entity": "maurya"
-          }
+          { "entity": "maurya" }
         ],
         "style": {
           "role": "historical-empire"
         }
       }
-    ],
-    "accessibility": {
-      "alternativeView": true,
-      "reducedMotion": true
-    }
+    ]
+  },
+  "accessibility": {
+    "label": "The Mauryan Empire",
+    "reducedMotion": true
   }
 }
 ```
@@ -2199,12 +2198,13 @@ geomap.preview
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {
-      "id": "silk-road",
-      "title": "Silk Road"
-    },
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "silk-road",
+  "metadata": {
+    "title": "Silk Road"
+  },
+  "content": {
     "layers": [
       {
         "id": "trade-route",
@@ -2235,12 +2235,13 @@ geomap.preview
 
 ```json
 {
-  "geomap": {
-    "version": "1.0",
-    "metadata": {
-      "id": "buddhism-spread",
-      "title": "Spread of Buddhism"
-    },
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "buddhism-spread",
+  "metadata": {
+    "title": "Spread of Buddhism"
+  },
+  "content": {
     "timeline": {
       "start": -500,
       "end": 500,
@@ -2251,18 +2252,9 @@ geomap.preview
         "id": "spread",
         "type": "flow",
         "items": [
-          {
-            "from": "magadha",
-            "to": "gandhara"
-          },
-          {
-            "from": "gandhara",
-            "to": "central-asia"
-          },
-          {
-            "from": "india",
-            "to": "sri-lanka"
-          }
+          { "from": "magadha", "to": "gandhara" },
+          { "from": "gandhara", "to": "central-asia" },
+          { "from": "india", "to": "sri-lanka" }
         ],
         "style": {
           "role": "cultural-transmission"
@@ -2416,12 +2408,13 @@ A lesson may embed:
 
 ```json
 {
-  "content": [
-    {
-      "type": "geomap",
-      "ref": "india-rivers"
-    }
-  ]
+  "type": "interactive",
+  "engine": "geomap",
+  "spec": {
+    "type": "geomap",
+    "version": "1.0.0",
+    "id": "india-rivers"
+  }
 }
 ```
 

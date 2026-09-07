@@ -6,6 +6,8 @@
 **Schema Version:** `visual-component/v1`  
 **Parent Specification:** `SPEC.md`
 
+> **Normative scope (DESIGN D9).** MVP Visual components are the seven math kinds plus `comparison` only. Sections describing `timeline`, `flowchart`, and `label-diagram` are **historical reference** for widget migration — implement those patterns in Timeline or Diagram engines, not Visual.
+
 ---
 
 ## 1. Purpose
@@ -1487,31 +1489,35 @@ The component MUST NOT persist runtime state in the visual specification.
 
 # 42. Interaction Contract
 
-Interactive components MAY declare supported interactions.
+Interactive components declare which **D5 semantic actions** they accept. Renderer events (`click`, `pointer.enter`, …) MUST NOT appear in component or envelope specifications.
 
-Example:
+Example (entity):
+
+```json
+{
+  "id": "point-a",
+  "interactive": true,
+  "acceptsActions": ["select", "focus"]
+}
+```
+
+Example (envelope):
 
 ```json
 {
   "interaction": {
-    "supported": [
-      "click",
-      "focus",
-      "drag",
-      "drop"
-    ]
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
   }
 }
 ```
 
-Interactions MUST refer to semantic actions.
-
-Example:
+Dispatch uses the shared action shape (shared contract §16):
 
 ```json
 {
-  "on": "click",
-  "action": "select"
+  "type": "select",
+  "target": { "id": "point-a" }
 }
 ```
 
@@ -2064,28 +2070,28 @@ leaf-label  → labels → leaf
 
 ```json
 {
-  "id": "number-line-1",
-  "type": "math.number-line",
-  "props": {
-    "min": 0,
-    "max": 10,
-    "step": 1,
-    "points": [
-      {
-        "id": "point-a",
-        "value": 4
-      }
-    ]
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-interactive",
+  "content": {
+    "kind": "number-line",
+    "props": {
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "points": [
+        {
+          "id": "point-a",
+          "value": 4,
+          "interactive": true,
+          "acceptsActions": ["select", "focus"]
+        }
+      ]
+    }
   },
   "interaction": {
-    "enabled": true,
-    "targets": [
-      {
-        "target": "point-a",
-        "events": ["click", "focus"],
-        "actions": ["select"]
-      }
-    ]
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
   }
 }
 ```

@@ -47,14 +47,13 @@ AI coding and course-authoring agents frequently need to create visuals such as:
 - counting objects
 - fraction diagrams
 - geometric figures
-- timelines
-- labelled diagrams
 - coordinate grids
-- flowcharts
 - comparison diagrams
 - science diagrams
 - sorting/matching boards
 - interactive learning scenes
+
+**Out of Visual scope (D9):** timelines, labelled diagrams, and flowcharts belong to Timeline and Diagram engines — not Visual components.
 
 Current approaches have several problems:
 
@@ -209,7 +208,6 @@ number-line
 fraction-bar
 clock
 ten-frame
-label-diagram
 coordinate-grid
 ```
 
@@ -331,7 +329,7 @@ The engine MUST support deterministic label placement.
 
 # 8. Educational Components
 
-MVP educational component library:
+MVP educational component library (closed set — DESIGN D9):
 
 ### Mathematics
 
@@ -345,12 +343,11 @@ MVP educational component library:
 
 ### General
 
-8. `timeline`
-9. `label-diagram`
-10. `flowchart`
-11. `comparison`
+8. `comparison`
 
-The component architecture MUST allow additional domains later.
+**Not Visual components:** `timeline`, `label-diagram`, and `flowchart` — use Timeline or Diagram engines.
+
+The component architecture MUST allow additional **Visual-domain** kinds later without absorbing other engines' reasoning spaces.
 
 ---
 
@@ -360,24 +357,27 @@ Example:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
+  "type": "visual",
+  "version": "1.0.0",
   "id": "numbers-0-10",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
-  },
-  "objects": [
-    {
-      "id": "number-7",
-      "role": "number",
-      "value": 7,
-      "interactive": true
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "objects": [
+      {
+        "id": "number-7",
+        "role": "number",
+        "value": 7,
+        "interactive": true
+      }
+    ],
+    "style": {
+      "theme": "openedu-calm"
     }
-  ],
-  "style": {
-    "theme": "openededu-calm"
   },
   "accessibility": {
     "label": "Number line from zero to ten",
@@ -394,7 +394,7 @@ However, semantic separation between specification and rendering MUST remain.
 
 # 10. Interaction Contracts
 
-Visual elements MAY expose interaction metadata.
+Visual elements MAY expose which D5 semantic actions they accept. Pointer and keyboard input are mapped to those actions by the renderer at runtime (DESIGN D5) — they MUST NOT appear in specifications.
 
 Example:
 
@@ -402,13 +402,18 @@ Example:
 {
   "id": "root",
   "role": "diagram-part",
+  "interactive": true,
+  "acceptsActions": ["select", "open-annotation", "focus"]
+}
+```
+
+Envelope-level declaration:
+
+```json
+{
   "interaction": {
-    "click": {
-      "action": "show-explanation"
-    },
-    "hover": {
-      "action": "highlight"
-    }
+    "mode": "explore",
+    "actions": ["select", "open-annotation", "close-annotation", "focus"]
   }
 }
 ```
@@ -1143,7 +1148,7 @@ Implement:
 
 ## Phase 4 — Educational Components
 
-Implement:
+Implement (closed set — DESIGN D9):
 
 1. number line
 2. counting set
@@ -1152,12 +1157,9 @@ Implement:
 5. clock
 6. coordinate grid
 7. geometry shape
-8. timeline
-9. label diagram
-10. flowchart
-11. comparison
+8. comparison
 
-Each component requires tests and examples.
+Each component requires tests and examples. Timeline, label diagram, and flowchart are **not** Phase 4 — see Timeline and Diagram engine phases.
 
 ---
 
@@ -1467,14 +1469,18 @@ The first successful example should be:
 
 ```json
 {
-  "schemaVersion": "1.0",
-  "type": "number-line",
-  "range": {
-    "min": 0,
-    "max": 10,
-    "step": 1
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-01",
+  "content": {
+    "kind": "number-line",
+    "range": {
+      "min": 0,
+      "max": 10,
+      "step": 1
+    },
+    "highlight": [7]
   },
-  "highlight": [7],
   "accessibility": {
     "label": "Number line from zero to ten",
     "description": "The number seven is highlighted."
