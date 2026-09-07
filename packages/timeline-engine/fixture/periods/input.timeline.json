@@ -1,0 +1,21 @@
+{
+  "type": "timeline",
+  "version": "1.0.0",
+  "id": "timeline-periods",
+  "metadata": { "title": "Periods test" },
+  "content": {
+    "kind": "events",
+    "events": [
+      { "id": "e1", "label": "Event A", "date": "1900" },
+      { "id": "e2", "label": "Event B", "date": "1950" }
+    ],
+    "periods": [
+      { "id": "p1", "label": "First half", "from": "1800", "to": "1950", "style": { "role": "secondary-period" } },
+      { "id": "p2", "label": "Second half", "from": "1950", "to": "2000" }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Test periods timeline" }
+}

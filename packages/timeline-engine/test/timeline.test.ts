@@ -32,6 +32,8 @@ const TIMELINE_SPEC: EngineSpec = {
     actions: ['select', 'focus', 'play-pause', 'step', 'reset'],
   },
   questions: [],
+  sources: [{ class: 'authoritative' }],
+  accessibility: { label: 'Test timeline' },
 } as unknown as EngineSpec;
 
 function makeHost(): { host: EngineHost; events: EngineEvent[] } {
@@ -104,17 +106,12 @@ describe('TimelineEngine', () => {
     expect(caught!.code).toBe('INVALID_ENTITY');
   });
 
-  it('scrub is UNSUPPORTED_ACTION at P2.5', () => {
+  it('scrub is supported at P5 (flip from P2.5)', () => {
     const { host } = makeHost();
     const instance = new TimelineEngine().instantiate(TIMELINE_SPEC, host, 'timeline-independence');
-    let caught: EngineError | null = null;
-    try {
-      instance.dispatch({ type: 'scrub', target: { id: 'event-1857' } });
-    } catch (e) {
-      caught = e as EngineError;
-    }
-    expect(caught).toBeInstanceOf(EngineError);
-    expect(caught!.code).toBe('UNSUPPORTED_ACTION');
+    instance.dispatch({ type: 'scrub', target: { id: 'event-1857' } });
+    const snap = instance.snapshot() as { step: number };
+    expect(snap.step).toBe(0);
   });
 
   it('EngineRegistry.get("timeline") returns the stub after registration', () => {

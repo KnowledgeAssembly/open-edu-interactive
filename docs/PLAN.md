@@ -380,7 +380,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P2.5 — Composition smoke test | DONE |
 | P3 — Chart Engine | DONE |
 | P4 — GeoMap Engine | DONE |
-| P5 — Timeline Engine | NOT STARTED |
+| P5 — Timeline Engine | DONE |
 | P6 — Diagram Engine | NOT STARTED |
 | P7 — OpenEdu integration | NOT STARTED |
 
@@ -418,3 +418,9 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-08 | GeoMap-D3 — Namespaced result events: `select` → `geomap.entity-selected`; `focus` → `geomap.entity-focused`. Payload carries full resolved entity record (+ `links`). |
 | 2026-09-08 | GeoMap-D4 — Geographic ground-truth binding: entity location binds to `{source, featureId}` OR `{coordinates: {lat, lon}}`. Route `path` refs point-like entities. Unresolved ref → `INVALID_REFERENCE`; invalid lat/lon/geometry → `INVALID_ENTITY`. |
 | 2026-09-08 | P4 DONE: @knowledgeassemble/geomap-engine region → marker → route slice through full pipeline (scene → layout → SVG → a11y → alternative → validation → e2e), closed entity/layer types per GeoMap-D1, deterministic equirectangular projection (no d3), namespaced result events `geomap.entity-selected`/`geomap.entity-focused` per GeoMap-D3, golden fixtures (region/marker/route/odisha-coastal), conformance `?engine=geomap`, geographic-map authoring skill — full exit gate green. |
+| 2026-09-08 | Timeline-D1 — Closed temporal model: `content.kind` stays `"events"` (P2.5-frozen literal); P5 adds optional `periods[]` / `tracks[]`. Period bands and track lanes are derived layout; events remain the only selectable entity type. |
+| 2026-09-08 | Timeline-D2 — Namespaced result events: preserve `timeline.event-selected` (frozen, full event record + `links` — Gap-B contract). Add `timeline.event-focused` on D5 `focus`, same payload shape. Playback surfaces through core `state-changed` + `EngineState.playback` only — no `timeline.playback-*` invention. |
+| 2026-09-08 | Timeline-D3 — Deterministic temporal semantics: closed grammar `^[+-]?\d{1,6}(-\d{2}){0,2}$`; pure integer proleptic-Gregorian day number; no `Date`/`Date.parse`/`Intl`/`toISOString`. Year-tick ladder `1,2,5,10,25,50,100,250,500,1000`. |
+| 2026-09-08 | Timeline-D4 — Deterministic playback via core state: `playback`/`step` in `EngineState`; `play-pause` toggles; `step` clamps; `scrub` sets step to event index (replaces P2.5 UNSUPPORTED_ACTION — deliberate documented flip). `reset` clears. No derived `position` field. |
+| 2026-09-08 | Scrub-flip note: P2.5 stub treated `scrub` → UNSUPPORTED_ACTION; P5 makes scrub supported — reducer-pure, sets `step` to target event's index via `findIndex`. Documented contract change. |
+| 2026-09-08 | P5 DONE: @knowledgeassemble/timeline-engine events/periods/tracks slice through full pipeline (scene → layout → SVG → a11y → linear → validation → e2e), closed kind `"events"` per Timeline-D1, deterministic temporal scale without Date/Intl per Timeline-D3, namespaced result events `timeline.event-selected`/`timeline.event-focused` per Timeline-D2, playback via core `EngineState.playback`+`step` per Timeline-D4, P2.5 golden composition contract preserved (byte-stable golden log), golden fixtures (events/periods/tracks/independence), conformance `?engine=timeline`, temporal-timeline authoring skill — full exit gate green. |
