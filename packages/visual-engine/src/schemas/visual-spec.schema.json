@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledgeassemble.com/schemas/visual-spec.schema.json",
+  "title": "Visual Specification",
+  "description": "Canonical JSON Schema for the Visual Engine content block",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind"],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": ["number-line", "counting-set", "fraction", "fraction-comparison", "clock", "coordinate-grid", "geometry", "comparison"]
+    },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "aspectRatio": { "type": "string" },
+        "background": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$|^transparent$" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "mode": { "type": "string", "enum": ["light", "dark", "high-contrast", "print"] }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "$ref": "#/$defs/idPattern" },
+          "type": { "type": "string", "enum": ["line", "tick", "text", "circle", "rect", "group", "shape", "marker", "axis"] },
+          "role": { "type": "string" },
+          "value": { "type": "number" },
+          "interactive": { "type": "boolean" },
+          "acceptsActions": { "type": "array", "items": { "type": "string" } },
+          "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
+          "children": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/element" }
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "$ref": "#/$defs/idPattern" },
+          "type": { "type": "string" },
+          "props": { "type": "object", "additionalProperties": false },
+          "layout": { "type": "object", "additionalProperties": true },
+          "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
+          "accessibility": { "type": "object", "additionalProperties": true },
+          "interaction": { "type": "object", "additionalProperties": true }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "source", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["labels", "points-to", "contains", "part-of", "precedes", "follows", "compares-with", "corresponds-to", "belongs-to", "associated-with"]
+          },
+          "source": { "$ref": "#/$defs/idPattern" },
+          "target": { "$ref": "#/$defs/idPattern" }
+        }
+      }
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "step": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "required": ["min", "max", "step"]
+    },
+    "highlight": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "selectable": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "idPattern": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$",
+      "maxLength": 128
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "$ref": "#/$defs/idPattern" },
+        "type": { "type": "string", "enum": ["line", "tick", "text", "circle", "rect", "group", "shape", "marker", "axis"] },
+        "role": { "type": "string" },
+        "value": { "type": "number" },
+         "interactive": { "type": "boolean" },
+        "acceptsActions": { "type": "array", "items": { "type": "string" } },
+        "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/element" }
+        }
+      }
+    }
+  }
+}

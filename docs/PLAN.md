@@ -124,7 +124,7 @@ Technology (DESIGN §8, STRUCTURE §8-16):
 
 ---
 
-### P2 — Visual Engine
+### P2 — Visual Engine — DONE
 
 **Goal.** First engine. Vertical slice: **number line** end-to-end (spec → schema → scene → layout → accessible SVG → fixtures), then the visual component library.
 
