@@ -1,0 +1,139 @@
+{
+  "snapshot": {
+    "focus": "figure-independence",
+    "selection": []
+  },
+  "events": [
+    {
+      "id": "timeline-independence:0",
+      "seq": 0,
+      "name": "engine-mounted",
+      "instanceId": "timeline-independence"
+    },
+    {
+      "id": "timeline-independence:1",
+      "seq": 1,
+      "name": "engine-ready",
+      "instanceId": "timeline-independence"
+    },
+    {
+      "id": "visual-independence:2",
+      "seq": 2,
+      "name": "engine-mounted",
+      "instanceId": "visual-independence"
+    },
+    {
+      "id": "visual-independence:3",
+      "seq": 3,
+      "name": "engine-ready",
+      "instanceId": "visual-independence"
+    },
+    {
+      "id": "timeline-independence:4",
+      "seq": 4,
+      "name": "interaction-started",
+      "instanceId": "timeline-independence",
+      "action": {
+        "type": "select",
+        "target": {
+          "id": "event-1947"
+        }
+      }
+    },
+    {
+      "id": "timeline-independence:5",
+      "seq": 5,
+      "name": "state-changed",
+      "instanceId": "timeline-independence",
+      "action": {
+        "type": "select",
+        "target": {
+          "id": "event-1947"
+        }
+      }
+    },
+    {
+      "id": "timeline-independence:6",
+      "seq": 6,
+      "name": "timeline.event-selected",
+      "instanceId": "timeline-independence",
+      "action": {
+        "type": "select",
+        "target": {
+          "id": "event-1947"
+        }
+      },
+      "data": {
+        "id": "event-1947",
+        "label": "Independence",
+        "date": "1947-08-15",
+        "links": {
+          "visualEntityId": "figure-independence"
+        }
+      }
+    },
+    {
+      "id": "visual-independence:7",
+      "seq": 7,
+      "name": "interaction-started",
+      "instanceId": "visual-independence",
+      "action": {
+        "type": "focus",
+        "target": {
+          "id": "figure-independence"
+        }
+      }
+    },
+    {
+      "id": "visual-independence:8",
+      "seq": 8,
+      "name": "state-changed",
+      "instanceId": "visual-independence",
+      "action": {
+        "type": "focus",
+        "target": {
+          "id": "figure-independence"
+        }
+      }
+    },
+    {
+      "id": "visual-independence:9",
+      "seq": 9,
+      "name": "visual.figure-independence-focused",
+      "instanceId": "visual-independence",
+      "action": {
+        "type": "focus",
+        "target": {
+          "id": "figure-independence"
+        }
+      },
+      "data": {
+        "selection": []
+      }
+    },
+    {
+      "id": "visual-independence:10",
+      "seq": 10,
+      "name": "interaction-completed",
+      "instanceId": "visual-independence",
+      "action": {
+        "type": "focus",
+        "target": {
+          "id": "figure-independence"
+        }
+      }
+    },
+    {
+      "id": "timeline-independence:11",
+      "seq": 11,
+      "name": "interaction-completed",
+      "instanceId": "timeline-independence",
+      "action": {
+        "type": "select",
+        "target": {
+          "id": "event-1947"
+        }
+      }
+    }
+  ]
+}
