@@ -376,7 +376,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 |-------|--------|
 | P0 — Foundation and consolidation | DONE |
 | P1 — Platform skeleton | DONE |
-| P2 — Visual Engine | NOT STARTED |
+| P2 — Visual Engine | DONE |
 | P2.5 — Composition smoke test | NOT STARTED |
 | P3 — Chart Engine | NOT STARTED |
 | P4 — GeoMap Engine | NOT STARTED |
@@ -401,3 +401,6 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | P1 DONE: `@knowledgeassemble/interactive-engine` skeleton (envelope+Zod, D5 reducer, EventLog, EngineHost, L1–L4 pipeline, a11y primitives) green via unit tests and browser conformance e2e. |
 | 2026-09-07 | P0 marked DONE (exit criteria verified); P1 review fixes: dispatch validates before emitting (no dangling `interaction-started`), emits `interaction-completed`, `teardown` sets `phase: torn-down`, Zod `source.url` enforces URI. |
 | 2026-09-07 | P1 CI gate (scope item 1) delivered as a gap-closing follow-up: GitHub Actions workflow runs the full exit gate (`typecheck` + `lint` + `-w test` + `playwright`) on every PR and on pushes to `main` (STRUCTURE §47). |
+| 2026-09-07 | P2 DONE: @knowledgeassemble/visual-engine number-line slice → accessible SVG, L1–L4 conformance, closed component set green via full exit gate. |
+| 2026-09-07 | P2.5 T0 decision: Gap A — add `illustration` to VISUAL_KINDS (default path, recommended). |
+| 2026-09-07 | P2.5 T0 decision: Gap B — timeline stub MUST attach full event record (including `links`) to emitted `timeline.event-selected` payload so `targetIdFrom` resolves. |

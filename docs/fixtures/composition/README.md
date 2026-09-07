@@ -1,6 +1,6 @@
 # Composition fixtures
 
-**Status:** Proposed — validates against `schemas/composition.schema.json` (normative at P2.5 freeze, DESIGN D8)  
+**Status:** Normative (P2.5) — validates against `schemas/composition.schema.json` (DESIGN D8)  
 **Audience:** P2.5 conformance harness, lesson authors, AI agents
 
 These files describe **lesson-level** composition: multiple engine instances plus event→action bindings. They validate against `docs/schemas/composition.schema.json`. Embedded engine `spec` objects MUST also pass L1 on `interactive-engine.schema.json`.
