@@ -9,6 +9,10 @@ dist/
 coverage/
 *.tsbuildinfo
 
+# Test output
+playwright-report/
+test-results/
+
 # Environment
 .env
 .env.local

@@ -60,7 +60,7 @@ Technology (DESIGN §8, STRUCTURE §8-16):
 
 ## 4. Program Phases
 
-### P0 — Foundation and Consolidation — IN PROGRESS
+### P0 — Foundation and Consolidation — DONE
 
 **Goal.** Design stabilized, envelope canonical, decisions recorded, repo live.
 
@@ -86,6 +86,8 @@ Technology (DESIGN §8, STRUCTURE §8-16):
 ---
 
 ### P1 — Platform Skeleton (no engines yet)
+
+**Detailed task breakdown:** [`PLAN-P1.md`](PLAN-P1.md).
 
 **Goal.** Thin platform contract: envelope, registry, D5 reducer, host adapter stub, conformance — **with no engine and no duplicate OpenEdu products** (DESIGN D6).
 
@@ -371,8 +373,8 @@ The **Spec** step is where the per-engine normative documents missing today are 
 
 | Phase | Status |
 |-------|--------|
-| P0 — Foundation and consolidation | IN PROGRESS |
-| P1 — Platform skeleton | NOT STARTED |
+| P0 — Foundation and consolidation | DONE |
+| P1 — Platform skeleton | DONE |
 | P2 — Visual Engine | NOT STARTED |
 | P2.5 — Composition smoke test | NOT STARTED |
 | P3 — Chart Engine | NOT STARTED |
@@ -395,3 +397,5 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-07 | D7–D9: assessment seam, P2.5 composition, Visual closed set; thin chart/timeline/diagram SPEC.md. |
 | 2026-09-07 | D5 Visual interaction examples migrated; `composition.schema.json` stub for P2.5 fixtures. |
 | 2026-09-07 | P0→P1 gate resolved: standalone `@knowledgeassemble/*`; host integration + `@open-edu/*` rename deferred to P7. |
+| 2026-09-07 | P1 DONE: `@knowledgeassemble/interactive-engine` skeleton (envelope+Zod, D5 reducer, EventLog, EngineHost, L1–L4 pipeline, a11y primitives) green via unit tests and browser conformance e2e. |
+| 2026-09-07 | P0 marked DONE (exit criteria verified); P1 review fixes: dispatch validates before emitting (no dangling `interaction-started`), emits `interaction-completed`, `teardown` sets `phase: torn-down`, Zod `source.url` enforces URI. |
