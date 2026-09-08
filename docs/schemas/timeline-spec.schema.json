@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledgeassemble.com/schemas/timeline-spec.schema.json",
+  "title": "Timeline Specification",
+  "description": "Canonical JSON Schema for the Timeline Engine spec: temporal content (events/periods/tracks) plus the timeline-specific envelope surface.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "version", "id", "content"],
+  "properties": {
+    "type": { "const": "timeline" },
+    "version": { "type": "string" },
+    "id": { "$ref": "#/$defs/idPattern" },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "events"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["events"] },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "date"],
+            "properties": {
+              "id": { "$ref": "#/$defs/idPattern" },
+              "label": { "type": "string", "minLength": 1 },
+              "date": { "type": "string", "pattern": "^[+-]?\\d{1,6}(-\\d{2}){0,2}$" },
+              "links": { "type": "object", "additionalProperties": { "type": "string" } },
+              "trackId": { "$ref": "#/$defs/idPattern" }
+            }
+          }
+        },
+        "periods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "from", "to"],
+            "properties": {
+              "id": { "$ref": "#/$defs/idPattern" },
+              "label": { "type": "string", "minLength": 1 },
+              "from": { "type": "string", "pattern": "^[+-]?\\d{1,6}(-\\d{2}){0,2}$" },
+              "to": { "type": "string", "pattern": "^[+-]?\\d{1,6}(-\\d{2}){0,2}$" },
+              "description": { "type": "string" },
+              "style": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "role": { "type": "string", "enum": ["primary-period", "secondary-period", "highlight", "selected"] }
+                }
+              }
+            }
+          }
+        },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "events"],
+            "properties": {
+              "id": { "$ref": "#/$defs/idPattern" },
+              "label": { "type": "string", "minLength": 1 },
+              "events": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["class"],
+        "properties": {
+          "class": { "type": "string", "enum": ["authoritative", "illustrative", "simulated"] },
+          "title": { "type": "string" },
+          "citation": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Envelope-mirrored; actions are refined at L2 against the D5 set."
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Envelope-mirrored; label is required (checked at L4)."
+    },
+    "metadata": { "type": "object", "additionalProperties": true },
+    "purpose": { "type": "object", "additionalProperties": true },
+    "questions": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+  },
+  "$defs": {
+    "idPattern": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$",
+      "maxLength": 128
+    }
+  }
+}

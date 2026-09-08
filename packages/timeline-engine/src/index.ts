@@ -1,4 +1,11 @@
-export { TIMELINE_EVENT_SELECTED } from './schema.js';
+export { TIMELINE_EVENT_SELECTED, TIMELINE_EVENT_FOCUSED, DATE_GRAMMAR, SOURCE_CLASSES, validateTimelineContent } from './schema.js';
+export type { TimelineEvent, TimelineSpec, TimelineContent, TimelinePeriod, TimelineTrack, SourceClass } from './schema.js';
+export type { SceneNode, Scene, TimelineSemanticRole, Bounds } from './scene/types.js';
+export { buildScene } from './scene/build.js';
+export { parseDate, timeScale, niceYearTicks } from './layout/time.js';
+export { layout } from './layout/engine.js';
+export type { LayoutContext } from './layout/engine.js';
+export { svgFrom } from './render/svg.js';
+export type { SvgResult, TimeRow, A11yNode } from './render/types.js';
 export { TimelineEngine } from './engine.js';
 export { timelineReducer } from './reducer.js';
-export type { TimelineEvent, TimelineSpec, TimelineContent } from './schema.js';

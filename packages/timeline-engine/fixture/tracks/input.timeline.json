@@ -1,0 +1,21 @@
+{
+  "type": "timeline",
+  "version": "1.0.0",
+  "id": "timeline-tracks",
+  "metadata": { "title": "Tracks test" },
+  "content": {
+    "kind": "events",
+    "events": [
+      { "id": "e1", "label": "Tracked A", "date": "1900" },
+      { "id": "e2", "label": "Tracked B", "date": "1910" },
+      { "id": "e3", "label": "Default lane", "date": "1920" }
+    ],
+    "tracks": [
+      { "id": "t1", "label": "First track", "events": ["e1", "e2"] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Test tracks timeline" }
+}
