@@ -145,7 +145,7 @@ export function mountTimeline(app: HTMLElement): void {
     tryCreate(spec: unknown): { ok: boolean; code?: string; message?: string } {
       try {
         const r = new TimelineEngine().validate(spec as never);
-        return { ok: r.valid, message: r.issues.map((i: { message: string }) => i.message).join('; ') };
+        return { ok: r.valid, code: r.valid ? undefined : (r.issues[0]?.code ?? 'INVALID_SPEC'), message: r.issues.map((i: { message: string }) => i.message).join('; ') };
       } catch (error) {
         const err = error as { code?: string; message?: string };
         return { ok: false, code: err.code, message: err.message };

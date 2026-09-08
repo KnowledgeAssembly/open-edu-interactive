@@ -23,6 +23,7 @@ import type { SvgResult } from './render/types.js';
 import { svgFrom } from './render/svg.js';
 import { validateSemantic } from './validation/semantic.js';
 import { validateLayout } from './validation/layout.js';
+import { validateAccessibility } from './validation/accessibility.js';
 
 const DEFAULT_LAYOUT: LayoutContext = {
   width: 800,
@@ -52,24 +53,57 @@ function render(content: TimelineContent, ctx: LayoutContext, label?: string, de
   return { scene: laidOut, svgResult };
 }
 
+function renderForValidation(
+  content: TimelineContent,
+  label?: string,
+  description?: string,
+): { scene: Scene; svgResult: SvgResult } | ValidationResult | null {
+  try {
+    return render(content, DEFAULT_LAYOUT, label, description);
+  } catch (error) {
+    const err = error as { code?: string; message?: string };
+    return {
+      valid: false,
+      issues: [
+        {
+          level: 'L2',
+          code: (err.code as ValidationResult['issues'][number]['code']) ?? 'INVALID_STATE',
+          message: err.message ?? String(error),
+        },
+      ],
+    };
+  }
+}
+
 export class TimelineEngine implements Engine {
   readonly type: EngineType = 'timeline';
 
   validate(spec: EngineSpec): ValidationResult {
     const timelineSpec = spec as unknown as TimelineSpec;
     let artifacts: { scene: Scene; svgResult: SvgResult } | null = null;
+    const renderOrExisting = () => {
+      if (!artifacts && timelineSpec.content) {
+        const rendered = renderForValidation(timelineSpec.content, timelineSpec.accessibility?.label, timelineSpec.accessibility?.description);
+        if (rendered === null || 'valid' in rendered) {
+          return rendered ?? { valid: true, issues: [] };
+        }
+        artifacts = rendered;
+      }
+      return null;
+    };
     return runPipeline(spec, {
       semantic: (s) => validateSemantic(s as unknown as TimelineSpec),
       layout: () => {
-        if (!artifacts && timelineSpec.content) {
-          try {
-            artifacts = render(timelineSpec.content as TimelineContent, DEFAULT_LAYOUT, timelineSpec.accessibility?.label, timelineSpec.accessibility?.description);
-          } catch {
-            return { valid: true, issues: [] };
-          }
-        }
+        const rendered = renderOrExisting();
+        if (rendered !== null) return rendered;
         if (!artifacts) return { valid: true, issues: [] };
         return validateLayout(artifacts.scene, DEFAULT_LAYOUT);
+      },
+      accessibility: () => {
+        const rendered = renderOrExisting();
+        if (rendered !== null) return rendered;
+        if (!artifacts) return { valid: true, issues: [] };
+        return validateAccessibility(timelineSpec, artifacts.svgResult);
       },
     });
   }

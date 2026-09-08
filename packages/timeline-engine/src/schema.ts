@@ -58,6 +58,7 @@ export const TimelineContentSchema = z
     kind: z.literal('events'),
     events: z
       .array(TimelineEventSchema)
+      .min(1, 'events must contain at least one event (Timeline-D1)')
       .superRefine((events, ctx) => {
         const seen = new Set<string>();
         for (const [index, event] of events.entries()) {

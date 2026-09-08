@@ -98,6 +98,20 @@ test.describe('Timeline Engine e2e', () => {
       });
     });
     expect(badDate.ok).toBe(false);
+    expect(badDate.code).toBe('INVALID_SPEC');
+
+    const badCalendar = await page.evaluate(() => {
+      const h = (window as unknown as {
+        __timelineHarness: { tryCreate(s: unknown): { ok: boolean; code?: string; message?: string } }
+      }).__timelineHarness;
+      return h.tryCreate({
+        type: 'timeline', version: '1.0.0', id: 'bad',
+        content: { kind: 'events', events: [{ id: 'e1', label: 'A', date: '1947-04-31' }] },
+        sources: [{ class: 'authoritative' }],
+      });
+    });
+    expect(badCalendar.ok).toBe(false);
+    expect(badCalendar.code).toBe('INVALID_ENTITY');
 
     const unknownTrack = await page.evaluate(() => {
       const h = (window as unknown as {
@@ -113,9 +127,33 @@ test.describe('Timeline Engine e2e', () => {
       });
     });
     expect(unknownTrack.ok).toBe(false);
+    expect(unknownTrack.code).toBe('INVALID_REFERENCE');
+
+    const dupMembership = await page.evaluate(() => {
+      const h = (window as unknown as {
+        __timelineHarness: { tryCreate(s: unknown): { ok: boolean; code?: string; message?: string } }
+      }).__timelineHarness;
+      return h.tryCreate({
+        type: 'timeline', version: '1.0.0', id: 'bad',
+        content: {
+          kind: 'events',
+          events: [
+            { id: 'e1', label: 'A', date: '1900' },
+            { id: 'e2', label: 'B', date: '1910' },
+          ],
+          tracks: [
+            { id: 't1', label: 'T1', events: ['e1', 'e2'] },
+            { id: 't2', label: 'T2', events: ['e1'] },
+          ],
+        },
+        sources: [{ class: 'authoritative' }],
+      });
+    });
+    expect(dupMembership.ok).toBe(false);
+    expect(dupMembership.code).toBe('INVALID_ENTITY');
   });
 
-  test('rejection: unknown content kind fails tryCreate', async ({ page }) => {
+  test('rejection: unknown content kind fails tryCreate with INVALID_SPEC', async ({ page }) => {
     const result = await page.evaluate(() => {
       const h = (window as unknown as {
         __timelineHarness: { tryCreate(s: unknown): { ok: boolean; code?: string; message?: string } }
@@ -126,5 +164,6 @@ test.describe('Timeline Engine e2e', () => {
       });
     });
     expect(result.ok).toBe(false);
+    expect(result.code).toBe('INVALID_SPEC');
   });
 });

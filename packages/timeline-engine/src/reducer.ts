@@ -28,6 +28,9 @@ export function timelineReducer(
       return baseReducer(state, action);
     }
     case 'step': {
+      if (seq.length === 0) {
+        throw new EngineError('INVALID_STATE', 'timeline: cannot step with an empty event sequence');
+      }
       const next = Math.min(state.step + 1, seq.length - 1);
       const clampedState = { ...state, step: next, lastAction: action };
       return clampedState;

@@ -1,6 +1,10 @@
 import type { ValidationIssue } from '@knowledgeassemble/interactive-engine';
 import { DATE_GRAMMAR } from '../schema.js';
-import { parseDate } from '../layout/time.js';
+import { isValidCalendarDate, parseDate } from '../layout/time.js';
+
+function isInvalidDate(dateString: string): boolean {
+  return !DATE_GRAMMAR.test(dateString) || !isValidCalendarDate(dateString);
+}
 
 export function validateTemporal(content: {
   events?: Array<{ date: string }>;
@@ -16,27 +20,39 @@ export function validateTemporal(content: {
           code: 'INVALID_ENTITY',
           message: `timeline: event at index ${i} has invalid date "${event.date}" (must match Timeline-D3 grammar)`,
         });
+      } else if (!isValidCalendarDate(event.date)) {
+        issues.push({
+          level: 'L2' as const,
+          code: 'INVALID_ENTITY',
+          message: `timeline: event at index ${i} has out-of-range calendar date "${event.date}"`,
+        });
       }
     }
   }
 
   if (content.periods) {
     for (const [i, period] of content.periods.entries()) {
-      if (!DATE_GRAMMAR.test(period.from)) {
+      const badFromReason = DATE_GRAMMAR.test(period.from)
+        ? isValidCalendarDate(period.from) ? '' : 'out-of-range calendar date'
+        : 'date does not match Timeline-D3 grammar';
+      if (badFromReason) {
         issues.push({
           level: 'L2' as const,
           code: 'INVALID_ENTITY',
-          message: `timeline: period at index ${i} has invalid from "${period.from}"`,
+          message: `timeline: period at index ${i} has invalid from "${period.from}" (${badFromReason})`,
         });
       }
-      if (!DATE_GRAMMAR.test(period.to)) {
+      const badToReason = DATE_GRAMMAR.test(period.to)
+        ? isValidCalendarDate(period.to) ? '' : 'out-of-range calendar date'
+        : 'date does not match Timeline-D3 grammar';
+      if (badToReason) {
         issues.push({
           level: 'L2' as const,
           code: 'INVALID_ENTITY',
-          message: `timeline: period at index ${i} has invalid to "${period.to}"`,
+          message: `timeline: period at index ${i} has invalid to "${period.to}" (${badToReason})`,
         });
       }
-      if (DATE_GRAMMAR.test(period.from) && DATE_GRAMMAR.test(period.to)) {
+      if (!isInvalidDate(period.from) && !isInvalidDate(period.to)) {
         const fromDay = parseDate(period.from);
         const toDay = parseDate(period.to);
         if (fromDay > toDay) {

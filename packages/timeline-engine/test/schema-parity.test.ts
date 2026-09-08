@@ -62,4 +62,11 @@ describe('schema-parity', () => {
     const result = TimelineContentSchema.safeParse({ kind: 'tracks', events: [] });
     expect(result.success).toBe(false);
   });
+
+  it('events is required and must contain at least one event (docs minItems:1)', () => {
+    const empty = TimelineContentSchema.safeParse({ kind: 'events', events: [] });
+    expect(empty.success).toBe(false);
+    const missing = TimelineContentSchema.safeParse({ kind: 'events' });
+    expect(missing.success).toBe(false);
+  });
 });
