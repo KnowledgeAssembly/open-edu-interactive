@@ -20,11 +20,15 @@ async function walk(dir) {
   return out;
 }
 
+async function getCatalog() {
+  return JSON.parse(
+    await readFile(join(ROOT, 'packages/dev-harness/generated/fixture-catalog.json'), 'utf8'),
+  );
+}
+
 describe('fixture catalog completeness', () => {
   it('every engine fixture dir with input.*.json appears in catalog', async () => {
-    const catalog = JSON.parse(
-      await readFile(join(ROOT, 'packages/dev-harness/generated/fixture-catalog.json'), 'utf8'),
-    );
+    const catalog = await getCatalog();
     const catalogIds = new Set(catalog.map((e) => e.id));
 
     const packagesDir = join(ROOT, 'packages');
@@ -48,12 +52,44 @@ describe('fixture catalog completeness', () => {
   });
 
   it('catalog entries reference existing spec files', async () => {
-    const catalog = JSON.parse(
-      await readFile(join(ROOT, 'packages/dev-harness/generated/fixture-catalog.json'), 'utf8'),
-    );
+    const catalog = await getCatalog();
     for (const entry of catalog) {
       const full = join(ROOT, entry.specPath);
       await expect(readFile(full, 'utf8')).resolves.toBeDefined();
+    }
+  });
+
+  it('docs fixtures classified correctly', async () => {
+    const catalog = await getCatalog();
+    const docsEntries = catalog.filter((e) => e.specPath.startsWith('docs/fixtures/'));
+    const compositionEntries = docsEntries.filter((e) => e.kind === 'composition');
+    const engineDocsEntries = docsEntries.filter((e) => e.kind === 'engine');
+
+    expect(docsEntries.some((e) => e.slug.includes('widget-compat'))).toBe(false);
+    expect(docsEntries.some((e) => e.slug === 'engine-reps')).toBe(false);
+
+    expect(compositionEntries.some((e) => e.id === 'lesson/narrative-timeline-visual')).toBe(true);
+    expect(compositionEntries.some((e) => e.id === 'lesson/composed-lesson')).toBe(true);
+
+    expect(engineDocsEntries.some((e) => e.id === 'timeline/skill-example' && e.engine === 'timeline')).toBe(true);
+    expect(engineDocsEntries.some((e) => e.id === 'geomap/skill-example' && e.engine === 'geomap')).toBe(true);
+    expect(engineDocsEntries.some((e) => e.id === 'diagram/skill-example' && e.engine === 'diagram')).toBe(true);
+  });
+
+  it('golden svg paths exist on disk when declared', async () => {
+    const catalog = await getCatalog();
+    for (const entry of catalog) {
+      if (!entry.golden?.svg) continue;
+      const full = join(ROOT, entry.golden.svg);
+      await expect(readFile(full)).resolves.toBeDefined();
+    }
+  });
+
+  it('titles are populated from data.title or metadata.title', async () => {
+    const catalog = await getCatalog();
+    for (const entry of catalog) {
+      expect(entry.title).toBeTruthy();
+      expect(typeof entry.title).toBe('string');
     }
   });
 });

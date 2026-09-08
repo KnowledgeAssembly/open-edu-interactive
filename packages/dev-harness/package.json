@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./catalog": "./generated/fixture-catalog.json"
+  },
   "scripts": {
     "build": "node ../../scripts/build-fixture-catalog.mjs && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",

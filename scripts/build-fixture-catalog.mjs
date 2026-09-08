@@ -6,9 +6,22 @@ import { fileURLToPath } from 'node:url';
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const REPO = join(ROOT, '..');
 
+const ENGINE_TYPES = ['visual', 'chart', 'geomap', 'timeline', 'diagram'];
+
 function engineTypeFromDir(name) {
   const m = name.match(/^(.+)-engine$/);
   return m ? m[1] : null;
+}
+
+function classifyFixture(data, rel) {
+  if (data.legacyType) return null; // widget-compat migration metadata, not mountable
+  if (data.type && ENGINE_TYPES.includes(data.type)) {
+    return { kind: 'engine', engine: data.type };
+  }
+  if (Array.isArray(data.engines) || data.bindings) {
+    return { kind: 'composition', engine: undefined };
+  }
+  return null; // engine-reps map, unclassifiable
 }
 
 async function walk(dir, base) {
@@ -46,13 +59,12 @@ async function buildCatalog() {
       const fileName = rel.split('/').pop();
       if (!fileName.startsWith('input.')) continue;
       const slug = rel.split('/')[0];
-      const id = `${engineType}/${slug}`;
       const inputPath = join(fixtureDir, rel);
       const data = JSON.parse(await readFile(inputPath, 'utf8'));
-      const title = data?.metadata?.title ?? slug;
+      const title = data.title ?? data.metadata?.title ?? slug;
 
       const golden = {};
-      for (const ext of ['svg', 'scene', 'a11y', 'alternative', 'validation']) {
+      for (const ext of ['scene', 'a11y', 'alternative', 'validation']) {
         try {
           await readFile(join(fixtureDir, slug, `expected.${ext}.json`));
           golden[ext] = `packages/${pkg}/fixture/${slug}/expected.${ext}.json`;
@@ -60,9 +72,15 @@ async function buildCatalog() {
           // no golden file
         }
       }
+      try {
+        await readFile(join(fixtureDir, slug, 'expected.svg'));
+        golden.svg = `packages/${pkg}/fixture/${slug}/expected.svg`;
+      } catch {
+        // no golden svg
+      }
 
       entries.push({
-        id,
+        id: `${engineType}/${slug}`,
         kind: 'engine',
         engine: engineType,
         slug,
@@ -81,16 +99,18 @@ async function buildCatalog() {
       if (rel.includes('/expected.')) continue;
       const fullPath = join(docsFixtures, rel);
       const data = JSON.parse(await readFile(fullPath, 'utf8'));
-      const isComposed = data.type === 'lesson' || data.purpose?.learningObjective;
-      const kind = isComposed ? 'lesson' : 'composition';
-      const slug = rel.replace(/\.json$/, '');
-      const id = `lesson/${slug}`;
-      const title = data?.metadata?.title ?? data?.purpose?.learningObjective ?? slug;
+      const classified = classifyFixture(data, rel);
+      if (!classified) continue;
+      const { kind, engine } = classified;
+        const slug = rel.replace(/\.json$/, '').split('/').pop();
+        const id = kind === 'engine' ? `${engine}/${slug}` : `lesson/${slug}`;
+      const title = data.title ?? data.metadata?.title ?? slug;
 
       entries.push({
         id,
         kind,
         slug,
+        ...(engine ? { engine } : {}),
         specPath: `docs/fixtures/${rel}`,
         title,
       });

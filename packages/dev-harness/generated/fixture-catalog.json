@@ -24,7 +24,8 @@
     "golden": {
       "scene": "packages/diagram-engine/fixture/concept-map/expected.scene.json",
       "a11y": "packages/diagram-engine/fixture/concept-map/expected.a11y.json",
-      "alternative": "packages/diagram-engine/fixture/concept-map/expected.alternative.json"
+      "alternative": "packages/diagram-engine/fixture/concept-map/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/concept-map/expected.svg"
     },
     "title": "Simple concept map"
   },
@@ -37,7 +38,8 @@
     "golden": {
       "scene": "packages/diagram-engine/fixture/cycle/expected.scene.json",
       "a11y": "packages/diagram-engine/fixture/cycle/expected.a11y.json",
-      "alternative": "packages/diagram-engine/fixture/cycle/expected.alternative.json"
+      "alternative": "packages/diagram-engine/fixture/cycle/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/cycle/expected.svg"
     },
     "title": "Simple cycle"
   },
@@ -50,7 +52,8 @@
     "golden": {
       "scene": "packages/diagram-engine/fixture/flow/expected.scene.json",
       "a11y": "packages/diagram-engine/fixture/flow/expected.a11y.json",
-      "alternative": "packages/diagram-engine/fixture/flow/expected.alternative.json"
+      "alternative": "packages/diagram-engine/fixture/flow/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/flow/expected.svg"
     },
     "title": "Simple flow"
   },
@@ -63,7 +66,8 @@
     "golden": {
       "scene": "packages/diagram-engine/fixture/hierarchy/expected.scene.json",
       "a11y": "packages/diagram-engine/fixture/hierarchy/expected.a11y.json",
-      "alternative": "packages/diagram-engine/fixture/hierarchy/expected.alternative.json"
+      "alternative": "packages/diagram-engine/fixture/hierarchy/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/hierarchy/expected.svg"
     },
     "title": "Simple hierarchy"
   },
@@ -76,7 +80,8 @@
     "golden": {
       "scene": "packages/diagram-engine/fixture/water-cycle/expected.scene.json",
       "a11y": "packages/diagram-engine/fixture/water-cycle/expected.a11y.json",
-      "alternative": "packages/diagram-engine/fixture/water-cycle/expected.alternative.json"
+      "alternative": "packages/diagram-engine/fixture/water-cycle/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/water-cycle/expected.svg"
     },
     "title": "Water cycle"
   },
@@ -89,7 +94,8 @@
     "golden": {
       "scene": "packages/geomap-engine/fixture/marker/expected.scene.json",
       "a11y": "packages/geomap-engine/fixture/marker/expected.a11y.json",
-      "alternative": "packages/geomap-engine/fixture/marker/expected.alternative.json"
+      "alternative": "packages/geomap-engine/fixture/marker/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/marker/expected.svg"
     },
     "title": "Marker only"
   },
@@ -102,7 +108,8 @@
     "golden": {
       "scene": "packages/geomap-engine/fixture/odisha-coastal/expected.scene.json",
       "a11y": "packages/geomap-engine/fixture/odisha-coastal/expected.a11y.json",
-      "alternative": "packages/geomap-engine/fixture/odisha-coastal/expected.alternative.json"
+      "alternative": "packages/geomap-engine/fixture/odisha-coastal/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/odisha-coastal/expected.svg"
     },
     "title": "Odisha and its coastal neighbours"
   },
@@ -115,7 +122,8 @@
     "golden": {
       "scene": "packages/geomap-engine/fixture/region/expected.scene.json",
       "a11y": "packages/geomap-engine/fixture/region/expected.a11y.json",
-      "alternative": "packages/geomap-engine/fixture/region/expected.alternative.json"
+      "alternative": "packages/geomap-engine/fixture/region/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/region/expected.svg"
     },
     "title": "Region only"
   },
@@ -128,7 +136,8 @@
     "golden": {
       "scene": "packages/geomap-engine/fixture/route/expected.scene.json",
       "a11y": "packages/geomap-engine/fixture/route/expected.a11y.json",
-      "alternative": "packages/geomap-engine/fixture/route/expected.alternative.json"
+      "alternative": "packages/geomap-engine/fixture/route/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/route/expected.svg"
     },
     "title": "Route only"
   },
@@ -172,91 +181,53 @@
     "specPath": "packages/visual-engine/fixture/number-line/input.visual.json",
     "golden": {
       "scene": "packages/visual-engine/fixture/number-line/expected.scene.json",
-      "a11y": "packages/visual-engine/fixture/number-line/expected.a11y.json"
+      "a11y": "packages/visual-engine/fixture/number-line/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/number-line/expected.svg"
     },
     "title": "number-line"
   },
   {
-    "id": "lesson/composition/narrative-timeline-visual",
+    "id": "lesson/narrative-timeline-visual",
     "kind": "composition",
-    "slug": "composition/narrative-timeline-visual",
+    "slug": "narrative-timeline-visual",
     "specPath": "docs/fixtures/composition/narrative-timeline-visual.json",
-    "title": "composition/narrative-timeline-visual"
+    "title": "Timeline drives visual focus (composition smoke test)"
   },
   {
-    "id": "lesson/composition/skill-example",
+    "id": "lesson/skill-example",
     "kind": "composition",
-    "slug": "composition/skill-example",
+    "slug": "skill-example",
     "specPath": "docs/fixtures/composition/skill-example.json",
-    "title": "composition/skill-example"
+    "title": "Composition skill canonical example"
   },
   {
-    "id": "lesson/diagram/skill-example",
-    "kind": "lesson",
-    "slug": "diagram/skill-example",
+    "id": "diagram/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "diagram",
     "specPath": "docs/fixtures/diagram/skill-example.json",
     "title": "Photosynthesis flow"
   },
   {
-    "id": "lesson/geomap/skill-example",
-    "kind": "lesson",
-    "slug": "geomap/skill-example",
+    "id": "geomap/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "geomap",
     "specPath": "docs/fixtures/geomap/skill-example.json",
     "title": "Odisha and its coastal neighbours"
   },
   {
-    "id": "lesson/p7/composed-lesson",
+    "id": "lesson/composed-lesson",
     "kind": "composition",
-    "slug": "p7/composed-lesson",
+    "slug": "composed-lesson",
     "specPath": "docs/fixtures/p7/composed-lesson.json",
-    "title": "p7/composed-lesson"
+    "title": "Timeline drives visual focus (composition smoke test)"
   },
   {
-    "id": "lesson/p7/engine-reps",
-    "kind": "composition",
-    "slug": "p7/engine-reps",
-    "specPath": "docs/fixtures/p7/engine-reps.json",
-    "title": "p7/engine-reps"
-  },
-  {
-    "id": "lesson/p7/widget-compat/core.hotspot",
-    "kind": "composition",
-    "slug": "p7/widget-compat/core.hotspot",
-    "specPath": "docs/fixtures/p7/widget-compat/core.hotspot.json",
-    "title": "p7/widget-compat/core.hotspot"
-  },
-  {
-    "id": "lesson/p7/widget-compat/core.image-compare",
-    "kind": "composition",
-    "slug": "p7/widget-compat/core.image-compare",
-    "specPath": "docs/fixtures/p7/widget-compat/core.image-compare.json",
-    "title": "p7/widget-compat/core.image-compare"
-  },
-  {
-    "id": "lesson/p7/widget-compat/core.timeline",
-    "kind": "composition",
-    "slug": "p7/widget-compat/core.timeline",
-    "specPath": "docs/fixtures/p7/widget-compat/core.timeline.json",
-    "title": "p7/widget-compat/core.timeline"
-  },
-  {
-    "id": "lesson/p7/widget-compat/math.number-line",
-    "kind": "composition",
-    "slug": "p7/widget-compat/math.number-line",
-    "specPath": "docs/fixtures/p7/widget-compat/math.number-line.json",
-    "title": "p7/widget-compat/math.number-line"
-  },
-  {
-    "id": "lesson/p7/widget-compat/science.label-diagram",
-    "kind": "composition",
-    "slug": "p7/widget-compat/science.label-diagram",
-    "specPath": "docs/fixtures/p7/widget-compat/science.label-diagram.json",
-    "title": "p7/widget-compat/science.label-diagram"
-  },
-  {
-    "id": "lesson/timeline/skill-example",
-    "kind": "lesson",
-    "slug": "timeline/skill-example",
+    "id": "timeline/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "timeline",
     "specPath": "docs/fixtures/timeline/skill-example.json",
     "title": "Indian independence — key events"
   }
