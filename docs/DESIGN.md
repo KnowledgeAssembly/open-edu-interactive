@@ -499,10 +499,12 @@ Terms are normative. Engine specs may extend, never redefine.
 |----------|------|
 | **DESIGN.md** (this file) | System-wide decisions, principles, contract of contracts |
 | `docs/INTERACTIVE-ENGINE-SPEC.md` | Shared architecture & semantic contract (§1-101): vocabulary, actions, events, state, error model, spec hierarchy |
+| `docs/SYSTEM-ARCHITECTURE.md` | High-level system architecture: runtime model, engine contract, validation pipeline, composition, host seam, packaging |
+| `docs/DEVELOPER-GUIDE.md` | How to integrate and how to extend the engines |
 | `docs/STRUCTURE.md` | Repository layout, package names, tech stack, platform phases (§7 naming per D2) |
 | `docs/schemas/interactive-engine.schema.json` | Machine-readable envelope |
 | `docs/engines/<engine>/VISION.md` | Why — learning philosophy and educational roles |
 | `docs/engines/<engine>/SPEC.md` | What — normative declaration and examples |
-| `docs/engines/<engine>/ARCHITECTURE.md`, `COMPONENTS.md`, `PROJECT.md` | How — implementation guidance (Visual only today) |
+| `docs/engines/<engine>/ARCHITECTURE.md`, `COMPONENTS.md`, `PROJECT.md` | How — implementation guidance for a specific engine (Visual only today) |
 
-**Reading order for agents:** DESIGN.md → INTERACTIVE-ENGINE-SPEC.md → target engine's SPEC.md/VISION.md → (Visual) ARCHITECTURE.md.
+**Reading order for agents:** DESIGN.md → INTERACTIVE-ENGINE-SPEC.md → SYSTEM-ARCHITECTURE.md → (DEVELOPER-GUIDE.md) → target engine's SPEC.md/VISION.md → (Visual) `engines/visual/ARCHITECTURE.md` (engine implementation only, not the system architecture).
