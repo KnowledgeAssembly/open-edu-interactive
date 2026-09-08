@@ -52,9 +52,36 @@ function render(
   label?: string,
   description?: string,
 ): { scene: Scene; svgResult: SvgResult } {
-  const scene = layout(buildScene(content, resolveAsset), ctx);
+  const scene = layout(buildScene(content, resolveAsset), ctx, content.viewport);
   const svgResult = svgFrom(scene, ctx, label, description);
   return { scene, svgResult };
+}
+
+function hasUriSources(content: GeoMapContent): boolean {
+  return (content.geography?.sources ?? []).some((s) => s.uri !== undefined && s.data === undefined);
+}
+
+function renderForValidation(
+  content: GeoMapContent,
+  label?: string,
+  description?: string,
+): { scene: Scene; svgResult: SvgResult } | ValidationResult | null {
+  if (hasUriSources(content)) {
+    return null;
+  }
+  try {
+    return render(content, DEFAULT_LAYOUT, (id: string) => id, label, description);
+  } catch (error) {
+    const err = error as { code?: string; message?: string };
+    return {
+      valid: false,
+      issues: [{
+        level: 'L2',
+        code: (err.code as ValidationResult['issues'][number]['code']) ?? 'INVALID_STATE',
+        message: err.message ?? String(error),
+      }],
+    };
+  }
 }
 
 export class GeoMapEngine implements Engine {
@@ -67,26 +94,22 @@ export class GeoMapEngine implements Engine {
       semantic: (s) => validateSemantic(s as unknown as GeoMapSpec),
       layout: () => {
         if (!artifacts && geomapSpec.content) {
-          artifacts = render(
-            geomapSpec.content,
-            DEFAULT_LAYOUT,
-            (id: string) => id,
-            geomapSpec.accessibility?.label,
-            geomapSpec.accessibility?.description,
-          );
+          const rendered = renderForValidation(geomapSpec.content, geomapSpec.accessibility?.label, geomapSpec.accessibility?.description);
+          if (rendered === null || 'valid' in rendered) {
+            return rendered ?? { valid: true, issues: [] };
+          }
+          artifacts = rendered;
         }
         if (!artifacts) return { valid: true, issues: [] };
         return validateLayout(artifacts.scene, DEFAULT_LAYOUT);
       },
       accessibility: () => {
         if (!artifacts && geomapSpec.content) {
-          artifacts = render(
-            geomapSpec.content,
-            DEFAULT_LAYOUT,
-            (id: string) => id,
-            geomapSpec.accessibility?.label,
-            geomapSpec.accessibility?.description,
-          );
+          const rendered = renderForValidation(geomapSpec.content, geomapSpec.accessibility?.label, geomapSpec.accessibility?.description);
+          if (rendered === null || 'valid' in rendered) {
+            return rendered ?? { valid: true, issues: [] };
+          }
+          artifacts = rendered;
         }
         if (!artifacts) return { valid: true, issues: [] };
         return validateAccessibility(geomapSpec, artifacts.svgResult);

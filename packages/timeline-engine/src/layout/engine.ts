@@ -1,5 +1,5 @@
 import type { Scene, SceneNode } from '../scene/types.js';
-import { timeScale, niceYearTicks } from './time.js';
+import { timeScale, niceYearTicks, yearOf, prolepticGregorianDayNumber } from './time.js';
 import { rect } from './lanes.js';
 
 export interface LayoutContext {
@@ -46,14 +46,28 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
 
   const markerDomain = nodeBounds(markers, 'event-marker');
   const periodDomain = periodBounds(periods);
-  const domain: [number, number] = [
-    Math.min(markerDomain[0], periodDomain[0]),
-    Math.max(markerDomain[1], periodDomain[1]),
-  ];
+  const presentDomains: Array<[number, number]> = [];
+  if (markers.length > 0) presentDomains.push(markerDomain);
+  if (periods.length > 0) presentDomains.push(periodDomain);
+  const domain: [number, number] = presentDomains.length === 0
+    ? [0, 1]
+    : [
+        Math.min(...presentDomains.map((d) => d[0])),
+        Math.max(...presentDomains.map((d) => d[1])),
+      ];
   if (domain[1] <= domain[0]) domain[1] = domain[0] + 1;
 
-  const ticks = niceYearTicks(domain[0], domain[1]);
-  const xScale = timeScale(ticks.domain, [plotX, plotX + plotW]);
+  const yearTicks = niceYearTicks(yearOf(domain[0]), yearOf(domain[1]));
+  const firstTickYear = yearTicks.ticks[0]!;
+  const lastTickYear = yearTicks.ticks[yearTicks.ticks.length - 1]!;
+  const firstTickDay = prolepticGregorianDayNumber(firstTickYear, 1, 1);
+  const lastTickDay = prolepticGregorianDayNumber(lastTickYear, 1, 1);
+  const axisDomain: [number, number] = [
+    Math.min(domain[0], firstTickDay),
+    Math.max(domain[1], lastTickDay),
+  ];
+  if (axisDomain[1] <= axisDomain[0]) axisDomain[1] = axisDomain[0] + 1;
+  const xScale = timeScale(axisDomain, [plotX, plotX + plotW]);
 
   const plotY = pad.top;
   const laneCount = tracks.length;
@@ -90,18 +104,18 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
   const tickNodes: SceneNode[] = [];
   const labelNodes: SceneNode[] = [];
 
-  for (const [i, t] of ticks.ticks.entries()) {
-    const x = xScale(t);
+  for (const [i, year] of yearTicks.ticks.entries()) {
+    const x = xScale(prolepticGregorianDayNumber(year, 1, 1));
     const gId = `gridline-${i}`;
-    gridNodes.push({ id: gId, role: 'gridline', kind: 'line', value: t, children: [] });
+    gridNodes.push({ id: gId, role: 'gridline', kind: 'line', value: year, children: [] });
     const tkId = `tick-${i}`;
     tickNodes.push({
-      id: tkId, role: 'tick', kind: 'tick', value: t,
+      id: tkId, role: 'tick', kind: 'tick', value: year,
       bounds: rect(x - 1, plotY + plotH, 2, 6), children: [],
     });
     const lbId = `label-tick-${i}`;
     labelNodes.push({
-      id: lbId, role: 'label', kind: 'text', value: t, label: String(t),
+      id: lbId, role: 'label', kind: 'text', value: year, label: String(year),
       bounds: rect(x - 30, plotY + plotH + 8, 60, 18), children: [],
     });
   }

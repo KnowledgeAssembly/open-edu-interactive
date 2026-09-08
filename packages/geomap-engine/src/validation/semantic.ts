@@ -1,7 +1,8 @@
 import { ACTION_TYPES } from '@knowledgeassemble/interactive-engine';
 import type { ValidationResult } from '@knowledgeassemble/interactive-engine';
-import { ENTITY_TYPES, LAYER_TYPES, ROLE_TYPES, SOURCE_CLASSES } from '../schema.js';
-import type { GeoMapSpec } from '../schema.js';
+import { ENTITY_TYPES, LAYER_TYPES, ROLE_TYPES, SOURCE_CLASSES, GeoMapContentSchema } from '../schema.js';
+import type { GeoMapSpec, GeoMapContent } from '../schema.js';
+import { validateGeography } from './geographic.js';
 
 function isFiniteNumber(v: unknown): boolean {
   return typeof v === 'number' && Number.isFinite(v);
@@ -18,6 +19,20 @@ export function validateSemantic(spec: GeoMapSpec): ValidationResult {
   if (!content) {
     return { valid: false, issues: [{ level: 'L2', code: 'INVALID_ENTITY', message: 'content is required' }] };
   }
+
+  const schemaCheck = GeoMapContentSchema.safeParse(content);
+  if (!schemaCheck.success) {
+    for (const issue of schemaCheck.error.issues) {
+      issues.push({
+        level: 'L2',
+        code: 'INVALID_SPEC',
+        path: `content.${issue.path.join('.')}`,
+        message: `content schema error: ${issue.message}`,
+      });
+    }
+  }
+
+  const geomapContent = content as GeoMapContent;
 
   const projection = content.projection;
   if (projection && projection.type !== 'equirectangular') {
@@ -124,7 +139,17 @@ export function validateSemantic(spec: GeoMapSpec): ValidationResult {
     }
   }
 
+  validateGeography(geomapContent, issues);
+
   const sources = spec.sources;
+  if (!sources || sources.length === 0) {
+    issues.push({
+      level: 'L2',
+      code: 'INVALID_SPEC',
+      message: 'sources[] is required (provenance, DESIGN §9)',
+    });
+  }
+
   if (sources) {
     for (const src of sources) {
       if (!(SOURCE_CLASSES as readonly string[]).includes(src.class)) {

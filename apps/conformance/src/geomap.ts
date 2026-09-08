@@ -16,7 +16,7 @@ const ODISHA_SPEC = {
         {
           id: 'india-states',
           type: 'geojson',
-          class: 'authoritative',
+          class: 'illustrative',
           data: {
             type: 'FeatureCollection',
             features: [
@@ -45,7 +45,7 @@ const ODISHA_SPEC = {
   },
   interaction: { mode: 'explore', actions: ['select', 'deselect', 'focus', 'reset'] },
   questions: [],
-  sources: [{ class: 'authoritative' }],
+  sources: [{ class: 'illustrative' }],
   accessibility: { label: 'Map of Odisha, its capital Bhubaneswar, and coastal connections.' },
 };
 
@@ -144,7 +144,7 @@ export function mountGeomap(app: HTMLElement): void {
     tryCreate(spec: unknown): { ok: boolean; code?: string; message?: string } {
       try {
         const r = new GeoMapEngine().validate(spec as never);
-        return { ok: r.valid, message: r.issues.map((i) => i.message).join('; ') };
+        return { ok: r.valid, code: r.issues[0]?.code, message: r.issues.map((i) => i.message).join('; ') };
       } catch (error) {
         const err = error as { code?: string; message?: string };
         return { ok: false, code: err.code, message: err.message };

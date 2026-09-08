@@ -6,6 +6,14 @@ function escapeXml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function fmt(n: number): string {
+  return String(Math.round(n * 100) / 100);
+}
+
+function polylinePoints(pts: Array<{ x: number; y: number }>): string {
+  return pts.map((p) => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
+}
+
 function nodeToSvg(node: SceneNode, indent: number): string {
   const pad = '  '.repeat(indent);
   let attrs = `id="${escapeXml(node.id)}" data-oedu-role="${escapeXml(node.role)}"`;
@@ -19,6 +27,12 @@ function nodeToSvg(node: SceneNode, indent: number): string {
     attrs += ` title="${escapeXml(node.description)}"`;
   }
 
+  if (node.kind === 'route' && node.points && node.points.length > 0) {
+    const dots = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
+    const line = `${pad}  <polyline ${attrs} points="${polylinePoints(node.points)}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+    return `${pad}<g ${attrs}>\n${line}\n${dots}\n${pad}</g>`;
+  }
+
   if (node.children.length > 0) {
     const children = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
     return `${pad}<g ${attrs}>\n${children}\n${pad}</g>`;
@@ -30,16 +44,21 @@ function nodeToSvg(node: SceneNode, indent: number): string {
   const cy = y + height / 2;
 
   switch (node.kind) {
-    case 'region':
+    case 'region': {
+      if (node.path && node.path.length > 1) {
+        const d = `${node.path.map((p, i) => (i === 0 ? `M ${fmt(p.x)} ${fmt(p.y)}` : `L ${fmt(p.x)} ${fmt(p.y)}`)).join(' ')} Z`;
+        return `${pad}<path ${attrs} d="${d}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`;
+      }
       return `${pad}<rect ${attrs} x="${x}" y="${y}" width="${width}" height="${height}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" rx="2"/>`;
+    }
     case 'marker':
-      return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${Math.max(4, Math.min(width, height) / 2)}" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>`;
+      return `${pad}<circle ${attrs} cx="${fmt(cx)}" cy="${fmt(cy)}" r="${Math.max(4, Math.min(width, height) / 2)}" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>`;
     case 'label':
-      return `${pad}<text ${attrs} x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" font-size="12">${escapeXml(node.label ?? '')}</text>`;
+      return `${pad}<text ${attrs} x="${fmt(cx)}" y="${fmt(cy)}" text-anchor="middle" dominant-baseline="central" font-size="12">${escapeXml(node.label ?? '')}</text>`;
+    case 'legend-item':
+      return `${pad}<text ${attrs} x="${fmt(x + 6)}" y="${fmt(cy)}" text-anchor="start" dominant-baseline="central" font-size="12">${escapeXml(node.label ?? '')}</text>`;
     case 'route-segment':
-      return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="3" fill="currentColor" opacity="0.5"/>`;
-    case 'route':
-      return `${pad}<g ${attrs}></g>`;
+      return `${pad}<circle ${attrs} cx="${fmt(cx)}" cy="${fmt(cy)}" r="3" fill="currentColor" opacity="0.5"/>`;
     default:
       return `${pad}<g ${attrs}></g>`;
   }
@@ -65,7 +84,7 @@ export function svgFrom(scene: Scene, ctx: LayoutContext, label?: string, desc?:
   const width = ctx.width;
   const height = ctx.height;
 
-  const childrenSvg = scene.nodes.map((n) => nodeToSvg(n, 1)).join('\n');
+  const childrenSvg = scene.nodes.filter((n) => !n.hidden).map((n) => nodeToSvg(n, 1)).join('\n');
 
   const title = label ?? 'GeoMap';
   const description = desc ?? 'An interactive geographic map';
@@ -86,7 +105,7 @@ ${childrenSvg}
   const seenEntityIds = new Set<string>();
 
   function walk(node: SceneNode): void {
-    if (node.interactive && node.acceptsActions) {
+    if (!node.hidden && node.interactive && node.acceptsActions) {
       a11y.push({
         id: node.id,
         role: 'button',

@@ -1,5 +1,6 @@
 import { EngineError } from '@knowledgeassemble/interactive-engine';
 import type { TimelineContent, TimelineEvent, TimelineTrack } from '../schema.js';
+import { parseDate } from '../layout/time.js';
 import type { Scene, SceneNode } from './types.js';
 
 function assertUnique(seen: Set<string>, id: string, what: string): void {
@@ -7,26 +8,6 @@ function assertUnique(seen: Set<string>, id: string, what: string): void {
     throw new EngineError('INVALID_ENTITY', `timeline: duplicate ${what} id "${id}"`);
   }
   seen.add(id);
-}
-
-function dayNumber(dateString: string): number {
-  const neg = dateString.startsWith('-');
-  const parts = (neg ? dateString.slice(1) : dateString).split('-').map(Number);
-  let year = parts[0] ?? 0;
-  if (neg) year = -year;
-  const month = parts[1] ?? 1;
-  const day = parts[2] ?? 1;
-  return prolepticGregorianDayNumber(year, month, day);
-}
-
-function prolepticGregorianDayNumber(year: number, month: number, day: number): number {
-  const y = month <= 2 ? year - 1 : year;
-  const m = month <= 2 ? month + 12 : month;
-  const era = y >= 0 ? y : y - 3999;
-  const e = Math.floor(era / 400);
-  const f = era - e * 400;
-  const jd = Math.floor(365.25 * f) - Math.floor(f / 100) + Math.floor(f / 4) + day + (153 * m + 2) / 5 + 1721119 + e * 146097;
-  return jd;
 }
 
 export function buildScene(content: TimelineContent): Scene {
@@ -81,7 +62,7 @@ export function buildScene(content: TimelineContent): Scene {
   const defaultTrackId = 'track-default';
 
   for (const event of content.events) {
-    const dn = dayNumber(event.date);
+    const dn = parseDate(event.date);
     const trackId = eventTrack.get(event.id) ?? event.trackId ?? defaultTrackId;
     const marker: SceneNode = {
       id: event.id,
@@ -106,8 +87,8 @@ export function buildScene(content: TimelineContent): Scene {
   const periodIds = new Set<string>();
   if (content.periods) {
     for (const period of content.periods) {
-      const fromDay = dayNumber(period.from);
-      const toDay = dayNumber(period.to);
+      const fromDay = parseDate(period.from);
+      const toDay = parseDate(period.to);
       const pid = `period-${period.id}`;
       assertUnique(seen, pid, 'period-node');
       periodIds.add(pid);

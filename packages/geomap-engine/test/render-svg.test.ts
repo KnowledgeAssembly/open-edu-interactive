@@ -9,7 +9,7 @@ function identityAsset(id: string): string { return id; }
 const content: GeoMapContent = {
   projection: { type: 'equirectangular' },
   geography: {
-    sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+    sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
   },
   entities: [
     { id: 'bhubaneswar', type: 'city', name: 'Bhubaneswar', description: 'Capital of Odisha', location: { coordinates: { lat: 20.2961, lon: 85.8245 } } },

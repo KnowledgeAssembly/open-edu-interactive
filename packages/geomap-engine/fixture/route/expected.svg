@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Route only map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <g id="geom-route-layer-my-route" data-oedu-role="route" aria-label="my-route">
+    <polyline id="geom-route-layer-my-route" data-oedu-role="route" aria-label="my-route" points="148,552 400,300 652,48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle id="geom-route-layer-my-route-seg-0" data-oedu-role="route-segment" aria-label="City A" cx="148" cy="552" r="3" fill="currentColor" opacity="0.5"/>
+    <circle id="geom-route-layer-my-route-seg-1" data-oedu-role="route-segment" aria-label="City B" cx="400" cy="300" r="3" fill="currentColor" opacity="0.5"/>
+    <circle id="geom-route-layer-my-route-seg-2" data-oedu-role="route-segment" aria-label="City C" cx="652" cy="48" r="3" fill="currentColor" opacity="0.5"/>
+  </g>
+  <circle id="geom-markers-a" data-oedu-role="marker" data-oedu-interactive="true" aria-label="City A" cx="148" cy="552" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  <circle id="geom-markers-b" data-oedu-role="marker" data-oedu-interactive="true" aria-label="City B" cx="400" cy="300" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  <circle id="geom-markers-c" data-oedu-role="marker" data-oedu-interactive="true" aria-label="City C" cx="652" cy="48" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

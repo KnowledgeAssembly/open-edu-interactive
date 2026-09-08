@@ -12,7 +12,7 @@ const validSpec: GeoMapSpec = {
   content: {
     projection: { type: 'equirectangular' },
     geography: {
-      sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+      sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
     },
     entities: [
       { id: 'pt', type: 'city', name: 'Point', location: { coordinates: { lat: 20, lon: 85 } } },
@@ -23,7 +23,7 @@ const validSpec: GeoMapSpec = {
   },
   interaction: { mode: 'explore', actions: ['select', 'focus'] },
   questions: [],
-  sources: [{ class: 'authoritative' }],
+  sources: [{ class: 'illustrative' }],
   accessibility: { label: 'Test map' },
 };
 
@@ -118,7 +118,7 @@ describe('GeoMapEngine', () => {
     const badSpec: GeoMapSpec = {
       ...validSpec,
       content: {
-        geography: { sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }] },
+        geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
         entities: [{ id: 'ghost', type: 'state', name: 'Ghost', location: { source: 'src', featureId: 'nonexistent' } }],
         layers: [{ id: 'l', type: 'region', items: [{ entity: 'ghost' }] }],
       },

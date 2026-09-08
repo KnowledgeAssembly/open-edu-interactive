@@ -11,7 +11,7 @@
         {
           "id": "src",
           "type": "geojson",
-          "class": "authoritative",
+          "class": "illustrative",
           "data": { "type": "FeatureCollection", "features": [{ "id": "r1", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]] } }] }
         }
       ]
@@ -25,6 +25,6 @@
   },
   "interaction": { "mode": "explore", "actions": ["select", "focus"] },
   "questions": [],
-  "sources": [{ "class": "authoritative" }],
+  "sources": [{ "class": "illustrative" }],
   "accessibility": { "label": "Region only map" }
 }

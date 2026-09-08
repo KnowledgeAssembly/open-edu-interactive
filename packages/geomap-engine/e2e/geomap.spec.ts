@@ -56,7 +56,7 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
     }
   });
 
-  test('data fidelity: tryCreate of a spec with unknown projection type fails', async ({ page }) => {
+  test('data fidelity: tryCreate rejects an unknown projection type', async ({ page }) => {
     const result = await page.evaluate(() => {
       const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean } } }).__geomapHarness;
       return h.tryCreate({
@@ -65,7 +65,7 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
         id: 'bad-proj',
         content: {
           projection: { type: 'mercator' },
-          geography: { sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }] },
+          geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
           entities: [{ id: 'pt', type: 'city', name: 'Pt', location: { coordinates: { lat: 0, lon: 0 } } }],
           layers: [{ id: 'l', type: 'marker', items: [{ entity: 'pt' }] }],
         },
@@ -74,22 +74,92 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
     expect(result.ok).toBe(false);
   });
 
-  test('rejection: unknown content key and "flow" layer type fail tryCreate', async ({ page }) => {
+  test('data fidelity: missing featureId reference fails with INVALID_REFERENCE', async ({ page }) => {
     const result = await page.evaluate(() => {
-      const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean; message?: string } } }).__geomapHarness;
+      const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } } }).__geomapHarness;
+      return h.tryCreate({
+        type: 'geomap',
+        version: '1.0.0',
+        id: 'ghost-feature',
+        content: {
+          projection: { type: 'equirectangular' },
+          geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
+          entities: [{ id: 'ghost', type: 'state', name: 'Ghost', location: { source: 'src', featureId: 'nonexistent' } }],
+          layers: [{ id: 'l', type: 'region', items: [{ entity: 'ghost' }] }],
+        },
+      });
+    });
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe('INVALID_REFERENCE');
+  });
+
+  test('data fidelity: out-of-range lat/lon in source geometry fails with INVALID_ENTITY', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } } }).__geomapHarness;
+      return h.tryCreate({
+        type: 'geomap',
+        version: '1.0.0',
+        id: 'bad-geom',
+        content: {
+          projection: { type: 'equirectangular' },
+          geography: {
+            sources: [
+              {
+                id: 'src',
+                type: 'geojson',
+                class: 'illustrative',
+                data: {
+                  type: 'FeatureCollection',
+                  features: [{ id: 'r1', type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [1, 91], [0, 91], [0, 0]]] } }],
+                },
+              },
+            ],
+          },
+          entities: [{ id: 'r1', type: 'region', name: 'Bad Region', location: { source: 'src', featureId: 'r1' } }],
+          layers: [{ id: 'l', type: 'region', items: [{ entity: 'r1' }] }],
+        },
+      });
+    });
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe('INVALID_ENTITY');
+  });
+
+  test('rejection: unknown content key fails with INVALID_SPEC (strict schema)', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } } }).__geomapHarness;
+      return h.tryCreate({
+        type: 'geomap',
+        version: '1.0.0',
+        id: 'bad-key',
+        content: {
+          projection: { type: 'equirectangular' },
+          geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
+          entities: [{ id: 'pt', type: 'city', name: 'Pt', location: { coordinates: { lat: 0, lon: 0 } } }],
+          layers: [{ id: 'l', type: 'marker', items: [{ entity: 'pt' }] }],
+          timeline: [],
+        },
+      });
+    });
+    expect(result.ok).toBe(false);
+    expect(result.code).toBe('INVALID_SPEC');
+  });
+
+  test('rejection: unknown "flow" layer type fails strict content schema (INVALID_SPEC)', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const h = (window as unknown as { __geomapHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } } }).__geomapHarness;
       return h.tryCreate({
         type: 'geomap',
         version: '1.0.0',
         id: 'bad-flow',
         content: {
           projection: { type: 'equirectangular' },
-          geography: { sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }] },
+          geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
           entities: [{ id: 'pt', type: 'city', name: 'Pt', location: { coordinates: { lat: 0, lon: 0 } } }],
           layers: [{ id: 'l', type: 'flow', items: [{ entity: 'pt' }] }],
-          animations: [],
         },
       });
     });
     expect(result.ok).toBe(false);
+    expect(result.code).toBe('INVALID_SPEC');
   });
 });

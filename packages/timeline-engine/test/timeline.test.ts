@@ -134,7 +134,7 @@ describe('TimelineEngine', () => {
     };
     const result = new TimelineEngine().validate(dup as unknown as EngineSpec);
     expect(result.valid).toBe(false);
-    expect(result.issues[0]?.code).toBe('INVALID_ENTITY');
+    expect(result.issues[0]?.code).toBe('INVALID_SPEC');
   });
 
   it('rejects an unknown content.kind (L2)', () => {
@@ -145,7 +145,7 @@ describe('TimelineEngine', () => {
     };
     const result = new TimelineEngine().validate(bad as unknown as EngineSpec);
     expect(result.valid).toBe(false);
-    expect(result.issues[0]?.code).toBe('INVALID_ENTITY');
+    expect(result.issues[0]?.code).toBe('INVALID_SPEC');
   });
 
   it('teardown sets phase to torn-down', () => {

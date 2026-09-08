@@ -1,3 +1,52 @@
+export function isLeapYear(year: number): boolean {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+export function daysInMonth(year: number, month: number): number {
+  switch (month) {
+    case 2:
+      return isLeapYear(year) ? 29 : 28;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30;
+    default:
+      return 31;
+  }
+}
+
+export function isValidCalendarDate(dateString: string): boolean {
+  const neg = dateString.startsWith('-');
+  const body = neg ? dateString.slice(1) : dateString;
+  const parts = body.split('-');
+  const year = Number(parts[0] ?? 0) * (neg ? -1 : 1);
+  if (!Number.isInteger(year)) return false;
+  if (parts.length === 1) return true;
+  const month = Number(parts[1]);
+  if (!Number.isInteger(month) || month < 1 || month > 12) return false;
+  if (parts.length === 2) return true;
+  const day = Number(parts[2]);
+  return Number.isInteger(day) && day >= 1 && day <= daysInMonth(year, month);
+}
+
+export const JDN_0001_01_01 = 1721426;
+
+export function prolepticGregorianDayNumber(year: number, month: number, day: number): number {
+  const a = Math.floor((14 - month) / 12);
+  const y = year + 4800 - a;
+  const m = month + 12 * a - 3;
+  return (
+    day +
+    Math.floor((153 * m + 2) / 5) +
+    365 * y +
+    Math.floor(y / 4) -
+    Math.floor(y / 100) +
+    Math.floor(y / 400) -
+    32045
+  );
+}
+
 export function parseDate(dateString: string): number {
   const neg = dateString.startsWith('-');
   const parts = (neg ? dateString.slice(1) : dateString).split('-').map(Number);
@@ -8,14 +57,15 @@ export function parseDate(dateString: string): number {
   return prolepticGregorianDayNumber(year, month, day);
 }
 
-function prolepticGregorianDayNumber(year: number, month: number, day: number): number {
-  const y = month <= 2 ? year - 1 : year;
-  const m = month <= 2 ? month + 12 : month;
-  const era = y >= 0 ? y : y - 3999;
-  const e = Math.floor(era / 400);
-  const f = era - e * 400;
-  const jd = Math.floor(365.25 * f) - Math.floor(f / 100) + Math.floor(f / 4) + day + (153 * m + 2) / 5 + 1721119 + e * 146097;
-  return jd;
+export function yearOf(civilDay: number): number {
+  let y = Math.round((civilDay - JDN_0001_01_01) / 365.2425) + 1;
+  while (prolepticGregorianDayNumber(y, 1, 1) > civilDay) {
+    y -= 1;
+  }
+  while (prolepticGregorianDayNumber(y + 1, 1, 1) <= civilDay) {
+    y += 1;
+  }
+  return y;
 }
 
 export function timeScale(domain: [number, number], range: [number, number]): {

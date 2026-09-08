@@ -9,12 +9,20 @@ export interface Bounds {
   height: number;
 }
 
+export interface XY {
+  x: number;
+  y: number;
+}
+
 export interface SceneNode {
   id: string;
   role: GeoMapSemanticRole;
   kind: string;
   geometry?: { type: string; coordinates: unknown };
   bounds?: Bounds;
+  path?: XY[];
+  points?: XY[];
+  hidden?: boolean;
   label?: string;
   description?: string;
   interactive?: boolean;

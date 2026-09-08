@@ -1,0 +1,20 @@
+[
+  {
+    "id": "geom-markers-a",
+    "role": "button",
+    "label": "City A",
+    "children": []
+  },
+  {
+    "id": "geom-markers-b",
+    "role": "button",
+    "label": "City B",
+    "children": []
+  },
+  {
+    "id": "geom-markers-c",
+    "role": "button",
+    "label": "City C",
+    "children": []
+  }
+]

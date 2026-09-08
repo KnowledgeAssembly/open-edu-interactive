@@ -67,4 +67,24 @@ describe('layout', () => {
     expect(band?.bounds).toBeDefined();
     expect(band?.bounds!.width).toBeGreaterThan(0);
   });
+
+  it('labels axis ticks with real years on a day-number domain', () => {
+    const content: TimelineContent = {
+      kind: 'events',
+      events: [
+        { id: 'e1', label: 'A', date: '1757' },
+        { id: 'e2', label: 'B', date: '1947-08-15' },
+      ],
+    };
+    const scene = layout(buildScene(content), CTX);
+    const labels = scene.nodes.filter((n) => n.kind === 'text' && n.id.startsWith('label-tick-'));
+    expect(labels.length).toBeGreaterThanOrEqual(4);
+    for (const node of labels) {
+      expect(node.label).toMatch(/^-?\d+$/);
+      const year = Number(node.label);
+      expect(year, `label "${node.label}" must be a 4-digit year, not a day number`).toBeGreaterThanOrEqual(1700);
+      expect(year, `label "${node.label}" must be a 4-digit year, not a day number`).toBeLessThanOrEqual(2000);
+      expect(node.value).toBe(year);
+    }
+  });
 });

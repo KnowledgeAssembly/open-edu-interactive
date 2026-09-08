@@ -22,8 +22,10 @@ const CANONICAL_FIXTURE = {
           ],
         },
         interaction: { mode: 'explore', actions: ['select', 'focus', 'play-pause', 'step', 'reset'] },
+        sources: [{ class: 'authoritative' }],
+        accessibility: { label: 'Timeline of Indian independence' },
         questions: [],
-      },
+        },
     },
     {
       instanceId: 'visual-independence',

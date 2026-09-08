@@ -5,7 +5,10 @@ import { validateAccessibility } from '../src/validation/accessibility.js';
 import { buildScene } from '../src/scene/build.js';
 import { layout } from '../src/layout/engine.js';
 import { svgFrom } from '../src/render/svg.js';
+import { GeoMapEngine } from '../src/engine.js';
 import type { GeoMapSpec, GeoMapContent } from '../src/schema.js';
+
+const ENGINE = new GeoMapEngine();
 
 function identityAsset(id: string): string { return id; }
 
@@ -18,7 +21,7 @@ const validSpec: GeoMapSpec = {
   content: {
     projection: { type: 'equirectangular' },
     geography: {
-      sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+      sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
     },
     entities: [
       { id: 'pt', type: 'city', name: 'Point', location: { coordinates: { lat: 20, lon: 85 } } },
@@ -29,7 +32,7 @@ const validSpec: GeoMapSpec = {
   },
   interaction: { mode: 'explore', actions: ['select', 'focus'] },
   questions: [],
-  sources: [{ class: 'authoritative' }],
+  sources: [{ class: 'illustrative' }],
   accessibility: { label: 'Test map' },
 };
 
@@ -107,18 +110,18 @@ describe('validateSemantic', () => {
     expect(result.issues.some((i) => i.code === 'INVALID_ENTITY')).toBe(true);
   });
 
-  it('fails for missing featureId ref (INVALID_REFERENCE) via buildScene, not validateSemantic', () => {
+  it('fails for missing featureId ref (INVALID_REFERENCE) at validateSemantic', () => {
     const spec: GeoMapSpec = {
       ...validSpec,
       content: {
-        geography: { sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }] },
+        geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
         entities: [{ id: 'ghost', type: 'state', name: 'Ghost', location: { source: 'src', featureId: 'nonexistent' } }],
         layers: [{ id: 'l', type: 'region', items: [{ entity: 'ghost' }] }],
       },
     };
     const result = validateSemantic(spec);
-    // validateSemantic checks source ID exists, not featureId — that's buildScene's job
-    expect(result.valid).toBe(true);
+    expect(result.valid).toBe(false);
+    expect(result.issues.some((i) => i.code === 'INVALID_REFERENCE')).toBe(true);
   });
 
   it('fails for unknown layer type "flow" (INVALID_ENTITY)', () => {
@@ -142,6 +145,76 @@ describe('validateSemantic', () => {
     const result = validateSemantic(spec);
     expect(result.valid).toBe(false);
     expect(result.issues.some((i) => i.code === 'INVALID_ACTION')).toBe(true);
+  });
+
+  it('requires envelope sources[] (INVALID_SPEC, provenance DESIGN §9)', () => {
+    const spec: GeoMapSpec = { ...validSpec, sources: undefined };
+    const result = validateSemantic(spec);
+    expect(result.valid).toBe(false);
+    expect(result.issues.some((i) => i.code === 'INVALID_SPEC' && /sources\[\] is required/.test(i.message))).toBe(true);
+  });
+});
+
+describe('GeoMapEngine.validate never throws', () => {
+  it('accepts a uri-backed source at validate time (no throw, valid)', () => {
+    const spec: GeoMapSpec = {
+      ...validSpec,
+      content: {
+        geography: { sources: [{ id: 'remote', type: 'geojson', class: 'illustrative', uri: 'geo://india' }] },
+        entities: [{ id: 'state', type: 'state', name: 'State', location: { source: 'remote', featureId: 'unknown' } }],
+        layers: [{ id: 'regions', type: 'region', items: [{ entity: 'state' }] }],
+      },
+    };
+    const result = ENGINE.validate(spec as never);
+    expect(result.valid).toBe(true);
+  });
+
+  it('rejects a source with neither data nor uri without throwing (INVALID_SPEC)', () => {
+    const spec: GeoMapSpec = {
+      ...validSpec,
+      content: {
+        geography: { sources: [{ id: 'empty', type: 'geojson', class: 'illustrative' }] },
+        entities: [{ id: 'e', type: 'city', name: 'E', location: { coordinates: { lat: 0, lon: 0 } } }],
+        layers: [{ id: 'l', type: 'marker', items: [{ entity: 'e' }] }],
+      },
+    };
+    expect(() => ENGINE.validate(spec as never)).not.toThrow();
+    const result = ENGINE.validate(spec as never);
+    expect(result.valid).toBe(false);
+    expect(result.issues.some((i) => i.code === 'INVALID_SPEC')).toBe(true);
+  });
+
+  it('flags overlapping interactive regions without throwing (INVALID_STATE)', () => {
+    const spec: GeoMapSpec = {
+      ...validSpec,
+      content: {
+        geography: {
+          sources: [{
+            id: 'src',
+            type: 'geojson',
+            class: 'illustrative',
+            data: {
+              type: 'FeatureCollection',
+              features: [
+                { id: 'a', type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]] } },
+                { id: 'b', type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[5, 5], [15, 5], [15, 15], [5, 15], [5, 5]]] } },
+              ],
+            },
+          }],
+        },
+        entities: [
+          { id: 'a', type: 'region', name: 'A', location: { source: 'src', featureId: 'a' } },
+          { id: 'b', type: 'region', name: 'B', location: { source: 'src', featureId: 'b' } },
+        ],
+        layers: [
+          { id: 'regions', type: 'region', items: [{ entity: 'a', interactive: true }, { entity: 'b', interactive: true }] },
+        ],
+      },
+    };
+    expect(() => ENGINE.validate(spec as never)).not.toThrow();
+    const result = ENGINE.validate(spec as never);
+    expect(result.valid).toBe(false);
+    expect(result.issues.some((i) => i.code === 'INVALID_STATE' && /overlaps region/.test(i.message))).toBe(true);
   });
 });
 

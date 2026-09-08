@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Region only map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <path id="geom-regions-r1" data-oedu-role="region" data-oedu-interactive="true" aria-label="Region One" d="M 148 552 L 652 552 L 652 48 L 148 48 L 148 552 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

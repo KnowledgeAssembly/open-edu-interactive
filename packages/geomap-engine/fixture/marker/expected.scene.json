@@ -1,0 +1,84 @@
+{
+  "nodes": [
+    {
+      "id": "geom-markers-city1",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Test City",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "city1",
+        "entityType": "city",
+        "name": "Test City",
+        "location": {
+          "coordinates": {
+            "lat": 20,
+            "lon": 85
+          }
+        },
+        "lat": 20,
+        "lon": 85
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85,
+          20
+        ]
+      },
+      "bounds": {
+        "x": 378,
+        "y": 278,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "semantics": {
+    "geom-markers-city1": {
+      "id": "geom-markers-city1",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Test City",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "city1",
+        "entityType": "city",
+        "name": "Test City",
+        "location": {
+          "coordinates": {
+            "lat": 20,
+            "lon": 85
+          }
+        },
+        "lat": 20,
+        "lon": 85
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85,
+          20
+        ]
+      },
+      "bounds": {
+        "x": 378,
+        "y": 278,
+        "width": 44,
+        "height": 44
+      }
+    }
+  }
+}

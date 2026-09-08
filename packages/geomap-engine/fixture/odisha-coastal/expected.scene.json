@@ -1,0 +1,590 @@
+{
+  "nodes": [
+    {
+      "id": "geom-states-odisha",
+      "role": "region",
+      "kind": "region",
+      "label": "Odisha",
+      "description": "A state on the eastern coast of India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "odisha",
+        "entityType": "state",
+        "name": "Odisha",
+        "description": "A state on the eastern coast of India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "odisha"
+        },
+        "sourceClass": "illustrative",
+        "lat": 18.8,
+        "lon": 82.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82,
+              18
+            ],
+            [
+              84,
+              18
+            ],
+            [
+              84,
+              20
+            ],
+            [
+              82,
+              20
+            ],
+            [
+              82,
+              18
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 316,
+          "y": 552
+        },
+        {
+          "x": 316,
+          "y": 384
+        },
+        {
+          "x": 148,
+          "y": 384
+        },
+        {
+          "x": 148,
+          "y": 552
+        }
+      ],
+      "bounds": {
+        "x": 148,
+        "y": 384,
+        "width": 168,
+        "height": 168
+      }
+    },
+    {
+      "id": "geom-states-west-bengal",
+      "role": "region",
+      "kind": "region",
+      "label": "West Bengal",
+      "description": "A state in eastern India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "west-bengal",
+        "entityType": "state",
+        "name": "West Bengal",
+        "description": "A state in eastern India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "west-bengal"
+        },
+        "sourceClass": "illustrative",
+        "lat": 22.8,
+        "lon": 86.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86,
+              22
+            ],
+            [
+              88,
+              22
+            ],
+            [
+              88,
+              24
+            ],
+            [
+              86,
+              24
+            ],
+            [
+              86,
+              22
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 484,
+          "y": 216
+        },
+        {
+          "x": 652,
+          "y": 216
+        },
+        {
+          "x": 652,
+          "y": 48
+        },
+        {
+          "x": 484,
+          "y": 48
+        },
+        {
+          "x": 484,
+          "y": 216
+        }
+      ],
+      "bounds": {
+        "x": 484,
+        "y": 48,
+        "width": 168,
+        "height": 168
+      }
+    },
+    {
+      "id": "geom-cities-bhubaneswar",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Bhubaneswar",
+      "description": "Capital of Odisha.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "bhubaneswar",
+        "entityType": "city",
+        "name": "Bhubaneswar",
+        "description": "Capital of Odisha.",
+        "location": {
+          "coordinates": {
+            "lat": 20.2961,
+            "lon": 85.8245
+          }
+        },
+        "lat": 20.2961,
+        "lon": 85.8245
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.8245,
+          20.2961
+        ]
+      },
+      "bounds": {
+        "x": 447.25800000000004,
+        "y": 337.1276000000001,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "geom-water-chilika",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Chilika Lake",
+      "description": "A brackish water lagoon.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "chilika",
+        "entityType": "lake",
+        "name": "Chilika Lake",
+        "description": "A brackish water lagoon.",
+        "location": {
+          "coordinates": {
+            "lat": 19.7,
+            "lon": 85.3
+          }
+        },
+        "lat": 19.7,
+        "lon": 85.3
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.3,
+          19.7
+        ]
+      },
+      "bounds": {
+        "x": 403.19999999999976,
+        "y": 387.20000000000005,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "geom-legend",
+      "role": "legend",
+      "kind": "legend",
+      "label": "Legend",
+      "children": [
+        {
+          "id": "geom-legend-item-0",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "State",
+          "metadata": {
+            "role": "primary-region"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 14,
+            "width": 77,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-1",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "City / Lake",
+          "metadata": {
+            "role": "marker"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 32,
+            "width": 77,
+            "height": 16
+          }
+        }
+      ],
+      "bounds": {
+        "x": 8,
+        "y": 8,
+        "width": 93,
+        "height": 46
+      }
+    }
+  ],
+  "semantics": {
+    "geom-states-odisha": {
+      "id": "geom-states-odisha",
+      "role": "region",
+      "kind": "region",
+      "label": "Odisha",
+      "description": "A state on the eastern coast of India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "odisha",
+        "entityType": "state",
+        "name": "Odisha",
+        "description": "A state on the eastern coast of India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "odisha"
+        },
+        "sourceClass": "illustrative",
+        "lat": 18.8,
+        "lon": 82.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82,
+              18
+            ],
+            [
+              84,
+              18
+            ],
+            [
+              84,
+              20
+            ],
+            [
+              82,
+              20
+            ],
+            [
+              82,
+              18
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 316,
+          "y": 552
+        },
+        {
+          "x": 316,
+          "y": 384
+        },
+        {
+          "x": 148,
+          "y": 384
+        },
+        {
+          "x": 148,
+          "y": 552
+        }
+      ],
+      "bounds": {
+        "x": 148,
+        "y": 384,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-states-west-bengal": {
+      "id": "geom-states-west-bengal",
+      "role": "region",
+      "kind": "region",
+      "label": "West Bengal",
+      "description": "A state in eastern India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "west-bengal",
+        "entityType": "state",
+        "name": "West Bengal",
+        "description": "A state in eastern India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "west-bengal"
+        },
+        "sourceClass": "illustrative",
+        "lat": 22.8,
+        "lon": 86.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              86,
+              22
+            ],
+            [
+              88,
+              22
+            ],
+            [
+              88,
+              24
+            ],
+            [
+              86,
+              24
+            ],
+            [
+              86,
+              22
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 484,
+          "y": 216
+        },
+        {
+          "x": 652,
+          "y": 216
+        },
+        {
+          "x": 652,
+          "y": 48
+        },
+        {
+          "x": 484,
+          "y": 48
+        },
+        {
+          "x": 484,
+          "y": 216
+        }
+      ],
+      "bounds": {
+        "x": 484,
+        "y": 48,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-cities-bhubaneswar": {
+      "id": "geom-cities-bhubaneswar",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Bhubaneswar",
+      "description": "Capital of Odisha.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "bhubaneswar",
+        "entityType": "city",
+        "name": "Bhubaneswar",
+        "description": "Capital of Odisha.",
+        "location": {
+          "coordinates": {
+            "lat": 20.2961,
+            "lon": 85.8245
+          }
+        },
+        "lat": 20.2961,
+        "lon": 85.8245
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.8245,
+          20.2961
+        ]
+      },
+      "bounds": {
+        "x": 447.25800000000004,
+        "y": 337.1276000000001,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-water-chilika": {
+      "id": "geom-water-chilika",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Chilika Lake",
+      "description": "A brackish water lagoon.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "chilika",
+        "entityType": "lake",
+        "name": "Chilika Lake",
+        "description": "A brackish water lagoon.",
+        "location": {
+          "coordinates": {
+            "lat": 19.7,
+            "lon": 85.3
+          }
+        },
+        "lat": 19.7,
+        "lon": 85.3
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.3,
+          19.7
+        ]
+      },
+      "bounds": {
+        "x": 403.19999999999976,
+        "y": 387.20000000000005,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-legend": {
+      "id": "geom-legend",
+      "role": "legend",
+      "kind": "legend",
+      "label": "Legend",
+      "children": [
+        {
+          "id": "geom-legend-item-0",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "State",
+          "metadata": {
+            "role": "primary-region"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 14,
+            "width": 77,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-1",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "City / Lake",
+          "metadata": {
+            "role": "marker"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 32,
+            "width": 77,
+            "height": 16
+          }
+        }
+      ],
+      "bounds": {
+        "x": 8,
+        "y": 8,
+        "width": 93,
+        "height": 46
+      }
+    }
+  }
+}
