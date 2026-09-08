@@ -6,6 +6,7 @@ import { mountChart } from './chart.js';
 import { mountGeomap } from './geomap.js';
 import { mountTimeline } from './timeline.js';
 import { mountDiagram } from './diagram.js';
+import { mountLesson } from './lesson.js';
 
 interface HarnessRemote {
   dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void;
@@ -44,7 +45,9 @@ if (!app) {
 
 const engineParam = new URLSearchParams(window.location.search).get('engine') ?? 'core';
 
-if (engineParam === 'composition') {
+if (engineParam === 'lesson') {
+  mountLesson(app);
+} else if (engineParam === 'composition') {
   mountComposition(app);
 } else if (engineParam === 'chart') {
   mountChart(app);
