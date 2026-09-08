@@ -1,0 +1,353 @@
+{
+  "nodes": [
+    {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-root",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Root",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus",
+            "expand",
+            "collapse"
+          ],
+          "metadata": {
+            "nodeId": "root",
+            "label": "Root"
+          },
+          "children": [],
+          "bounds": {
+            "x": 50,
+            "y": 55,
+            "width": 100,
+            "height": 50
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "node-child1",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Child 1",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "child1",
+            "label": "Child 1"
+          },
+          "children": [],
+          "bounds": {
+            "x": 50,
+            "y": 135,
+            "width": 100,
+            "height": 50
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "node-child2",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Child 2",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "child2",
+            "label": "Child 2"
+          },
+          "children": [],
+          "bounds": {
+            "x": 170,
+            "y": 135,
+            "width": 100,
+            "height": 50
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "edge-root-child1",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "root contains child1",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "root",
+            "toNodeId": "child1",
+            "relationship": "contains",
+            "labels": [],
+            "edgeId": "edge-root-child1"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-root-child2",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "root contains child2",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "root",
+            "toNodeId": "child2",
+            "relationship": "contains",
+            "labels": [],
+            "edgeId": "edge-root-child2"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "node-root": {
+      "id": "node-root",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Root",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus",
+        "expand",
+        "collapse"
+      ],
+      "metadata": {
+        "nodeId": "root",
+        "label": "Root"
+      },
+      "children": []
+    },
+    "root": {
+      "id": "node-root",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Root",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus",
+        "expand",
+        "collapse"
+      ],
+      "metadata": {
+        "nodeId": "root",
+        "label": "Root"
+      },
+      "children": []
+    },
+    "node-child1": {
+      "id": "node-child1",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Child 1",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "child1",
+        "label": "Child 1"
+      },
+      "children": []
+    },
+    "child1": {
+      "id": "node-child1",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Child 1",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "child1",
+        "label": "Child 1"
+      },
+      "children": []
+    },
+    "node-child2": {
+      "id": "node-child2",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Child 2",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "child2",
+        "label": "Child 2"
+      },
+      "children": []
+    },
+    "child2": {
+      "id": "node-child2",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Child 2",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "child2",
+        "label": "Child 2"
+      },
+      "children": []
+    },
+    "edge-root-child1": {
+      "id": "edge-root-child1",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "root contains child1",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "root",
+        "toNodeId": "child1",
+        "relationship": "contains",
+        "labels": [],
+        "edgeId": "edge-root-child1"
+      },
+      "children": []
+    },
+    "edge-root-child2": {
+      "id": "edge-root-child2",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "root contains child2",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "root",
+        "toNodeId": "child2",
+        "relationship": "contains",
+        "labels": [],
+        "edgeId": "edge-root-child2"
+      },
+      "children": []
+    },
+    "diagram-root": {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-root",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Root",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus",
+            "expand",
+            "collapse"
+          ],
+          "metadata": {
+            "nodeId": "root",
+            "label": "Root"
+          },
+          "children": []
+        },
+        {
+          "id": "node-child1",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Child 1",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "child1",
+            "label": "Child 1"
+          },
+          "children": []
+        },
+        {
+          "id": "node-child2",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Child 2",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "child2",
+            "label": "Child 2"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-root-child1",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "root contains child1",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "root",
+            "toNodeId": "child1",
+            "relationship": "contains",
+            "labels": [],
+            "edgeId": "edge-root-child1"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-root-child2",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "root contains child2",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "root",
+            "toNodeId": "child2",
+            "relationship": "contains",
+            "labels": [],
+            "edgeId": "edge-root-child2"
+          },
+          "children": []
+        }
+      ]
+    }
+  }
+}

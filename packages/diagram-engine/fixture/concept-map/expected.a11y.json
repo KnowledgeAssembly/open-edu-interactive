@@ -1,0 +1,32 @@
+[
+  {
+    "id": "node-gravity",
+    "role": "button",
+    "label": "Gravity",
+    "children": []
+  },
+  {
+    "id": "node-mass",
+    "role": "button",
+    "label": "Mass",
+    "children": []
+  },
+  {
+    "id": "node-weight",
+    "role": "button",
+    "label": "Weight",
+    "children": []
+  },
+  {
+    "id": "edge-gravity-weight",
+    "role": "link",
+    "label": "Gravity influences Weight",
+    "children": []
+  },
+  {
+    "id": "edge-mass-weight",
+    "role": "link",
+    "label": "Mass influences Weight",
+    "children": []
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "simple-hierarchy",
+  "metadata": { "title": "Simple hierarchy" },
+  "purpose": { "learningObjective": "Understand a hierarchy structure" },
+  "content": {
+    "kind": "hierarchy",
+    "nodes": [
+      { "id": "root", "label": "Root" },
+      { "id": "child1", "label": "Child 1" },
+      { "id": "child2", "label": "Child 2" }
+    ],
+    "edges": [
+      { "from": "root", "to": "child1", "relationship": "contains" },
+      { "from": "root", "to": "child2", "relationship": "contains" }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "expand", "collapse", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Simple hierarchy: Root contains Child 1 and Child 2" }
+}

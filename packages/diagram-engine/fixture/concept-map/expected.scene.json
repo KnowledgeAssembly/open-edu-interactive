@@ -1,0 +1,369 @@
+{
+  "nodes": [
+    {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-gravity",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Gravity",
+          "description": "A force that attracts mass",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "gravity",
+            "label": "Gravity",
+            "description": "A force that attracts mass"
+          },
+          "children": [],
+          "bounds": {
+            "x": 240,
+            "y": 240,
+            "width": 136,
+            "height": 45
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "node-mass",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Mass",
+          "description": "Amount of matter",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "mass",
+            "label": "Mass",
+            "description": "Amount of matter"
+          },
+          "children": [],
+          "bounds": {
+            "x": 400,
+            "y": 240,
+            "width": 136,
+            "height": 45
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "node-weight",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Weight",
+          "description": "Force due to gravity",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "weight",
+            "label": "Weight",
+            "description": "Force due to gravity"
+          },
+          "children": [],
+          "bounds": {
+            "x": 240,
+            "y": 300,
+            "width": 136,
+            "height": 45
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "edge-gravity-weight",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "gravity influences weight",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "gravity",
+            "toNodeId": "weight",
+            "relationship": "influences",
+            "labels": [],
+            "edgeId": "edge-gravity-weight"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-mass-weight",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "mass influences weight",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "mass",
+            "toNodeId": "weight",
+            "relationship": "influences",
+            "labels": [],
+            "edgeId": "edge-mass-weight"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "node-gravity": {
+      "id": "node-gravity",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Gravity",
+      "description": "A force that attracts mass",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "gravity",
+        "label": "Gravity",
+        "description": "A force that attracts mass"
+      },
+      "children": []
+    },
+    "gravity": {
+      "id": "node-gravity",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Gravity",
+      "description": "A force that attracts mass",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "gravity",
+        "label": "Gravity",
+        "description": "A force that attracts mass"
+      },
+      "children": []
+    },
+    "node-mass": {
+      "id": "node-mass",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Mass",
+      "description": "Amount of matter",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "mass",
+        "label": "Mass",
+        "description": "Amount of matter"
+      },
+      "children": []
+    },
+    "mass": {
+      "id": "node-mass",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Mass",
+      "description": "Amount of matter",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "mass",
+        "label": "Mass",
+        "description": "Amount of matter"
+      },
+      "children": []
+    },
+    "node-weight": {
+      "id": "node-weight",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Weight",
+      "description": "Force due to gravity",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "weight",
+        "label": "Weight",
+        "description": "Force due to gravity"
+      },
+      "children": []
+    },
+    "weight": {
+      "id": "node-weight",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Weight",
+      "description": "Force due to gravity",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "weight",
+        "label": "Weight",
+        "description": "Force due to gravity"
+      },
+      "children": []
+    },
+    "edge-gravity-weight": {
+      "id": "edge-gravity-weight",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "gravity influences weight",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "gravity",
+        "toNodeId": "weight",
+        "relationship": "influences",
+        "labels": [],
+        "edgeId": "edge-gravity-weight"
+      },
+      "children": []
+    },
+    "edge-mass-weight": {
+      "id": "edge-mass-weight",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "mass influences weight",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "mass",
+        "toNodeId": "weight",
+        "relationship": "influences",
+        "labels": [],
+        "edgeId": "edge-mass-weight"
+      },
+      "children": []
+    },
+    "diagram-root": {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-gravity",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Gravity",
+          "description": "A force that attracts mass",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "gravity",
+            "label": "Gravity",
+            "description": "A force that attracts mass"
+          },
+          "children": []
+        },
+        {
+          "id": "node-mass",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Mass",
+          "description": "Amount of matter",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "mass",
+            "label": "Mass",
+            "description": "Amount of matter"
+          },
+          "children": []
+        },
+        {
+          "id": "node-weight",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Weight",
+          "description": "Force due to gravity",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "weight",
+            "label": "Weight",
+            "description": "Force due to gravity"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-gravity-weight",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "gravity influences weight",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "gravity",
+            "toNodeId": "weight",
+            "relationship": "influences",
+            "labels": [],
+            "edgeId": "edge-gravity-weight"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-mass-weight",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "mass influences weight",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "mass",
+            "toNodeId": "weight",
+            "relationship": "influences",
+            "labels": [],
+            "edgeId": "edge-mass-weight"
+          },
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "node-a",
+    "role": "button",
+    "label": "Stage A",
+    "children": []
+  },
+  {
+    "id": "node-b",
+    "role": "button",
+    "label": "Stage B",
+    "children": []
+  },
+  {
+    "id": "edge-a-b",
+    "role": "link",
+    "label": "Stage A leads-to Stage B",
+    "children": []
+  },
+  {
+    "id": "edge-b-a",
+    "role": "link",
+    "label": "Stage B leads-to Stage A",
+    "children": []
+  }
+]

@@ -13,7 +13,8 @@
     "@knowledgeassemble/visual-engine": "workspace:*",
     "@knowledgeassemble/timeline-engine": "workspace:*",
     "@knowledgeassemble/chart-engine": "workspace:*",
-    "@knowledgeassemble/geomap-engine": "workspace:*"
+    "@knowledgeassemble/geomap-engine": "workspace:*",
+    "@knowledgeassemble/diagram-engine": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

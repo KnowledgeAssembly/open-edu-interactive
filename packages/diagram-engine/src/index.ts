@@ -1,0 +1,14 @@
+export { DIAGRAM_KINDS, PROFILES, RELATIONSHIPS, LAYOUT_TYPES, SOURCE_CLASSES, DIAGRAM_EVENT_SELECTED, DIAGRAM_EVENT_FOCUSED, DIAGRAM_EVENT_FOLLOWED, defaultLayoutType, validateDiagramContent, DiagramContentSchema, DiagramNodeSchema, DiagramEdgeSchema } from './schema.js';
+export type { DiagramKind, Profile, Relationship, LayoutType, SourceClass, DiagramSpec, DiagramContent, DiagramNodeEntry, DiagramEdgeEntry, DiagramNodeSpec, DiagramEdgeSpec } from './schema.js';
+export type { SceneNode, Scene, DiagramSemanticRole, Bounds } from './scene/types.js';
+export { buildScene } from './scene/build.js';
+export type { Graph } from './layout/graph.js';
+export { adjacency, kahnTopoSort, detectCycles } from './layout/graph.js';
+export { layout } from './layout/engine.js';
+export type { LayoutContext } from './layout/engine.js';
+export { svgFrom } from './render/svg.js';
+export type { SvgResult, RelRow, A11yNode } from './render/types.js';
+export { validateSemantic } from './validation/semantic.js';
+export { validateLayout } from './validation/layout.js';
+export { validateAccessibility } from './validation/accessibility.js';
+export { DiagramEngine } from './engine.js';

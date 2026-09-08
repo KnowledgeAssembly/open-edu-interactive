@@ -1,0 +1,41 @@
+[
+  {
+    "kind": "node",
+    "id": "node-gravity",
+    "nodeId": "gravity",
+    "label": "Gravity",
+    "description": "A force that attracts mass"
+  },
+  {
+    "kind": "node",
+    "id": "node-mass",
+    "nodeId": "mass",
+    "label": "Mass",
+    "description": "Amount of matter"
+  },
+  {
+    "kind": "node",
+    "id": "node-weight",
+    "nodeId": "weight",
+    "label": "Weight",
+    "description": "Force due to gravity"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-gravity-weight",
+    "from": "gravity",
+    "relationship": "influences",
+    "to": "weight",
+    "fromLabel": "Gravity",
+    "toLabel": "Weight"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-mass-weight",
+    "from": "mass",
+    "relationship": "influences",
+    "to": "weight",
+    "fromLabel": "Mass",
+    "toLabel": "Weight"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "kind": "node",
+    "id": "node-a",
+    "nodeId": "a",
+    "label": "Stage A"
+  },
+  {
+    "kind": "node",
+    "id": "node-b",
+    "nodeId": "b",
+    "label": "Stage B"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-a-b",
+    "from": "a",
+    "relationship": "leads-to",
+    "to": "b",
+    "fromLabel": "Stage A",
+    "toLabel": "Stage B"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-b-a",
+    "from": "b",
+    "relationship": "leads-to",
+    "to": "a",
+    "fromLabel": "Stage B",
+    "toLabel": "Stage A"
+  },
+  {
+    "kind": "cycle",
+    "id": "cycle-b-a",
+    "members": [
+      "b",
+      "a"
+    ],
+    "label": "Cycle: b → a"
+  }
+]

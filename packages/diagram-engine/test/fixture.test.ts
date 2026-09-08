@@ -1,0 +1,96 @@
+import { describe, it, expect } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { DiagramEngine } from '../src/engine.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const fixtureRoot = resolve(__dirname, '..', 'fixture');
+const SKILL_EXAMPLE_URL = new URL('../../../docs/fixtures/diagram/skill-example.json', import.meta.url);
+
+function* walkFixtures(dir: string): Generator<{ kind: string; file: string }> {
+  const entries = readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      yield* walkFixtures(resolve(dir, entry.name));
+    } else if (entry.name === 'input.diagram.json') {
+      yield { kind: dir.split('/').pop() ?? 'unknown', file: resolve(dir, entry.name) };
+    }
+  }
+}
+
+function makeHost() {
+  return {
+    locale: 'en' as const,
+    tokens: {} as Record<string, string>,
+    reducedMotion: false,
+    announce: () => {},
+    onEvent: () => {},
+    resolveAsset: (id: string) => id,
+  };
+}
+
+describe('Golden fixtures', () => {
+  const engine = new DiagramEngine();
+
+  for (const { kind, file } of walkFixtures(fixtureRoot)) {
+    it(`${kind}: ${file.split('/').pop()} - round-trip validation`, () => {
+      const spec = JSON.parse(readFileSync(file, 'utf-8'));
+      const result = engine.validate(spec);
+      expect(result.valid).toBe(true);
+    });
+
+    it(`${kind}: determinism - two runs produce identical SVG`, () => {
+      const spec = JSON.parse(readFileSync(file, 'utf-8'));
+      const inst1 = engine.instantiate(spec, makeHost(), `${kind}-test1`);
+      const inst2 = engine.instantiate(spec, makeHost(), `${kind}-test2`);
+      const s1 = inst1.snapshot() as unknown as { svgResult: { svg: string } };
+      const s2 = inst2.snapshot() as unknown as { svgResult: { svg: string } };
+      expect(s1.svgResult.svg).toBe(s2.svgResult.svg);
+    });
+
+    it(`${kind}: golden expected artifacts are byte-stable`, () => {
+      const spec = JSON.parse(readFileSync(file, 'utf-8'));
+      const dir = dirname(file);
+      const inst = engine.instantiate(spec, makeHost(), `${kind}-golden`);
+      const snap = inst.snapshot() as unknown as {
+        scene: unknown;
+        svgResult: { svg: string; a11y: unknown; alternative: unknown };
+      };
+      expect(snap.svgResult.svg).toBe(readFileSync(resolve(dir, 'expected.svg'), 'utf-8'));
+      expect(snap.scene).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.scene.json'), 'utf-8')));
+      expect(snap.svgResult.a11y).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.a11y.json'), 'utf-8')));
+      expect(snap.svgResult.alternative).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.alternative.json'), 'utf-8')));
+    });
+
+    it(`${kind}: every laid-out node in expected.scene.json carries positionSource 'illustrative'`, () => {
+      const dir = dirname(file);
+      const scene = JSON.parse(readFileSync(resolve(dir, 'expected.scene.json'), 'utf-8')) as {
+        nodes: Array<{ kind: string; children: Array<{ kind: string; positionSource?: string }> }>;
+      };
+      const root = scene.nodes.find((n) => n.kind === 'diagram');
+      const nodeChildren = root!.children.filter((n) => n.kind === 'node');
+      expect(nodeChildren.length).toBeGreaterThan(0);
+      for (const n of nodeChildren) {
+        expect(n.positionSource).toBe('illustrative');
+      }
+    });
+  }
+
+  it('water-cycle fixture every positionSource is illustrative', () => {
+    const spec = JSON.parse(readFileSync(resolve(fixtureRoot, 'water-cycle', 'input.diagram.json'), 'utf-8'));
+    const inst = engine.instantiate(spec, makeHost(), 'water-cycle-fixture');
+    const snap = inst.snapshot() as unknown as { scene: { nodes: Array<{ kind: string; children: Array<Record<string, unknown>> }> } };
+    const root = snap.scene.nodes.find((n: { kind: string }) => n.kind === 'diagram');
+    const nodeChildren = root!.children.filter((n: Record<string, unknown>) => n.kind === 'node');
+    for (const n of nodeChildren) {
+      expect(n.positionSource).toBe('illustrative');
+    }
+  });
+
+  it('skill example round-trips DiagramEngine.validate', () => {
+    const spec = JSON.parse(readFileSync(SKILL_EXAMPLE_URL, 'utf8'));
+    const result = new DiagramEngine().validate(spec);
+    expect(result.valid, result.issues.map((i) => i.message).join('; ')).toBe(true);
+  });
+});

@@ -5,6 +5,7 @@ import { mountComposition } from './composition.js';
 import { mountChart } from './chart.js';
 import { mountGeomap } from './geomap.js';
 import { mountTimeline } from './timeline.js';
+import { mountDiagram } from './diagram.js';
 
 interface HarnessRemote {
   dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void;
@@ -51,6 +52,8 @@ if (engineParam === 'composition') {
   mountGeomap(app);
 } else if (engineParam === 'timeline') {
   mountTimeline(app);
+} else if (engineParam === 'diagram') {
+  mountDiagram(app);
 } else if (engineParam === 'visual') {
   const SPEC: EngineSpec = {
     type: 'visual',

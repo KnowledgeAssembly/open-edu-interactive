@@ -1,0 +1,38 @@
+[
+  {
+    "kind": "node",
+    "id": "node-start",
+    "nodeId": "start",
+    "label": "Start"
+  },
+  {
+    "kind": "node",
+    "id": "node-process",
+    "nodeId": "process",
+    "label": "Process"
+  },
+  {
+    "kind": "node",
+    "id": "node-end",
+    "nodeId": "end",
+    "label": "End"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-start-process",
+    "from": "start",
+    "relationship": "leads-to",
+    "to": "process",
+    "fromLabel": "Start",
+    "toLabel": "Process"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-process-end",
+    "from": "process",
+    "relationship": "leads-to",
+    "to": "end",
+    "fromLabel": "Process",
+    "toLabel": "End"
+  }
+]
