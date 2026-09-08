@@ -1093,7 +1093,7 @@ The consuming application SHALL resolve asset URLs/references.
 
 The project SHALL contain dedicated applications.
 
-## Playground
+## Playground  (in progress)
 
 Used for:
 
