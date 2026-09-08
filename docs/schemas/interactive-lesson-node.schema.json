@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledgeassemble.com/schemas/interactive-lesson-node.schema.json",
+  "title": "OpenEdu Interactive Lesson Node",
+  "description": "Proposal for @open-edu/schemas: a lesson node that embeds or composes interactive engine instances. Normative at P7 (OpenEdu-D3).",
+  "oneOf": [
+    {
+      "title": "Single engine node",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "engine", "spec"],
+      "properties": {
+        "type": { "type": "string", "const": "interactive" },
+        "engine": {
+          "type": "string",
+          "enum": ["visual", "chart", "geomap", "timeline", "diagram"]
+        },
+        "spec": {
+          "$ref": "interactive-engine.schema.json",
+          "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json."
+        }
+      }
+    },
+    {
+      "title": "Composed lesson",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "engines", "bindings"],
+      "properties": {
+        "type": { "type": "string", "const": "interactive" },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "engines": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["instanceId", "engine", "spec"],
+            "properties": {
+              "instanceId": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$"
+              },
+              "engine": {
+                "type": "string",
+                "enum": ["visual", "chart", "geomap", "timeline", "diagram"]
+              },
+              "spec": {
+                "$ref": "interactive-engine.schema.json",
+                "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json."
+              }
+            }
+          }
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["on", "from", "dispatch"],
+            "properties": {
+              "on": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$"
+              },
+              "from": { "type": "string", "minLength": 1 },
+              "dispatch": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["to", "action"],
+                "properties": {
+                  "to": { "type": "string", "minLength": 1 },
+                  "action": { "$ref": "interactive-engine.schema.json#/$defs/actionType" },
+                  "targetIdFrom": { "type": "string" },
+                  "targetId": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

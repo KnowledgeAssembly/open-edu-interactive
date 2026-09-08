@@ -458,19 +458,19 @@ Phase planning is maintained in a living document (`docs/PLAN.md`), not in this 
 
 This repository is starting fresh (no prior production code), so decisions are recorded here rather than as separate ADR files. Future decisions that change behavior SHOULD be appended here with a date and supersede note.
 
-| ID | Decision | Status |
-|----|----------|--------|
-| D1 | Engine-specification envelope (`type`/`version`/`id`, base schema) embedded in lessons as `{ "type": "interactive", "engine", "spec" }` per shared contract §94; `geomap` wrapper and `schemaVersion` superseded | Supersedes GeoMap §7, Visual §7 envelope forms |
-| D2 | Package structure per shared contract §90; namespace follows the host repository; standalone `@knowledgeassemble/visual-*` packaging superseded | Supersedes Visual ARCHITECTURE §41-42, Visual PROJECT §18, and STRUCTURE §7 naming when integrated |
-| D3 | Platform-first program sequence (STRUCTURE §49) with per-engine lifecycle (Visual PROJECT phases) mapped as an exit-gated cycle | Reconciles STRUCTURE §49 and Visual PROJECT §Phases |
-| D4 | `purpose` is `$defs.purpose` in `interactive-engine.schema.json`: `learningObjective` (required), `interactionGoal`, `reasoningMode`. `skill` / `statement` superseded | Aligns DESIGN/PLAN examples with the envelope schema and shared contract §10 |
-| D5 | One semantic action enum (`$defs.actionType`) and namespaced result events. Pointer/click/keyboard are renderer input, not spec vocabulary. `highlight` / `annotate` / `blur` / `play` / `show` superseded | Aligns DESIGN §7.4, shared contract §15/§82, STRUCTURE §25–26, envelope schema |
-| D6 | OpenEdu host seam: engines emit D5 events + snapshot and consume `EngineHost`. OpenEdu owns workflow, scoring, Pipili, telemetry store, tokens, i18n, Studio, PWA. No second Interactive Studio or assessment engine | Supersedes PLAN P7 “then reuse OpenEdu runtime” as a late surprise |
-| D7 | Assessment seam: envelope `questions` / `completion` are hints for authoring and AI; **OpenEdu owns scoring, feedback, hints, and progression**. Engines MUST NOT require envelope questions to function | Prevents dual quiz systems (F6) |
-| D8 | Composition proof at **P2.5** (after Visual), not P7-only. Fixture: `docs/fixtures/composition/narrative-timeline-visual.json` | Product proof before engine fleet (F5) |
-| D9 | Visual **closed component set** (7 math/general kinds). Timeline, flowchart, and label-diagram belong to Timeline/Diagram engines — not Visual (F8) | Supersedes Visual PROJECT §8 items 8–11 |
+| ID | Decision | Status | ADR |
+|----|----------|--------|-----|
+| D1 | Engine-specification envelope (`type`/`version`/`id`, base schema) embedded in lessons as `{ "type": "interactive", "engine", "spec" }` per shared contract §94; `geomap` wrapper and `schemaVersion` superseded | Supersedes GeoMap §7, Visual §7 envelope forms | [ADR-01](adr/ADR-01.md) |
+| D2 | Package structure per shared contract §90; namespace follows the host repository; standalone `@knowledgeassemble/visual-*` packaging superseded | Supersedes Visual ARCHITECTURE §41-42, Visual PROJECT §18, and STRUCTURE §7 naming when integrated | [ADR-02](adr/ADR-02.md) |
+| D3 | Platform-first program sequence (STRUCTURE §49) with per-engine lifecycle (Visual PROJECT phases) mapped as an exit-gated cycle | Reconciles STRUCTURE §49 and Visual PROJECT §Phases | [ADR-03](adr/ADR-03.md) |
+| D4 | `purpose` is `$defs.purpose` in `interactive-engine.schema.json`: `learningObjective` (required), `interactionGoal`, `reasoningMode`. `skill` / `statement` superseded | Aligns DESIGN/PLAN examples with the envelope schema and shared contract §10 | [ADR-04](adr/ADR-04.md) |
+| D5 | One semantic action enum (`$defs.actionType`) and namespaced result events. Pointer/click/keyboard are renderer input, not spec vocabulary. `highlight` / `annotate` / `blur` / `play` / `show` superseded | Aligns DESIGN §7.4, shared contract §15/§82, STRUCTURE §25–26, envelope schema | [ADR-05](adr/ADR-05.md) |
+| D6 | OpenEdu host seam: engines emit D5 events + snapshot and consume `EngineHost`. OpenEdu owns workflow, scoring, Pipili, telemetry store, tokens, i18n, Studio, PWA. No second Interactive Studio or assessment engine | Supersedes PLAN P7 "then reuse OpenEdu runtime" as a late surprise | [ADR-06](adr/ADR-06.md) |
+| D7 | Assessment seam: envelope `questions` / `completion` are hints for authoring and AI; **OpenEdu owns scoring, feedback, hints, and progression**. Engines MUST NOT require envelope questions to function | Prevents dual quiz systems (F6) | [ADR-07](adr/ADR-07.md) |
+| D8 | Composition proof at **P2.5** (after Visual), not P7-only. Fixture: `docs/fixtures/composition/narrative-timeline-visual.json` | Product proof before engine fleet (F5) | [ADR-08](adr/ADR-08.md) |
+| D9 | Visual **closed component set** (7 math/general kinds). Timeline, flowchart, and label-diagram belong to Timeline/Diagram engines — not Visual (F8) | Supersedes Visual PROJECT §8 items 8–11 | [ADR-09](adr/ADR-09.md) |
 
-**Governance.** This register is the decision record for the standalone project, sitting below the shared contract per its spec hierarchy (§91). When this work integrates with the OpenEdu monorepo, these decisions are additionally re-recorded as ADRs following `openedu-way/ADR.md` (sequential numbering, lifecycle, supersede rules).
+**Governance.** This register is the decision record for the standalone project, sitting below the shared contract per its spec hierarchy (§91). At P7 (OpenEdu integration) each D-row was re-recorded as an ADR following `openedu-way/ADR.md` conventions (sequential numbering, lifecycle, supersede rules) in `docs/adr/`. The ADR column links to the per-decision file. Transplant into `openedu-way` is a cross-repo acceptance item (P7).
 
 ---
 

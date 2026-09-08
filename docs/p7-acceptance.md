@@ -1,0 +1,12 @@
+# P7 Cross-Repo Acceptance Items
+
+These items MUST be completed in the **OpenEdu monorepo** to complete the integration. They are out of scope for this repository but depend on its P7 artifacts.
+
+| # | Item | Depends on | Priority | Notes |
+|---|------|-----------|----------|-------|
+| 1 | **Real learner `CourseRuntime` host.** Adopt `InteractiveLesson` / `InteractiveNode` from `@knowledgeassemble/interactive-react` in the OpenEdu learner app. Wire real token/design-system as `OpenEduBridge.tokens`, real i18n as `locale`/`t()`, real telemetry as `onEvent`, and real `.oep` asset resolution as `resolveAsset`. | P7 interactive-react package | P0 (first) | The P5/P6 host-simulation e2e (`?engine=lesson`) is the in-repo proxy; this is the real run. |
+| 2 | **Adopt `interactive-lesson-node.schema.json` into `@open-edu/schemas`.** Migrate the proposal schema into the OpenEdu schemas package with `additionalProperties:false` preserved. | P7 `docs/schemas/interactive-lesson-node.schema.json` | P1 | Must keep the `{ type:"interactive", engine, spec }` shape plus composed lesson form. |
+| 3 | **Wire `InteractiveLesson` in the Studio authoring UI.** Enable Course Creator Studio to emit engine specs + lesson bindings. Each engine's authoring skill (`docs/engines/*/skills/*/SKILL.md`) is the in-repo evidence that AI agents can produce validated specs. | P7 interactive-react + all engine skills | P2 | Extension is OpenEdu-side; in-repo evidence = each engine's skill + validated examples. |
+| 4 | **Transplant ADRs into `openedu-way`.** Move `docs/adr/ADR-01…09.md` into the OpenEdu monorepo's ADR system (`openedu-way/ADR.md`), preserving sequential numbering, lifecycle, and supersede links. | P7 `docs/adr/ADR-*.md` | P2 | This repo retains the originals; transplant is a copy + link. |
+| 5 | **Widget-compat migration.** Adopt the widget-compat mapping (`docs/fixtures/p7/widget-compat/*.json`) to migrate legacy widget nodes to `{ type:"interactive" }` nodes progressively. `math.number-line` remains valid as a parallel type. | P7 widget-compat fixtures | P3 | Progressive migration: maintain backward compat during transition. |
+| 6 | **Run criterion 1 real-lesson verification.** The real `CourseRuntime` run of a composed lesson (Timeline → Visual focus) with real `onEvent` telemetry and real `.oep` assets. | Items 1–2 | P1 | This is the full exit criterion 1 (amended per P7 plan notes): impossible in-repo by definition (no `@open-edu/*` here). |

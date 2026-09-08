@@ -49,6 +49,15 @@ describe('schema parity guardrail', () => {
   it('JSON Schema forbids unknown top-level keys', () => {
     expect(schema.additionalProperties).toBe(false);
   });
+
+  it('JSON Schema source accepts the provenance class (class) without requiring type', () => {
+    const source = JSON.parse(readFileSync(SCHEMA_URL, 'utf8')) as {
+      $defs: { source: { required: string[]; properties: { class?: { enum: string[] } } } };
+    };
+    expect(source.$defs.source.required).toEqual([]);
+    const classes = source.$defs.source.properties.class?.enum ?? [];
+    expect([...classes].sort()).toEqual(['authoritative', 'illustrative', 'simulated']);
+  });
 });
 
 describe('EnvelopeSchema', () => {
