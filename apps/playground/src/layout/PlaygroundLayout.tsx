@@ -10,8 +10,14 @@ const NAV = [
 export default function PlaygroundLayout(): React.JSX.Element {
   const location = useLocation();
   const navigate = useNavigate();
-  const [inspectTab, setInspectTab] = useState("preview");
   const catalog = getCatalog();
+
+  function handleEngineChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+    const engine = e.target.value;
+    if (!engine) { navigate("/"); return; }
+    const first = catalog.find((c: FixtureEntry) => c.kind === "engine" && c.engine === engine);
+    if (first) navigate(`/engine/${first.engine}/${first.slug}`);
+  }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", fontFamily: "system-ui, sans-serif" }}>
@@ -22,7 +28,7 @@ export default function PlaygroundLayout(): React.JSX.Element {
         ))}
         <select
           aria-label="Filter by engine"
-          onChange={(e) => { if (e.target.value) navigate(`/engine/${e.target.value}/`); }}
+          onChange={handleEngineChange}
           style={{ marginLeft: "auto" }}
         >
           <option value="">All engines</option>
@@ -49,14 +55,6 @@ export default function PlaygroundLayout(): React.JSX.Element {
         <main style={{ flex: 1, overflow: "auto", padding: 16 }}>
           <Outlet />
         </main>
-        <aside style={{ width: 360, borderLeft: "1px solid #ccc", padding: 8, overflowY: "auto", background: "#fafafa" }}>
-          <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
-            {(["preview", "events", "snapshot", "validation"] as const).map((t) => (
-              <button key={t} onClick={() => setInspectTab(t)} style={{ fontWeight: inspectTab === t ? 700 : 400, textTransform: "capitalize" }}>{t}</button>
-            ))}
-          </div>
-          <div data-inspector-panel>{inspectTab} panel</div>
-        </aside>
       </div>
     </div>
   );

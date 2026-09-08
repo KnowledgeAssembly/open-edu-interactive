@@ -21,18 +21,31 @@ export function LessonStoryPage(): React.JSX.Element {
     if (!containerRef.current || !slug) return;
     const entry = getCatalog().find((c: FixtureEntry) => c.kind === "composition" && c.slug === slug);
     if (!entry) { setError(`Lesson not found: ${slug}`); return; }
+    const specPath = entry.specPath;
     resultRef.current?.teardown();
-    try {
-      const lesson = loadSpec(entry.specPath);
-      const result = mountLesson(lesson as never, containerRef.current) as typeof resultRef.current;
-      resultRef.current = result!;
-      setSnapshot(JSON.stringify(resultRef.current.snapshot(resultRef.current.instances()[0] ?? ""), null, 2));
-      setEvents([]);
-      setError(null);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+    let cancelled = false;
+    async function mount(): Promise<void> {
+      try {
+        const lesson = loadSpec(specPath);
+        const result = mountLesson(lesson as never, containerRef.current!) as typeof resultRef.current;
+        if (cancelled) { result?.teardown(); return; }
+        resultRef.current = result;
+        // Wait for InteractiveLesson to finish mounting and expose instances
+        let attempts = 0;
+        while (!resultRef.current?.instances().length && attempts < 100) {
+          await new Promise((r) => setTimeout(r, 50));
+          attempts++;
+        }
+        if (cancelled || !resultRef.current) return;
+        setSnapshot(JSON.stringify(resultRef.current.snapshot(resultRef.current.instances()[0] ?? ""), null, 2));
+        setEvents([]);
+        setError(null);
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : String(e));
+      }
     }
-    return () => { resultRef.current?.teardown(); resultRef.current = null; };
+    mount();
+    return () => { cancelled = true; resultRef.current?.teardown(); resultRef.current = null; };
   }, [slug]);
 
   return (

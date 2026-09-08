@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { mountEngine, validateSpec } from "@knowledgeassemble/dev-harness";
-
-function getEngineTypes(): readonly string[] {
-  return ["visual", "chart", "geomap", "timeline", "diagram"] as const;
-}
+import { getEngineTypes } from "../lib/specLoader.js";
 
 export function CustomSpecPage(): React.JSX.Element {
   const [json, setJson] = useState<string>("{}");

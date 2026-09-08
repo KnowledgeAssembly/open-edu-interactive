@@ -10,6 +10,14 @@ const docsGlob = import.meta.glob(
   { eager: true }
 );
 
+const ENGINE_KEY_PREFIX = "../../../packages/";
+const DOCS_KEY_PREFIX = "../../../docs/fixtures/";
+
+function normalizeEngineKey(key: string): string | null {
+  if (key.startsWith(ENGINE_KEY_PREFIX)) return key.slice(ENGINE_KEY_PREFIX.length);
+  return null;
+}
+
 export interface FixtureEntry {
   id: string;
   kind: "engine" | "lesson" | "composition";
@@ -25,11 +33,9 @@ export function getCatalog(): FixtureEntry[] {
 }
 
 function findSpec(specPath: string): unknown {
-  const engineKey = `/${specPath}`;
-  if (engineKey in engineGlob) return (engineGlob as Record<string, unknown>)[engineKey];
-  if (engineKey in docsGlob) return (docsGlob as Record<string, unknown>)[engineKey];
-  const docsKey = `../../../${specPath}`;
-  if (docsKey in docsGlob) return (docsGlob as Record<string, unknown>)[docsKey];
+  const engineKey = normalizeEngineKey(specPath);
+  if (engineKey && engineKey in engineGlob) return (engineGlob as Record<string, unknown>)[engineKey];
+  if (specPath.startsWith("docs/fixtures/") && specPath in docsGlob) return (docsGlob as Record<string, unknown>)[specPath];
   return undefined;
 }
 
