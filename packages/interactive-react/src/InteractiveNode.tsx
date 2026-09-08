@@ -50,6 +50,7 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
     const containerRef = useRef<HTMLDivElement>(null);
     const a11yRef = useRef<HTMLDivElement>(null);
     const instanceRef = useRef<EngineInstance | null>(null);
+    const bufferRef = useRef<EngineEvent[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [svg, setSvg] = useState<string>('');
     const [a11yText, setA11yText] = useState<string>('');
@@ -63,7 +64,15 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       }
 
       const engine = new EngineClass();
-      const engineHost = bridgeToHost(host);
+      const eventsRef: EngineEvent[] = [];
+      bufferRef.current = eventsRef;
+      const engineHost = bridgeToHost({
+        ...host,
+        onEvent: (event) => {
+          eventsRef.push(event as EngineEvent);
+          host.onEvent(event);
+        },
+      });
       const instanceId = id ?? (spec as Record<string, unknown>).id as string | undefined ?? 'interactive-node';
 
       const validation = engine.validate(spec as EngineSpec);
@@ -113,7 +122,7 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
           return instanceRef.current?.snapshot();
         },
         events(): readonly EngineEvent[] {
-          return [];
+          return bufferRef.current;
         },
       }),
       [],

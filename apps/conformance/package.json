@@ -9,14 +9,19 @@
     "playwright": "playwright test"
   },
   "dependencies": {
-    "@knowledgeassemble/interactive-engine": "workspace:*",
-    "@knowledgeassemble/visual-engine": "workspace:*",
-    "@knowledgeassemble/timeline-engine": "workspace:*",
     "@knowledgeassemble/chart-engine": "workspace:*",
+    "@knowledgeassemble/diagram-engine": "workspace:*",
     "@knowledgeassemble/geomap-engine": "workspace:*",
-    "@knowledgeassemble/diagram-engine": "workspace:*"
+    "@knowledgeassemble/interactive-engine": "workspace:*",
+    "@knowledgeassemble/interactive-react": "workspace:^",
+    "@knowledgeassemble/timeline-engine": "workspace:*",
+    "@knowledgeassemble/visual-engine": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "typescript": "^5.6.3",
     "vite": "^6.0.7"
   }

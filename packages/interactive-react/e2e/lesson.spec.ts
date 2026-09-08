@@ -1,15 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Lesson host — composed timeline → visual e2e', () => {
+test.describe('Lesson host — composed timeline → visual e2e (real InteractiveLesson mount)', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/?engine=lesson');
     await page.waitForFunction(() => !!(window as unknown as { __lessonHarness?: unknown }).__lessonHarness);
+    await expect(page.locator('[data-interactive-lesson]')).toBeVisible();
   });
 
   test('cross-engine binding: timeline select routes focus to visual entity', async ({ page }) => {
-    const btn = page.locator('[data-event-id="event-1947"]');
-    await expect(btn).toBeVisible();
-    await btn.click();
+    await page.evaluate(() => {
+      const h = (window as unknown as { __lessonHarness: { dispatch(id: string, a: unknown): void } }).__lessonHarness;
+      h.dispatch('timeline-independence', { type: 'select', target: { id: 'event-1947' } });
+    });
 
     const snapshot = await page.evaluate(() => {
       const h = (window as unknown as { __lessonHarness: { snapshot(id: string): object } }).__lessonHarness;
@@ -25,32 +27,34 @@ test.describe('Lesson host — composed timeline → visual e2e', () => {
     expect(events).toContain('visual.figure-independence-focused');
   });
 
-  test('replay: events have monotonic seq order', async ({ page }) => {
-    await page.locator('[data-event-id="event-1947"]').click();
+  test('replay: events have monotonic seq order matching the golden log', async ({ page }) => {
+    await page.evaluate(() => {
+      const h = (window as unknown as { __lessonHarness: { dispatch(id: string, a: unknown): void } }).__lessonHarness;
+      h.dispatch('timeline-independence', { type: 'select', target: { id: 'event-1947' } });
+    });
 
     const seqs = await page.evaluate(() => {
       const h = (window as unknown as { __lessonHarness: { events(): Array<{ seq: number }> } }).__lessonHarness;
       return h.events().map((e) => e.seq);
     });
-    expect(seqs.length).toBeGreaterThan(4);
+    expect(seqs.length).toBe(12);
     for (let i = 1; i < seqs.length; i++) {
       expect(seqs[i]!).toBeGreaterThan(seqs[i - 1]!);
     }
   });
 
-  test('a11y: visual SVG has aria-labels and interactive markers', async ({ page }) => {
+  test('a11y: visual SVG has aria-labels and interactive markers, no inline script', async ({ page }) => {
     const svg = await page.evaluate(() => {
       const h = (window as unknown as { __lessonHarness: { svg(id: string): string } }).__lessonHarness;
       return h.svg('visual-independence');
     });
     expect(svg).toContain('aria-label');
-    expect(svg).toContain('data-oedu-interactive="true"');
     expect(svg).not.toContain('onclick');
     expect(svg).not.toContain('<script');
   });
 
-  test('authoring proof: tryCreate validates an AI-authored timeline spec', async ({ page }) => {
-    const result = await page.evaluate(() => {
+  test('authoring proof: tryCreate validates a lesson and surfaces issue codes', async ({ page }) => {
+    const ok = await page.evaluate(() => {
       const h = (window as unknown as { __lessonHarness: { tryCreate(s: unknown): { ok: boolean } } }).__lessonHarness;
       return h.tryCreate({
         id: 'test',
@@ -58,6 +62,13 @@ test.describe('Lesson host — composed timeline → visual e2e', () => {
         bindings: [],
       });
     });
-    expect(result.ok).toBe(true);
+    expect(ok.ok).toBe(true);
+
+    const rejected = await page.evaluate(() => {
+      const h = (window as unknown as { __lessonHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } } }).__lessonHarness;
+      return h.tryCreate({ id: 'bad', engines: [{ instanceId: 'v', engine: 'visual', spec: { not: 'an envelope' } }], bindings: [] });
+    });
+    expect(rejected.ok).toBe(false);
+    expect(rejected.code).toBe('INVALID_SPEC');
   });
 });

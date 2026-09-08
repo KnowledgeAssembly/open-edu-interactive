@@ -1,6 +1,6 @@
 {
   "legacyType": "core.hotspot",
-  "engine": "visual",
-  "specContentKind": "hotspot",
-  "notes": "No P7 mapping — hotspot kind not yet in Visual closed set. Recorded for future."
+  "engine": null,
+  "specContentKind": null,
+  "notes": "No mapping at P7 — no hotspot kind exists in the Visual closed set (D9). Recorded as unmapped so no fabricated kind is introduced."
 }

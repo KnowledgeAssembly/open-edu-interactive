@@ -53,3 +53,52 @@ Status key: **thin** = normative envelope + MVP slice only (gates P3–P6 code);
 - OpenEdu widgets remain as lightweight presentation primitives; engines are the semantic layer above them (shared contract §95-96).
 
 For repo layout, phases, and tooling: [`STRUCTURE.md`](STRUCTURE.md). For the living implementation plan: [`PLAN.md`](PLAN.md).
+
+## Consuming from OpenEdu (P7)
+
+The engine family ships as published npm packages. Install the core + the engines you need, plus the React mount:
+
+```sh
+pnpm add @knowledgeassemble/interactive-engine \
+  @knowledgeassemble/visual-engine @knowledgeassemble/timeline-engine \
+  @knowledgeassemble/interactive-react
+```
+
+Mount a single interactive node, or a composed lesson, through the React package:
+
+```tsx
+import { createElement } from 'react';
+import { InteractiveLesson } from '@knowledgeassemble/interactive-react';
+import type { OpenEduBridge } from '@knowledgeassemble/interactive-react';
+
+const bridge: OpenEduBridge = {
+  locale: 'en',
+  tokens: /* your design-system tokens */,
+  reducedMotion: false,
+  t: (key, vars) => /* your i18n lookup */,
+  announce: (message) => /* your a11y live region */,
+  onEvent: (event) => /* your telemetry */,
+  resolveAsset: (id) => /* your .oep asset resolver */,
+};
+
+createElement(InteractiveLesson, { lesson, host: bridge });
+```
+
+The `OpenEduBridge` is passed **in** — the engine packages never import `@open-edu/*` (D6/D2 boundary). Your host supplies `locale`/`tokens`/`reducedMotion`/`announce`/`onEvent`/`resolveAsset`; the bridge adapts them to the internal `EngineHost`.
+
+- **Lesson-node schema** (proposal for `@open-edu/schemas`): [`schemas/interactive-lesson-node.schema.json`](schemas/interactive-lesson-node.schema.json).
+- **Composed-lesson fixture** (reuses the frozen P2.5 contract): [`fixtures/p7/composed-lesson.json`](fixtures/p7/composed-lesson.json).
+- **Widget-compat mapping**: [`fixtures/p7/widget-compat/`](fixtures/p7/widget-compat/).
+- **Cross-repo acceptance items** (work that must happen in the OpenEdu monorepo to complete the integration): [`p7-acceptance.md`](p7-acceptance.md).
+
+### Publish workflow (T1/T7)
+
+All seven packages are published as per-file `tsc` ESM emit (STRUCTURE §40-41) into `dist/`; `prepublishOnly` runs `build && typecheck && lint && test`. Vitest gates for publishability live at `packages/interactive-engine/test/p7/` and `packages/interactive-react/test/`; the installed-package suite is a script:
+
+```sh
+pnpm publish:dry     # pnpm -r publish --dry-run (runs prepublishOnly, no registry push)
+pnpm publish:smoke   # scripts/p7-publish-smoke.mjs — packs, installs into a temp consumer,
+                     # imports every public symbol, drives L1–L4 + a composed lesson from dist, typechecks
+```
+
+The smoke script is the in-repo evidence for PLAN criterion 2 (all engines pass the common conformance suite on the installed packages, not just workspace paths).

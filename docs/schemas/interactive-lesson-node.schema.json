@@ -16,9 +16,8 @@
           "enum": ["visual", "chart", "geomap", "timeline", "diagram"]
         },
         "spec": {
-          "type": "object",
-          "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json.",
-          "additionalProperties": true
+          "$ref": "interactive-engine.schema.json",
+          "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json."
         }
       }
     },
@@ -55,9 +54,8 @@
                 "enum": ["visual", "chart", "geomap", "timeline", "diagram"]
               },
               "spec": {
-                "type": "object",
-                "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json.",
-                "additionalProperties": true
+                "$ref": "interactive-engine.schema.json",
+                "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json."
               }
             }
           }

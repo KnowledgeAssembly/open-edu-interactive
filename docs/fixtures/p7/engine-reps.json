@@ -1,0 +1,139 @@
+{
+  "visual": {
+    "type": "visual",
+    "version": "1.0.0",
+    "id": "number-line-conformance",
+    "metadata": { "title": "Number Line" },
+    "purpose": { "learningObjective": "Select the highlighted value on the number line" },
+    "interaction": { "actions": ["select", "focus", "reset"] },
+    "content": {
+      "kind": "number-line",
+      "components": [{ "id": "nl", "type": "number-line", "props": { "min": 0, "max": 10, "step": 1, "highlight": [7] } }]
+    },
+    "accessibility": { "label": "Number line from 0 to 10", "description": "7 is highlighted" }
+  },
+  "chart": {
+    "type": "chart",
+    "version": "1.0.0",
+    "id": "rainfall-monthly",
+    "metadata": { "title": "Monthly rainfall" },
+    "purpose": { "learningObjective": "Compare rainfall across months", "reasoningMode": "compare" },
+    "content": {
+      "kind": "bar",
+      "dimensions": [{ "id": "month", "type": "ordinal" }],
+      "measures": [{ "id": "rainfall", "type": "quantitative", "unit": "mm" }],
+      "data": [
+        { "id": "row-feb", "month": "Feb", "rainfall": 45 },
+        { "id": "row-may", "month": "May", "rainfall": 110 },
+        { "id": "row-aug", "month": "Aug", "rainfall": 80 },
+        { "id": "row-nov", "month": "Nov", "rainfall": 30 }
+      ]
+    },
+    "interaction": { "mode": "explore", "actions": ["select", "focus", "filter", "reset"] },
+    "questions": [],
+    "sources": [{ "class": "authoritative" }],
+    "accessibility": { "label": "Bar chart of monthly rainfall in millimeters" }
+  },
+  "geomap": {
+    "type": "geomap",
+    "version": "1.0.0",
+    "id": "odisha-coastal",
+    "metadata": { "title": "Odisha and its coastal neighbours" },
+    "purpose": { "learningObjective": "Locate Odisha, its capital, and its coastal connections", "reasoningMode": "explore" },
+    "content": {
+      "viewport": { "fit": "content", "padding": 0.08 },
+      "projection": { "type": "equirectangular" },
+      "geography": {
+        "sources": [
+          {
+            "id": "india-states",
+            "type": "geojson",
+            "class": "illustrative",
+            "data": {
+              "type": "FeatureCollection",
+              "features": [
+                { "id": "odisha", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[82, 18], [84, 18], [84, 20], [82, 20], [82, 18]]] } },
+                { "id": "west-bengal", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[86, 22], [88, 22], [88, 24], [86, 24], [86, 22]]] } }
+              ]
+            }
+          }
+        ]
+      },
+      "entities": [
+        { "id": "odisha", "type": "state", "name": "Odisha", "description": "A state on the eastern coast of India.", "location": { "source": "india-states", "featureId": "odisha" } },
+        { "id": "west-bengal", "type": "state", "name": "West Bengal", "description": "A state in eastern India.", "location": { "source": "india-states", "featureId": "west-bengal" } },
+        { "id": "bhubaneswar", "type": "city", "name": "Bhubaneswar", "description": "Capital of Odisha.", "location": { "coordinates": { "lat": 20.2961, "lon": 85.8245 } } },
+        { "id": "chilika", "type": "lake", "name": "Chilika Lake", "description": "A brackish water lagoon.", "location": { "coordinates": { "lat": 19.7, "lon": 85.3 } } }
+      ],
+      "layers": [
+        { "id": "states", "type": "region", "items": [{ "entity": "odisha", "interactive": true }, { "entity": "west-bengal", "interactive": true }] },
+        { "id": "cities", "type": "marker", "items": [{ "entity": "bhubaneswar", "label": true, "interactive": true }] },
+        { "id": "water", "type": "marker", "items": [{ "entity": "chilika", "label": true, "interactive": true }] }
+      ],
+      "legend": { "visible": true, "items": [{ "role": "primary-region", "label": "State" }, { "role": "marker", "label": "City / Lake" }] }
+    },
+    "interaction": { "mode": "explore", "actions": ["select", "deselect", "focus", "reset"] },
+    "questions": [],
+    "sources": [{ "class": "illustrative" }],
+    "accessibility": { "label": "Map of Odisha, its capital Bhubaneswar, and coastal connections." }
+  },
+  "timeline": {
+    "type": "timeline",
+    "version": "1.0.0",
+    "id": "timeline-independence",
+    "metadata": { "title": "Indian independence — key events" },
+    "purpose": { "learningObjective": "Explore major events in chronological order", "reasoningMode": "sequence" },
+    "content": {
+      "kind": "events",
+      "events": [
+        { "id": "event-1757", "label": "Battle of Plassey", "date": "1757" },
+        { "id": "event-1857", "label": "1857 uprising", "date": "1857" },
+        { "id": "event-1885", "label": "Congress founded", "date": "1885" },
+        { "id": "event-1919", "label": "Jallianwala Bagh", "date": "1919-04-13" },
+        { "id": "event-1930", "label": "Salt March", "date": "1930-03-12" },
+        { "id": "event-1942", "label": "Quit India", "date": "1942-08-08" },
+        { "id": "event-1947", "label": "Independence", "date": "1947-08-15", "links": { "visualEntityId": "figure-independence" } }
+      ],
+      "periods": [
+        { "id": "period-company", "label": "Company rule", "from": "1757", "to": "1858", "style": { "role": "secondary-period" } },
+        { "id": "period-crown", "label": "British Raj", "from": "1858", "to": "1947", "style": { "role": "primary-period" } }
+      ],
+      "tracks": [
+        { "id": "track-movement", "label": "National movement", "events": ["event-1857", "event-1919", "event-1930", "event-1942", "event-1947"] },
+        { "id": "track-reform", "label": "Constitutional reform", "events": ["event-1885"] }
+      ]
+    },
+    "interaction": { "mode": "explore", "actions": ["select", "deselect", "focus", "play-pause", "step", "scrub", "reset"] },
+    "questions": [],
+    "sources": [{ "class": "authoritative", "title": "Historical records" }],
+    "accessibility": { "label": "Timeline of Indian independence movements and constitutional reform." }
+  },
+  "diagram": {
+    "type": "diagram",
+    "version": "1.0.0",
+    "id": "water-cycle",
+    "metadata": { "title": "Water cycle" },
+    "purpose": { "learningObjective": "Understand how water moves through the cycle", "reasoningMode": "explore" },
+    "content": {
+      "kind": "cycle",
+      "profile": "process",
+      "nodes": [
+        { "id": "evaporation", "label": "Evaporation", "description": "Liquid becomes vapour", "links": { "visualEntityId": "water-figure" } },
+        { "id": "condensation", "label": "Condensation" },
+        { "id": "precipitation", "label": "Precipitation" },
+        { "id": "collection", "label": "Collection" }
+      ],
+      "edges": [
+        { "from": "evaporation", "to": "condensation", "relationship": "leads-to" },
+        { "from": "condensation", "to": "precipitation", "relationship": "leads-to" },
+        { "from": "precipitation", "to": "collection", "relationship": "leads-to" },
+        { "from": "collection", "to": "evaporation", "relationship": "leads-to" }
+      ]
+    },
+    "layout": { "type": "radial" },
+    "interaction": { "mode": "explore", "actions": ["select", "deselect", "focus", "expand", "collapse", "follow", "reset"] },
+    "questions": [],
+    "sources": [{ "class": "illustrative" }],
+    "accessibility": { "label": "Water cycle diagram: evaporation, condensation, precipitation, collection." }
+  }
+}

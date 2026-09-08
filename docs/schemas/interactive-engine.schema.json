@@ -623,9 +623,7 @@
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "type"
-      ],
+      "required": [],
       "properties": {
         "type": {
           "type": "string",
@@ -637,6 +635,15 @@
             "learner-generated",
             "ai-generated"
           ]
+        },
+        "class": {
+          "type": "string",
+          "enum": [
+            "authoritative",
+            "illustrative",
+            "simulated"
+          ],
+          "description": "Accuracy class per DESIGN §9 (provenance)."
         },
         "title": {
           "type": "string"

@@ -25,11 +25,12 @@
     "jsdom": "^26.0.0"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test",
     "test": "vitest run",
     "playwright": "playwright test",
-    "prepublishOnly": "pnpm typecheck && pnpm lint && pnpm test"
+    "prepublishOnly": "pnpm build && pnpm typecheck && pnpm lint && pnpm test"
   },
   "exports": {
     ".": {
@@ -38,12 +39,21 @@
     }
   },
   "files": [
-    "src"
+    "src",
+    "dist"
   ],
   "engines": {
     "node": ">=18.0.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
   }
 }
