@@ -1,0 +1,38 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "skill-example-odisha",
+  "metadata": { "title": "Odisha and its coastal neighbours" },
+  "purpose": { "learningObjective": "Locate Odisha, its capital Bhubaneswar, and its coastal connections", "reasoningMode": "explore" },
+  "content": {
+    "viewport": { "fit": "content", "padding": 0.08 },
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [
+        {
+          "id": "india-states",
+          "type": "geojson",
+          "class": "illustrative",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              { "id": "odisha", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[82, 18], [84, 18], [84, 20], [82, 20], [82, 18]]] } }
+            ]
+          }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "odisha", "type": "state", "name": "Odisha", "description": "A state on the eastern coast of India.", "location": { "source": "india-states", "featureId": "odisha" } },
+      { "id": "bhubaneswar", "type": "city", "name": "Bhubaneswar", "description": "Capital of Odisha.", "location": { "coordinates": { "lat": 20.2961, "lon": 85.8245 } } }
+    ],
+    "layers": [
+      { "id": "states", "type": "region", "items": [{ "entity": "odisha", "interactive": true }] },
+      { "id": "cities", "type": "marker", "items": [{ "entity": "bhubaneswar", "label": true, "interactive": true }] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "deselect", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Map of Odisha with its capital Bhubaneswar" }
+}

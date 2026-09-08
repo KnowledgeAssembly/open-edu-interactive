@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "city1",
+    "type": "city",
+    "name": "Test City",
+    "location": "20.0000, 85.0000"
+  }
+]

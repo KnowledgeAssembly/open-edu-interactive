@@ -1,0 +1,10 @@
+export { ENTITY_TYPES, LAYER_TYPES, ROLE_TYPES, SOURCE_CLASSES, validateGeoMapContent } from './schema.js';
+export type { GeoMapContent, ViewportSpec, GeoMapSpec, EntityType, LayerType, RoleType, SourceClass, EntitySpec, GeoSourceSpec, LayerSpec } from './schema.js';
+export type { SceneNode, Scene, GeoMapSemanticRole, Bounds, XY } from './scene/types.js';
+export { buildScene } from './scene/build.js';
+export { layout } from './layout/engine.js';
+export type { LayoutContext } from './layout/engine.js';
+export { makeProjector, bboxOf, fitViewport } from './layout/projection.js';
+export { svgFrom } from './render/svg.js';
+export type { SvgResult, EntityRow, A11yNode } from './render/types.js';
+export { GeoMapEngine } from './engine.js';

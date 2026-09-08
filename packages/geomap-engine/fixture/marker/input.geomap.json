@@ -1,0 +1,23 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "marker-only",
+  "metadata": { "title": "Marker only" },
+  "purpose": { "learningObjective": "Identify a city" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [{ "id": "src", "type": "geojson", "class": "illustrative", "data": { "type": "FeatureCollection", "features": [] } }]
+    },
+    "entities": [
+      { "id": "city1", "type": "city", "name": "Test City", "location": { "coordinates": { "lat": 20, "lon": 85 } } }
+    ],
+    "layers": [
+      { "id": "markers", "type": "marker", "items": [{ "entity": "city1", "label": true, "interactive": true }] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Marker only map" }
+}
