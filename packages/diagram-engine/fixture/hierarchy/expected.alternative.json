@@ -1,0 +1,38 @@
+[
+  {
+    "kind": "node",
+    "id": "node-root",
+    "nodeId": "root",
+    "label": "Root"
+  },
+  {
+    "kind": "node",
+    "id": "node-child1",
+    "nodeId": "child1",
+    "label": "Child 1"
+  },
+  {
+    "kind": "node",
+    "id": "node-child2",
+    "nodeId": "child2",
+    "label": "Child 2"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-root-child1",
+    "from": "root",
+    "relationship": "contains",
+    "to": "child1",
+    "fromLabel": "Root",
+    "toLabel": "Child 1"
+  },
+  {
+    "kind": "edge",
+    "id": "edge-root-child2",
+    "from": "root",
+    "relationship": "contains",
+    "to": "child2",
+    "fromLabel": "Root",
+    "toLabel": "Child 2"
+  }
+]

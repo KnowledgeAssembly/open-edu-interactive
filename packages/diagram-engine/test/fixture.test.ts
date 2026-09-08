@@ -19,6 +19,17 @@ function* walkFixtures(dir: string): Generator<{ kind: string; file: string }> {
   }
 }
 
+function makeHost() {
+  return {
+    locale: 'en' as const,
+    tokens: {} as Record<string, string>,
+    reducedMotion: false,
+    announce: () => {},
+    onEvent: () => {},
+    resolveAsset: (id: string) => id,
+  };
+}
+
 describe('Golden fixtures', () => {
   const engine = new DiagramEngine();
 
@@ -31,33 +42,44 @@ describe('Golden fixtures', () => {
 
     it(`${kind}: determinism - two runs produce identical SVG`, () => {
       const spec = JSON.parse(readFileSync(file, 'utf-8'));
-      const host = {
-        locale: 'en' as const,
-        tokens: {},
-        reducedMotion: false,
-        announce: () => {},
-        onEvent: () => {},
-        resolveAsset: (id: string) => id,
-      };
-      const inst1 = engine.instantiate(spec, host, `${kind}-test1`);
-      const inst2 = engine.instantiate(spec, host, `${kind}-test2`);
+      const inst1 = engine.instantiate(spec, makeHost(), `${kind}-test1`);
+      const inst2 = engine.instantiate(spec, makeHost(), `${kind}-test2`);
       const s1 = inst1.snapshot() as unknown as { svgResult: { svg: string } };
       const s2 = inst2.snapshot() as unknown as { svgResult: { svg: string } };
       expect(s1.svgResult.svg).toBe(s2.svgResult.svg);
+    });
+
+    it(`${kind}: golden expected artifacts are byte-stable`, () => {
+      const spec = JSON.parse(readFileSync(file, 'utf-8'));
+      const dir = dirname(file);
+      const inst = engine.instantiate(spec, makeHost(), `${kind}-golden`);
+      const snap = inst.snapshot() as unknown as {
+        scene: unknown;
+        svgResult: { svg: string; a11y: unknown; alternative: unknown };
+      };
+      expect(snap.svgResult.svg).toBe(readFileSync(resolve(dir, 'expected.svg'), 'utf-8'));
+      expect(snap.scene).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.scene.json'), 'utf-8')));
+      expect(snap.svgResult.a11y).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.a11y.json'), 'utf-8')));
+      expect(snap.svgResult.alternative).toEqual(JSON.parse(readFileSync(resolve(dir, 'expected.alternative.json'), 'utf-8')));
+    });
+
+    it(`${kind}: every laid-out node in expected.scene.json carries positionSource 'illustrative'`, () => {
+      const dir = dirname(file);
+      const scene = JSON.parse(readFileSync(resolve(dir, 'expected.scene.json'), 'utf-8')) as {
+        nodes: Array<{ kind: string; children: Array<{ kind: string; positionSource?: string }> }>;
+      };
+      const root = scene.nodes.find((n) => n.kind === 'diagram');
+      const nodeChildren = root!.children.filter((n) => n.kind === 'node');
+      expect(nodeChildren.length).toBeGreaterThan(0);
+      for (const n of nodeChildren) {
+        expect(n.positionSource).toBe('illustrative');
+      }
     });
   }
 
   it('water-cycle fixture every positionSource is illustrative', () => {
     const spec = JSON.parse(readFileSync(resolve(fixtureRoot, 'water-cycle', 'input.diagram.json'), 'utf-8'));
-    const host = {
-      locale: 'en' as const,
-      tokens: {},
-      reducedMotion: false,
-      announce: () => {},
-      onEvent: () => {},
-      resolveAsset: (id: string) => id,
-    };
-    const inst = engine.instantiate(spec, host, 'water-cycle-fixture');
+    const inst = engine.instantiate(spec, makeHost(), 'water-cycle-fixture');
     const snap = inst.snapshot() as unknown as { scene: { nodes: Array<{ kind: string; children: Array<Record<string, unknown>> }> } };
     const root = snap.scene.nodes.find((n: { kind: string }) => n.kind === 'diagram');
     const nodeChildren = root!.children.filter((n: Record<string, unknown>) => n.kind === 'node');

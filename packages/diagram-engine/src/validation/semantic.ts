@@ -1,6 +1,6 @@
 import { ACTION_TYPES, type ValidationResult } from '@knowledgeassemble/interactive-engine';
 import type { DiagramSpec } from '../schema.js';
-import { DIAGRAM_KINDS, PROFILES, RELATIONSHIPS, SOURCE_CLASSES } from '../schema.js';
+import { DIAGRAM_KINDS, PROFILES, RELATIONSHIPS, SOURCE_CLASSES, DiagramContentSchema } from '../schema.js';
 import { adjacency, detectCycles } from '../layout/graph.js';
 
 function isNonEmptyString(v: unknown): boolean {
@@ -13,6 +13,18 @@ export function validateSemantic(spec: DiagramSpec): ValidationResult {
 
   if (!content) {
     return { valid: false, issues: [{ level: 'L2', code: 'INVALID_ENTITY', message: 'content is required' }] };
+  }
+
+  const parsed = DiagramContentSchema.safeParse(content);
+  if (!parsed.success) {
+    for (const issue of parsed.error.issues) {
+      issues.push({
+        level: 'L2',
+        code: 'INVALID_SPEC',
+        path: `content.${issue.path.join('.')}`,
+        message: issue.message,
+      });
+    }
   }
 
   // Check kind

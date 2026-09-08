@@ -99,7 +99,7 @@ test.describe('Diagram Engine — water-cycle e2e', () => {
   test('data fidelity: a flow with a back-edge and a cycle without a cycle both fail tryCreate', async ({ page }) => {
     const flowWithBackEdge = await page.evaluate(() => {
       const h = (window as unknown as {
-        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; message?: string } }
+        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; code?: string; message?: string } }
       }).__diagramHarness;
       return h.tryCreate({
         type: 'diagram',
@@ -117,10 +117,11 @@ test.describe('Diagram Engine — water-cycle e2e', () => {
       });
     });
     expect(flowWithBackEdge.ok).toBe(false);
+    expect(flowWithBackEdge.code).toBe('INVALID_ENTITY');
 
     const acyclicCycle = await page.evaluate(() => {
       const h = (window as unknown as {
-        __diagramHarness: { tryCreate(s: unknown): { ok: boolean } }
+        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } }
       }).__diagramHarness;
       return h.tryCreate({
         type: 'diagram',
@@ -135,12 +136,13 @@ test.describe('Diagram Engine — water-cycle e2e', () => {
       });
     });
     expect(acyclicCycle.ok).toBe(false);
+    expect(acyclicCycle.code).toBe('INVALID_ENTITY');
   });
 
-  test('rejection: unknown kind, force layout, and unknown content key fail tryCreate', async ({ page }) => {
+  test('rejection: unknown kind, force layout, and unknown content key fail tryCreate with shared codes', async ({ page }) => {
     const unknownKind = await page.evaluate(() => {
       const h = (window as unknown as {
-        __diagramHarness: { tryCreate(s: unknown): { ok: boolean } }
+        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } }
       }).__diagramHarness;
       return h.tryCreate({
         type: 'diagram',
@@ -150,10 +152,11 @@ test.describe('Diagram Engine — water-cycle e2e', () => {
       });
     });
     expect(unknownKind.ok).toBe(false);
+    expect(unknownKind.code).toBe('INVALID_SPEC');
 
     const forceLayout = await page.evaluate(() => {
       const h = (window as unknown as {
-        __diagramHarness: { tryCreate(s: unknown): { ok: boolean } }
+        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; code?: string } }
       }).__diagramHarness;
       return h.tryCreate({
         type: 'diagram',
@@ -164,5 +167,21 @@ test.describe('Diagram Engine — water-cycle e2e', () => {
       });
     });
     expect(forceLayout.ok).toBe(false);
+    expect(forceLayout.code).toBe('INVALID_SPEC');
+
+    const unknownContentKey = await page.evaluate(() => {
+      const h = (window as unknown as {
+        __diagramHarness: { tryCreate(s: unknown): { ok: boolean; code?: string; message?: string } }
+      }).__diagramHarness;
+      return h.tryCreate({
+        type: 'diagram',
+        version: '1.0.0',
+        id: 'bad-content-key',
+        content: { kind: 'flow', nodes: [{ id: 'a', label: 'A', pixel: 3 }], edges: [] },
+        sources: [{ class: 'authoritative' }],
+      });
+    });
+    expect(unknownContentKey.ok).toBe(false);
+    expect(unknownContentKey.code).toBe('INVALID_SPEC');
   });
 });

@@ -1,0 +1,274 @@
+{
+  "nodes": [
+    {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-a",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Stage A",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "a",
+            "label": "Stage A"
+          },
+          "children": [],
+          "bounds": {
+            "x": 610,
+            "y": 270,
+            "width": 60,
+            "height": 60
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "node-b",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Stage B",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "b",
+            "label": "Stage B"
+          },
+          "children": [],
+          "bounds": {
+            "x": 130,
+            "y": 270,
+            "width": 60,
+            "height": 60
+          },
+          "positionSource": "illustrative"
+        },
+        {
+          "id": "edge-a-b",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "a leads-to b",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "a",
+            "toNodeId": "b",
+            "relationship": "leads-to",
+            "labels": [],
+            "edgeId": "edge-a-b"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-b-a",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "b leads-to a",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "b",
+            "toNodeId": "a",
+            "relationship": "leads-to",
+            "labels": [],
+            "edgeId": "edge-b-a"
+          },
+          "children": []
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "node-a": {
+      "id": "node-a",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Stage A",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "a",
+        "label": "Stage A"
+      },
+      "children": []
+    },
+    "a": {
+      "id": "node-a",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Stage A",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "a",
+        "label": "Stage A"
+      },
+      "children": []
+    },
+    "node-b": {
+      "id": "node-b",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Stage B",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "b",
+        "label": "Stage B"
+      },
+      "children": []
+    },
+    "b": {
+      "id": "node-b",
+      "role": "selectable",
+      "kind": "node",
+      "label": "Stage B",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "nodeId": "b",
+        "label": "Stage B"
+      },
+      "children": []
+    },
+    "edge-a-b": {
+      "id": "edge-a-b",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "a leads-to b",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "a",
+        "toNodeId": "b",
+        "relationship": "leads-to",
+        "labels": [],
+        "edgeId": "edge-a-b"
+      },
+      "children": []
+    },
+    "edge-b-a": {
+      "id": "edge-b-a",
+      "role": "selectable",
+      "kind": "edge",
+      "label": "b leads-to a",
+      "interactive": true,
+      "acceptsActions": [
+        "follow"
+      ],
+      "metadata": {
+        "fromNodeId": "b",
+        "toNodeId": "a",
+        "relationship": "leads-to",
+        "labels": [],
+        "edgeId": "edge-b-a"
+      },
+      "children": []
+    },
+    "diagram-root": {
+      "id": "diagram-root",
+      "role": "group",
+      "kind": "diagram",
+      "label": "Diagram",
+      "interactive": false,
+      "children": [
+        {
+          "id": "node-a",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Stage A",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "a",
+            "label": "Stage A"
+          },
+          "children": []
+        },
+        {
+          "id": "node-b",
+          "role": "selectable",
+          "kind": "node",
+          "label": "Stage B",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "nodeId": "b",
+            "label": "Stage B"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-a-b",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "a leads-to b",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "a",
+            "toNodeId": "b",
+            "relationship": "leads-to",
+            "labels": [],
+            "edgeId": "edge-a-b"
+          },
+          "children": []
+        },
+        {
+          "id": "edge-b-a",
+          "role": "selectable",
+          "kind": "edge",
+          "label": "b leads-to a",
+          "interactive": true,
+          "acceptsActions": [
+            "follow"
+          ],
+          "metadata": {
+            "fromNodeId": "b",
+            "toNodeId": "a",
+            "relationship": "leads-to",
+            "labels": [],
+            "edgeId": "edge-b-a"
+          },
+          "children": []
+        }
+      ]
+    }
+  }
+}

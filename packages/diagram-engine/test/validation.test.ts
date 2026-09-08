@@ -133,4 +133,55 @@ describe('validation', () => {
     const result = engine.validate(CYCLE_KIND_ACYCLIC as never);
     expect(result.valid).toBe(false);
   });
+
+  it('unknown key on a node fails INVALID_SPEC (strict schema)', () => {
+    const spec = {
+      type: 'diagram',
+      version: '1.0.0',
+      id: 'strict-node',
+      content: {
+        kind: 'flow',
+        nodes: [{ id: 'a', label: 'A', x: 5 }],
+        edges: [],
+      },
+      accessibility: { label: 'Strict node' },
+    };
+    const result = engine.validate(spec as never);
+    expect(result.valid).toBe(false);
+    const codes = result.issues.map((i) => i.code);
+    expect(codes).toContain('INVALID_SPEC');
+  });
+
+  it('unknown key on content fails INVALID_SPEC (strict schema)', () => {
+    const spec = {
+      type: 'diagram',
+      version: '1.0.0',
+      id: 'strict-content',
+      content: {
+        kind: 'flow',
+        nodes: [{ id: 'a', label: 'A' }],
+        edges: [],
+        color: 'red',
+      },
+      accessibility: { label: 'Strict content' },
+    };
+    const result = engine.validate(spec as never);
+    expect(result.valid).toBe(false);
+    const codes = result.issues.map((i) => i.code);
+    expect(codes).toContain('INVALID_SPEC');
+  });
+
+  it('empty nodes array fails INVALID_SPEC (schema minimum)', () => {
+    const spec = {
+      type: 'diagram',
+      version: '1.0.0',
+      id: 'empty-nodes',
+      content: { kind: 'flow', nodes: [], edges: [] },
+      accessibility: { label: 'Empty nodes' },
+    };
+    const result = engine.validate(spec as never);
+    expect(result.valid).toBe(false);
+    const codes = result.issues.map((i) => i.code);
+    expect(codes).toContain('INVALID_SPEC');
+  });
 });

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "node-start",
+    "role": "button",
+    "label": "Start",
+    "children": []
+  },
+  {
+    "id": "node-process",
+    "role": "button",
+    "label": "Process",
+    "children": []
+  },
+  {
+    "id": "node-end",
+    "role": "button",
+    "label": "End",
+    "children": []
+  },
+  {
+    "id": "edge-start-process",
+    "role": "link",
+    "label": "Start leads-to Process",
+    "children": []
+  },
+  {
+    "id": "edge-process-end",
+    "role": "link",
+    "label": "Process leads-to End",
+    "children": []
+  }
+]

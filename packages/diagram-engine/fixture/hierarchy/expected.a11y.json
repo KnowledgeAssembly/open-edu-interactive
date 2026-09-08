@@ -1,0 +1,32 @@
+[
+  {
+    "id": "node-root",
+    "role": "button",
+    "label": "Root",
+    "children": []
+  },
+  {
+    "id": "node-child1",
+    "role": "button",
+    "label": "Child 1",
+    "children": []
+  },
+  {
+    "id": "node-child2",
+    "role": "button",
+    "label": "Child 2",
+    "children": []
+  },
+  {
+    "id": "edge-root-child1",
+    "role": "link",
+    "label": "Root contains Child 1",
+    "children": []
+  },
+  {
+    "id": "edge-root-child2",
+    "role": "link",
+    "label": "Root contains Child 2",
+    "children": []
+  }
+]

@@ -183,7 +183,8 @@ export function mountDiagram(app: HTMLElement): void {
     tryCreate(spec: unknown): { ok: boolean; code?: string; message?: string } {
       try {
         const r = new DiagramEngine().validate(spec as never);
-        return { ok: r.valid, message: r.issues.map((i) => i.message).join('; ') };
+        const first = r.issues[0];
+        return { ok: r.valid, code: first?.code, message: r.issues.map((i) => i.message).join('; ') };
       } catch (error) {
         const err = error as { code?: string; message?: string };
         return { ok: false, code: err.code, message: err.message };

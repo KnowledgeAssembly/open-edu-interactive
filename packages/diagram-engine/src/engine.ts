@@ -59,45 +59,62 @@ function render(
   return { scene: laidOut, svgResult };
 }
 
+function renderForValidation(
+  content: DiagramContent,
+  spec: DiagramSpec,
+  label?: string,
+  description?: string,
+): { scene: Scene; svgResult: SvgResult } | ValidationResult | null {
+  try {
+    return render(content, DEFAULT_LAYOUT, spec, label, description);
+  } catch (error) {
+    const err = error as { code?: string; message?: string };
+    return {
+      valid: false,
+      issues: [
+        {
+          level: 'L2',
+          code: (err.code as ValidationResult['issues'][number]['code']) ?? 'INVALID_STATE',
+          path: 'content',
+          message: err.message ?? String(error),
+        },
+      ],
+    };
+  }
+}
+
 export class DiagramEngine implements Engine {
   readonly type: EngineType = 'diagram';
 
   validate(spec: EngineSpec): ValidationResult {
     const diagramSpec = spec as unknown as DiagramSpec;
     let artifacts: { scene: Scene; svgResult: SvgResult } | null = null;
+    const renderOrExisting = () => {
+      if (!artifacts && diagramSpec.content) {
+        const rendered = renderForValidation(
+          diagramSpec.content,
+          diagramSpec,
+          diagramSpec.accessibility?.label,
+          diagramSpec.accessibility?.description,
+        );
+        if (rendered === null || 'valid' in rendered) {
+          return rendered ?? { valid: true, issues: [] };
+        }
+        artifacts = rendered;
+      }
+      return null;
+    };
     return runPipeline(spec, {
       semantic: (s) => validateSemantic(s as unknown as DiagramSpec),
       layout: () => {
-        if (!artifacts && diagramSpec.content) {
-          try {
-            artifacts = render(
-              diagramSpec.content,
-              DEFAULT_LAYOUT,
-              diagramSpec,
-              diagramSpec.accessibility?.label,
-              diagramSpec.accessibility?.description,
-            );
-          } catch {
-            return { valid: true, issues: [] };
-          }
-        }
+        const rendered = renderOrExisting();
+        if (rendered !== null) return rendered;
         if (!artifacts) return { valid: true, issues: [] };
         return validateLayout(artifacts.scene, DEFAULT_LAYOUT);
       },
       accessibility: () => {
-        if (!artifacts && diagramSpec.content) {
-          try {
-            artifacts = render(
-              diagramSpec.content,
-              DEFAULT_LAYOUT,
-              diagramSpec,
-              diagramSpec.accessibility?.label,
-              diagramSpec.accessibility?.description,
-            );
-          } catch {
-            return { valid: true, issues: [] };
-          }
-        }
+        const rendered = renderOrExisting();
+        if (rendered !== null) return rendered;
         if (!artifacts) return { valid: true, issues: [] };
         return validateAccessibility(diagramSpec, artifacts.svgResult);
       },
