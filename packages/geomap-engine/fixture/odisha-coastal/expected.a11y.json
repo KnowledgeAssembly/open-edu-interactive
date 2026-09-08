@@ -1,0 +1,26 @@
+[
+  {
+    "id": "geom-states-odisha",
+    "role": "button",
+    "label": "Odisha",
+    "children": []
+  },
+  {
+    "id": "geom-states-west-bengal",
+    "role": "button",
+    "label": "West Bengal",
+    "children": []
+  },
+  {
+    "id": "geom-cities-bhubaneswar",
+    "role": "button",
+    "label": "Bhubaneswar",
+    "children": []
+  },
+  {
+    "id": "geom-water-chilika",
+    "role": "button",
+    "label": "Chilika Lake",
+    "children": []
+  }
+]

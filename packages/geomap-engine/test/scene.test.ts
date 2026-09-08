@@ -8,7 +8,7 @@ const odishaContent: GeoMapContent = {
   projection: { type: 'equirectangular' },
   geography: {
     sources: [
-      { id: 'india-states', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [{ id: 'odisha', type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[82, 18], [84, 18], [84, 20], [82, 20], [82, 18]]] } }] } },
+      { id: 'india-states', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [{ id: 'odisha', type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[82, 18], [84, 18], [84, 20], [82, 20], [82, 18]]] } }] } },
     ],
   },
   entities: [
@@ -46,7 +46,7 @@ describe('buildScene', () => {
   it('produces route with segment children', () => {
     const routeContent: GeoMapContent = {
       geography: {
-        sources: [{ id: 'points', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+        sources: [{ id: 'points', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
       },
       entities: [
         { id: 'a', type: 'city', name: 'City A', location: { coordinates: { lat: 10, lon: 20 } } },
@@ -67,7 +67,7 @@ describe('buildScene', () => {
   it('throws INVALID_REFERENCE for missing featureId in source', () => {
     const badContent: GeoMapContent = {
       geography: {
-        sources: [{ id: 'missing-features', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+        sources: [{ id: 'missing-features', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
       },
       entities: [
         { id: 'ghost', type: 'state', name: 'Ghost', location: { source: 'missing-features', featureId: 'nonexistent' } },
@@ -86,7 +86,7 @@ describe('buildScene', () => {
   it('throws INVALID_ENTITY for duplicate node ids', () => {
     const dupContent: GeoMapContent = {
       geography: {
-        sources: [{ id: 'dup-source', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+        sources: [{ id: 'dup-source', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
       },
       entities: [
         { id: 'same', type: 'city', name: 'Same', location: { coordinates: { lat: 0, lon: 0 } } },
@@ -106,7 +106,7 @@ describe('buildScene', () => {
   it('throws INVALID_REFERENCE for unknown entity in layer', () => {
     const badContent: GeoMapContent = {
       geography: {
-        sources: [{ id: 'src', type: 'geojson', class: 'authoritative', data: { type: 'FeatureCollection', features: [] } }],
+        sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
       },
       entities: [
         { id: 'exists', type: 'city', name: 'Exists', location: { coordinates: { lat: 0, lon: 0 } } },

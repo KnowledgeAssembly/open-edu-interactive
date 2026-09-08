@@ -1,0 +1,252 @@
+{
+  "nodes": [
+    {
+      "id": "geom-states-odisha",
+      "role": "region",
+      "kind": "region",
+      "label": "Odisha",
+      "description": "A state on the eastern coast of India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "odisha",
+        "entityType": "state",
+        "name": "Odisha",
+        "description": "A state on the eastern coast of India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "odisha"
+        },
+        "sourceClass": "illustrative",
+        "lat": 18.8,
+        "lon": 82.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82,
+              18
+            ],
+            [
+              84,
+              18
+            ],
+            [
+              84,
+              20
+            ],
+            [
+              82,
+              20
+            ],
+            [
+              82,
+              18
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 64,
+          "y": 501.7229964701264
+        },
+        {
+          "x": 415.41848607661126,
+          "y": 501.7229964701264
+        },
+        {
+          "x": 415.41848607661126,
+          "y": 150.3045103935151
+        },
+        {
+          "x": 64,
+          "y": 150.3045103935151
+        },
+        {
+          "x": 64,
+          "y": 501.7229964701264
+        }
+      ],
+      "bounds": {
+        "x": 64,
+        "y": 150.3045103935151,
+        "width": 351.41848607661126,
+        "height": 351.4184860766113
+      }
+    },
+    {
+      "id": "geom-cities-bhubaneswar",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Bhubaneswar",
+      "description": "Capital of Odisha.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "bhubaneswar",
+        "entityType": "city",
+        "name": "Bhubaneswar",
+        "description": "Capital of Odisha.",
+        "location": {
+          "coordinates": {
+            "lat": 20.2961,
+            "lon": 85.8245
+          }
+        },
+        "lat": 20.2961,
+        "lon": 85.8245
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.8245,
+          20.2961
+        ]
+      },
+      "bounds": {
+        "x": 714,
+        "y": 76.27700352987296,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "semantics": {
+    "geom-states-odisha": {
+      "id": "geom-states-odisha",
+      "role": "region",
+      "kind": "region",
+      "label": "Odisha",
+      "description": "A state on the eastern coast of India.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "odisha",
+        "entityType": "state",
+        "name": "Odisha",
+        "description": "A state on the eastern coast of India.",
+        "location": {
+          "source": "india-states",
+          "featureId": "odisha"
+        },
+        "sourceClass": "illustrative",
+        "lat": 18.8,
+        "lon": 82.8
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              82,
+              18
+            ],
+            [
+              84,
+              18
+            ],
+            [
+              84,
+              20
+            ],
+            [
+              82,
+              20
+            ],
+            [
+              82,
+              18
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 64,
+          "y": 501.7229964701264
+        },
+        {
+          "x": 415.41848607661126,
+          "y": 501.7229964701264
+        },
+        {
+          "x": 415.41848607661126,
+          "y": 150.3045103935151
+        },
+        {
+          "x": 64,
+          "y": 150.3045103935151
+        },
+        {
+          "x": 64,
+          "y": 501.7229964701264
+        }
+      ],
+      "bounds": {
+        "x": 64,
+        "y": 150.3045103935151,
+        "width": 351.41848607661126,
+        "height": 351.4184860766113
+      }
+    },
+    "geom-cities-bhubaneswar": {
+      "id": "geom-cities-bhubaneswar",
+      "role": "marker",
+      "kind": "marker",
+      "label": "Bhubaneswar",
+      "description": "Capital of Odisha.",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "bhubaneswar",
+        "entityType": "city",
+        "name": "Bhubaneswar",
+        "description": "Capital of Odisha.",
+        "location": {
+          "coordinates": {
+            "lat": 20.2961,
+            "lon": 85.8245
+          }
+        },
+        "lat": 20.2961,
+        "lon": 85.8245
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.8245,
+          20.2961
+        ]
+      },
+      "bounds": {
+        "x": 714,
+        "y": 76.27700352987296,
+        "width": 44,
+        "height": 44
+      }
+    }
+  }
+}

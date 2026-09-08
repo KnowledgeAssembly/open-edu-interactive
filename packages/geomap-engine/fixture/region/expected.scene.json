@@ -1,0 +1,166 @@
+{
+  "nodes": [
+    {
+      "id": "geom-regions-r1",
+      "role": "region",
+      "kind": "region",
+      "label": "Region One",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r1",
+        "entityType": "region",
+        "name": "Region One",
+        "location": {
+          "source": "src",
+          "featureId": "r1"
+        },
+        "sourceClass": "illustrative",
+        "lat": 0.4,
+        "lon": 0.4
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 652,
+          "y": 552
+        },
+        {
+          "x": 652,
+          "y": 48
+        },
+        {
+          "x": 148,
+          "y": 48
+        },
+        {
+          "x": 148,
+          "y": 552
+        }
+      ],
+      "bounds": {
+        "x": 148,
+        "y": 48,
+        "width": 504,
+        "height": 504
+      }
+    }
+  ],
+  "semantics": {
+    "geom-regions-r1": {
+      "id": "geom-regions-r1",
+      "role": "region",
+      "kind": "region",
+      "label": "Region One",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r1",
+        "entityType": "region",
+        "name": "Region One",
+        "location": {
+          "source": "src",
+          "featureId": "r1"
+        },
+        "sourceClass": "illustrative",
+        "lat": 0.4,
+        "lon": 0.4
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 652,
+          "y": 552
+        },
+        {
+          "x": 652,
+          "y": 48
+        },
+        {
+          "x": 148,
+          "y": 48
+        },
+        {
+          "x": 148,
+          "y": 552
+        }
+      ],
+      "bounds": {
+        "x": 148,
+        "y": 48,
+        "width": 504,
+        "height": 504
+      }
+    }
+  }
+}

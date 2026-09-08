@@ -1,0 +1,9 @@
+[
+  {
+    "entityId": "r1",
+    "type": "region",
+    "name": "Region One",
+    "location": "0.4000, 0.4000",
+    "sourceClass": "illustrative"
+  }
+]

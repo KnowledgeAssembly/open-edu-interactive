@@ -7,7 +7,7 @@
   "content": {
     "projection": { "type": "equirectangular" },
     "geography": {
-      "sources": [{ "id": "src", "type": "geojson", "class": "authoritative", "data": { "type": "FeatureCollection", "features": [] } }]
+      "sources": [{ "id": "src", "type": "geojson", "class": "illustrative", "data": { "type": "FeatureCollection", "features": [] } }]
     },
     "entities": [
       { "id": "city1", "type": "city", "name": "Test City", "location": { "coordinates": { "lat": 20, "lon": 85 } } }
@@ -18,6 +18,6 @@
   },
   "interaction": { "mode": "explore", "actions": ["select", "focus"] },
   "questions": [],
-  "sources": [{ "class": "authoritative" }],
+  "sources": [{ "class": "illustrative" }],
   "accessibility": { "label": "Marker only map" }
 }
