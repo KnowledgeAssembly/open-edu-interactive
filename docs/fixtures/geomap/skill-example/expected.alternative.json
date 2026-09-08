@@ -1,0 +1,17 @@
+[
+  {
+    "entityId": "odisha",
+    "type": "state",
+    "name": "Odisha",
+    "description": "A state on the eastern coast of India.",
+    "location": "18.8000, 82.8000",
+    "sourceClass": "illustrative"
+  },
+  {
+    "entityId": "bhubaneswar",
+    "type": "city",
+    "name": "Bhubaneswar",
+    "description": "Capital of Odisha.",
+    "location": "20.2961, 85.8245"
+  }
+]

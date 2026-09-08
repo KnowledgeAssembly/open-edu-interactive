@@ -1,0 +1,482 @@
+{
+  "nodes": [
+    {
+      "id": "geom-route-layer-my-route",
+      "role": "route",
+      "kind": "route",
+      "label": "my-route",
+      "interactive": false,
+      "hidden": false,
+      "metadata": {
+        "layerId": "route-layer",
+        "routeId": "my-route"
+      },
+      "children": [
+        {
+          "id": "geom-route-layer-my-route-seg-0",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City A",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "a",
+            "entityType": "city",
+            "name": "City A",
+            "entityIndex": 0,
+            "location": {
+              "coordinates": {
+                "lat": 10,
+                "lon": 20
+              }
+            },
+            "lat": 10,
+            "lon": 20
+          },
+          "children": [],
+          "bounds": {
+            "x": 144,
+            "y": 548,
+            "width": 8,
+            "height": 8
+          }
+        },
+        {
+          "id": "geom-route-layer-my-route-seg-1",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City B",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "b",
+            "entityType": "city",
+            "name": "City B",
+            "entityIndex": 1,
+            "location": {
+              "coordinates": {
+                "lat": 11,
+                "lon": 21
+              }
+            },
+            "lat": 11,
+            "lon": 21
+          },
+          "children": [],
+          "bounds": {
+            "x": 396,
+            "y": 296,
+            "width": 8,
+            "height": 8
+          }
+        },
+        {
+          "id": "geom-route-layer-my-route-seg-2",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City C",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "c",
+            "entityType": "city",
+            "name": "City C",
+            "entityIndex": 2,
+            "location": {
+              "coordinates": {
+                "lat": 12,
+                "lon": 22
+              }
+            },
+            "lat": 12,
+            "lon": 22
+          },
+          "children": [],
+          "bounds": {
+            "x": 648,
+            "y": 44,
+            "width": 8,
+            "height": 8
+          }
+        }
+      ],
+      "points": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 400,
+          "y": 300
+        },
+        {
+          "x": 652,
+          "y": 48
+        }
+      ],
+      "bounds": {
+        "x": 144,
+        "y": 44,
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "id": "geom-markers-a",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City A",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "a",
+        "entityType": "city",
+        "name": "City A",
+        "location": {
+          "coordinates": {
+            "lat": 10,
+            "lon": 20
+          }
+        },
+        "lat": 10,
+        "lon": 20
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20,
+          10
+        ]
+      },
+      "bounds": {
+        "x": 126,
+        "y": 530,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "geom-markers-b",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City B",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "b",
+        "entityType": "city",
+        "name": "City B",
+        "location": {
+          "coordinates": {
+            "lat": 11,
+            "lon": 21
+          }
+        },
+        "lat": 11,
+        "lon": 21
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21,
+          11
+        ]
+      },
+      "bounds": {
+        "x": 378,
+        "y": 278,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "geom-markers-c",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City C",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "c",
+        "entityType": "city",
+        "name": "City C",
+        "location": {
+          "coordinates": {
+            "lat": 12,
+            "lon": 22
+          }
+        },
+        "lat": 12,
+        "lon": 22
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22,
+          12
+        ]
+      },
+      "bounds": {
+        "x": 630,
+        "y": 26,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "semantics": {
+    "geom-route-layer-my-route": {
+      "id": "geom-route-layer-my-route",
+      "role": "route",
+      "kind": "route",
+      "label": "my-route",
+      "interactive": false,
+      "hidden": false,
+      "metadata": {
+        "layerId": "route-layer",
+        "routeId": "my-route"
+      },
+      "children": [
+        {
+          "id": "geom-route-layer-my-route-seg-0",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City A",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "a",
+            "entityType": "city",
+            "name": "City A",
+            "entityIndex": 0,
+            "location": {
+              "coordinates": {
+                "lat": 10,
+                "lon": 20
+              }
+            },
+            "lat": 10,
+            "lon": 20
+          },
+          "children": [],
+          "bounds": {
+            "x": 144,
+            "y": 548,
+            "width": 8,
+            "height": 8
+          }
+        },
+        {
+          "id": "geom-route-layer-my-route-seg-1",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City B",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "b",
+            "entityType": "city",
+            "name": "City B",
+            "entityIndex": 1,
+            "location": {
+              "coordinates": {
+                "lat": 11,
+                "lon": 21
+              }
+            },
+            "lat": 11,
+            "lon": 21
+          },
+          "children": [],
+          "bounds": {
+            "x": 396,
+            "y": 296,
+            "width": 8,
+            "height": 8
+          }
+        },
+        {
+          "id": "geom-route-layer-my-route-seg-2",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "City C",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "entityId": "c",
+            "entityType": "city",
+            "name": "City C",
+            "entityIndex": 2,
+            "location": {
+              "coordinates": {
+                "lat": 12,
+                "lon": 22
+              }
+            },
+            "lat": 12,
+            "lon": 22
+          },
+          "children": [],
+          "bounds": {
+            "x": 648,
+            "y": 44,
+            "width": 8,
+            "height": 8
+          }
+        }
+      ],
+      "points": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 400,
+          "y": 300
+        },
+        {
+          "x": 652,
+          "y": 48
+        }
+      ],
+      "bounds": {
+        "x": 144,
+        "y": 44,
+        "width": 512,
+        "height": 512
+      }
+    },
+    "geom-markers-a": {
+      "id": "geom-markers-a",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City A",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "a",
+        "entityType": "city",
+        "name": "City A",
+        "location": {
+          "coordinates": {
+            "lat": 10,
+            "lon": 20
+          }
+        },
+        "lat": 10,
+        "lon": 20
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20,
+          10
+        ]
+      },
+      "bounds": {
+        "x": 126,
+        "y": 530,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-markers-b": {
+      "id": "geom-markers-b",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City B",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "b",
+        "entityType": "city",
+        "name": "City B",
+        "location": {
+          "coordinates": {
+            "lat": 11,
+            "lon": 21
+          }
+        },
+        "lat": 11,
+        "lon": 21
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21,
+          11
+        ]
+      },
+      "bounds": {
+        "x": 378,
+        "y": 278,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-markers-c": {
+      "id": "geom-markers-c",
+      "role": "marker",
+      "kind": "marker",
+      "label": "City C",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "c",
+        "entityType": "city",
+        "name": "City C",
+        "location": {
+          "coordinates": {
+            "lat": 12,
+            "lon": 22
+          }
+        },
+        "lat": 12,
+        "lon": 22
+      },
+      "children": [],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22,
+          12
+        ]
+      },
+      "bounds": {
+        "x": 630,
+        "y": 26,
+        "width": 44,
+        "height": 44
+      }
+    }
+  }
+}

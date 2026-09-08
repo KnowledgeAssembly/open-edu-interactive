@@ -1,0 +1,20 @@
+[
+  {
+    "entityId": "a",
+    "type": "city",
+    "name": "City A",
+    "location": "10.0000, 20.0000"
+  },
+  {
+    "entityId": "b",
+    "type": "city",
+    "name": "City B",
+    "location": "11.0000, 21.0000"
+  },
+  {
+    "entityId": "c",
+    "type": "city",
+    "name": "City C",
+    "location": "12.0000, 22.0000"
+  }
+]

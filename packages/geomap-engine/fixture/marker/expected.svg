@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Marker only map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <circle id="geom-markers-city1" data-oedu-role="marker" data-oedu-interactive="true" aria-label="Test City" cx="400" cy="300" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

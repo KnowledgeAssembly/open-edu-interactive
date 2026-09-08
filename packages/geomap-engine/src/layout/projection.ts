@@ -19,14 +19,26 @@ export interface BBox {
   north: number;
 }
 
-export function makeProjector(type: 'equirectangular', width: number, height: number): Projector {
-  const scale = Math.min(width, height) / (2 * Math.PI);
+export interface ProjectorOptions {
+  center?: { lat: number; lon: number };
+  scale?: number;
+}
+
+export function makeProjector(
+  type: 'equirectangular',
+  width: number,
+  height: number,
+  options?: ProjectorOptions,
+): Projector {
+  const center = options?.center ?? { lat: 0, lon: 0 };
+  const baseScale = options?.scale ?? Math.min(width, height) / (2 * Math.PI);
+  const scale = baseScale;
   const cx = width / 2;
   const cy = height / 2;
 
   const project = function (lon: number, lat: number): Point {
-    const lonRad = toRadians(lon);
-    const latRad = toRadians(lat);
+    const lonRad = toRadians(lon - center.lon);
+    const latRad = toRadians(lat - center.lat);
     const x = cx + lonRad * scale;
     const y = cy - latRad * scale;
     return { x, y };
@@ -35,13 +47,13 @@ export function makeProjector(type: 'equirectangular', width: number, height: nu
   project.invert = function (x: number, y: number): { lon: number; lat: number } {
     const lonRad = (x - cx) / scale;
     const latRad = (cy - y) / scale;
-    const lon = (lonRad * 180) / Math.PI;
-    const lat = (latRad * 180) / Math.PI;
+    const lon = (lonRad * 180) / Math.PI + center.lon;
+    const lat = (latRad * 180) / Math.PI + center.lat;
     return { lon, lat };
   };
 
   project.scale = scale;
-  project.center = [0, 0] as [number, number];
+  project.center = [center.lon, center.lat] as [number, number];
   project.translate = [cx, cy] as [number, number];
 
   return project;

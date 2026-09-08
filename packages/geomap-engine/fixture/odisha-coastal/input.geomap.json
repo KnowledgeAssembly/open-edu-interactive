@@ -12,7 +12,7 @@
         {
           "id": "india-states",
           "type": "geojson",
-          "class": "authoritative",
+          "class": "illustrative",
           "data": {
             "type": "FeatureCollection",
             "features": [
@@ -41,6 +41,6 @@
   },
   "interaction": { "mode": "explore", "actions": ["select", "deselect", "focus", "reset"] },
   "questions": [],
-  "sources": [{ "class": "authoritative" }],
+  "sources": [{ "class": "illustrative" }],
   "accessibility": { "label": "Map of Odisha, its capital Bhubaneswar, and coastal connections." }
 }

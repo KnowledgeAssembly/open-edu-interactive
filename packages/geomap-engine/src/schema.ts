@@ -92,17 +92,18 @@ export const LayerSchema = z
   })
   .strict();
 
+const ViewportSpecSchema = z
+  .object({
+    fit: z.literal('content').optional(),
+    padding: z.number().min(0).max(0.5).optional(),
+    center: CoordinateSchema.optional(),
+    zoom: z.number().min(0).max(20).optional(),
+  })
+  .strict();
+
 export const GeoMapContentSchema = z
   .object({
-    viewport: z
-      .object({
-        fit: z.literal('content').optional(),
-        padding: z.number().min(0).max(0.5).optional(),
-        center: CoordinateSchema.optional(),
-        zoom: z.number().min(0).max(20).optional(),
-      })
-      .strict()
-      .optional(),
+    viewport: ViewportSpecSchema.optional(),
     projection: z
       .object({
         type: z.literal('equirectangular'),
@@ -124,8 +125,8 @@ export const GeoMapContentSchema = z
           .array(
             z
               .object({
-                role: z.string(),
-                label: z.string(),
+                role: z.string().min(1),
+                label: z.string().min(1),
               })
               .strict(),
           )
@@ -137,6 +138,7 @@ export const GeoMapContentSchema = z
   .strict();
 
 export type GeoMapContent = z.infer<typeof GeoMapContentSchema>;
+export type ViewportSpec = z.infer<typeof ViewportSpecSchema>;
 export type EntitySpec = z.infer<typeof EntitySchema>;
 export type GeoSourceSpec = z.infer<typeof GeoSourceSchema>;
 export type LayerSpec = z.infer<typeof LayerSchema>;
