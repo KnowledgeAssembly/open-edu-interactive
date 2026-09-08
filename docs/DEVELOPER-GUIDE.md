@@ -5,13 +5,11 @@ A practical guide for two audiences:
 1. **Integrators** — teams hosting these engines: wiring the host seam, mounting nodes and lessons, consuming events, adopting the schema, authoring specs.
 2. **Extenders** — engine authors: implementing the `Engine` contract, adding validation hooks, rendering, packaging, and testing a new engine.
 
-This is the "how-to" counterpart to the architecture and contract. For the model, see [`ARCHITECTURE.md`](ARCHITECTURE.md); for the canonical decisions and contract, [`DESIGN.md`](DESIGN.md) and [`INTERACTIVE-ENGINE-SPEC.md`](INTERACTIVE-ENGINE-SPEC.md); for repo layout and packaging rules, [`STRUCTURE.md`](STRUCTURE.md).
+The page covers three things: **how to integrate**, **how to extend**, and the **reference/troubleshooting** material in §4–§10. It is the how-to counterpart to the architecture and contract. For the model, see [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md); for the canonical decisions and contract, [`DESIGN.md`](DESIGN.md) and [`INTERACTIVE-ENGINE-SPEC.md`](INTERACTIVE-ENGINE-SPEC.md); for repo layout and packaging rules, [`STRUCTURE.md`](STRUCTURE.md).
 
----
+## 1. Before you start
 
-## 1. Orientation
-
-### 1.1 Repo map
+### 1.1 Repo layout
 
 ```text
 packages/interactive-engine/   core: engine, registry, state, action, event, host,
@@ -20,16 +18,16 @@ packages/interactive-engine/   core: engine, registry, state, action, event, hos
 packages/{visual,geomap,chart,timeline,diagram}-engine/   the five engines
 packages/interactive-react/    React mounts + OpenEduBridge adapter
 apps/conformance/              vanilla-TS Vite app exposing window.__harness for Playwright
-docs/                          ARCHITECTURE, DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE,
-                               PLAN, schemas/, fixtures/, engines/,
-                               adr/ (ADR-01…09)
+docs/                          DESIGN, SYSTEM-ARCHITECTURE, DEVELOPER-GUIDE,
+                               INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, schemas/,
+                               fixtures/, engines/, adr/ (ADR-01…09)
 ```
 
 ### 1.2 The core loop
 
 ```text
 spec (JSON) ──▶ Engine.validate  (L1–L4) ──▶ EngineInstance (dispatch ─▶ events/snapshot)
-                                                                      ▲
+                                                                       ▲
 lesson (composed) ──▶ Lesson.load ── start(host) ── mounts each instance + router
 ```
 
@@ -37,17 +35,15 @@ lesson (composed) ──▶ Lesson.load ── start(host) ── mounts each in
 - Hosts build an `EngineHost` (or `OpenEduBridge`), `dispatch` semantic actions, and consume `events`/`snapshot`.
 - Composers (authors) write lesson JSON that binds engines together.
 
-### 1.3 Conventions that will bite you if ignored
+### 1.3 Enforced conventions
 
-- **ESM** — local imports must use `.js` specifiers (`import { x } from './core/action.js'`). Extensionless relative imports fail typecheck (TS2835). This is enforced by `module: "NodeNext"` and is the permanent convention (publishing is per-file `tsc` ESM emit).
+- **ESM** — local imports use `.js` specifiers (`import { x } from './core/action.js'`). Extensionless relative imports fail typecheck (TS2835), enforced by `module: "NodeNext"` (publishing is per-file `tsc` ESM emit).
 - **Strict TS** — `noUncheckedIndexedAccess` is on; `arr[i]` is `T | undefined`. Assert deliberately with `!`.
-- **Closed action enum (D5)** — dispatch uses the semantic `ACTION_TYPES`. Renderer input (`click`, `pointer.*`, `keyboard`) must **never** appear in specs; translate at the renderer boundary.
+- **Closed action enum (D5)** — dispatch uses the semantic `ACTION_TYPES`. Renderer input (`click`, `pointer.*`, `keyboard`) never appears in specs; translate at the renderer boundary.
 - **No arbitrary JS (P10)** — no inline scripts, no `javascript:` URIs, no event handlers in specs.
 - **Shared errors** — raise the common `ERROR_CODES` (`INVALID_SPEC`, `INVALID_ACTION`, `INVALID_REFERENCE`, `UNSUPPORTED_ACTION`, …), never bespoke codes.
 - **Deterministic (P4)** — no randomness in layout, styling, or selection. Golden event logs are asserted byte-for-byte.
 - **Engine isolation (D2)** — engines never import each other or any `@open-edu/*` package.
-
----
 
 ## 2. Hosting an engine (Integrators)
 
@@ -59,7 +55,7 @@ pnpm add @knowledgeassemble/interactive-engine \
   @knowledgeassemble/interactive-react
 ```
 
-Add whichever engines you need. `interactive-react` is optional — it's the React convenience layer over the raw core.
+Add whichever engines you need. `interactive-react` provides React components; if your host does not render through React, use the core (`interactive-engine`) and its engines directly.
 
 ### 2.2 Implement the host seam
 
@@ -72,7 +68,9 @@ import type { EngineHost } from '@knowledgeassemble/interactive-engine';
 ```ts
 const host: EngineHost = {
   locale: 'en',
-  tokens: { emphasis: '#b00', focus: { /* … */ } }, // semantic tokens, never literal color
+  // Keys are semantic names the spec/engine reference; values are your
+  // design system's strings. Engines never see literal colors in specs.
+  tokens: { emphasis: designTokens.emphasis, danger: designTokens.danger },
   reducedMotion: false,
   announce(message: string) { liveRegion.textContent = message; },
   onEvent(event) { telemetry.push(event); },          // D5 event stream
@@ -89,7 +87,7 @@ const bridge: OpenEduBridge = {
   locale: 'en',
   tokens: designTokens,
   reducedMotion: false,
-  t: (key, vars) => i18n.format(key, vars),   // your i18n, NOT hard-coded strings
+  t: (key, vars) => i18n.format(key, vars),   // your i18n; never hard-code user-facing strings
   announce: (msg) => announceLive(msg),
   onEvent: (event) => telemetry.send(event),
   resolveAsset: (id) => assetResolver.load(id),
@@ -119,12 +117,12 @@ const el = createElement(InteractiveNode, {
 // later:
 nodeRef.current?.dispatch({ type: 'focus', target: { id: 'marker-7' } });
 nodeRef.current?.snapshot();
-nodeRef.current?.events();   // real events, not a stub
+nodeRef.current?.events();
 ```
 
 ### 2.4 Mount a composed lesson
 
-`InteractiveLesson` registers all five engines, validates, and mounts every instance + the router. A `forwardRef` handle exposes the runtime:
+`InteractiveLesson` registers all five engines, validates, and mounts every instance plus the router. A `forwardRef` handle exposes the runtime:
 
 ```tsx
 import { createElement, createRef } from 'react';
@@ -135,8 +133,8 @@ const handle = createRef<InteractiveLessonHandle>();
 const el = createElement(InteractiveLesson, { lesson, host: bridge, ref: handle });
 
 // later:
-handle.current?.dispatch('timeline-1', { type: 'select', target: { id: 'event-2' } });
-const snapshot = handle.current?.snapshot('visual-1');
+handle.current?.dispatch('timeline-independence', { type: 'select', target: { id: 'event-1947' } });
+const snapshot = handle.current?.snapshot('visual-independence');
 const events = handle.current?.events();       // monotonic-seq, replayable
 ```
 
@@ -172,9 +170,7 @@ Malformed specs raise `EngineError` with a shared `code` (e.g. `INVALID_SPEC`, `
 
 The proposal schema for `@open-edu/schemas` is `docs/schemas/interactive-lesson-node.schema.json`. It prescribes the `{ type:"interactive", engine, spec }` node form plus the composed-lesson form, with `additionalProperties:false`. Keep that strictness when adopting (see `docs/p7-acceptance.md`).
 
----
-
-## 3. Extending — writing a new engine (Extenders)
+## 3. Writing a new engine (Extenders)
 
 ### 3.1 The `Engine` contract
 
@@ -182,75 +178,83 @@ Everything an engine must provide (from the core `packages/interactive-engine/sr
 
 ```ts
 interface Engine {
-  readonly type: EngineType;               // must be a known EngineType
+  readonly type: EngineType;               // must be a member of the closed union
   validate(spec: EngineSpec): ValidationResult;
   instantiate(spec: EngineSpec, host: EngineHost, id?: string): EngineInstance;
 }
 ```
 
-The `EngineInstance` you return must expose `id`, `engine`, `dispatch`, `snapshot`, `subscribe`, `teardown`. You may obtain this from the core (`createPlatformInstance`) or build a richer one — the Visual engine builds a richer one to expose its deterministic `scene`/`svgResult` in the snapshot.
+The `EngineInstance` you return must expose `id`, `engine`, `dispatch`, `snapshot`, `subscribe`, `teardown`. The core `createPlatformInstance` returns a conformant instance you can use directly; engines that need richer output (the Visual engine exposes its deterministic `scene`/`svgResult`) build their own but keep the same contract.
 
 ### 3.2 Skeleton of a new engine
 
-Model new engines on `packages/visual-engine/src/engine.ts`. A minimal shape:
+There is no single default engine shape. Model a new engine on an existing one per domain (`packages/visual-engine/src/engine.ts` is the richest reference), and note that a brand-new engine type requires extending the closed `EngineType` union in the core, plus the schema `type`/`class` enums. That is a **contract change**: deliberate and documented (§3.7). Until you make it, a new type will not typecheck against `Engine`.
+
+Imports you will need from the core (plus your own `schema.js`/validation modules):
 
 ```ts
 import {
   EngineError, initialState, baseReducer, EventLog, runPipeline,
   type Engine, type EngineInstance, type EngineType, type EngineSpec,
-  type EngineHost, type ValidationResult, type EngineAction,
+  type EngineHost, type EngineAction, type EngineEvent,
+  type ValidationResult,
 } from '@knowledgeassemble/interactive-engine';
-import { validateSemantic } from './validation/semantic.js';
-import { validateLayout } from './validation/layout.js';
-import { validateAccessibility } from './validation/accessibility.js';
 import type { MySpec } from './schema.js';
+```
 
-export class MyEngine implements Engine {
-  readonly type: EngineType = 'visual';  // your EngineType
+Implement `validate` by wiring your L2–L4 hooks into the core pipeline:
 
-  validate(spec: EngineSpec): ValidationResult {
-    return runPipeline(spec, {
-      semantic: (s) => validateSemantic(s as unknown as MySpec),
-      layout: (s) => validateLayout(s as unknown as MySpec),
-      accessibility: (s) => validateAccessibility(s as unknown as MySpec),
-    });
-  }
-
-  instantiate(spec: EngineSpec, host: EngineHost, id?: string): EngineInstance {
-    const v = this.validate(spec);
-    if (!v.valid) {
-      throw new EngineError('INVALID_SPEC',
-        `validation failed: ${v.issues.map(i => i.message).join('; ')}`);
-    }
-    // deterministic setup: build your model (scene/geometry/data), render once
-    const instanceId = id ?? spec.id;
-    let state = { ...initialState(instanceId, this.type), phase: 'running' };
-    const log = new EventLog();
-    const listeners = new Set<(e: Parameters<EngineHost['onEvent']>[0]) => void>();
-    const emit = (e: Parameters<EngineHost['onEvent']>[0]) => {
-      host.onEvent(e);
-      for (const l of listeners) l(e);
-    };
-    emit(log.append('engine-mounted', instanceId));
-    emit(log.append('engine-ready', instanceId));
-
-    return {
-      id: instanceId,
-      engine: this.type,
-      dispatch(action: EngineAction) {
-        state = baseReducer(state, action);            // closed semantic actions
-        emit(log.append('interaction-started', instanceId, undefined, action));
-        emit(log.append('state-changed', instanceId, undefined, action));
-        // emit a namespaced result event, e.g. `${this.type}.${target}-selected`
-        emit(log.append('interaction-completed', instanceId, undefined, action));
-      },
-      snapshot() { return { ...state, /* your model */ }; },
-      subscribe(fn) { listeners.add(fn); return () => { listeners.delete(fn); }; },
-      teardown() { listeners.clear(); state = { ...state, phase: 'torn-down' }; },
-    };
-  }
+```ts
+validate(spec: EngineSpec): ValidationResult {
+  return runPipeline(spec, {
+    semantic: (s) => validateSemantic(s as unknown as MySpec),
+    layout: (s) => validateLayout(s as unknown as MySpec),
+    accessibility: (s) => validateAccessibility(s as unknown as MySpec),
+  });
 }
 ```
+
+Implement `instantiate` to emit the lifecycle events and build a conformant `EngineInstance`. A new engine **must emit a namespaced result event** for at least its interactive actions: composition bindings route on names like `timeline.event-selected`, so without them no other engine can bind to yours.
+
+```ts
+instantiate(spec: EngineSpec, host: EngineHost, id?: string): EngineInstance {
+  const result = this.validate(spec);
+  if (!result.valid) {
+    throw new EngineError('INVALID_SPEC',
+      `validation failed: ${result.issues.map((i) => i.message).join('; ')}`);
+  }
+  const instanceId = id ?? spec.id;
+  let state = { ...initialState(instanceId, this.type), phase: 'running' };
+  const log = new EventLog();
+  const listeners = new Set<(e: EngineEvent) => void>();
+  const emit = (e: EngineEvent): void => {
+    host.onEvent(e);
+    for (const l of listeners) l(e);
+  };
+  emit(log.append('engine-mounted', instanceId));
+  emit(log.append('engine-ready', instanceId));
+  // deterministic setup: build your model, render once (see §3.5)
+
+  return {
+    id: instanceId,
+    engine: this.type,
+    dispatch(action: EngineAction) {
+      state = baseReducer(state, action);
+      // lifecycle + namespaced result event, e.g. `my-engine.<target>-selected`:
+      emit(log.append('interaction-started', instanceId, undefined, action));
+      emit(log.append('state-changed', instanceId, undefined, action));
+      emit(log.append(`my-engine.${action.target?.id ?? 'node'}-selected`,
+        instanceId, { selection: state.selection }, action));
+      emit(log.append('interaction-completed', instanceId, undefined, action));
+    },
+    snapshot() { return { ...state /*, your model */ }; },
+    subscribe(fn) { listeners.add(fn); return () => { listeners.delete(fn); }; },
+    teardown() { listeners.clear(); state = { ...state, phase: 'torn-down' }; },
+  };
+}
+```
+
+Use `emit`/`EventLog` exactly as the Visual engine does (see `packages/visual-engine/src/engine.ts`): events go to `host.onEvent`, then to subscribers, in order, with a shared `EventLog` giving each a monotonic `seq`.
 
 ### 3.3 Structure your engine (recommended layering)
 
@@ -281,13 +285,13 @@ Each returns a `ValidationResult` (`{ valid, issues: [{ level, code, message, pa
 
 ### 3.5 Rendering
 
-Rendering is **deterministic and computed once** (or on discrete state changes), never per-frame from live pointer state. The Visual engine builds `scene → layout → SVG` in `instantiate` and exposes the result on `snapshot().svgResult`. Renderers must never embed author-controlled inline scripts or `javascript:` URIs (P10).
+Rendering is deterministic and computed once (or on discrete state changes), never per-frame from live pointer state. The Visual engine builds `scene → layout → SVG` in `instantiate` and exposes the result on `snapshot().svgResult`. Renderers never embed author-controlled inline scripts or `javascript:` URIs (P10).
 
 ### 3.6 Register and test in conformance
 
 1. Add your engine package under `packages/<name>-engine/`.
 2. Register it in the `InteractiveLesson` registry (and the conformance harness) so compositions and e2e can use it.
-3. Add open `type` to the shared enums only as a **deliberate, documented contract change** (`EngineType`, `ACTION_TYPES`, and the engine schema's `type`/`class` enums must stay in sync — see the parity guardrail below).
+3. Extend the closed `EngineType` union (and the schema `type`/`class` enums) as a deliberate, documented contract change (§3.7), keeping the copies in parity — the parity guardrail (`packages/interactive-engine/test/schema-parity.test.ts`) enforces this.
 
 ### 3.7 Action/content additions are contract changes
 
@@ -295,10 +299,8 @@ Any addition to `ACTION_TYPES`, `EngineType`, or the shared envelope schema is a
 
 1. Namespaced and documented in the engine spec,
 2. Reflected in `packages/interactive-engine/src/schemas/actions.ts`, the engine schema, and the runtime Zod `LessonSchema`,
-3. Kept in parity across the copied schema copies (`docs/schemas/` vs `packages/*/src/schemas/`),
+3. Kept in parity across the schema copies (`docs/schemas/` vs `packages/*/src/schemas/`),
 4. Deliberate — this is the vendor-facing surface OpenEdu builds against.
-
----
 
 ## 4. Semantic actions cheat-sheet
 
@@ -312,48 +314,40 @@ From `packages/interactive-engine/src/schemas/actions.ts`:
 | `open-annotation` / `close-annotation` | reveal/hide annotation |
 | `toggle` / `expand` / `collapse` | disclosure/expansion |
 | `play-pause` / `step` / `scrub` | playback + stepping |
-| `zoom` / `pan` | viewport navigation (semantic) |
+| `zoom` / `pan` / `jump-to` | viewport/locus navigation (semantic) |
 | `answer` / `compare` | assessment input (OpenEdu scores it) |
 | `drag` / `drop` / `place` / `move` / `connect` / `disconnect` / `follow` | manipulation |
 | `reset` | restore initial state |
 
-Superseded/banned names (`highlight`, `annotate`, `blur`, `play`, `show`) and renderer input (`click`, `pointer.*`, `keyboard`) **cannot** appear in specs.
-
----
+Superseded/banned names (`highlight`, `annotate`, `blur`, `play`, `show`) and renderer input (`click`, `pointer.*`, `keyboard`) cannot appear in specs.
 
 ## 5. Composition — binding engines
 
-A lesson routes events between instances. From `docs/fixtures/p7/composed-lesson.json`:
+A lesson routes events between instances. The binding array below is abridged from `docs/fixtures/p7/composed-lesson.json` (the full `engines` array carries each engine's complete spec; ids match the fixture):
 
 ```json
 {
-  "engines": [
-    { "instanceId": "timeline-1", "engine": "timeline", "spec": { "type": "timeline", "…": "…" } },
-    { "instanceId": "visual-1", "engine": "visual", "spec": { "type": "visual", "…": "…" } }
-  ],
   "bindings": [
     {
-      "on": "timeline.event-selected",      // namespaced event to listen for
-      "from": "timeline-1",                 // source instance
+      "on": "timeline.event-selected",
+      "from": "timeline-independence",
       "dispatch": {
-        "to": "visual-1",                   // target instance
+        "to": "visual-independence",
         "action": "focus",
-        "targetIdFrom": "links.visualEntityId" // dynamic: read from the source event data
+        "targetIdFrom": "links.visualEntityId"
       }
     }
   ]
 }
 ```
 
-A binding's `dispatch` must define **exactly one** of `targetIdFrom` (dynamic — a path read from the source event) or `targetId` (static). The `Router` matches the emitted namespaced event on the source instance and dispatches the mapped action to the target instance, preserving a single monotonic `seq` across the whole lesson.
-
----
+A binding's `dispatch` must define **exactly one** of `targetIdFrom` (dynamic, a path read from the source event) or `targetId` (static). The `Router` matches the emitted namespaced event on the source instance and dispatches the mapped action to the target instance, preserving a single monotonic `seq` across the whole lesson.
 
 ## 6. Packaging and publishing
 
 Packaging rules (STRUCTURE §40-41) are already wired into all seven packages; keep them intact:
 
-- Per-file `tsc` ESM emit into `dist/` (there is **no bundler**); local imports use `.js` specifiers.
+- Per-file `tsc` ESM emit into `dist/` (there is no bundler); local imports use `.js` specifiers.
 - `prepublishOnly` = `build && typecheck && lint && test`.
 - `publishConfig.main`/`types`/`exports` point at `dist`; `files` ships `["src","dist"]`.
 - `tsconfig.build.json` sets `noEmit:false`, `outDir:dist`, `declaration:true`, `include:["src"]`.
@@ -368,12 +362,10 @@ pnpm publish:smoke   # scripts/p7-publish-smoke.mjs: pack → install into temp 
 
 The smoke script is the in-repo proof that the installed package works, not just the workspace path.
 
----
-
 ## 7. Testing
 
 - **Unit (Vitest)** — `packages/*/test/**/*.test.ts`. Cover the lifecycle (monotonic seq, ordered names), validation negatives (each `ErrorCode`), determinism (two runs identical), and schema/Zod parity. Write the test **first** (test-driven; a feature is "done" only when a red test turns green).
-- **Golden fixtures** — checked in; expected event sequences asserted exactly. If a renderer/layout change alters output, update fixtures via a **reviewed** change.
+- **Golden fixtures** — checked in; expected event sequences asserted exactly. If a renderer/layout change alters output, update fixtures via a reviewed change.
 - **Schema/parity** — keep the Zod `LessonSchema`, JSON Schema copies, and the closed enums in sync. There is a dedicated parity guardrail (`packages/interactive-engine/test/schema-parity.test.ts`) — run it whenever you touch a schema.
 - **Browser e2e (Playwright)** — against `apps/conformance` (`window.__harness`, `?engine=lesson` mounts the real `InteractiveLesson`). Deterministic only — no flaky timers/layout-order dependence (non-parallel here).
 - **Installed-package** — `pnpm publish:smoke` (see §6).
@@ -384,8 +376,6 @@ Run the full gate from the repo root:
 pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 ```
 
----
-
 ## 8. Checklist before you call an engine done
 
 - [ ] Implements `Engine` (`type`, `validate`, `instantiate`) and returns a conformant `EngineInstance`.
@@ -395,12 +385,11 @@ pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 - [ ] No inline scripts / `javascript:` URIs / author-supplied handlers in output.
 - [ ] Renders once (or on discrete state change) — no `pointer.*` in specs.
 - [ ] Provenance (`source.class`) on any factual/geographic/historical claim.
+- [ ] Emits namespaced result events so composition bindings can route on them.
 - [ ] Tests written first; golden event log byte-stable; schema parity green.
 - [ ] `EngineType`/`ACTION_TYPES`/schema enum changes are documented, deliberate contract changes.
 - [ ] `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright` green; `pnpm publish:dry` + `publish:smoke` green for packaging changes.
 - [ ] Public API centralized in the package `index.ts`; internals unexported.
-
----
 
 ## 9. Troubleshooting
 
@@ -410,14 +399,13 @@ pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 | `arr[i]` is `T \| undefined` | `noUncheckedIndexedAccess` — assert with `!` deliberately. |
 | `UNSUPPORTED_ACTION` at dispatch | Action not in the closed semantic enum (D5). Re-map renderer input at the boundary. |
 | Extensionless import fails build | Same as TS2835 — NodeNext requires the explicit `.js`. |
-| Unknown key silently accepted | A schema copy drifted or `additionalProperties` is not `false`. Run the parity guardrail; fix the **higher** doc/schema. |
+| A binding never fires | The source engine does not emit the namespaced event named in `on`. Bindings match on namespace names, so the engine must emit one (see §3.2). |
+| Unknown key silently accepted | A schema copy drifted or `additionalProperties` is not `false`. Run the parity guardrail; fix the higher schema (see §10). |
 | Golden log differs | Non-deterministic render or layout. No randomness (P4). |
 | Engine can't see another engine | Correct — engines are isolated (D2). Compose via the event bus in a lesson. |
 | `INVALID_REFERENCE` | A spec references an entity id that isn't declared. |
 | Package won't resolve installed | Check `publishConfig` points at `dist` and `prepublishOnly` built it; run `pnpm publish:smoke`. |
 
----
-
 ## 10. Where the source of truth lives
 
-When docs disagree with code, fix the **higher** document, never the implementation. Reading order: `docs/DESIGN.md` → `docs/INTERACTIVE-ENGINE-SPEC.md` → engine `SPEC.md`/`VISION.md` → (Visual only) `ARCHITECTURE.md`. This guide is a how-to layer on top of those; if it ever conflicts with them, the higher docs win.
+When docs disagree **with each other**, fix the **higher** document, never the implementation: change the higher doc to reflect the decision, and do not change code just to match a lower doc. Reading order: `docs/DESIGN.md` → `docs/INTERACTIVE-ENGINE-SPEC.md` → `docs/SYSTEM-ARCHITECTURE.md` → `docs/DEVELOPER-GUIDE.md` → engine `SPEC.md` / `VISION.md` → (Visual) `docs/engines/visual/ARCHITECTURE.md` (engine implementation, not system architecture). This guide is a how-to layer on top of those; if it ever conflicts with them, the higher docs win.

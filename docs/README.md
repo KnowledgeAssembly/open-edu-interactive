@@ -4,14 +4,14 @@ Shared infrastructure for turning declarative JSON into interactive, accessible,
 
 **Start here:** [`DESIGN.md`](DESIGN.md) — the overall design, principles, and system-wide decisions (D1–D9).
 
-Orientation: [`ARCHITECTURE.md`](ARCHITECTURE.md) (high-level system architecture) and [`DEVELOPER-GUIDE.md`](DEVELOPER-GUIDE.md) (how to integrate the engines and how to extend/write them).
+Orientation: [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md) (high-level system architecture) and [`DEVELOPER-GUIDE.md`](DEVELOPER-GUIDE.md) (how to integrate the engines and how to extend/write them).  Engine-specific implementation lives in [`engines/visual/ARCHITECTURE.md`](engines/visual/ARCHITECTURE.md) — that is the Visual engine's implementation guide, not the system architecture.
 
 ## Document map
 
 | Tier | Document | Content |
 |------|----------|---------|
 | Design | [`DESIGN.md`](DESIGN.md) | System-wide decisions, principles, contract of contracts. Canonical for new work. |
-| Architecture | [`ARCHITECTURE.md`](ARCHITECTURE.md) | High-level system architecture: runtime model, engine contract, validation pipeline, composition, host seam, packaging. |
+| Architecture | [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md) | High-level system architecture (system-level, not the Visual engine's `engines/visual/ARCHITECTURE.md`): runtime model, engine contract, validation pipeline, composition, host seam, packaging. |
 | Developer guide | [`DEVELOPER-GUIDE.md`](DEVELOPER-GUIDE.md) | How to integrate (host/mount/author specs) and how to extend (write a new engine, validation, packaging, tests). |
 | Contract | [`INTERACTIVE-ENGINE-SPEC.md`](INTERACTIVE-ENGINE-SPEC.md) | Shared architecture & semantic contract: vocabulary, actions, events, state, error model, spec hierarchy (top of §91 hierarchy). |
 | Structure | [`STRUCTURE.md`](STRUCTURE.md) | Repository layout, package separation, tech stack, platform phases. Package naming per DESIGN D2. |
