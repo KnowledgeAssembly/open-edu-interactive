@@ -1,0 +1,6 @@
+{
+  "legacyType": "math.number-line",
+  "engine": "visual",
+  "specContentKind": "number-line",
+  "notes": "Progressive migration: legacy node stays valid as parallel type"
+}
