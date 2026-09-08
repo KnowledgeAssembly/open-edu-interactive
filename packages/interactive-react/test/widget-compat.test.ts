@@ -7,10 +7,6 @@ import { validateEnvelope } from '@knowledgeassemble/interactive-engine';
 const THIS_DIR = dirname(fileURLToPath(import.meta.url));
 const COMPAT_DIR = resolve(THIS_DIR, '../../../docs/fixtures/p7/widget-compat/');
 
-function loadJSON(name: string): Record<string, unknown> {
-  return JSON.parse(readFileSync(resolve(COMPAT_DIR, name), 'utf8')) as Record<string, unknown>;
-}
-
 interface CompatMapping {
   legacyType: string;
   engine: string | null;
