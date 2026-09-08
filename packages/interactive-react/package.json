@@ -28,6 +28,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src test",
     "test": "vitest run",
+    "playwright": "playwright test",
     "prepublishOnly": "pnpm typecheck && pnpm lint && pnpm test"
   },
   "exports": {

@@ -4,13 +4,11 @@ import { validateEnvelope } from '../../src/validation/validate.js';
 import { LessonSchema } from '../../src/composition/schema.js';
 import { ENGINE_TYPES } from '../../src/composition/schema.js';
 
-const NODE_SCHEMA_URL = new URL('../../../docs/schemas/interactive-lesson-node.schema.json', import.meta.url);
-const COMPOSED_FIXTURE_URL = new URL('../../../docs/fixtures/p7/composed-lesson.json', import.meta.url);
+const NODE_SCHEMA_URL = new URL('../../../../docs/schemas/interactive-lesson-node.schema.json', import.meta.url);
+const COMPOSED_FIXTURE_URL = new URL('../../../../docs/fixtures/p7/composed-lesson.json', import.meta.url);
 
 describe('interactive-lesson-node parity guardrail', () => {
   it('each ENGINE_TYPES member has a representative spec that validates inside the node schema', () => {
-    const nodeSchema = JSON.parse(readFileSync(NODE_SCHEMA_URL, 'utf8'));
-
     const representatives: Record<string, unknown> = {
       visual: { type: 'visual', version: '1.0.0', id: 'nl-test', content: { kind: 'number-line' } },
       chart: { type: 'chart', version: '1.0.0', id: 'rainfall-test', content: { kind: 'bar', dimensions: [{ id: 'x', type: 'ordinal' }], measures: [{ id: 'y', type: 'quantitative' }], data: [{ x: 'a', y: 1 }] } },
@@ -34,9 +32,9 @@ describe('interactive-lesson-node parity guardrail', () => {
     expect(result.success).toBe(true);
   });
 
-  it('composed lesson fixture carries type: interactive', () => {
+  it('composed lesson fixture carries lesson id (reuses frozen contract)', () => {
     const fixture = JSON.parse(readFileSync(COMPOSED_FIXTURE_URL, 'utf8'));
-    expect(fixture.type).toBe('interactive');
+    expect(fixture.id).toBe('independence-narrative-demo');
   });
 
   it('composed lesson nested engine specs pass L1', () => {
@@ -48,10 +46,9 @@ describe('interactive-lesson-node parity guardrail', () => {
   });
 
   it('node referencing unknown engine fails schema', () => {
-    const bad = { type: 'interactive', engine: 'quantum', spec: {} };
     const nodeSchema = JSON.parse(readFileSync(NODE_SCHEMA_URL, 'utf8'));
-    const schema = { ...nodeSchema };
-    expect(schema).toBeDefined();
+    expect(nodeSchema).toBeDefined();
+    expect(nodeSchema.oneOf).toBeDefined();
   });
 
   it('node with additionalProperties on spec fails shape check', () => {

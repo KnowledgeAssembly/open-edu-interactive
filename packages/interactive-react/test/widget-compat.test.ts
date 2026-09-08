@@ -1,8 +1,15 @@
 import { readFileSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { resolve, dirname } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { validateEnvelope } from '@knowledgeassemble/interactive-engine';
 
-const COMPAT_DIR = new URL('../../../docs/fixtures/p7/widget-compat/', import.meta.url);
+const THIS_DIR = dirname(fileURLToPath(import.meta.url));
+const COMPAT_DIR = resolve(THIS_DIR, '../../../docs/fixtures/p7/widget-compat/');
+
+function loadJSON(name: string): Record<string, unknown> {
+  return JSON.parse(readFileSync(resolve(COMPAT_DIR, name), 'utf8')) as Record<string, unknown>;
+}
 
 interface CompatMapping {
   legacyType: string;
@@ -15,7 +22,7 @@ describe('widget-compat round-trip', () => {
   const files = readdirSync(COMPAT_DIR).filter((f) => f.endsWith('.json'));
 
   for (const file of files) {
-    const mapping = JSON.parse(readFileSync(new URL(file, COMPAT_DIR), 'utf8')) as CompatMapping;
+    const mapping = JSON.parse(readFileSync(resolve(COMPAT_DIR, file), 'utf8')) as CompatMapping;
 
     it(`${mapping.legacyType}: mapped interactive node validates through envelope`, () => {
       if (mapping.engine === null) {

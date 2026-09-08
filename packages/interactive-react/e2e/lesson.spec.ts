@@ -53,7 +53,6 @@ test.describe('Lesson host — composed timeline → visual e2e', () => {
     const result = await page.evaluate(() => {
       const h = (window as unknown as { __lessonHarness: { tryCreate(s: unknown): { ok: boolean } } }).__lessonHarness;
       return h.tryCreate({
-        type: 'interactive',
         id: 'test',
         engines: [{ instanceId: 'tl', engine: 'timeline', spec: { type: 'timeline', version: '1.0.0', id: 'tl-test', content: { kind: 'events', events: [{ id: 'e1', label: 'E1', date: '1900' }] }, sources: [{ class: 'authoritative' }] } }],
         bindings: [],

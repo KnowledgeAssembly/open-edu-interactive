@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const ADR_DIR = new URL('../../../docs/adr/', import.meta.url);
-const DESIGN_URL = new URL('../../../docs/DESIGN.md', import.meta.url);
+const ADR_DIR = new URL('../../../../docs/adr/', import.meta.url);
+const DESIGN_URL = new URL('../../../../docs/DESIGN.md', import.meta.url);
 
 describe('ADR coverage (T6 doc test)', () => {
   const files = readdirSync(ADR_DIR).filter((f) => f.endsWith('.md')).sort();

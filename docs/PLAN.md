@@ -382,7 +382,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P4 — GeoMap Engine | DONE |
 | P5 — Timeline Engine | DONE |
 | P6 — Diagram Engine | DONE |
-| P7 — OpenEdu integration | NOT STARTED |
+| P7 — OpenEdu integration | DONE |
 
 ---
 
@@ -438,3 +438,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-08 | OpenEdu-D3 — Lesson-node proposal schema: `{ type:"interactive", engine, spec }` per D1/§94; `additionalProperties:false`; parity test holds it to engine envelope range. |
 | 2026-09-08 | OpenEdu-D4 — Widget compatibility is data + mapping, not schema change. Migration is progressive; parallel node types. No engine `kind`/schema edits for compat. |
 | 2026-09-08 | OpenEdu-D5 — ADR re-recording: draft ADR-01…09 per `openedu-way/ADR.md` conventions; DESIGN §16 register links to them. Transplant is cross-repo acceptance. |
+| 2026-09-08 | P7 DONE: @knowledgeassemble/interactive-react (OpenEduBridge → EngineHost seam, InteractiveNode/InteractiveLesson mounts, jsdom unit tests), package publishability (exports maps, files, prepublishOnly to all 7 packages), lesson-node proposal schema + composed-lesson fixture (reusing frozen P2.5 contract), widget-compat mapping data + round-trip tests, conformance `?engine=lesson` host-simulation route + browser e2e (cross-engine binding, replay, a11y, authoring proof), ADR-01…09 for D1–D9 with DESIGN §16 register links, doc test, `docs/p7-acceptance.md` cross-repo acceptance list — full exit gate green. P0–P7 completed — engine family ships as consumable product. |

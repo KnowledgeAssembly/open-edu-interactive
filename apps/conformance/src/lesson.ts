@@ -3,7 +3,6 @@ import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import { TimelineEngine } from '@knowledgeassemble/timeline-engine';
 
 const COMPOSED_LESSON = {
-  type: 'interactive',
   id: 'independence-narrative-demo',
   title: 'Timeline drives visual focus (composition smoke test)',
   engines: [
