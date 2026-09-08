@@ -2,12 +2,12 @@ import type { EngineHost } from '@knowledgeassemble/interactive-engine';
 import type { OpenEduBridge } from '@knowledgeassemble/interactive-react';
 import type { StubHostOptions } from './types.js';
 
-export type { StubHostOptions };
-
 const MAX_EVENTS = 200;
 
+export type { StubHostOptions } from './types.js';
+
 export function createStubHost(opts?: StubHostOptions) {
-  const emitted: Array<{ seq: number; name: string; action?: unknown }> = [];
+  const emitted: Array<{ seq: number; name: string; instanceId: string; action?: unknown }> = [];
 
   const bridge: OpenEduBridge = {
     locale: opts?.locale ?? 'en',
@@ -19,8 +19,11 @@ export function createStubHost(opts?: StubHostOptions) {
     announce(message: string): void {
       opts?.onAnnounce?.(message);
     },
-    onEvent(): void {
-      // bridge onEvent not used by stub; host captures EngineEvent via override
+    onEvent(event: { seq: number; name: string; instanceId: string; action?: unknown }): void {
+      if (emitted.length < MAX_EVENTS) {
+        emitted.push(event);
+      }
+      opts?.onEvent?.(event);
     },
     resolveAsset(id: string): string | Uint8Array {
       return id;
@@ -31,9 +34,9 @@ export function createStubHost(opts?: StubHostOptions) {
     ...bridge,
     onEvent(event): void {
       if (emitted.length < MAX_EVENTS) {
-        emitted.push({ seq: event.seq, name: event.name, action: event.action });
+        emitted.push({ seq: event.seq, name: event.name, instanceId: event.id, action: event.action });
       }
-      opts?.onEvent?.({ seq: event.seq, name: event.name, action: event.action });
+      opts?.onEvent?.({ seq: event.seq, name: event.name, instanceId: event.id, action: event.action });
     },
   };
 

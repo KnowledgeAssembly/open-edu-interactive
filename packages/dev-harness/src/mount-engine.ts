@@ -9,16 +9,33 @@ interface SvgSnapshot {
   svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[] };
 }
 
+interface TabularRow {
+  rowLabel: string;
+  values: Array<{ measureId: string; value: number | null; unit?: string }>;
+}
+
+interface RelRow {
+  kind: string;
+  id: string;
+  label?: string;
+  from?: string;
+  relationship?: string;
+  to?: string;
+  fromLabel?: string;
+  toLabel?: string;
+  members?: string[];
+}
+
 function renderSvg(container: HTMLElement, svg: string | undefined): void {
   container.innerHTML = svg ?? '';
 }
 
-function renderTable(container: HTMLElement, rows: unknown[], columns: string[]): void {
+function renderChartTable(container: HTMLElement, rows: TabularRow[]): void {
   const table = document.createElement('table');
-  table.setAttribute('aria-label', 'Data table');
+  table.setAttribute('aria-label', 'Chart data table');
   const thead = document.createElement('thead');
   const headerRow = document.createElement('tr');
-  for (const col of columns) {
+  for (const col of ['Category', 'Value']) {
     const th = document.createElement('th');
     th.textContent = col;
     headerRow.appendChild(th);
@@ -28,10 +45,67 @@ function renderTable(container: HTMLElement, rows: unknown[], columns: string[])
   const tbody = document.createElement('tbody');
   for (const row of rows) {
     const tr = document.createElement('tr');
-    for (const col of columns) {
-      const td = document.createElement('td');
-      td.textContent = String((row as Record<string, unknown>)[col] ?? '');
-      tr.appendChild(td);
+    const tdLabel = document.createElement('td');
+    tdLabel.textContent = row.rowLabel;
+    tr.appendChild(tdLabel);
+    const tdVal = document.createElement('td');
+    tdVal.textContent = String(row.values[0]?.value ?? '');
+    tr.appendChild(tdVal);
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  container.replaceChildren(table);
+}
+
+function renderRelTable(container: HTMLElement, rows: RelRow[]): void {
+  const table = document.createElement('table');
+  table.setAttribute('aria-label', 'Diagram relationship list');
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  for (const col of ['Kind', 'From', 'Relationship', 'To']) {
+    const th = document.createElement('th');
+    th.textContent = col;
+    headerRow.appendChild(th);
+  }
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  for (const row of rows) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-row-id', row.id);
+    const tdKind = document.createElement('td');
+    tdKind.textContent = row.kind;
+    tr.appendChild(tdKind);
+    if (row.kind === 'edge') {
+      const tdFrom = document.createElement('td');
+      tdFrom.textContent = row.fromLabel ?? row.from ?? '';
+      tr.appendChild(tdFrom);
+      const tdRel = document.createElement('td');
+      tdRel.textContent = row.relationship ?? '';
+      tr.appendChild(tdRel);
+      const tdTo = document.createElement('td');
+      tdTo.textContent = row.toLabel ?? row.to ?? '';
+      tr.appendChild(tdTo);
+    } else if (row.kind === 'cycle') {
+      const tdFrom = document.createElement('td');
+      tdFrom.textContent = '—';
+      tr.appendChild(tdFrom);
+      const tdRel = document.createElement('td');
+      tdRel.textContent = `Cycle: ${row.members?.join(' → ') ?? ''}`;
+      tr.appendChild(tdRel);
+      const tdTo = document.createElement('td');
+      tdTo.textContent = '—';
+      tr.appendChild(tdTo);
+    } else {
+      const tdFrom = document.createElement('td');
+      tdFrom.textContent = row.label ?? '';
+      tr.appendChild(tdFrom);
+      const tdRel = document.createElement('td');
+      tdRel.textContent = '—';
+      tr.appendChild(tdRel);
+      const tdTo = document.createElement('td');
+      tdTo.textContent = '—';
+      tr.appendChild(tdTo);
     }
     tbody.appendChild(tr);
   }
@@ -74,14 +148,18 @@ export function mountEngine(
     tabularRoot = document.createElement('div');
     tabularRoot.setAttribute('data-oedu-tabular', 'chart');
     container.appendChild(tabularRoot);
-    renderTable(tabularRoot, svgResult.tabular as unknown[], ['Category', 'Value']);
   }
 
-  if ((spec.type === 'geomap' || spec.type === 'diagram') && svgResult?.alternative && svgResult.alternative.length > 0) {
+  if (spec.type === 'diagram' && svgResult?.alternative && svgResult.alternative.length > 0) {
     alternativeRoot = document.createElement('div');
-    alternativeRoot.setAttribute('data-oedu-alternative', spec.type);
+    alternativeRoot.setAttribute('data-oedu-alternative', 'diagram');
     container.appendChild(alternativeRoot);
-    renderEntityList(alternativeRoot, svgResult.alternative as Array<{ entityId?: string; name?: string; type?: string; description?: string; location?: string }>);
+  }
+
+  if (spec.type === 'geomap' && svgResult?.alternative && svgResult.alternative.length > 0) {
+    alternativeRoot = document.createElement('div');
+    alternativeRoot.setAttribute('data-oedu-alternative', 'geomap');
+    container.appendChild(alternativeRoot);
   }
 
   const renderTargets: RenderTarget[] = [{ container: svgRoot, kind: 'svg' }];
@@ -92,12 +170,19 @@ export function mountEngine(
     const snap = instance.snapshot() as SvgSnapshot;
     renderSvg(svgRoot, snap.svgResult?.svg);
     if (tabularRoot) {
-      renderTable(tabularRoot, (snap.svgResult?.tabular ?? []) as unknown[], ['Category', 'Value']);
+      renderChartTable(tabularRoot, (snap.svgResult?.tabular ?? []) as TabularRow[]);
     }
     if (alternativeRoot) {
-      renderEntityList(alternativeRoot, (snap.svgResult?.alternative ?? []) as Array<{ entityId?: string; name?: string; type?: string; description?: string; location?: string }>);
+      const alt = snap.svgResult?.alternative;
+      if (spec.type === 'diagram' && alt) {
+        renderRelTable(alternativeRoot, alt as RelRow[]);
+      } else if (spec.type === 'geomap' && alt) {
+        renderEntityList(alternativeRoot, alt as Array<{ entityId?: string; name?: string; type?: string; description?: string; location?: string }>);
+      }
     }
   }
+
+  renderDom();
 
   return {
     instanceId,

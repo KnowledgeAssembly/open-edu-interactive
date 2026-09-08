@@ -1,6 +1,4 @@
-import { describe, it, expect } from 'vitest';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { describe, it, expect, vi } from 'vitest';
 import { createStubHost } from '../src/stub-host.js';
 
 describe('createStubHost', () => {
@@ -22,7 +20,18 @@ describe('createStubHost', () => {
     const { host, events } = createStubHost();
     host.onEvent({ id: 'e1', seq: 0, name: 'engine-mounted', action: undefined });
     expect(events()).toHaveLength(1);
-    expect(events()[0]).toMatchObject({ seq: 0, name: 'engine-mounted' });
+    expect(events()[0]).toMatchObject({ seq: 0, name: 'engine-mounted', instanceId: 'e1' });
+  });
+
+  it('captures events via bridge.onEvent', () => {
+    const { bridge, events } = createStubHost();
+    bridge.onEvent({ seq: 1, name: 'timeline.event-selected', instanceId: 'timeline-1', action: undefined });
+    expect(events()).toHaveLength(1);
+    expect(events()[0]).toMatchObject({
+      seq: 1,
+      name: 'timeline.event-selected',
+      instanceId: 'timeline-1',
+    });
   });
 
   it('caps events at 200', () => {
@@ -35,14 +44,17 @@ describe('createStubHost', () => {
 
   it('calls onAnnounce when provided', () => {
     const messages: string[] = [];
-    createStubHost({ onAnnounce: (m) => messages.push(m) });
-    // announce is called by host, not directly returned
+    const { host } = createStubHost({ onAnnounce: (m) => messages.push(m) });
+    host.announce('hello');
+    expect(messages).toEqual(['hello']);
   });
 
   it('calls onEvent when provided', () => {
-    const captured: Array<{ seq: number; name: string; action?: unknown }> = [];
+    const captured: Array<{ seq: number; name: string; instanceId?: string; action?: unknown }> = [];
     const { host } = createStubHost({ onEvent: (e) => captured.push(e) });
     host.onEvent({ id: 'e1', seq: 5, name: 'select', action: { type: 'select', target: { id: 'x' } } });
-    expect(captured).toEqual([{ seq: 5, name: 'select', action: { type: 'select', target: { id: 'x' } } }]);
+    expect(captured).toEqual([
+      { seq: 5, name: 'select', instanceId: 'e1', action: { type: 'select', target: { id: 'x' } } },
+    ]);
   });
 });

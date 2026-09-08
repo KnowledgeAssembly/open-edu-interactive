@@ -12,18 +12,21 @@ describe('mountEngine', () => {
   let container: HTMLElement;
 
   afterEach(() => {
-    container.innerHTML = '';
+    container.remove();
   });
 
   beforeEach(() => {
     container = document.createElement('div');
+    document.body.appendChild(container);
   });
 
   it('renders SVG into data-oedu-root on initial mount', () => {
     const result = mountEngine(VISUAL_SPEC, container);
     const svgRoot = container.querySelector('[data-oedu-root="visual"]');
     expect(svgRoot).not.toBeNull();
-    expect(svgRoot!.innerHTML.length).toBeGreaterThan(0);
+    expect(svgRoot!.querySelector('svg')).not.toBeNull();
+    const snap = result.snapshot() as { svgResult?: { svg?: string } };
+    expect(snap.svgResult?.svg?.length).toBeGreaterThan(0);
     result.teardown();
   });
 

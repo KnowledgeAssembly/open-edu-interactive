@@ -9,53 +9,76 @@ const LESSON = JSON.parse(
   await readFile(join(ROOT, 'docs/fixtures/composition/narrative-timeline-visual.json'), 'utf8'),
 );
 
+async function waitForLessonReady(result: ReturnType<typeof mountLesson>): Promise<void> {
+  for (let i = 0; i < 100; i++) {
+    if (result.instances().length > 0) return;
+    await act(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+    });
+  }
+  throw new Error('mountLesson: lesson did not become ready');
+}
+
 describe('mountLesson', () => {
   let container: HTMLElement;
 
-  afterEach(() => {
-    container.innerHTML = '';
-  });
-
   beforeEach(() => {
     container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.remove();
   });
 
   it('renders the lesson into the container', async () => {
-    let result: Awaited<ReturnType<typeof mountLesson>>;
+    let result!: ReturnType<typeof mountLesson>;
     await act(async () => {
       result = mountLesson(LESSON, container);
-      await new Promise((r) => setTimeout(r, 50));
     });
-    expect(container.children.length).toBeGreaterThan(0);
-    result!.teardown();
+    await waitForLessonReady(result);
+    expect(container.querySelector('[data-interactive-lesson]')).not.toBeNull();
+    await act(async () => {
+      result.teardown();
+    });
   });
 
-  it('events captures lesson events after dispatch', async () => {
-    let result: Awaited<ReturnType<typeof mountLesson>>;
+  it('events captures lesson events after mount and dispatch', async () => {
+    let result!: ReturnType<typeof mountLesson>;
     await act(async () => {
       result = mountLesson(LESSON, container);
-      await new Promise((r) => setTimeout(r, 50));
     });
-    const instances = result!.instances();
+    await waitForLessonReady(result);
+
+    const instances = result.instances();
     expect(instances.length).toBeGreaterThan(0);
+    expect(result.events().length).toBeGreaterThan(0);
 
     const firstInstance = instances[0]!;
     await act(async () => {
-      result!.dispatch(firstInstance, { type: 'reset' });
-      await new Promise((r) => setTimeout(r, 50));
+      result.dispatch(firstInstance, { type: 'reset' });
     });
-    const evts = result!.events();
-    expect(evts.length).toBeGreaterThan(0);
-    result!.teardown();
-  }, 10000);
 
-  it('snapshot returns an object', () => {
-    const result = mountLesson(LESSON, container);
+    expect(result.events().length).toBeGreaterThan(0);
+    await act(async () => {
+      result.teardown();
+    });
+  });
+
+  it('snapshot returns an object', async () => {
+    let result!: ReturnType<typeof mountLesson>;
+    await act(async () => {
+      result = mountLesson(LESSON, container);
+    });
+    await waitForLessonReady(result);
+
     const instances = result.instances();
-    if (instances.length > 0) {
-      const snap = result.snapshot(instances[0]!);
-      expect(snap).not.toBeNull();
-    }
-    result.teardown();
+    expect(instances.length).toBeGreaterThan(0);
+    const snap = result.snapshot(instances[0]!);
+    expect(snap).not.toBeNull();
+
+    await act(async () => {
+      result.teardown();
+    });
   });
 });
