@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.base.json","compilerOptions":{"jsx":"react-jsx","composite":true,"noEmit":false,"outDir":"dist","declaration":true,"sourceMap":false,"stripInternal":false},"include":["src"]}
