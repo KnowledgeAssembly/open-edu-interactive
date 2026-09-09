@@ -11,6 +11,12 @@
           "label": "fc-item-a",
           "children": [
             {
+              "id": "fc-item-a-circle",
+              "role": "img",
+              "label": "fc-item-a-circle",
+              "children": []
+            },
+            {
               "id": "fc-item-a-label",
               "role": "img",
               "label": "1/2",
@@ -29,6 +35,12 @@
           "role": "button",
           "label": "fc-item-b",
           "children": [
+            {
+              "id": "fc-item-b-circle",
+              "role": "img",
+              "label": "fc-item-b-circle",
+              "children": []
+            },
             {
               "id": "fc-item-b-label",
               "role": "img",
@@ -57,6 +69,12 @@
       "label": "fc-item-a",
       "children": [
         {
+          "id": "fc-item-a-circle",
+          "role": "img",
+          "label": "fc-item-a-circle",
+          "children": []
+        },
+        {
           "id": "fc-item-a-label",
           "role": "img",
           "label": "1/2",
@@ -69,6 +87,12 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "fc-item-a-circle",
+      "role": "img",
+      "label": "fc-item-a-circle",
+      "children": []
     },
     {
       "id": "fc-item-a-label",
@@ -88,6 +112,12 @@
       "label": "fc-item-b",
       "children": [
         {
+          "id": "fc-item-b-circle",
+          "role": "img",
+          "label": "fc-item-b-circle",
+          "children": []
+        },
+        {
           "id": "fc-item-b-label",
           "role": "img",
           "label": "1/4",
@@ -100,6 +130,12 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "fc-item-b-circle",
+      "role": "img",
+      "label": "fc-item-b-circle",
+      "children": []
     },
     {
       "id": "fc-item-b-label",

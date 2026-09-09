@@ -66,8 +66,8 @@ describe('A2 slice honesty — every visual kind renders a real, positioned prim
     boundsWithinCanvas(scene);
   });
 
-  it('fraction-comparison renders two items and an operator with a label/semantic primitive', () => {
-    const { svg } = runSlice({
+  it('fraction-comparison renders circle models, an operator, and labels', () => {
+    const { scene, svg } = runSlice({
       kind: 'fraction-comparison',
       components: [{
         id: 'fc',
@@ -79,9 +79,21 @@ describe('A2 slice honesty — every visual kind renders a real, positioned prim
         },
       }],
     });
+    const group = scene.nodes[0]!;
+    const items = group.children.filter((c) => c.role === 'selectable');
+    expect(items.length).toBe(2);
+    for (const item of items) {
+      const circle = item.children.find((c) => c.kind === 'fraction-circle');
+      expect(circle).toBeDefined();
+      expect(circle!.bounds).toBeDefined();
+      expect(circle!.value).toBeDefined();
+    }
     expect(svg).toContain('>');
     expect(svg).toContain('data-oedu-interactive="true"');
     expect(svg).toContain('<text');
+    expect(svg).toContain('<circle');
+    expect(svg).toContain('opacity="0.35"');
+    boundsWithinCanvas(scene);
   });
 
   it('clock renders a face, hands by angle, and numbers', () => {

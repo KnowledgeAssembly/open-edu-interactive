@@ -85,7 +85,21 @@ ${pad}</g>`;
     }
     case 'fraction-circle': {
       const r = Math.max(4, Math.min(b.width, b.height) / 2);
-      return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${r}" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="2"/>`;
+      const value = typeof node.value === 'number' ? Math.max(0, Math.min(1, node.value)) : 0;
+      const outline = `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="currentColor" stroke-width="2"/>`;
+      if (value <= 0) {
+        return outline;
+      }
+      if (value >= 1) {
+        const fillR = Math.max(2, r - 2);
+        return `${outline}\n${pad}<circle cx="${cx}" cy="${cy}" r="${fillR}" fill="currentColor" opacity="0.35"/>`;
+      }
+      const sweep = 2 * Math.PI * value - Math.PI / 2;
+      const ex = cx + r * Math.cos(sweep);
+      const ey = cy + r * Math.sin(sweep);
+      const largeArc = value > 0.5 ? 1 : 0;
+      const d = `M${cx},${cy} L${cx},${cy - r} A${r},${r} 0 ${largeArc} 1 ${ex},${ey} Z`;
+      return `${outline}\n${pad}<path d="${d}" fill="currentColor" opacity="0.35"/>`;
     }
     case 'group':
     default:
