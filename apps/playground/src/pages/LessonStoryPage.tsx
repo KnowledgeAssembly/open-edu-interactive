@@ -1,98 +1,90 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { mountLesson } from "@knowledgeassemble/dev-harness";
-import { a11yTreeOf, type A11yNode } from "@knowledgeassemble/interactive-engine";
+import { mountLesson, type LessonMountResult } from "@knowledgeassemble/dev-harness";
+import type { A11yNode } from "@knowledgeassemble/interactive-engine";
 import { loadSpec, getCatalog, type FixtureEntry } from "../lib/specLoader.js";
-
-function renderA11yTree(node: A11yNode, depth: number): React.JSX.Element {
-  return (
-    <div key={node.id} style={{ marginLeft: depth * 16, fontSize: 12 }}>
-      <span style={{ color: "#666" }}>[{node.role}]</span> {node.label ?? node.id}
-      {node.children.map((c) => renderA11yTree(c, depth + 1))}
-    </div>
-  );
-}
+import { DEFAULT_HOST_CONFIG, stubHostOptions, type HostConfig } from "../lib/hostPresets.js";
+import { a11yTreeFromSnapshot, formatEvents, waitForInstances } from "../lib/inspectorHelpers.js";
+import { InspectorPanel } from "../components/InspectorPanel.js";
+import { A11yTreeView } from "../components/A11yTreeView.js";
+import { HostPanel } from "../components/HostPanel.js";
 
 export function LessonStoryPage(): React.JSX.Element {
   const { slug } = useParams();
   const containerRef = useRef<HTMLDivElement>(null);
-  const resultRef = useRef<{
-    dispatch: (instanceId: string, action: unknown) => void;
-    snapshot: (instanceId: string) => unknown;
-    events: () => readonly { seq: number; name: string }[];
-    instances: () => string[];
-    teardown: () => void;
-  } | null>(null);
+  const resultRef = useRef<LessonMountResult | null>(null);
+  const [hostConfig, setHostConfig] = useState<HostConfig>(DEFAULT_HOST_CONFIG);
   const [snapshot, setSnapshot] = useState<string>("");
   const [events, setEvents] = useState<string[]>([]);
-  const [a11yTree, setA11yTree] = useState<string>("");
+  const [a11yTree, setA11yTree] = useState<A11yNode | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const entry = useMemo(
+    () => getCatalog().find((c: FixtureEntry) => c.kind === "composition" && c.slug === slug),
+    [slug],
+  );
+
+  const lessonSpec = useMemo(() => (entry ? loadSpec(entry.specPath) : undefined), [entry]);
+
+  function refreshFromHandle(): void {
+    if (!resultRef.current) return;
+    const instanceId = resultRef.current.instances()[0] ?? "";
+    const snap = resultRef.current.snapshot(instanceId);
+    setSnapshot(JSON.stringify(snap, null, 2));
+    setEvents(formatEvents(resultRef.current.events()));
+    setA11yTree(a11yTreeFromSnapshot(snap));
+  }
+
   useEffect(() => {
-    if (!containerRef.current || !slug) return;
-    const entry = getCatalog().find((c: FixtureEntry) => c.kind === "composition" && c.slug === slug);
-    if (!entry) { setError(`Lesson not found: ${slug}`); return; }
-    const specPath = entry.specPath;
+    if (!containerRef.current || !entry || !lessonSpec) return;
     resultRef.current?.teardown();
+    containerRef.current.replaceChildren();
     let cancelled = false;
+
     async function mount(): Promise<void> {
       try {
-        const lesson = loadSpec(specPath);
-        const result = mountLesson(lesson as never, containerRef.current!) as typeof resultRef.current;
-        if (cancelled) { result?.teardown(); return; }
-        resultRef.current = result;
-        let attempts = 0;
-        while (!resultRef.current?.instances().length && attempts < 100) {
-          await new Promise((r) => setTimeout(r, 50));
-          attempts++;
+        const result = mountLesson(lessonSpec as never, containerRef.current!, {
+          host: stubHostOptions(hostConfig),
+        });
+        if (cancelled) {
+          result.teardown();
+          return;
         }
+        resultRef.current = result;
+        await waitForInstances(() => resultRef.current?.instances() ?? []);
         if (cancelled || !resultRef.current) return;
-        setSnapshot(JSON.stringify(resultRef.current.snapshot(resultRef.current.instances()[0] ?? ""), null, 2));
-        setEvents([]);
-        setA11yTree("");
+        refreshFromHandle();
         setError(null);
       } catch (e) {
         if (!cancelled) setError(e instanceof Error ? e.message : String(e));
       }
     }
-    mount();
-    return () => { cancelled = true; resultRef.current?.teardown(); resultRef.current = null; };
-  }, [slug]);
 
-  function refreshEvents(): void {
-    if (!resultRef.current) return;
-    setEvents(resultRef.current.events().map((e, i) => `${e.seq}: ${e.name}`));
-    const snap = resultRef.current.snapshot(resultRef.current.instances()[0] ?? "");
-    setSnapshot(JSON.stringify(snap, null, 2));
-    try {
-      const tree = a11yTreeOf(snap as never);
-      setA11yTree(JSON.stringify(tree, null, 2));
-    } catch { /* no state */ }
-  }
+    mount();
+    return () => {
+      cancelled = true;
+      resultRef.current?.teardown();
+      resultRef.current = null;
+    };
+  }, [entry, lessonSpec, hostConfig]);
 
   return (
     <div>
       <h2>Lesson: {slug}</h2>
       {error && <div role="alert" style={{ color: "red" }}>{error}</div>}
+      <HostPanel config={hostConfig} onChange={setHostConfig} />
       <div ref={containerRef} data-oedu-root />
       <div style={{ marginTop: 8 }}>
-        <button onClick={refreshEvents}>Refresh Events</button>
-        <button onClick={() => { if (!resultRef.current) return; setSnapshot(JSON.stringify(resultRef.current.snapshot(resultRef.current.instances()[0]!), null, 2)); }}>Refresh Snapshot</button>
+        <button type="button" onClick={refreshFromHandle}>Refresh Events</button>
+        <button type="button" onClick={refreshFromHandle}>Refresh Snapshot</button>
       </div>
-      <InspectorPanel title={`Events (${events.length})`} content={events.join("\n")} />
-      <InspectorPanel title="Snapshot" content={snapshot} />
-      {a11yTree && <InspectorPanel title="A11y Tree" content={a11yTree} />}
+      <InspectorPanel title={`Events (${events.length})`} content={events.join("\n")} copyLabel="Copy" />
+      <InspectorPanel title="Snapshot" content={snapshot} copyLabel="Copy JSON" />
+      {a11yTree && (
+        <InspectorPanel title="A11y Tree" copyLabel="Copy JSON" content={JSON.stringify(a11yTree, null, 2)}>
+          <A11yTreeView tree={a11yTree} />
+        </InspectorPanel>
+      )}
     </div>
-  );
-}
-
-function InspectorPanel({ title, content, color }: { title: string; content: string; color?: string }): React.JSX.Element {
-  const [open, setOpen] = useState(true);
-  return (
-    <details open={open} style={{ marginTop: 8 }} onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}>
-      <summary>{title}</summary>
-      <pre style={{ maxHeight: 200, overflow: "auto", fontSize: 12, color: color ?? "inherit", whiteSpace: "pre-wrap" }}>{content}</pre>
-      <button onClick={() => { navigator.clipboard?.writeText(content); }} style={{ fontSize: 11 }}>Copy JSON</button>
-    </details>
   );
 }

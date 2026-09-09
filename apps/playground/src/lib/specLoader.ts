@@ -1,21 +1,26 @@
 import { catalog } from "@knowledgeassemble/dev-harness";
+import { catalogPathFromGlobKey, unwrapSpecModule } from "./specPaths.js";
 
 const engineGlob = import.meta.glob(
-  "../../../packages/*/fixture/**/input.*.json",
+  "../../../../packages/*/fixture/**/input.*.json",
   { eager: true }
 );
 
 const docsGlob = import.meta.glob(
-  "../../../docs/fixtures/**/*.json",
+  "../../../../docs/fixtures/**/*.json",
   { eager: true }
 );
 
-const ENGINE_KEY_PREFIX = "../../../packages/";
-const DOCS_KEY_PREFIX = "../../../docs/fixtures/";
+const specByPath = new Map<string, unknown>();
 
-function normalizeEngineKey(key: string): string | null {
-  if (key.startsWith(ENGINE_KEY_PREFIX)) return key.slice(ENGINE_KEY_PREFIX.length);
-  return null;
+for (const [globKey, mod] of Object.entries(engineGlob)) {
+  const path = catalogPathFromGlobKey(globKey);
+  if (path) specByPath.set(path, unwrapSpecModule(mod));
+}
+
+for (const [globKey, mod] of Object.entries(docsGlob)) {
+  const path = catalogPathFromGlobKey(globKey);
+  if (path) specByPath.set(path, unwrapSpecModule(mod));
 }
 
 export interface FixtureEntry {
@@ -32,15 +37,8 @@ export function getCatalog(): FixtureEntry[] {
   return catalog as unknown as FixtureEntry[];
 }
 
-function findSpec(specPath: string): unknown {
-  const engineKey = normalizeEngineKey(specPath);
-  if (engineKey && engineKey in engineGlob) return (engineGlob as Record<string, unknown>)[engineKey];
-  if (specPath.startsWith("docs/fixtures/") && specPath in docsGlob) return (docsGlob as Record<string, unknown>)[specPath];
-  return undefined;
-}
-
 export function loadSpec(specPath: string): unknown {
-  const spec = findSpec(specPath);
+  const spec = specByPath.get(specPath);
   if (!spec) throw new Error(`Spec not found: ${specPath}`);
   return spec;
 }
