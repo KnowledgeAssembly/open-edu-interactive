@@ -42,7 +42,9 @@ Conflict rule: when docs disagree, fix the **higher** document, never the implem
 packages/interactive-engine/   core: engine, registry, state, action, event, host,
                                validation/ (L1–L4 pipeline), runtime/ (reducer, event-log,
                                instance), accessibility/, composition/ (placeholder), schemas/
-apps/conformance/              vanilla-TS Vite app exposing window.__harness for Playwright
+packages/dev-harness/          shared mount logic: stub host, fixture catalog, loadSpec (conformance + playground)
+apps/conformance/              Playwright e2e harness (port 5173); engine routes delegate to dev-harness
+apps/playground/               React dev UI for manual verification (port 5174, pnpm playground)
 docs/                          DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, PLAN-P1,
                                README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md
 ```

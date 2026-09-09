@@ -17,7 +17,10 @@ packages/interactive-engine/   core: engine, registry, state, action, event, hos
                                accessibility/, composition/, schemas/
 packages/{visual,geomap,chart,timeline,diagram}-engine/   the five engines
 packages/interactive-react/    React mounts + OpenEduBridge adapter
-apps/conformance/              vanilla-TS Vite app exposing window.__harness for Playwright
+packages/dev-harness/          shared mount logic: stub host, fixture catalog, loadSpec,
+                               mountEngine/mountLesson, exposeHarness (used by both apps below)
+apps/conformance/              Playwright e2e harness (port 5173); engine routes delegate to dev-harness
+apps/playground/               React dev UI for manual verification (port 5174); see §9
 docs/                          DESIGN, SYSTEM-ARCHITECTURE, DEVELOPER-GUIDE,
                                INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, schemas/,
                                fixtures/, engines/, adr/ (ADR-01…09)
@@ -287,11 +290,13 @@ Each returns a `ValidationResult` (`{ valid, issues: [{ level, code, message, pa
 
 Rendering is deterministic and computed once (or on discrete state changes), never per-frame from live pointer state. The Visual engine builds `scene → layout → SVG` in `instantiate` and exposes the result on `snapshot().svgResult`. Renderers never embed author-controlled inline scripts or `javascript:` URIs (P10).
 
-### 3.6 Register and test in conformance
+### 3.6 Register and test
 
 1. Add your engine package under `packages/<name>-engine/`.
-2. Register it in the `InteractiveLesson` registry (and the conformance harness) so compositions and e2e can use it.
-3. Extend the closed `EngineType` union (and the schema `type`/`class` enums) as a deliberate, documented contract change (§3.7), keeping the copies in parity — the parity guardrail (`packages/interactive-engine/test/schema-parity.test.ts`) enforces this.
+2. Add fixtures under `packages/<name>-engine/fixture/` (the catalog script at `scripts/build-fixture-catalog.mjs` picks them up on `dev-harness` build).
+3. Register the engine in `packages/dev-harness/src/engine-registry.ts` and in `InteractiveLesson` so compositions, conformance, and playground can mount it.
+4. Extend the closed `EngineType` union (and the schema `type`/`class` enums) as a deliberate, documented contract change (§3.7), keeping the copies in parity — the parity guardrail (`packages/interactive-engine/test/schema-parity.test.ts`) enforces this.
+5. Verify manually in `apps/playground` (§9) and in Playwright e2e against `apps/conformance` (§7).
 
 ### 3.7 Action/content additions are contract changes
 
@@ -367,7 +372,8 @@ The smoke script is the in-repo proof that the installed package works, not just
 - **Unit (Vitest)** — `packages/*/test/**/*.test.ts`. Cover the lifecycle (monotonic seq, ordered names), validation negatives (each `ErrorCode`), determinism (two runs identical), and schema/Zod parity. Write the test **first** (test-driven; a feature is "done" only when a red test turns green).
 - **Golden fixtures** — checked in; expected event sequences asserted exactly. If a renderer/layout change alters output, update fixtures via a reviewed change.
 - **Schema/parity** — keep the Zod `LessonSchema`, JSON Schema copies, and the closed enums in sync. There is a dedicated parity guardrail (`packages/interactive-engine/test/schema-parity.test.ts`) — run it whenever you touch a schema.
-- **Browser e2e (Playwright)** — against `apps/conformance` (`window.__harness`, `?engine=lesson` mounts the real `InteractiveLesson`). Deterministic only — no flaky timers/layout-order dependence (non-parallel here).
+- **Browser e2e (Playwright)** — against `apps/conformance` (`window.__harness`, `?engine=lesson` mounts the real `InteractiveLesson`; per-engine routes delegate to `dev-harness`). Deterministic only — no flaky timers/layout-order dependence (non-parallel here).
+- **Manual verification** — `pnpm playground` (§9): browse fixtures, dispatch actions, inspect events/snapshot/validation/a11y.
 - **Installed-package** — `pnpm publish:smoke` (see §6).
 
 Run the full gate from the repo root:
@@ -391,9 +397,17 @@ pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 - [ ] `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright` green; `pnpm publish:dry` + `publish:smoke` green for packaging changes.
 - [ ] Public API centralized in the package `index.ts`; internals unexported.
 
-## 9. Playground (developer UI)
+## 9. Local development: dev-harness, playground, and conformance
 
-`apps/playground` is a local dev UI for manual engine and composition testing.
+### 9.1 Shared harness (`packages/dev-harness`)
+
+Both `apps/conformance` and `apps/playground` mount engines through `@knowledgeassemble/dev-harness`. The harness provides a stub `EngineHost`, sync fixture loading (`loadSpec`), a generated fixture catalog (`pnpm --filter @knowledgeassemble/dev-harness build` runs `scripts/build-fixture-catalog.mjs`), and `mountEngine` / `mountLesson` / `exposeHarness`. Engine packages never import the harness; only the apps and build scripts do.
+
+Fixture paths are repo-relative strings (e.g. `packages/visual-engine/fixture/number-line/input.visual.json`). The catalog indexes every mountable engine spec under `packages/*/fixture/` and composed lesson under `docs/fixtures/`.
+
+### 9.2 Playground (manual verification)
+
+`apps/playground` is the human-facing dev UI.
 
 ```bash
 pnpm playground          # serves on port 5174
@@ -402,7 +416,11 @@ pnpm playground          # serves on port 5174
 Routes: `/` (fixture index), `/engine/:engine/:slug`, `/lesson/:slug`, `/custom` (paste JSON).
 Collapsible inspector panels below the preview show Events, Snapshot, Validation, A11y tree, and Host settings.
 Actions are dispatched via buttons generated from `spec.interaction.actions`; a prompt asks for `target.id` when needed.
-The Custom Spec page supports localStorage draft persistence (`playground:custom-spec`) and share via URL hash (`#spec=base64`).
+The Custom Spec page validates before mount, supports localStorage draft persistence (`playground:custom-spec`), and share via URL hash (`#spec=base64`).
+
+### 9.3 Conformance (automation)
+
+`apps/conformance` (port 5173) is the Playwright target. Per-engine routes (`?engine=visual`, etc.) delegate to the same `dev-harness` mount path as the playground. The `?engine=core` route exercises the core platform instance only; `?engine=lesson` and `?engine=composition` mount composed lessons via React. See [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md) §9 for the full route table.
 
 **Non-goals (hard):** no scoring, telemetry, course authoring, or i18n product (D6). JSON in, render out — no SVG/coordinate editors.
 

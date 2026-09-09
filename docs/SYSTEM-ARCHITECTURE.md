@@ -211,8 +211,9 @@ The family is published as seven `@knowledgeassemble/*` packages from `packages/
 | `timeline-engine` | Timeline engine (temporal/when) |
 | `diagram-engine` | Diagram engine (structural/how connected) |
 | `interactive-react` | React mounts (`InteractiveNode`, `InteractiveLesson`) + `OpenEduBridge` adapter |
+| `dev-harness` | private workspace package: stub host, fixture catalog, shared mount logic for conformance and playground |
 
-Packaging follows the STRUCTURE §40-41 rules: per-file `tsc` ESM emit into `dist/`, `prepublishOnly` runs build + typecheck + lint + test, and `publishConfig` points `main`/`types`/`exports` at `dist`. This preserves per-engine tree-shaking. Installed-package conformance is proven by `scripts/p7-publish-smoke.mjs` (packs, installs into a temp consumer, drives L1–L4 + a composed lesson from `dist`).
+The seven `@knowledgeassemble/*` engine/core packages are published; `dev-harness` is workspace-only. Packaging follows the STRUCTURE §40-41 rules: per-file `tsc` ESM emit into `dist/`, `prepublishOnly` runs build + typecheck + lint + test, and `publishConfig` points `main`/`types`/`exports` at `dist`. This preserves per-engine tree-shaking. Installed-package conformance is proven by `scripts/p7-publish-smoke.mjs` (packs, installs into a temp consumer, drives L1–L4 + a composed lesson from `dist`).
 
 ```
                  HOST (OpenEdu CourseRuntime / Studio)
@@ -237,9 +238,60 @@ Packaging follows the STRUCTURE §40-41 rules: per-file `tsc` ESM emit into `dis
 
 `interactive-react` imports the core and the engine packages and composes them (via `EngineRegistry`) for consumers; engines implement the core `Engine` contract. OpenEdu sits only on the left edge, installing and hosting.
 
-## 9. Conformance and the harness
+## 9. Development tooling
 
-`apps/conformance` is a vanilla-TypeScript Vite app that exposes `window.__harness` (`dispatch` / `snapshot` / `events` / `tryCreate`) and an `?engine=lesson` route that mounts the **real** `InteractiveLesson` via React, driving the composed lesson. Playwright e2e asserts exact event sequences (monotonic seq, ordered names), a11y output, and that malformed specs are rejected with shared codes. This is the in-repo proxy for OpenEdu's real `CourseRuntime` run (see `docs/p7-acceptance.md`).
+Local development and CI use three cooperating pieces: a **shared harness library**, a **Playwright-facing conformance app**, and a **human-facing playground**. They load the same fixture JSON (engine specs under `packages/*/fixture/` and composed lessons under `docs/fixtures/`) and mount engines through a stub `EngineHost` — not OpenEdu's production host.
+
+```
+  packages/*/fixture/          docs/fixtures/
+           │                          │
+           └──────────┬───────────────┘
+                      │ build-fixture-catalog.mjs
+                      ▼
+           packages/dev-harness/
+           catalog · loadSpec · createStubHost
+           mountEngine · mountLesson · exposeHarness
+                      │
+          ┌───────────┴───────────┐
+          ▼                       ▼
+  apps/conformance          apps/playground
+  (port 5173)               (port 5174)
+  Playwright e2e            React dev UI
+  window.__harness          inspector panels
+```
+
+### 9.1 `packages/dev-harness`
+
+`@knowledgeassemble/dev-harness` is a **private** workspace package (not published). It centralizes mount logic so conformance and playground stay aligned:
+
+| Export | Role |
+|--------|------|
+| `createStubHost` | Minimal `EngineHost` for local dev (locale, tokens, `onEvent`, `announce`) |
+| `mountEngine` / `mountLesson` | Instantiate an engine or composed lesson into a DOM target |
+| `exposeHarness` | Attach `window.__harness` (`dispatch` / `snapshot` / `events` / `tryCreate`) |
+| `loadSpec` | Sync lookup of fixture JSON via Vite `import.meta.glob` |
+| `catalog` | Generated fixture index (`scripts/build-fixture-catalog.mjs`) |
+| `validateSpec` | Run L1–L4 validation and surface shared error codes |
+| `engineHarnessExtras` | Engine-specific e2e helpers (`svg`, `tabular`, `linear`, `alternative`) |
+
+The harness may import all engine packages (D2 isolation applies to engines, not dev tooling). Engine packages themselves never import `dev-harness`.
+
+### 9.2 `apps/conformance`
+
+`apps/conformance` is a vanilla-TypeScript Vite app aimed at **automation**. It exposes `window.__harness` for Playwright and routes by `?engine=`:
+
+| Route | Behavior |
+|-------|----------|
+| `?engine=core` | Core platform instance only (minimal visual spec, no engine renderer) |
+| `?engine=lesson` | Real `InteractiveLesson` via React (`lesson.js`) |
+| `?engine=composition` | Composed lesson via React (`composition.js`) |
+| `?engine=visual\|chart\|geomap\|timeline\|diagram` | Delegates to `dev-harness` (`mountEngine` + `exposeHarness`) with the canonical per-engine fixture |
+
+Playwright e2e asserts exact event sequences (monotonic seq, ordered names), a11y output, and that malformed specs are rejected with shared codes. This is the in-repo proxy for OpenEdu's real `CourseRuntime` run (see `docs/p7-acceptance.md`).
+
+### 9.3 `apps/playground`
+
+`apps/playground` is a React Vite app for **manual** engine and composition testing (`pnpm playground`, port 5174). It uses the same `dev-harness` mount path and fixture catalog as conformance, but adds a developer UI: fixture index, per-fixture story routes, collapsible inspector panels (events, snapshot, validation, a11y tree, host settings), and a custom-spec route (paste JSON, validate-before-mount, localStorage draft, URL hash sharing). It implements a stub `EngineHost` and is not the learner app (DESIGN D6).
 
 ## 10. Where to go next
 

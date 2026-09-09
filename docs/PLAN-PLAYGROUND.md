@@ -516,3 +516,4 @@ Subsequent PRs: remaining engines → lesson routes → full inspector → confo
 | 2026-09-08 | Initial plan: split `apps/playground` from conformance, shared `packages/dev-harness`, fixture-driven story routes. |
 | 2026-09-09 | Phases 2–5 shipped: dev-harness core, playground shell/routes, inspector panels, draft persistence, URL hash sharing. |
 | 2026-09-09 | Phases 6–7 shipped: conformance refactored to delegate to dev-harness, DEVELOPER-GUIDE playground section, AGENTS.md updated, CI includes playground typecheck. |
+| 2026-09-09 | Docs follow-up: SYSTEM-ARCHITECTURE §9 (dev tooling), DEVELOPER-GUIDE §9 expanded, STRUCTURE §35 (dev-harness, conformance, playground). |
