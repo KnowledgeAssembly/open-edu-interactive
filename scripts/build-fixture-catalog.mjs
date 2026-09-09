@@ -122,6 +122,7 @@ async function buildCatalog() {
   const outDir = join(REPO, 'packages', 'dev-harness', 'generated');
   await mkdir(outDir, { recursive: true });
   await writeFile(join(outDir, 'fixture-catalog.json'), JSON.stringify(entries, null, 2) + '\n');
+  await writeFile(join(outDir, 'catalog.generated.ts'), `export const catalog = ${JSON.stringify(entries, null, 2)} as const;\n`);
   console.log(`Fixture catalog: ${entries.length} entries`);
 }
 

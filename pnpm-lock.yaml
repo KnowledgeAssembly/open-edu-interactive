@@ -84,6 +84,9 @@ importers:
       '@knowledgeassemble/dev-harness':
         specifier: workspace:*
         version: link:../../packages/dev-harness
+      '@knowledgeassemble/interactive-engine':
+        specifier: workspace:*
+        version: link:../../packages/interactive-engine
       '@knowledgeassemble/interactive-react':
         specifier: workspace:*
         version: link:../../packages/interactive-react

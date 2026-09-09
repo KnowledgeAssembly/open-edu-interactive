@@ -34,7 +34,7 @@ export function mountLesson(
       return handle?.snapshot(instanceId);
     },
     events(): readonly EngineEvent[] {
-      return events() as readonly EngineEvent[];
+      return events() as unknown as readonly EngineEvent[];
     },
     instances(): string[] {
       return handle?.instances() ?? [];

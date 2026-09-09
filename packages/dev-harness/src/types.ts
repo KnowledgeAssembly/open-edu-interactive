@@ -27,6 +27,6 @@ export interface StubHostOptions {
   locale?: string;
   tokens?: Record<string, string>;
   reducedMotion?: boolean;
-  onEvent?: (event: { seq: number; name: string; action?: unknown }) => void;
+  onEvent?: (event: { seq: number; name: string; instanceId?: string; action?: unknown }) => void;
   onAnnounce?: (message: string) => void;
 }

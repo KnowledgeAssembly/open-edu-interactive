@@ -5,3 +5,5 @@ export { mountEngine } from './mount-engine.js';
 export { mountLesson } from './mount-lesson.js';
 export { exposeHarness } from './harness-api.js';
 export { validateSpec } from './validate-spec.js';
+import { catalog } from '../generated/catalog.generated.js';
+export { catalog };

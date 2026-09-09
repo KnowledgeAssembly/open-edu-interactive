@@ -1,0 +1,234 @@
+export const catalog = [
+  {
+    "id": "chart/bar",
+    "kind": "engine",
+    "engine": "chart",
+    "slug": "bar",
+    "specPath": "packages/chart-engine/fixture/bar/input.chart.json",
+    "title": "bar"
+  },
+  {
+    "id": "chart/line",
+    "kind": "engine",
+    "engine": "chart",
+    "slug": "line",
+    "specPath": "packages/chart-engine/fixture/line/input.chart.json",
+    "title": "line"
+  },
+  {
+    "id": "diagram/concept-map",
+    "kind": "engine",
+    "engine": "diagram",
+    "slug": "concept-map",
+    "specPath": "packages/diagram-engine/fixture/concept-map/input.diagram.json",
+    "golden": {
+      "scene": "packages/diagram-engine/fixture/concept-map/expected.scene.json",
+      "a11y": "packages/diagram-engine/fixture/concept-map/expected.a11y.json",
+      "alternative": "packages/diagram-engine/fixture/concept-map/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/concept-map/expected.svg"
+    },
+    "title": "Simple concept map"
+  },
+  {
+    "id": "diagram/cycle",
+    "kind": "engine",
+    "engine": "diagram",
+    "slug": "cycle",
+    "specPath": "packages/diagram-engine/fixture/cycle/input.diagram.json",
+    "golden": {
+      "scene": "packages/diagram-engine/fixture/cycle/expected.scene.json",
+      "a11y": "packages/diagram-engine/fixture/cycle/expected.a11y.json",
+      "alternative": "packages/diagram-engine/fixture/cycle/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/cycle/expected.svg"
+    },
+    "title": "Simple cycle"
+  },
+  {
+    "id": "diagram/flow",
+    "kind": "engine",
+    "engine": "diagram",
+    "slug": "flow",
+    "specPath": "packages/diagram-engine/fixture/flow/input.diagram.json",
+    "golden": {
+      "scene": "packages/diagram-engine/fixture/flow/expected.scene.json",
+      "a11y": "packages/diagram-engine/fixture/flow/expected.a11y.json",
+      "alternative": "packages/diagram-engine/fixture/flow/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/flow/expected.svg"
+    },
+    "title": "Simple flow"
+  },
+  {
+    "id": "diagram/hierarchy",
+    "kind": "engine",
+    "engine": "diagram",
+    "slug": "hierarchy",
+    "specPath": "packages/diagram-engine/fixture/hierarchy/input.diagram.json",
+    "golden": {
+      "scene": "packages/diagram-engine/fixture/hierarchy/expected.scene.json",
+      "a11y": "packages/diagram-engine/fixture/hierarchy/expected.a11y.json",
+      "alternative": "packages/diagram-engine/fixture/hierarchy/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/hierarchy/expected.svg"
+    },
+    "title": "Simple hierarchy"
+  },
+  {
+    "id": "diagram/water-cycle",
+    "kind": "engine",
+    "engine": "diagram",
+    "slug": "water-cycle",
+    "specPath": "packages/diagram-engine/fixture/water-cycle/input.diagram.json",
+    "golden": {
+      "scene": "packages/diagram-engine/fixture/water-cycle/expected.scene.json",
+      "a11y": "packages/diagram-engine/fixture/water-cycle/expected.a11y.json",
+      "alternative": "packages/diagram-engine/fixture/water-cycle/expected.alternative.json",
+      "svg": "packages/diagram-engine/fixture/water-cycle/expected.svg"
+    },
+    "title": "Water cycle"
+  },
+  {
+    "id": "geomap/marker",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "marker",
+    "specPath": "packages/geomap-engine/fixture/marker/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/marker/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/marker/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/marker/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/marker/expected.svg"
+    },
+    "title": "Marker only"
+  },
+  {
+    "id": "geomap/odisha-coastal",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "odisha-coastal",
+    "specPath": "packages/geomap-engine/fixture/odisha-coastal/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/odisha-coastal/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/odisha-coastal/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/odisha-coastal/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/odisha-coastal/expected.svg"
+    },
+    "title": "Odisha and its coastal neighbours"
+  },
+  {
+    "id": "geomap/region",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "region",
+    "specPath": "packages/geomap-engine/fixture/region/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/region/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/region/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/region/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/region/expected.svg"
+    },
+    "title": "Region only"
+  },
+  {
+    "id": "geomap/route",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "route",
+    "specPath": "packages/geomap-engine/fixture/route/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/route/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/route/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/route/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/route/expected.svg"
+    },
+    "title": "Route only"
+  },
+  {
+    "id": "timeline/events",
+    "kind": "engine",
+    "engine": "timeline",
+    "slug": "events",
+    "specPath": "packages/timeline-engine/fixture/events/input.timeline.json",
+    "title": "Events-only test"
+  },
+  {
+    "id": "timeline/independence",
+    "kind": "engine",
+    "engine": "timeline",
+    "slug": "independence",
+    "specPath": "packages/timeline-engine/fixture/independence/input.timeline.json",
+    "title": "Indian independence — key events"
+  },
+  {
+    "id": "timeline/periods",
+    "kind": "engine",
+    "engine": "timeline",
+    "slug": "periods",
+    "specPath": "packages/timeline-engine/fixture/periods/input.timeline.json",
+    "title": "Periods test"
+  },
+  {
+    "id": "timeline/tracks",
+    "kind": "engine",
+    "engine": "timeline",
+    "slug": "tracks",
+    "specPath": "packages/timeline-engine/fixture/tracks/input.timeline.json",
+    "title": "Tracks test"
+  },
+  {
+    "id": "visual/number-line",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "number-line",
+    "specPath": "packages/visual-engine/fixture/number-line/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/number-line/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/number-line/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/number-line/expected.svg"
+    },
+    "title": "number-line"
+  },
+  {
+    "id": "lesson/narrative-timeline-visual",
+    "kind": "composition",
+    "slug": "narrative-timeline-visual",
+    "specPath": "docs/fixtures/composition/narrative-timeline-visual.json",
+    "title": "Timeline drives visual focus (composition smoke test)"
+  },
+  {
+    "id": "lesson/skill-example",
+    "kind": "composition",
+    "slug": "skill-example",
+    "specPath": "docs/fixtures/composition/skill-example.json",
+    "title": "Composition skill canonical example"
+  },
+  {
+    "id": "diagram/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "diagram",
+    "specPath": "docs/fixtures/diagram/skill-example.json",
+    "title": "Photosynthesis flow"
+  },
+  {
+    "id": "geomap/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "geomap",
+    "specPath": "docs/fixtures/geomap/skill-example.json",
+    "title": "Odisha and its coastal neighbours"
+  },
+  {
+    "id": "lesson/composed-lesson",
+    "kind": "composition",
+    "slug": "composed-lesson",
+    "specPath": "docs/fixtures/p7/composed-lesson.json",
+    "title": "Timeline drives visual focus (composition smoke test)"
+  },
+  {
+    "id": "timeline/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "timeline",
+    "specPath": "docs/fixtures/timeline/skill-example.json",
+    "title": "Indian independence — key events"
+  }
+] as const;
