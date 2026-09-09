@@ -137,7 +137,7 @@ export function svgFrom(scene: Scene, ctx: LayoutContext, label?: string, desc?:
   <g id="visual-root">
 ${childrenSvg}
   </g>
-</svg>`;
+</svg>\n`;
 
   const a11y: SvgResult['a11y'] = [];
   const interactive: SvgResult['interactive'] = [];

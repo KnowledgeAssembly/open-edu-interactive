@@ -47,7 +47,7 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
       id,
       role: 'counting-object',
       kind: object,
-      label: labels?.[i],
+      label: labels?.[i] ?? `${object.charAt(0).toUpperCase() + object.slice(1)} ${i + 1}`,
       interactive: isHighlighted || undefined,
       acceptsActions: isHighlighted ? ['select', 'focus'] : undefined,
       metadata: layoutMeta,

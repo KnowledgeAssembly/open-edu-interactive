@@ -41,7 +41,7 @@ function nodeToSvg(node: SceneNode, indent: number): string {
       return `${pad}<line ${attrs} ${relationshipAttr} x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)"/>`;
     }
 
-    return `${pad}<path ${attrs} ${relationshipAttr} d="" marker-end="url(#arrowhead)" stroke="currentColor" stroke-width="2" fill="none"/>`;
+    throw new Error(`edge "${node.id}" has no geometry: expected edgeGeometry with path or points`);
   }
 
   const b = node.bounds ?? { x: 0, y: 0, width: 100, height: 50 };
@@ -80,7 +80,7 @@ export function svgFrom(
 ${childrenSvg}
     </g>
   </g>
-</svg>`;
+</svg>\n`;
 
   const a11y: SvgResult['a11y'] = [];
   const interactive: SvgResult['interactive'] = [];

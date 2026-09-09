@@ -1,3 +1,4 @@
+import { EngineError } from '@knowledgeassemble/interactive-engine';
 import type { SceneNode } from '../scene/types.js';
 
 export interface GeometryShapeProps {
@@ -66,8 +67,8 @@ export const geometryShapeComponent = {
     const label = props.label as string | undefined;
     const showVertices = props.showVertices as boolean | undefined;
 
-    if (!shape || !SIDE_COUNTS[shape] && shape !== 'circle') {
-      return [];
+    if (!shape || (!SIDE_COUNTS[shape] && shape !== 'circle')) {
+      throw new EngineError('INVALID_SPEC', `geometry: unknown shape "${shape}"`);
     }
 
     const shapeGroupId = `${parentId}-shape`;
