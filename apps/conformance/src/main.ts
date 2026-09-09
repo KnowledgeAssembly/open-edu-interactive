@@ -1,7 +1,6 @@
 import { a11yTreeOf, createPlatformInstance } from '@knowledgeassemble/interactive-engine';
-import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import type { EngineAction, EngineSpec } from '@knowledgeassemble/interactive-engine';
-import { mountEngine, exposeHarness, loadSpec } from '@knowledgeassemble/dev-harness';
+import { mountEngine, exposeHarness, loadSpec, engineHarnessExtras } from '@knowledgeassemble/dev-harness';
 
 interface HarnessRemote {
   dispatch(arg1: unknown, arg2?: unknown): void;
@@ -66,16 +65,15 @@ if (!app) {
 
 const engineParam = new URLSearchParams(window.location.search).get('engine') ?? 'core';
 
-const ENGINE_FIXTURES: Record<string, { slug: string; path: string }> = {
-  chart: { slug: 'bar', path: 'packages/chart-engine/fixture/bar/input.chart.json' },
-  geomap: { slug: 'marker', path: 'packages/geomap-engine/fixture/marker/input.geomap.json' },
-  timeline: { slug: 'events', path: 'packages/timeline-engine/fixture/events/input.timeline.json' },
-  diagram: { slug: 'concept-map', path: 'packages/diagram-engine/fixture/concept-map/input.diagram.json' },
-  visual: { slug: 'number-line', path: 'packages/visual-engine/fixture/number-line/input.visual.json' },
+const ENGINE_FIXTURES: Record<string, string> = {
+  chart: 'packages/chart-engine/fixture/bar/input.chart.json',
+  geomap: 'packages/geomap-engine/fixture/odisha-coastal/input.geomap.json',
+  timeline: 'packages/timeline-engine/fixture/independence/input.timeline.json',
+  diagram: 'packages/diagram-engine/fixture/water-cycle/input.diagram.json',
+  visual: 'packages/visual-engine/fixture/number-line/input.visual.json',
 };
 
 if (engineParam === 'core') {
-  // P6-T3: Keep platform-only route unchanged
   const SPEC: EngineSpec = {
     type: 'visual',
     version: '1.0.0',
@@ -99,8 +97,8 @@ if (engineParam === 'core') {
   app.appendChild(rootEl);
 
   window.__harness = {
-    dispatch(_arg1: unknown, _arg2?: unknown): void {
-      // core route: no dispatch needed for static scene
+    dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void {
+      instance.dispatch(action as EngineAction);
     },
     snapshot(): unknown {
       return instance.snapshot();
@@ -126,12 +124,17 @@ if (engineParam === 'core') {
   const { mountComposition } = await import('./composition.js');
   mountComposition(app);
 } else {
-  const fixture = ENGINE_FIXTURES[engineParam];
-  if (!fixture) {
+  const specPath = ENGINE_FIXTURES[engineParam];
+  if (!specPath) {
     throw new Error(`Unknown engine: ${engineParam}`);
   }
-  const spec = loadSpec(fixture.path) as never;
+  const spec = loadSpec(specPath) as never;
   const result = mountEngine(spec, app);
-  exposeHarness(window, result);
-  (window as unknown as Record<string, HarnessRemote>)[`__${engineParam}Harness`] = window.__harness as HarnessRemote;
+  const extras = engineHarnessExtras(result);
+  exposeHarness(window, result, extras);
+  const harness = window.__harness as HarnessRemote;
+  (window as unknown as Record<string, HarnessRemote>)[`__${engineParam}Harness`] = harness;
+  if (engineParam === 'visual') {
+    window.__visualHarness = harness;
+  }
 }

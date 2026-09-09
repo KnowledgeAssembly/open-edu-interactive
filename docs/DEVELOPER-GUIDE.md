@@ -400,7 +400,7 @@ pnpm playground          # serves on port 5174
 ```
 
 Routes: `/` (fixture index), `/engine/:engine/:slug`, `/lesson/:slug`, `/custom` (paste JSON).
-The right inspector panel shows Preview, Events, Snapshot, Validation, and A11y tabs.
+Collapsible inspector panels below the preview show Events, Snapshot, Validation, A11y tree, and Host settings.
 Actions are dispatched via buttons generated from `spec.interaction.actions`; a prompt asks for `target.id` when needed.
 The Custom Spec page supports localStorage draft persistence (`playground:custom-spec`) and share via URL hash (`#spec=base64`).
 

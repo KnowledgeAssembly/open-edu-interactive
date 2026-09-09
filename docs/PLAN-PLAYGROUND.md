@@ -56,7 +56,7 @@ Commit per phase with repo style (e.g. `Playground T1: add fixture catalog scrip
 | Engine golden fixtures | `packages/{engine}-engine/fixture/{slug}/input.{type}.json` | Canonical per-engine specs |
 | Composition fixtures | `docs/fixtures/composition/*.json` | Lesson-level multi-engine specs |
 | P7 fixtures | `docs/fixtures/p7/composed-lesson.json`, `docs/fixtures/p7/widget-compat/*.json` | Integration examples |
-| Playground (planned) | `apps/playground` | **Does not exist yet** — STRUCTURE §35, PLAN §3 |
+| Playground | `apps/playground` | Dev UI on port 5174 (`pnpm playground`); fixture story routes + inspector panels |
 | CLI (deferred) | `apps/cli` | Out of scope for this plan |
 
 ### 1.3 Ports and scripts

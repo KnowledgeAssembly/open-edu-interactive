@@ -8,6 +8,11 @@ const repoRoot = path.resolve(playgroundDir, "../..");
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      "@knowledgeassemble/dev-harness": path.join(repoRoot, "packages/dev-harness/src/index.ts"),
+    },
+  },
   server: {
     port: 5174,
     strictPort: true,

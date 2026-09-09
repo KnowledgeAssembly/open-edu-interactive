@@ -12,7 +12,6 @@ describe("specLoader", () => {
   it("loads docs composition fixtures", () => {
     const entry = getCatalog().find((e) => e.id === "lesson/narrative-timeline-visual");
     expect(entry).toBeDefined();
-    const spec = loadSpec(entry!.specPath);
-    expect(spec).toBeTruthy();
+    expect(loadSpec(entry!.specPath)).toBeTruthy();
   });
 });

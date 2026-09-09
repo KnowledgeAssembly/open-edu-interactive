@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 5173 --strictPort",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "pnpm --filter @knowledgeassemble/dev-harness build && tsc --noEmit -p tsconfig.json",
     "playwright": "playwright test"
   },
   "dependencies": {
