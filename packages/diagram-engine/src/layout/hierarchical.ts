@@ -49,7 +49,7 @@ export function computeHierarchicalBounds(
   for (const [id, layer] of layerOf) {
     const list = nodesInLayer.get(layer) ?? [];
     list.push(id);
-    nodesInLayer.set(layer, [...list].sort());
+    nodesInLayer.set(layer, list);
   }
 
   const bounds = new Map<string, Bounds>();

@@ -96,7 +96,21 @@
             "toNodeId": "weight",
             "relationship": "influences",
             "labels": [],
-            "edgeId": "edge-gravity-weight"
+            "edgeId": "edge-gravity-weight",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 308,
+                  "y": 262.5
+                },
+                {
+                  "x": 308,
+                  "y": 322.5
+                }
+              ],
+              "path": "M308,262.5 L308,322.5"
+            }
           },
           "children": []
         },
@@ -114,7 +128,21 @@
             "toNodeId": "weight",
             "relationship": "influences",
             "labels": [],
-            "edgeId": "edge-mass-weight"
+            "edgeId": "edge-mass-weight",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 468,
+                  "y": 262.5
+                },
+                {
+                  "x": 308,
+                  "y": 322.5
+                }
+              ],
+              "path": "M468,262.5 L308,322.5"
+            }
           },
           "children": []
         }

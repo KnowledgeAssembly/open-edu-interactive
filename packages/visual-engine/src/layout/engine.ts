@@ -1,4 +1,4 @@
-import type { Scene, SceneNode } from '../scene/types.js';
+import type { Scene, SceneNode, Bounds } from '../scene/types.js';
 import type { LayoutContext } from './types.js';
 import { rect } from './geometry.js';
 
@@ -9,23 +9,63 @@ interface Scale {
   direction: 'horizontal' | 'vertical';
 }
 
-function findAxis(group: SceneNode): { axis: SceneNode; scale: Scale } | null {
-  for (const child of group.children) {
-    if (child.role === 'axis') {
-      const raw = child.metadata?.scale as Scale | undefined;
-      if (raw && typeof raw.min === 'number' && typeof raw.max === 'number') {
-        return { axis: child, scale: raw };
-      }
+interface Point { x: number; y: number; }
+
+export function layout(scene: Scene, ctx: LayoutContext): Scene {
+  for (const node of scene.nodes) {
+    switch (node.kind) {
+      case 'number-line':
+        layoutNumberLine(node, ctx);
+        break;
+      case 'counting-set':
+        layoutCountingSet(node, ctx);
+        break;
+      case 'fraction':
+        layoutFraction(node, ctx);
+        break;
+      case 'fraction-comparison':
+      case 'comparison':
+        layoutComparison(node, ctx);
+        break;
+      case 'clock':
+        layoutClock(node, ctx);
+        break;
+      case 'coordinate-grid':
+        layoutCoordinateGrid(node, ctx);
+        break;
+      case 'geometry':
+        layoutGeometry(node, ctx);
+        break;
+      case 'illustration':
+        layoutIllustration(node, ctx);
+        break;
+      default:
+        break;
     }
   }
-  return null;
+  return scene;
 }
 
-function layoutNumberLine(group: SceneNode, ctx: LayoutContext, axis: SceneNode, scale: Scale): void {
+function setBounds(node: SceneNode, b: Bounds): void {
+  node.bounds = b;
+}
+
+function polar(cx: number, cy: number, r: number, angleDegrees: number): Point {
+  const rad = (angleDegrees * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function layoutNumberLine(node: SceneNode, ctx: LayoutContext): void {
   const pad = 20;
   const axisX = pad;
   const axisWidth = ctx.width - pad * 2;
   const baselineY = Math.round(ctx.height / 2);
+
+  const axis = node.children.find(c => c.role === 'axis');
+  if (!axis) return;
+  const scale = axis.metadata?.scale as Scale | undefined;
+  if (!scale) return;
+
   const vertical = scale.direction === 'vertical';
 
   axis.bounds = vertical
@@ -35,7 +75,7 @@ function layoutNumberLine(group: SceneNode, ctx: LayoutContext, axis: SceneNode,
   const span = scale.max - scale.min || 1;
   const usable = vertical ? ctx.height - pad * 2 : axisWidth;
 
-  for (const child of group.children) {
+  for (const child of node.children) {
     if (child === axis || typeof child.value !== 'number') continue;
     if (child.value < scale.min || child.value > scale.max) continue;
 
@@ -70,46 +110,247 @@ function layoutNumberLine(group: SceneNode, ctx: LayoutContext, axis: SceneNode,
   }
 }
 
-export function layout(scene: Scene, ctx: LayoutContext): Scene {
-  let cursor = 20;
-  for (const node of scene.nodes) {
-    layoutNode(node, ctx, cursor);
-    cursor += 48;
+function layoutCountingSet(node: SceneNode, ctx: LayoutContext): void {
+  const children = node.children;
+  const count = children.length;
+  if (count === 0) return;
+
+  const meta = children[0]?.metadata as { arrangement?: string; rows?: number; columns?: number } | undefined;
+  const arrangement = meta?.arrangement ?? 'grid';
+  const maxSize = Math.min(ctx.width, ctx.height) * 0.6;
+  const touch = Math.max(ctx.minTouchTarget, 24);
+
+  let cols: number;
+  let rows: number;
+  if (arrangement === 'row') {
+    cols = count;
+    rows = 1;
+  } else if (arrangement === 'column') {
+    cols = 1;
+    rows = count;
+  } else {
+    cols = meta?.columns ?? Math.ceil(Math.sqrt(count));
+    rows = meta?.rows ?? Math.ceil(count / cols);
   }
-  return scene;
+
+  const cellW = Math.min(maxSize / cols, (ctx.width - 40) / cols);
+  const cellH = Math.min(maxSize / rows, (ctx.height - 60) / rows);
+  const size = Math.max(10, Math.min(cellW, cellH, touch));
+  const gapY = size + 6;
+  const gapX = size + 6;
+
+  const totalW = cols * gapX - 6;
+  const totalH = rows * gapY - 6;
+  const startX = (ctx.width - totalW) / 2;
+  const startY = (ctx.height - totalH) / 2;
+
+  for (let i = 0; i < count; i++) {
+    const child = children[i]!;
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    if (arrangement === 'column') {
+      setBounds(child, rect(startX + (cols - 1) * gapX / 2, startY + row * gapY, size, size));
+    } else {
+      setBounds(child, rect(startX + col * gapX, startY + row * gapY, size, size));
+    }
+  }
 }
 
-function layoutNode(node: SceneNode, ctx: LayoutContext, startX: number): void {
-  if (node.role === 'group' && node.children.length > 0) {
-    const axis = findAxis(node);
-    if (axis) {
-      layoutNumberLine(node, ctx, axis.axis, axis.scale);
-      return;
-    }
-    let childCursor = startX;
-    for (const child of node.children) {
-      childCursor = layoutChild(child, ctx, childCursor);
-    }
-    return;
+function layoutFraction(node: SceneNode, ctx: LayoutContext): void {
+  const bar = node.children.find(c => c.kind === 'fraction-bar') ?? node.children.find(c => c.role === 'group');
+  const label = node.children.find(c => c.role === 'label');
+
+  if (!bar) return;
+
+  const pad = 40;
+  const barW = ctx.width - pad * 2;
+  const barH = 48;
+  const barY = Math.round(ctx.height / 2) - barH / 2;
+
+  setBounds(bar, rect(pad, barY, barW, barH));
+
+  const parts = bar.children;
+  const n = parts.length || 1;
+  const partW = barW / n;
+  for (let i = 0; i < parts.length; i++) {
+    setBounds(parts[i]!, rect(pad + i * partW, barY, partW, barH));
   }
-  if (!node.bounds) {
-    node.bounds = rect(startX, 20, 40, 24);
+
+  if (label) {
+    setBounds(label, rect(pad, barY + barH + 12, 200, 24));
   }
 }
 
-function layoutChild(node: SceneNode, ctx: LayoutContext, startX: number): number {
-  if (node.role === 'group' && node.children.length > 0) {
-    layoutNode(node, ctx, startX);
-    return startX + 48;
+function layoutComparison(node: SceneNode, ctx: LayoutContext): void {
+  const children = node.children;
+  const items = children.filter(c => c.role === 'selectable' || c.role === 'visual');
+  const operator = children.find(c => c.role === 'label' && c.metadata?.comparison);
+
+  const pad = 40;
+  const availW = ctx.width - pad * 2;
+  const itemW = Math.min(availW * 0.38, 260);
+  const opW = availW - itemW * 2;
+  const gap = opW;
+  const centerY = Math.round(ctx.height / 2);
+
+  if (items[0]) {
+    layoutItemGroup(items[0]!, pad, centerY, itemW);
   }
-  if (node.children.length > 0) {
-    layoutNode(node, ctx, startX);
-    let childCursor = startX;
-    for (const child of node.children) {
-      childCursor = layoutChild(child, ctx, childCursor);
+  if (items[1]) {
+    layoutItemGroup(items[1]!, pad + itemW + gap, centerY, itemW);
+  }
+  if (operator) {
+    setBounds(operator, rect(pad + itemW + gap / 2 - 20, centerY - 20, 40, 40));
+  }
+}
+
+function layoutItemGroup(item: SceneNode, x: number, centerY: number, w: number): void {
+  const label = item.children.find(c => c.role === 'label');
+  const value = item.children.find(c => c.role === 'number');
+  const boxH = 110;
+  const y = centerY - boxH / 2;
+  setBounds(item, rect(x, y, w, boxH));
+  if (label) {
+    setBounds(label, rect(x, y + 14, w, 24));
+  }
+  if (value) {
+    setBounds(value, rect(x, y + 44, w, 40));
+  }
+}
+
+function layoutClock(node: SceneNode, ctx: LayoutContext): void {
+  const face = node.children.find(c => c.role === 'visual' && c.kind === 'circle');
+  const radius = Math.min(ctx.width, ctx.height) * 0.35;
+
+  const cx = ctx.width / 2;
+  const cy = Math.round(ctx.height / 2);
+
+  if (face) {
+    setBounds(face, rect(cx - radius, cy - radius, radius * 2, radius * 2));
+  }
+
+  const handRadius = radius * 0.88;
+  for (const child of node.children) {
+    const angle = child.geometry?.angle as number | undefined;
+    if (child.kind === 'line' && typeof angle === 'number') {
+      const end = polar(cx, cy, handRadius, angle);
+      child.geometry = { ...child.geometry, points: [{ x: cx, y: cy }, end] };
+      setBounds(child, rect(Math.min(cx, end.x), Math.min(cy, end.y), Math.abs(end.x - cx), Math.abs(end.y - cy)));
+      continue;
     }
-    return childCursor;
+    if (child.kind === 'text' && typeof angle === 'number') {
+      const p = polar(cx, cy, radius - 30, angle);
+      setBounds(child, rect(p.x - 12, p.y - 10, 24, 20));
+    }
   }
-  node.bounds = rect(startX, 20, 40, 24);
-  return startX + 48;
+}
+
+function layoutCoordinateGrid(node: SceneNode, ctx: LayoutContext): void {
+  const pad = 48;
+  const xAxis = node.children.find(c => c.id.includes('x-axis'));
+  const yAxis = node.children.find(c => c.id.includes('y-axis'));
+
+  const plotX = pad;
+  const plotY = pad;
+  const plotW = ctx.width - pad * 2;
+  const plotH = ctx.height - pad * 2;
+  const originX = plotX + plotW / 2;
+  const originY = plotY + plotH / 2;
+
+  if (xAxis) {
+    xAxis.geometry = { points: [{ x: plotX, y: originY }, { x: plotX + plotW, y: originY }] };
+    setBounds(xAxis, rect(plotX, originY - 2, plotW, 4));
+  }
+  if (yAxis) {
+    yAxis.geometry = { points: [{ x: originX, y: plotY }, { x: originX, y: plotY + plotH }] };
+    setBounds(yAxis, rect(originX - 2, plotY, 4, plotH));
+  }
+
+  // x/y ranges from the first gridlines' metadata is not present; infer from children geometry/values.
+  // Determine scale extents from axis-less metadata on gridlines.
+  const xVals: number[] = [];
+  const yVals: number[] = [];
+  for (const child of node.children) {
+    if (child.id.includes('gridline-x') && typeof child.value === 'number') xVals.push(child.value);
+    if (child.id.includes('gridline-y') && typeof child.value === 'number') yVals.push(child.value);
+  }
+  const xMin = xVals.length ? Math.min(...xVals) : -5;
+  const xMax = xVals.length ? Math.max(...xVals) : 5;
+  const yMin = yVals.length ? Math.min(...yVals) : -5;
+  const yMax = yVals.length ? Math.max(...yVals) : 5;
+
+  const toX = (v: number) => originX + ((v - (xMin + xMax) / 2) / ((xMax - xMin) || 1)) * (plotW / 2);
+  const toY = (v: number) => originY - ((v - (yMin + yMax) / 2) / ((yMax - yMin) || 1)) * (plotH / 2);
+
+  for (const child of node.children) {
+    if (child.id.includes('gridline-x') && typeof child.value === 'number') {
+      const x = toX(child.value);
+      child.geometry = { points: [{ x, y: plotY }, { x, y: plotY + plotH }] };
+      setBounds(child, rect(x - 1, plotY, 2, plotH));
+    } else if (child.id.includes('gridline-y') && typeof child.value === 'number') {
+      const y = toY(child.value);
+      child.geometry = { points: [{ x: plotX, y }, { x: plotX + plotW, y }] };
+      setBounds(child, rect(plotX, y - 1, plotW, 2));
+    } else if (child.id.includes('point-') && child.kind === 'circle') {
+      const g = child.geometry as { x?: number; y?: number } | undefined;
+      if (g && typeof g.x === 'number' && typeof g.y === 'number') {
+        const px = toX(g.x);
+        const py = toY(g.y);
+        setBounds(child, rect(px - 5, py - 5, 10, 10));
+      }
+    } else if (child.id.includes('line-') && child.kind === 'line') {
+      const raw = child.geometry?.points as Array<{ x: number; y: number }> | undefined;
+      if (Array.isArray(raw)) {
+        const mapped = raw.map(p => ({ x: toX(p.x), y: toY(p.y) }));
+        child.geometry = { points: mapped };
+        const xs = mapped.map(p => p.x);
+        const ys = mapped.map(p => p.y);
+        setBounds(child, rect(Math.min(...xs), Math.min(...ys), Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)));
+      }
+    }
+  }
+}
+
+function layoutGeometry(node: SceneNode, ctx: LayoutContext): void {
+  const shape = node.children.find(c => c.kind === 'shape');
+  if (!shape) return;
+
+  const size = Math.min(ctx.width, ctx.height) * 0.4;
+  const cx = ctx.width / 2;
+  const cy = Math.round(ctx.height / 2);
+
+  setBounds(shape, rect(cx - size / 2, cy - size / 2, size, size));
+
+  const meta = shape.metadata as { sides?: number; shape?: string } | undefined;
+  const sides = meta?.sides ?? 0;
+  const r = size / 2;
+  if (meta?.shape && meta.shape !== 'circle' && sides >= 3) {
+    for (let i = 0; i < shape.children.length; i++) {
+      const angle = (2 * Math.PI * i) / sides - Math.PI / 2;
+      const px = cx + r * Math.cos(angle);
+      const py = cy + r * Math.sin(angle);
+      const v = shape.children[i]!;
+      if (v.kind === 'circle') {
+        setBounds(v, rect(px - 4, py - 4, 8, 8));
+      }
+    }
+  }
+}
+
+function layoutIllustration(node: SceneNode, ctx: LayoutContext): void {
+  const children = node.children;
+  const count = children.length;
+  if (count === 0) return;
+
+  const pad = 40;
+  const availW = ctx.width - pad * 2;
+  const boxW = Math.min(availW / count, 220);
+  const gap = (availW - boxW * count) / (count - 1 || 1);
+  const boxH = 120;
+  const y = Math.round(ctx.height / 2) - boxH / 2;
+
+  for (let i = 0; i < count; i++) {
+    const x = pad + i * (boxW + gap);
+    setBounds(children[i]!, rect(x, y, boxW, boxH));
+  }
 }

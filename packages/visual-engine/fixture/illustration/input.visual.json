@@ -1,0 +1,26 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "illustration-golden",
+  "purpose": {
+    "learningObjective": "Identify the Sun, Moon, and Star in an illustration",
+    "interactionGoal": "Refer to each labeled entity",
+    "reasoningMode": "explore"
+  },
+  "content": {
+    "kind": "illustration",
+    "entities": [
+      { "id": "illustration-sun", "label": "Sun" },
+      { "id": "illustration-moon", "label": "Moon" },
+      { "id": "illustration-star", "label": "Star" }
+    ]
+  },
+  "accessibility": {
+    "label": "Illustration of the Sun, Moon, and Star",
+    "description": "Three labeled celestial entities shown together."
+  },
+  "interaction": {
+    "mode": "explore",
+    "actions": ["focus", "reset"]
+  }
+}

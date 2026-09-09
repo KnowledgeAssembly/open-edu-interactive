@@ -1,0 +1,35 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "comparison-golden",
+  "purpose": {
+    "learningObjective": "Compare the numbers five and three",
+    "interactionGoal": "Select the larger number",
+    "reasoningMode": "compare"
+  },
+  "content": {
+    "kind": "comparison",
+    "components": [
+      {
+        "id": "cp",
+        "type": "comparison",
+        "props": {
+          "items": [
+            { "id": "a", "label": "5", "value": 5 },
+            { "id": "b", "label": "3", "value": 3 }
+          ],
+          "comparison": "greater-than",
+          "interactive": true
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Comparing the numbers five and three",
+    "description": "Select which number is larger."
+  },
+  "interaction": {
+    "mode": "compare",
+    "actions": ["select", "focus", "reset"]
+  }
+}

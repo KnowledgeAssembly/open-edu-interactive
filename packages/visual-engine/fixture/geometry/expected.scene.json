@@ -1,0 +1,182 @@
+{
+  "nodes": [
+    {
+      "id": "gs",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "gs-shape",
+          "role": "shape",
+          "kind": "shape",
+          "metadata": {
+            "shape": "hexagon",
+            "sides": 6
+          },
+          "children": [
+            {
+              "id": "gs-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-4",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-5",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "label": "Hexagon",
+          "bounds": {
+            "x": 280,
+            "y": 180,
+            "width": 240,
+            "height": 240
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "gs": {
+      "id": "gs",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "gs-shape",
+          "role": "shape",
+          "kind": "shape",
+          "metadata": {
+            "shape": "hexagon",
+            "sides": 6
+          },
+          "children": [
+            {
+              "id": "gs-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-4",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "gs-shape-side-5",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "label": "Hexagon",
+          "bounds": {
+            "x": 280,
+            "y": 180,
+            "width": 240,
+            "height": 240
+          }
+        }
+      ]
+    },
+    "gs-shape": {
+      "id": "gs-shape",
+      "role": "shape",
+      "kind": "shape",
+      "metadata": {
+        "shape": "hexagon",
+        "sides": 6
+      },
+      "children": [
+        {
+          "id": "gs-shape-side-0",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "gs-shape-side-1",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "gs-shape-side-2",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "gs-shape-side-3",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "gs-shape-side-4",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "gs-shape-side-5",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        }
+      ],
+      "label": "Hexagon",
+      "bounds": {
+        "x": 280,
+        "y": 180,
+        "width": 240,
+        "height": 240
+      }
+    }
+  }
+}

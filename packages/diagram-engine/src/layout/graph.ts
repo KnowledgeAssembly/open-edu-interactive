@@ -5,6 +5,40 @@ export interface Graph {
   reverseAdjacency: Map<string, string[]>;
 }
 
+export function walkOrder(
+  nodeIds: string[],
+  edges: Array<{ from: string; to: string }>,
+): string[] {
+  const adj = new Map<string, string[]>();
+  for (const id of nodeIds) adj.set(id, []);
+  for (const e of edges) {
+    const list = adj.get(e.from);
+    if (list) list.push(e.to);
+  }
+
+  const visited = new Set<string>();
+  const result: string[] = [];
+
+  for (const start of nodeIds) {
+    if (visited.has(start)) continue;
+    const stack = [start];
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      if (visited.has(node)) continue;
+      visited.add(node);
+      result.push(node);
+      const neighbors = adj.get(node) ?? [];
+      for (let i = neighbors.length - 1; i >= 0; i--) {
+        if (!visited.has(neighbors[i]!)) {
+          stack.push(neighbors[i]!);
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
 export function adjacency(
   nodeIds: string[],
   edgeTuples: Array<{ from: string; to: string }>,

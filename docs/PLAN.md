@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-This is the living sequencing document for building the interactive-engine package family from DESIGN.md D3 (**platform first, then engines**). Every phase is **exit-criteria gated**: a phase is promoted only when its full exit checklist is green, as verified by automated commands — not by assertion.
+This is the living sequencing document for building the interactive-engine package family from DESIGN.md D3 (**platform first, then engines**), then **P8 production readiness**. Every phase is **exit-criteria gated**: a phase is promoted only when its full exit checklist is green, as verified by automated commands — not by assertion. P0–P7 DONE means the in-repo gates; learner-ready product is P8 (`docs/PLAN-P8.md`).
 
 Source of truth for content: `DESIGN.md` → `INTERACTIVE-ENGINE-SPEC.md` → engine `SPEC.md`/`VISION.md` → Visual architecture docs. When a conflict is found, fix the higher document, not the implementation.
 
@@ -290,6 +290,26 @@ Expected semantic behavior: `0 ─ 1 ─ … ─ 10` with `7` highlighted and in
 
 ---
 
+### P8 — Production readiness
+
+**Detailed task breakdown:** [`PLAN-P8.md`](PLAN-P8.md). OpenEdu-repo items remain listed in [`p7-acceptance.md`](p7-acceptance.md).
+
+**Goal.** P0–P7 are **in-repo phase gates** (thin slices + host simulation). P8 takes the §5 lifecycle through honest SVG, playground as an acceptance surface, published packages, and the real OpenEdu host proof.
+
+**Scope (in order)** — see PLAN-P8 workstreams:
+
+1. **A — Slice honesty** (this repo): finish contracted MVP render/layout (Diagram T4 edges and graph-order layout first; Visual D9 closed set from PLAN-P2 T7); playground honesty tests; no new libraries.
+2. **B — OpenEdu proof** (OpenEdu repo): `p7-acceptance.md` items; first proof is CourseRuntime + schema adoption + real composed lesson.
+3. **C — Publish and host-quality:** npm publish of `@knowledgeassemble/*`; token/a11y from a real host.
+4. **D — Next SPEC slices** (after A): Chart `area`/`scatter`, GeoMap projections beyond equirectangular, Diagram `label-diagram`, etc. Adapters (D3/ELK) only when a slice names the math.
+5. **E — CLI** (PLAN.md §3): after A, when authors need a non-UI workflow.
+
+**Out of scope:** Simulation/Equation/3D; Interactive Studio/scoring/telemetry product in this repo; widening frozen enums to decorate playground.
+
+**Exit:** substages in PLAN-P8 §8. Do not mark P8 DONE until A + B-min (`p7-acceptance` #1, #2, #6) + C1 (packages on npm) are green.
+
+---
+
 ## 5. Engine Lifecycle Template
 
 Every engine runs the same exit-gated cycle (DESIGN §14, mapped from `engines/visual/PROJECT.md`):
@@ -317,11 +337,12 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | GitHub Actions CI gate | `.github/workflows/ci.yml` | P1 (delivered as P1 gap-closing follow-up) |
 | Theming tokens | DESIGN §12.1 / EngineHost | P1 stub host; OpenEdu design-system is source of truth |
 | A11y L4 checks, keyboard, reduced motion | DESIGN §12 / STRUCTURE §37 | per engine; prefs from host |
-| CLI (`generate·validate·preview·inspect·components·recipes`) | PROJECT Phase 7 | P2 scaffold |
-| Playground | PROJECT Phase 9 | P2+ (engine-dev only) |
+| CLI (`generate·validate·preview·inspect·components·recipes`) | PROJECT Phase 7 | P8 Workstream E (deferred from P2) |
+| Playground app | PLAN-PLAYGROUND | Done as tooling; honesty gate is P8 Workstream A |
+| Production readiness (slice honesty, OpenEdu proof, publish) | PLAN-P8 | P8 |
 | Interactive Studio | — | **Out** (D6 — Course Creator Studio) |
 | Agent skills per engine + examples | DESIGN §10 | per engine |
-| Extension engines (Simulation, Equation, 3D) | contract §89 | Deferred (not in P0-P7) |
+| Extension engines (Simulation, Equation, 3D) | contract §89 | Deferred (not P0–P8 Workstream A) |
 
 ---
 
@@ -334,10 +355,10 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | TypeScript strict | P1 |
 | Schema package / core runtime / registry / primitives | P1 |
 | React integration | P7 (`interactive-react`) |
-| Every engine renders a valid JSON spec | P2-P6 |
+| Every engine renders a valid JSON spec | P2–P6 slice; **visible MVP SVG** is P8 A |
 | All engines pass common conformance suite | P2-P7, gate each |
-| Packages independently publishable | P7 |
-| OpenEdu can consume the published packages | P7 |
+| Packages independently publishable | P7 smoke; **npm publish** is P8 C |
+| OpenEdu can consume the published packages | P7 in-repo simulation; **CourseRuntime** is P8 B / p7-acceptance |
 | No engine → OpenEdu dependency | P1 onward (contract boundary) |
 | No arbitrary executable JS in specifications | L2/P10 (P1 harness) |
 | Accessibility primitives + host a11y prefs | P1 |
@@ -364,9 +385,10 @@ The **Spec** step is where the per-engine normative documents missing today are 
 ## 9. Open Items / Decision Gates
 
 1. ~~**P0 → P1 gate:** standalone `@knowledgeassemble/*` now, or plan for immediate monorepo integration (`@open-edu/*`)?~~ **Resolved (2026-09-07):** standalone `@knowledgeassemble/*` now; host integration and any `@open-edu/*` rename happen at P7 (D2 default confirmed).
-2. **P6 → P7 gate:** integrate into the OpenEdu monorepo, or publish and consume as external packages?
-3. Tooling: playground + CLI are in-scope for engine phases; Interactive Studio is **out** (D6 — extend OpenEdu Course Creator Studio).
-4. Extension engines (Simulation/Equation/3D, §89) — deliberately deferred.
+2. ~~**P6 → P7 gate:** integrate into the OpenEdu monorepo, or publish and consume as external packages?~~ **Resolved (OpenEdu-D2):** publish-and-consume `@knowledgeassemble/*`; npm publish itself is P8 Workstream C.
+3. Tooling: playground **app** shipped (PLAN-PLAYGROUND); playground **honesty** and CLI are P8. Interactive Studio is **out** (D6 — extend OpenEdu Course Creator Studio).
+4. Extension engines (Simulation/Equation/3D, §89) — deliberately deferred (not P8 Workstream A).
+5. **P8 substages:** A (this repo) before D (new kinds); B-min is OpenEdu-repo (`p7-acceptance.md`).
 
 ---
 
@@ -383,7 +405,7 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | P5 — Timeline Engine | DONE |
 | P6 — Diagram Engine | DONE |
 | P7 — OpenEdu integration | DONE |
-
+| P8 — Production readiness | Proposed |
 ---
 
 ## 11. Change Log
@@ -440,3 +462,4 @@ The **Spec** step is where the per-engine normative documents missing today are 
 | 2026-09-08 | OpenEdu-D5 — ADR re-recording: draft ADR-01…09 per `openedu-way/ADR.md` conventions; DESIGN §16 register links to them. Transplant is cross-repo acceptance. |
 | 2026-09-08 | P7 DONE: @knowledgeassemble/interactive-react (OpenEduBridge → EngineHost seam, InteractiveNode/InteractiveLesson mounts, jsdom unit tests), package publishability (exports maps, files, prepublishOnly to all 7 packages), lesson-node proposal schema + composed-lesson fixture (reusing frozen P2.5 contract), widget-compat mapping data + round-trip tests, conformance `?engine=lesson` host-simulation route + browser e2e (cross-engine binding, replay, a11y, authoring proof), ADR-01…09 for D1–D9 with DESIGN §16 register links, doc test, `docs/p7-acceptance.md` cross-repo acceptance list — full exit gate green. P0–P7 completed — engine family ships as consumable product. |
 | 2026-09-09 | Playground tooling (PLAN-PLAYGROUND Phases 0–7): `packages/dev-harness` shared mount/catalog, `apps/playground` dev UI (port 5174), conformance refactored to delegate engine routes to dev-harness + fixture catalog; `DEVELOPER-GUIDE.md` §9 documents playground usage. |
+| 2026-09-09 | P8 opened: production-readiness workstreams (slice honesty, OpenEdu proof, publish, later SPEC slices, CLI) in `docs/PLAN-P8.md`. P0–P7 remain DONE as in-repo gates; P8 is the path to a learner-ready product. |

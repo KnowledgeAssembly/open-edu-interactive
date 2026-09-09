@@ -1,0 +1,31 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "geometry-golden",
+  "purpose": {
+    "learningObjective": "Identify the shape of a hexagon",
+    "interactionGoal": "Recognize the geometric shape",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "geometry",
+    "components": [
+      {
+        "id": "gs",
+        "type": "geometry",
+        "props": {
+          "shape": "hexagon",
+          "label": "Hexagon"
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Hexagon",
+    "description": "A regular hexagon drawn on the canvas."
+  },
+  "interaction": {
+    "mode": "identify",
+    "actions": ["focus", "reset"]
+  }
+}

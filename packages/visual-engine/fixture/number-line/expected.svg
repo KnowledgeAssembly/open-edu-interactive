@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
-  <title>Interactive number line</title>
-  <desc>An interactive educational number line visualization</desc>
+  <title>Number line from zero to ten</title>
+  <desc>A number line with 7 highlighted. Select the highlighted value.</desc>
   <g id="visual-root">
   <g id="nl" data-oedu-role="group">
     <line id="nl-axis" data-oedu-role="axis" data-oedu-bounds="20,298,760,4" x1="20" y1="300" x2="780" y2="300" stroke="currentColor" stroke-width="2"/>

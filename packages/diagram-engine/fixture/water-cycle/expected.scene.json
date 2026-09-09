@@ -28,7 +28,7 @@
           },
           "children": [],
           "bounds": {
-            "x": 130,
+            "x": 610,
             "y": 270,
             "width": 60,
             "height": 60
@@ -74,8 +74,8 @@
           },
           "children": [],
           "bounds": {
-            "x": 370,
-            "y": 30,
+            "x": 130,
+            "y": 270,
             "width": 60,
             "height": 60
           },
@@ -97,8 +97,8 @@
           },
           "children": [],
           "bounds": {
-            "x": 610,
-            "y": 270,
+            "x": 370,
+            "y": 30,
             "width": 60,
             "height": 60
           },
@@ -118,7 +118,21 @@
             "toNodeId": "condensation",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-evaporation-condensation"
+            "edgeId": "edge-evaporation-condensation",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 640,
+                  "y": 300
+                },
+                {
+                  "x": 400,
+                  "y": 540
+                }
+              ],
+              "path": "M640,300 L400,540"
+            }
           },
           "children": []
         },
@@ -136,7 +150,21 @@
             "toNodeId": "precipitation",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-condensation-precipitation"
+            "edgeId": "edge-condensation-precipitation",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 400,
+                  "y": 540
+                },
+                {
+                  "x": 160,
+                  "y": 300
+                }
+              ],
+              "path": "M400,540 L160,300"
+            }
           },
           "children": []
         },
@@ -154,7 +182,21 @@
             "toNodeId": "collection",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-precipitation-collection"
+            "edgeId": "edge-precipitation-collection",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 160,
+                  "y": 300
+                },
+                {
+                  "x": 400,
+                  "y": 60
+                }
+              ],
+              "path": "M160,300 L400,60"
+            }
           },
           "children": []
         },
@@ -172,7 +214,21 @@
             "toNodeId": "evaporation",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-collection-evaporation"
+            "edgeId": "edge-collection-evaporation",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 400,
+                  "y": 60
+                },
+                {
+                  "x": 640,
+                  "y": 300
+                }
+              ],
+              "path": "M400,60 L640,300"
+            }
           },
           "children": []
         }

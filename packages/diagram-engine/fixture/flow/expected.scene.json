@@ -90,7 +90,21 @@
             "toNodeId": "process",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-start-process"
+            "edgeId": "edge-start-process",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 100,
+                  "y": 80
+                },
+                {
+                  "x": 100,
+                  "y": 160
+                }
+              ],
+              "path": "M100,80 L100,160"
+            }
           },
           "children": []
         },
@@ -108,7 +122,21 @@
             "toNodeId": "end",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-process-end"
+            "edgeId": "edge-process-end",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 100,
+                  "y": 160
+                },
+                {
+                  "x": 100,
+                  "y": 240
+                }
+              ],
+              "path": "M100,160 L100,240"
+            }
           },
           "children": []
         }

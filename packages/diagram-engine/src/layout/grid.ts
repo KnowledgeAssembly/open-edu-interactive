@@ -10,17 +10,15 @@ export function gridLayout(
   const cols = Math.max(1, Math.ceil(Math.sqrt(n)));
   const cellW = Math.max(ctx.minTouchTarget, Math.min(ctx.width / cols, 160));
   const cellH = Math.max(ctx.minTouchTarget, 60);
-  const sorted = [...nodeIds].sort();
-
   const bounds = new Map<string, Bounds>();
   const startX = (ctx.width - cols * cellW) / 2;
   const rows = Math.ceil(n / cols);
   const startY = (ctx.height - rows * cellH) / 2;
 
-  for (let i = 0; i < sorted.length; i++) {
+  for (let i = 0; i < nodeIds.length; i++) {
     const col = i % cols;
     const row = Math.floor(i / cols);
-    bounds.set(sorted[i]!, {
+    bounds.set(nodeIds[i]!, {
       x: Math.round(startX + col * cellW),
       y: Math.round(startY + row * cellH),
       width: Math.round(cellW * 0.85),

@@ -1,0 +1,182 @@
+{
+  "nodes": [
+    {
+      "id": "illustration-sun-illustration",
+      "role": "visual",
+      "kind": "illustration",
+      "children": [
+        {
+          "id": "illustration-sun",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Sun",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 40,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        },
+        {
+          "id": "illustration-moon",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Moon",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 290,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        },
+        {
+          "id": "illustration-star",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Star",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 540,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "illustration-sun-illustration": {
+      "id": "illustration-sun-illustration",
+      "role": "visual",
+      "kind": "illustration",
+      "children": [
+        {
+          "id": "illustration-sun",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Sun",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 40,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        },
+        {
+          "id": "illustration-moon",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Moon",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 290,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        },
+        {
+          "id": "illustration-star",
+          "role": "selectable",
+          "kind": "entity",
+          "label": "Star",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 540,
+            "y": 240,
+            "width": 220,
+            "height": 120
+          }
+        }
+      ]
+    },
+    "illustration-sun": {
+      "id": "illustration-sun",
+      "role": "selectable",
+      "kind": "entity",
+      "label": "Sun",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 40,
+        "y": 240,
+        "width": 220,
+        "height": 120
+      }
+    },
+    "illustration-moon": {
+      "id": "illustration-moon",
+      "role": "selectable",
+      "kind": "entity",
+      "label": "Moon",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 290,
+        "y": 240,
+        "width": 220,
+        "height": 120
+      }
+    },
+    "illustration-star": {
+      "id": "illustration-star",
+      "role": "selectable",
+      "kind": "entity",
+      "label": "Star",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 540,
+        "y": 240,
+        "width": 220,
+        "height": 120
+      }
+    }
+  }
+}

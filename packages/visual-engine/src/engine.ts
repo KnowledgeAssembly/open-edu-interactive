@@ -70,7 +70,7 @@ export class VisualEngine implements Engine {
       height: 600,
       minTouchTarget: 44,
       textStyle: 'normal',
-    });
+    }, visualSpec.accessibility?.label, visualSpec.accessibility?.description);
 
     const mounted = log.append('engine-mounted', instanceId);
     const ready = log.append('engine-ready', instanceId);

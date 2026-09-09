@@ -2,6 +2,8 @@
 
 These items MUST be completed in the **OpenEdu monorepo** to complete the integration. They are out of scope for this repository but depend on its P7 artifacts.
 
+**Sequencing:** this list is **P8 Workstream B** in [`PLAN-P8.md`](PLAN-P8.md). P7 in-repo is DONE (host simulation). Do not treat this file as complete until #1, #2, and #6 are green in OpenEdu. In-repo slice honesty (visible MVP render, playground gate) is P8 Workstream A and is **not** tracked here.
+
 | # | Item | Depends on | Priority | Notes |
 |---|------|-----------|----------|-------|
 | 1 | **Real learner `CourseRuntime` host.** Adopt `InteractiveLesson` / `InteractiveNode` from `@knowledgeassemble/interactive-react` in the OpenEdu learner app. Wire real token/design-system as `OpenEduBridge.tokens`, real i18n as `locale`/`t()`, real telemetry as `onEvent`, and real `.oep` asset resolution as `resolveAsset`. | P7 interactive-react package | P0 (first) | The P5/P6 host-simulation e2e (`?engine=lesson`) is the in-repo proxy; this is the real run. |

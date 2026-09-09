@@ -174,6 +174,110 @@ export const catalog = [
     "title": "Tracks test"
   },
   {
+    "id": "visual/clock",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "clock",
+    "specPath": "packages/visual-engine/fixture/clock/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/clock/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/clock/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/clock/expected.svg"
+    },
+    "title": "clock"
+  },
+  {
+    "id": "visual/comparison",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "comparison",
+    "specPath": "packages/visual-engine/fixture/comparison/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/comparison/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/comparison/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/comparison/expected.svg"
+    },
+    "title": "comparison"
+  },
+  {
+    "id": "visual/coordinate-grid",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "coordinate-grid",
+    "specPath": "packages/visual-engine/fixture/coordinate-grid/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/coordinate-grid/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/coordinate-grid/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/coordinate-grid/expected.svg"
+    },
+    "title": "coordinate-grid"
+  },
+  {
+    "id": "visual/counting-set",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "counting-set",
+    "specPath": "packages/visual-engine/fixture/counting-set/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/counting-set/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/counting-set/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/counting-set/expected.svg"
+    },
+    "title": "counting-set"
+  },
+  {
+    "id": "visual/fraction",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "fraction",
+    "specPath": "packages/visual-engine/fixture/fraction/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/fraction/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/fraction/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/fraction/expected.svg"
+    },
+    "title": "fraction"
+  },
+  {
+    "id": "visual/fraction-comparison",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "fraction-comparison",
+    "specPath": "packages/visual-engine/fixture/fraction-comparison/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/fraction-comparison/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/fraction-comparison/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/fraction-comparison/expected.svg"
+    },
+    "title": "fraction-comparison"
+  },
+  {
+    "id": "visual/geometry",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "geometry",
+    "specPath": "packages/visual-engine/fixture/geometry/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/geometry/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/geometry/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/geometry/expected.svg"
+    },
+    "title": "geometry"
+  },
+  {
+    "id": "visual/illustration",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "illustration",
+    "specPath": "packages/visual-engine/fixture/illustration/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/illustration/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/illustration/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/illustration/expected.svg"
+    },
+    "title": "illustration"
+  },
+  {
     "id": "visual/number-line",
     "kind": "engine",
     "engine": "visual",

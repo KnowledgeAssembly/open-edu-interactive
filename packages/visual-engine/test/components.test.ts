@@ -3,7 +3,7 @@ import { EngineError } from '@knowledgeassemble/interactive-engine';
 import { createNumberLine } from '../src/components/number-line.js';
 import { createCountingSet, countingSetComponent } from '../src/components/counting-set.js';
 import { createFractionBar, fractionBarComponent } from '../src/components/fraction-bar.js';
-import { createFractionCircle, fractionCircleComponent } from '../src/components/fraction-circle.js';
+import { createFractionComparison, fractionComparisonComponent } from '../src/components/fraction-circle.js';
 import { createClock, clockComponent } from '../src/components/clock.js';
 import { createCoordinateGrid, coordinateGridComponent } from '../src/components/coordinate-grid.js';
 import { geometryShapeComponent } from '../src/components/geometry-shape.js';
@@ -66,13 +66,17 @@ describe('fraction-bar', () => {
 });
 
 describe('fraction-circle', () => {
-  it('creates parts', () => {
-    const nodes = createFractionCircle({ numerator: 1, denominator: 4 }, 'fc');
-    expect(nodes.filter(n => n.role === 'fraction-part').length).toBe(4);
+  it('creates two comparison items', () => {
+    const nodes = createFractionComparison({
+      items: [{ id: 'a', label: '1/2', value: 0.5 }, { id: 'b', label: '1/4', value: 0.25 }],
+      comparison: 'greater-than',
+      interactive: true,
+    }, 'fc');
+    expect(nodes.filter(n => n.role === 'selectable').length).toBe(2);
   });
 
   it('is registered as kind fraction-comparison', () => {
-    expect(fractionCircleComponent.kind).toBe('fraction-comparison');
+    expect(fractionComparisonComponent.kind).toBe('fraction-comparison');
   });
 });
 

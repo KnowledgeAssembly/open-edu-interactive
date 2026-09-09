@@ -92,7 +92,21 @@
             "toNodeId": "child1",
             "relationship": "contains",
             "labels": [],
-            "edgeId": "edge-root-child1"
+            "edgeId": "edge-root-child1",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 100,
+                  "y": 80
+                },
+                {
+                  "x": 100,
+                  "y": 160
+                }
+              ],
+              "path": "M100,80 L100,160"
+            }
           },
           "children": []
         },
@@ -110,7 +124,21 @@
             "toNodeId": "child2",
             "relationship": "contains",
             "labels": [],
-            "edgeId": "edge-root-child2"
+            "edgeId": "edge-root-child2",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 100,
+                  "y": 80
+                },
+                {
+                  "x": 220,
+                  "y": 160
+                }
+              ],
+              "path": "M100,80 L220,160"
+            }
           },
           "children": []
         }

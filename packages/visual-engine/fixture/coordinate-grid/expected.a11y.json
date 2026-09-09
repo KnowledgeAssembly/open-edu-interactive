@@ -1,0 +1,192 @@
+{
+  "a11y": [
+    {
+      "id": "cg",
+      "role": "group",
+      "label": "cg",
+      "children": [
+        {
+          "id": "cg-x-axis",
+          "role": "img",
+          "label": "cg-x-axis",
+          "children": []
+        },
+        {
+          "id": "cg-y-axis",
+          "role": "img",
+          "label": "cg-y-axis",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-0",
+          "role": "img",
+          "label": "cg-gridline-x-0",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-1",
+          "role": "img",
+          "label": "cg-gridline-x-1",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-2",
+          "role": "img",
+          "label": "cg-gridline-x-2",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-3",
+          "role": "img",
+          "label": "cg-gridline-x-3",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-4",
+          "role": "img",
+          "label": "cg-gridline-x-4",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-5",
+          "role": "img",
+          "label": "cg-gridline-x-5",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-0",
+          "role": "img",
+          "label": "cg-gridline-y-0",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-1",
+          "role": "img",
+          "label": "cg-gridline-y-1",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-2",
+          "role": "img",
+          "label": "cg-gridline-y-2",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-3",
+          "role": "img",
+          "label": "cg-gridline-y-3",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-4",
+          "role": "img",
+          "label": "cg-gridline-y-4",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-5",
+          "role": "img",
+          "label": "cg-gridline-y-5",
+          "children": []
+        },
+        {
+          "id": "cg-point-0",
+          "role": "img",
+          "label": "cg-point-0",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cg-x-axis",
+      "role": "img",
+      "label": "cg-x-axis",
+      "children": []
+    },
+    {
+      "id": "cg-y-axis",
+      "role": "img",
+      "label": "cg-y-axis",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-0",
+      "role": "img",
+      "label": "cg-gridline-x-0",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-1",
+      "role": "img",
+      "label": "cg-gridline-x-1",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-2",
+      "role": "img",
+      "label": "cg-gridline-x-2",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-3",
+      "role": "img",
+      "label": "cg-gridline-x-3",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-4",
+      "role": "img",
+      "label": "cg-gridline-x-4",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-5",
+      "role": "img",
+      "label": "cg-gridline-x-5",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-0",
+      "role": "img",
+      "label": "cg-gridline-y-0",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-1",
+      "role": "img",
+      "label": "cg-gridline-y-1",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-2",
+      "role": "img",
+      "label": "cg-gridline-y-2",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-3",
+      "role": "img",
+      "label": "cg-gridline-y-3",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-4",
+      "role": "img",
+      "label": "cg-gridline-y-4",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-5",
+      "role": "img",
+      "label": "cg-gridline-y-5",
+      "children": []
+    },
+    {
+      "id": "cg-point-0",
+      "role": "img",
+      "label": "cg-point-0",
+      "children": []
+    }
+  ],
+  "interactive": []
+}

@@ -18,6 +18,44 @@ interface BoundsWithPos {
   height: number;
 }
 
+interface EdgeGeometry {
+  type: 'line' | 'path';
+  points: Array<{ x: number; y: number }>;
+  path?: string;
+}
+
+function clampPoint(
+  p: { x: number; y: number },
+  canvas: { width: number; height: number },
+): { x: number; y: number } {
+  return {
+    x: Math.max(0, Math.min(canvas.width, p.x)),
+    y: Math.max(0, Math.min(canvas.height, p.y)),
+  };
+}
+
+function computeEdgeGeometry(
+  fromBounds: BoundsWithPos,
+  toBounds: BoundsWithPos,
+  canvas: { width: number; height: number },
+): EdgeGeometry {
+  const fromCenter = {
+    x: fromBounds.x + fromBounds.width / 2,
+    y: fromBounds.y + fromBounds.height / 2,
+  };
+  const toCenter = {
+    x: toBounds.x + toBounds.width / 2,
+    y: toBounds.y + toBounds.height / 2,
+  };
+  const p1 = clampPoint(fromCenter, canvas);
+  const p2 = clampPoint(toCenter, canvas);
+  return {
+    type: 'line',
+    points: [p1, p2],
+    path: `M${p1.x},${p1.y} L${p2.x},${p2.y}`,
+  };
+}
+
 export function layout(scene: Scene, ctx: LayoutContext, layoutType?: string): Scene {
   const root = scene.nodes.find((n) => n.kind === 'diagram');
   if (!root) return scene;
@@ -35,12 +73,14 @@ export function layout(scene: Scene, ctx: LayoutContext, layoutType?: string): S
   const graph = adjacency(nodeIds, edgePairs);
   const topoSort = kahnTopoSort(graph);
 
+  const canvas = { width: ctx.width, height: ctx.height };
+
   // Determine layout strategy
   const strategy = layoutType ?? 'hierarchical';
   let nodeBounds: Map<string, BoundsWithPos>;
 
   if (strategy === 'radial') {
-    const radialBounds = radialLayout(nodeIds, ctx);
+    const radialBounds = radialLayout(nodeIds, edgePairs, ctx);
     nodeBounds = new Map<string, BoundsWithPos>();
     for (const [id, b] of radialBounds) {
       nodeBounds.set(id, b as unknown as BoundsWithPos);
@@ -69,6 +109,7 @@ export function layout(scene: Scene, ctx: LayoutContext, layoutType?: string): S
     }
   }
 
+  // Assign edge geometry
   const newRootChildren = root.children.map((c) => {
     const nid = c.metadata?.nodeId as string | undefined;
     if (c.kind === 'node' && nid) {
@@ -77,8 +118,38 @@ export function layout(scene: Scene, ctx: LayoutContext, layoutType?: string): S
         return { ...c, bounds: { x: b.x, y: b.y, width: b.width, height: b.height }, positionSource: 'illustrative' as const };
       }
     }
+    if (c.kind === 'edge') {
+      const fromNodeId = c.metadata?.fromNodeId as string ?? '';
+      const toNodeId = c.metadata?.toNodeId as string ?? '';
+      const fromBounds = nodeBounds.get(fromNodeId);
+      const toBounds = nodeBounds.get(toNodeId);
+      if (fromBounds && toBounds) {
+        const geo = computeEdgeGeometry(fromBounds, toBounds, canvas);
+        return {
+          ...c,
+          metadata: {
+            ...c.metadata,
+            edgeGeometry: geo,
+          },
+        };
+      }
+    }
     return c;
   });
+
+  // Assert every edge has endpoints inside canvas
+  for (const child of newRootChildren) {
+    if (child.kind === 'edge') {
+      const geo = child.metadata?.edgeGeometry as EdgeGeometry | undefined;
+      if (geo) {
+        for (const p of geo.points) {
+          if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+            throw new Error(`edge "${child.id}" endpoint outside canvas: (${p.x},${p.y})`);
+          }
+        }
+      }
+    }
+  }
 
   return {
     ...scene,
