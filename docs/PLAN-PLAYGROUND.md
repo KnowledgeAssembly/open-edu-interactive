@@ -56,7 +56,7 @@ Commit per phase with repo style (e.g. `Playground T1: add fixture catalog scrip
 | Engine golden fixtures | `packages/{engine}-engine/fixture/{slug}/input.{type}.json` | Canonical per-engine specs |
 | Composition fixtures | `docs/fixtures/composition/*.json` | Lesson-level multi-engine specs |
 | P7 fixtures | `docs/fixtures/p7/composed-lesson.json`, `docs/fixtures/p7/widget-compat/*.json` | Integration examples |
-| Playground (planned) | `apps/playground` | **Does not exist yet** — STRUCTURE §35, PLAN §3 |
+| Playground | `apps/playground` | Dev UI on port 5174 (`pnpm playground`); fixture story routes + inspector panels |
 | CLI (deferred) | `apps/cli` | Out of scope for this plan |
 
 ### 1.3 Ports and scripts
@@ -514,3 +514,6 @@ Subsequent PRs: remaining engines → lesson routes → full inspector → confo
 | Date | Change |
 |---|---|
 | 2026-09-08 | Initial plan: split `apps/playground` from conformance, shared `packages/dev-harness`, fixture-driven story routes. |
+| 2026-09-09 | Phases 2–5 shipped: dev-harness core, playground shell/routes, inspector panels, draft persistence, URL hash sharing. |
+| 2026-09-09 | Phases 6–7 shipped: conformance refactored to delegate to dev-harness, DEVELOPER-GUIDE playground section, AGENTS.md updated, CI includes playground typecheck. |
+| 2026-09-09 | Docs follow-up: SYSTEM-ARCHITECTURE §9 (dev tooling), DEVELOPER-GUIDE §9 expanded, STRUCTURE §35 (dev-harness, conformance, playground). |

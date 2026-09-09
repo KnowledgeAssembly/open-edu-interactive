@@ -42,7 +42,9 @@ Conflict rule: when docs disagree, fix the **higher** document, never the implem
 packages/interactive-engine/   core: engine, registry, state, action, event, host,
                                validation/ (L1–L4 pipeline), runtime/ (reducer, event-log,
                                instance), accessibility/, composition/ (placeholder), schemas/
-apps/conformance/              vanilla-TS Vite app exposing window.__harness for Playwright
+packages/dev-harness/          shared mount logic: stub host, fixture catalog, loadSpec (conformance + playground)
+apps/conformance/              Playwright e2e harness (port 5173); engine routes delegate to dev-harness
+apps/playground/               React dev UI for manual verification (port 5174, pnpm playground)
 docs/                          DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, PLAN-P1,
                                README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md
 ```
@@ -98,3 +100,4 @@ Package-scoped: `pnpm --filter @knowledgeassemble/interactive-engine <script>`.
 - Style through semantic tokens (`emphasis`, `danger`, `focus`), never literal colors.
 - Reject Visual-engine scope creep: timeline, flowchart, and label-diagram belong to Timeline/Diagram engines (D9).
 - Additions to the action set or envelope MUST be namespaced, documented in the engine spec, and deliberate — they are contract changes.
+- For manual verification, use `apps/playground` (`pnpm playground`, port 5174) — browse fixtures, dispatch actions, inspect events/snapshot/a11y panels.

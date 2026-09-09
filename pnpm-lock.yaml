@@ -41,6 +41,9 @@ importers:
       '@knowledgeassemble/chart-engine':
         specifier: workspace:*
         version: link:../../packages/chart-engine
+      '@knowledgeassemble/dev-harness':
+        specifier: workspace:*
+        version: link:../../packages/dev-harness
       '@knowledgeassemble/diagram-engine':
         specifier: workspace:*
         version: link:../../packages/diagram-engine

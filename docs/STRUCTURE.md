@@ -245,11 +245,20 @@ openedu-interactive/
 │       │   ├── interactions/
 │       │   └── index.ts
 │       └── package.json
+│   │
+│   └── dev-harness/
+│       ├── src/                 stub host, mountEngine/mountLesson, loadSpec, harness API
+│       ├── generated/           fixture catalog (build-fixture-catalog.mjs)
+│       └── package.json
 │
 ├── apps/
 │   │
+│   ├── conformance/
+│   │   ├── src/                 Playwright e2e harness; engine routes delegate to dev-harness
+│   │   └── package.json
+│   │
 │   ├── playground/
-│   │   ├── src/
+│   │   ├── src/                 React dev UI (port 5174)
 │   │   └── package.json
 │   │
 │   ├── documentation/
@@ -1093,7 +1102,23 @@ The consuming application SHALL resolve asset URLs/references.
 
 The project SHALL contain dedicated applications.
 
-## Playground  (in progress)
+## Shared harness
+
+```text
+packages/dev-harness
+```
+
+`@knowledgeassemble/dev-harness` is a **private** workspace package (not published). It holds shared mount logic — stub `EngineHost`, fixture catalog, `loadSpec`, `mountEngine`, `mountLesson`, `exposeHarness` — used by both conformance and playground so manual and automated testing stay aligned. Engine packages SHALL NOT import `dev-harness`.
+
+## Conformance
+
+```text
+apps/conformance
+```
+
+The conformance app is the Playwright e2e target (port 5173). It exposes `window.__harness` and routes by `?engine=`; per-engine routes delegate to `dev-harness`. The `?engine=core` route exercises the core platform instance only; `?engine=lesson` and `?engine=composition` mount composed lessons via React.
+
+## Playground
 
 Used for:
 
@@ -1107,7 +1132,7 @@ Used for:
 apps/playground
 ```
 
-The playground implements a **stub** `EngineHost`. It is not the learner app.
+The playground (port 5174, `pnpm playground`) is a React dev UI for manual verification. It loads the same fixture catalog as conformance and mounts through `dev-harness`. It implements a **stub** `EngineHost`. It is not the learner app.
 
 ## Documentation
 
@@ -1183,7 +1208,7 @@ render
 Playwright
 ```
 
-Used for:
+Runs against `apps/conformance` (port 5173). Used for:
 
 - keyboard navigation
 - pointer interaction
@@ -1191,6 +1216,8 @@ Used for:
 - visual interaction
 - accessibility
 - cross-engine rendering
+
+Manual verification uses `apps/playground` (port 5174); see `docs/DEVELOPER-GUIDE.md` §9.
 
 ---
 

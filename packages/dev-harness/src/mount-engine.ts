@@ -6,7 +6,17 @@ import { createStubHost } from './stub-host.js';
 import type { EngineMountResult, RenderTarget } from './types.js';
 
 interface SvgSnapshot {
-  svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[] };
+  svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[]; linear?: unknown[] };
+}
+
+interface TimeRow {
+  kind: string;
+  id: string;
+  label: string;
+  date?: string;
+  from?: string;
+  to?: string;
+  trackId?: string;
 }
 
 interface TabularRow {
@@ -113,6 +123,30 @@ function renderRelTable(container: HTMLElement, rows: RelRow[]): void {
   container.replaceChildren(table);
 }
 
+function renderTimelineLinear(
+  list: HTMLElement,
+  rows: TimeRow[],
+  dispatch: (action: EngineAction) => void,
+): void {
+  list.setAttribute('aria-label', 'Timeline events chronological list');
+  list.replaceChildren();
+  for (const row of rows) {
+    const li = document.createElement('li');
+    li.setAttribute('data-event-id', row.id);
+    li.textContent = row.kind === 'event'
+      ? `${row.label}${row.date ? ` (${row.date})` : ''}${row.trackId ? ` [${row.trackId}]` : ''}`
+      : `${row.label}${row.from ? ` (${row.from} – ${row.to})` : ''}`;
+    if (row.kind === 'event') {
+      li.setAttribute('role', 'button');
+      li.setAttribute('tabindex', '0');
+      li.addEventListener('click', () => {
+        dispatch({ type: 'select', target: { id: row.id } });
+      });
+    }
+    list.appendChild(li);
+  }
+}
+
 function renderEntityList(container: HTMLElement, entities: Array<{ entityId?: string; name?: string; type?: string; description?: string; location?: string }>): void {
   const list = document.createElement('ul');
   list.setAttribute('aria-label', 'Entity list');
@@ -140,9 +174,15 @@ export function mountEngine(
 
   let tabularRoot: HTMLElement | undefined;
   let alternativeRoot: HTMLElement | undefined;
+  let linearRoot: HTMLElement | undefined;
 
   const snapshot = instance.snapshot() as SvgSnapshot;
   const svgResult = snapshot.svgResult;
+
+  if (spec.type === 'timeline' && svgResult?.linear && svgResult.linear.length > 0) {
+    linearRoot = document.createElement('ol');
+    container.appendChild(linearRoot);
+  }
 
   if (spec.type === 'chart' && svgResult?.tabular && svgResult.tabular.length > 0) {
     tabularRoot = document.createElement('div');
@@ -179,6 +219,9 @@ export function mountEngine(
       } else if (spec.type === 'geomap' && alt) {
         renderEntityList(alternativeRoot, alt as Array<{ entityId?: string; name?: string; type?: string; description?: string; location?: string }>);
       }
+    }
+    if (linearRoot) {
+      renderTimelineLinear(linearRoot, (snap.svgResult?.linear ?? []) as TimeRow[], (action) => instance.dispatch(action));
     }
   }
 

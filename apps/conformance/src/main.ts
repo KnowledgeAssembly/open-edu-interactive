@@ -1,25 +1,45 @@
 import { a11yTreeOf, createPlatformInstance } from '@knowledgeassemble/interactive-engine';
-import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import type { EngineAction, EngineSpec } from '@knowledgeassemble/interactive-engine';
-import { mountComposition } from './composition.js';
-import { mountChart } from './chart.js';
-import { mountGeomap } from './geomap.js';
-import { mountTimeline } from './timeline.js';
-import { mountDiagram } from './diagram.js';
-import { mountLesson } from './lesson.js';
+import { mountEngine, exposeHarness, loadSpec, engineHarnessExtras } from '@knowledgeassemble/dev-harness';
 
 interface HarnessRemote {
-  dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void;
-  snapshot(): unknown;
+  dispatch(arg1: unknown, arg2?: unknown): void;
+  snapshot(arg?: unknown): unknown;
   events(): Array<{ seq: number; name: string; action?: unknown }>;
   tryCreate(spec: unknown): { ok: boolean; code?: string; message?: string };
   svg?(): string;
 }
 
+interface ChartHarnessRemote extends HarnessRemote {
+  tabular(): Array<{ rowLabel: string; values: Array<{ measureId: string; value: number | null; unit?: string }> }>;
+}
+
+interface GeomapHarnessRemote extends HarnessRemote {
+  alternative(): Array<{ kind: string; id: string; label?: string }>;
+}
+
+interface TimelineHarnessRemote extends HarnessRemote {
+  linear(): Array<{ id: string; label: string; date: string }>;
+}
+
+interface DiagramHarnessRemote extends HarnessRemote {
+  alternative(): Array<{ kind: string; id: string; label?: string; from?: string; relationship?: string; to?: string }>;
+}
+
+interface LessonHarnessRemote extends HarnessRemote {}
+
+interface CompositionHarnessRemote extends HarnessRemote {}
+
 declare global {
   interface Window {
     __harness?: HarnessRemote;
     __visualHarness?: HarnessRemote;
+    __chartHarness?: ChartHarnessRemote;
+    __geomapHarness?: GeomapHarnessRemote;
+    __timelineHarness?: TimelineHarnessRemote;
+    __diagramHarness?: DiagramHarnessRemote;
+    __lessonHarness?: LessonHarnessRemote;
+    __compositionHarness?: CompositionHarnessRemote;
   }
 }
 
@@ -45,75 +65,15 @@ if (!app) {
 
 const engineParam = new URLSearchParams(window.location.search).get('engine') ?? 'core';
 
-if (engineParam === 'lesson') {
-  mountLesson(app);
-} else if (engineParam === 'composition') {
-  mountComposition(app);
-} else if (engineParam === 'chart') {
-  mountChart(app);
-} else if (engineParam === 'geomap') {
-  mountGeomap(app);
-} else if (engineParam === 'timeline') {
-  mountTimeline(app);
-} else if (engineParam === 'diagram') {
-  mountDiagram(app);
-} else if (engineParam === 'visual') {
-  const SPEC: EngineSpec = {
-    type: 'visual',
-    version: '1.0.0',
-    id: 'number-line-conformance',
-    metadata: { title: 'Number Line' },
-    purpose: { learningObjective: 'Select the highlighted value on the number line' },
-    interaction: { actions: ['select', 'focus', 'reset'] },
-    content: {
-      kind: 'number-line',
-      components: [{ id: 'nl', type: 'number-line', props: { min: 0, max: 10, step: 1, highlight: [7] } }],
-    },
-    accessibility: { label: 'Number line from 0 to 10', description: '7 is highlighted' },
-  };
+const ENGINE_FIXTURES: Record<string, string> = {
+  chart: 'packages/chart-engine/fixture/bar/input.chart.json',
+  geomap: 'packages/geomap-engine/fixture/odisha-coastal/input.geomap.json',
+  timeline: 'packages/timeline-engine/fixture/independence/input.timeline.json',
+  diagram: 'packages/diagram-engine/fixture/water-cycle/input.diagram.json',
+  visual: 'packages/visual-engine/fixture/number-line/input.visual.json',
+};
 
-  const emitted: Array<{ seq: number; name: string; action?: unknown }> = [];
-  const host = makeHost(emitted);
-  const engine = new VisualEngine();
-  const instance = engine.instantiate(SPEC, host);
-
-  const state = instance.snapshot() as Record<string, unknown>;
-  const svgContent = (state['svgResult'] as { svg?: string } | undefined)?.svg ?? '';
-
-  const svgContainer = document.createElement('div');
-  svgContainer.setAttribute('data-oedu-root', 'visual');
-  if (svgContent) {
-    svgContainer.innerHTML = svgContent;
-  } else {
-    svgContainer.textContent = 'visual conformance: no svg';
-  }
-  app.appendChild(svgContainer);
-
-  window.__visualHarness = {
-    dispatch(action: { type: string; target?: { id: string }; payload?: unknown }): void {
-      instance.dispatch(action as EngineAction);
-    },
-    snapshot(): unknown {
-      return instance.snapshot();
-    },
-    events() {
-      return [...emitted];
-    },
-    tryCreate(spec: unknown): { ok: boolean; code?: string; message?: string } {
-      try {
-        const r = new VisualEngine().validate(spec as EngineSpec);
-        return { ok: r.valid, message: r.issues.map((i) => i.message).join('; ') };
-      } catch (error) {
-        const err = error as { code?: string; message?: string };
-        return { ok: false, code: err.code, message: err.message };
-      }
-    },
-    svg(): string {
-      return svgContent;
-    },
-  };
-  window.__harness = window.__visualHarness;
-} else {
+if (engineParam === 'core') {
   const SPEC: EngineSpec = {
     type: 'visual',
     version: '1.0.0',
@@ -157,4 +117,24 @@ if (engineParam === 'lesson') {
       }
     },
   };
+} else if (engineParam === 'lesson') {
+  const { mountLesson } = await import('./lesson.js');
+  mountLesson(app);
+} else if (engineParam === 'composition') {
+  const { mountComposition } = await import('./composition.js');
+  mountComposition(app);
+} else {
+  const specPath = ENGINE_FIXTURES[engineParam];
+  if (!specPath) {
+    throw new Error(`Unknown engine: ${engineParam}`);
+  }
+  const spec = loadSpec(specPath) as never;
+  const result = mountEngine(spec, app);
+  const extras = engineHarnessExtras(result);
+  exposeHarness(window, result, extras);
+  const harness = window.__harness as HarnessRemote;
+  (window as unknown as Record<string, HarnessRemote>)[`__${engineParam}Harness`] = harness;
+  if (engineParam === 'visual') {
+    window.__visualHarness = harness;
+  }
 }
