@@ -15,7 +15,7 @@ Orientation: [`SYSTEM-ARCHITECTURE.md`](SYSTEM-ARCHITECTURE.md) (high-level syst
 | Developer guide | [`DEVELOPER-GUIDE.md`](DEVELOPER-GUIDE.md) | How to integrate (host/mount/author specs) and how to extend (write a new engine, validation, packaging, tests). |
 | Contract | [`INTERACTIVE-ENGINE-SPEC.md`](INTERACTIVE-ENGINE-SPEC.md) | Shared architecture & semantic contract: vocabulary, actions, events, state, error model, spec hierarchy (top of §91 hierarchy). |
 | Structure | [`STRUCTURE.md`](STRUCTURE.md) | Repository layout, package separation, tech stack, platform phases. Package naming per DESIGN D2. |
-| Plan | [`PLAN.md`](PLAN.md) | Living implementation plan: exit-gated phases P0-P7, working model, status board. |
+| Plan | [`PLAN.md`](PLAN.md) | Living implementation plan: exit-gated phases P0–P8, working model, status board. P8: [`PLAN-P8.md`](PLAN-P8.md). |
 | Schema | [`schemas/interactive-engine.schema.json`](schemas/interactive-engine.schema.json) | Machine-readable envelope (`type`/`version`/`id`). |
 | Composition | [`schemas/composition.schema.json`](schemas/composition.schema.json) | Lesson-level `{ engines[], bindings[] }` (P2.5). |
 

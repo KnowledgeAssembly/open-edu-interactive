@@ -46,10 +46,10 @@ packages/dev-harness/          shared mount logic: stub host, fixture catalog, l
 apps/conformance/              Playwright e2e harness (port 5173); engine routes delegate to dev-harness
 apps/playground/               React dev UI for manual verification (port 5174, pnpm playground)
 docs/                          DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, PLAN-P1,
-                               README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md
+                               PLAN-P8, README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md
 ```
 
-Current status: **P1 done and merged** (`@knowledgeassemble/interactive-engine` skeleton green). Next: **P2 — Visual Engine**. Do not start P3/P4/P5/P6/P7 work; the plan gates phases.
+Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readiness** (`docs/PLAN-P8.md`). Start Workstream A (slice honesty); do not start new engine kinds (Workstream D) or library adapters until A is green. OpenEdu CourseRuntime proof is Workstream B (`docs/p7-acceptance.md`).
 
 ## Tech stack
 
