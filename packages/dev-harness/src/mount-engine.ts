@@ -40,6 +40,35 @@ function renderSvg(container: HTMLElement, svg: string | undefined): void {
   container.innerHTML = svg ?? '';
 }
 
+const INTERACTIVE_STYLE_ID = 'oedu-interactive-pointer-style';
+
+function ensureInteractivePointerStyle(svgRoot: HTMLElement): void {
+  if (svgRoot.querySelector(`#${INTERACTIVE_STYLE_ID}`)) return;
+  const style = document.createElement('style');
+  style.id = INTERACTIVE_STYLE_ID;
+  style.textContent = '[data-oedu-interactive="true"] { cursor: pointer; }';
+  svgRoot.appendChild(style);
+}
+
+/** Delegated pointer input: renderer click → D5 select (host boundary, not spec). */
+function bindSvgInteraction(
+  svgRoot: HTMLElement,
+  dispatch: (action: EngineAction) => void,
+): () => void {
+  ensureInteractivePointerStyle(svgRoot);
+
+  function onClick(event: MouseEvent): void {
+    const el = (event.target as Element | null)?.closest('[data-oedu-interactive="true"]');
+    const id = el?.id;
+    if (!id) return;
+    event.preventDefault();
+    dispatch({ type: 'select', target: { id } });
+  }
+
+  svgRoot.addEventListener('click', onClick);
+  return () => svgRoot.removeEventListener('click', onClick);
+}
+
 function renderChartTable(container: HTMLElement, rows: TabularRow[]): void {
   const table = document.createElement('table');
   table.setAttribute('aria-label', 'Chart data table');
@@ -170,6 +199,9 @@ export function mountEngine(
 
   const svgRoot = document.createElement('div');
   svgRoot.setAttribute('data-oedu-root', spec.type);
+  const svgContent = document.createElement('div');
+  svgContent.setAttribute('data-oedu-svg', spec.type);
+  svgRoot.appendChild(svgContent);
   container.appendChild(svgRoot);
 
   let tabularRoot: HTMLElement | undefined;
@@ -208,7 +240,7 @@ export function mountEngine(
 
   function renderDom(): void {
     const snap = instance.snapshot() as SvgSnapshot;
-    renderSvg(svgRoot, snap.svgResult?.svg);
+    renderSvg(svgContent, snap.svgResult?.svg);
     if (tabularRoot) {
       renderChartTable(tabularRoot, (snap.svgResult?.tabular ?? []) as TabularRow[]);
     }
@@ -221,17 +253,23 @@ export function mountEngine(
       }
     }
     if (linearRoot) {
-      renderTimelineLinear(linearRoot, (snap.svgResult?.linear ?? []) as TimeRow[], (action) => instance.dispatch(action));
+      renderTimelineLinear(linearRoot, (snap.svgResult?.linear ?? []) as TimeRow[], dispatchAndRender);
     }
   }
+
+  function dispatchAndRender(action: EngineAction): void {
+    instance.dispatch(action);
+    renderDom();
+  }
+
+  const unbindSvg = bindSvgInteraction(svgRoot, dispatchAndRender);
 
   renderDom();
 
   return {
     instanceId,
     dispatch(action: EngineAction): void {
-      instance.dispatch(action);
-      renderDom();
+      dispatchAndRender(action);
     },
     snapshot(): unknown {
       return instance.snapshot();
@@ -243,6 +281,7 @@ export function mountEngine(
       return engine.validate(spec as EngineSpec);
     },
     teardown(): void {
+      unbindSvg();
       instance.teardown();
       clearEvents();
     },

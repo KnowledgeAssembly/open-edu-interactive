@@ -24,7 +24,7 @@ describe('mountEngine', () => {
     const result = mountEngine(VISUAL_SPEC, container);
     const svgRoot = container.querySelector('[data-oedu-root="visual"]');
     expect(svgRoot).not.toBeNull();
-    expect(svgRoot!.querySelector('svg')).not.toBeNull();
+    expect(svgRoot!.querySelector('[data-oedu-svg] svg')).not.toBeNull();
     const snap = result.snapshot() as { svgResult?: { svg?: string } };
     expect(snap.svgResult?.svg?.length).toBeGreaterThan(0);
     result.teardown();
@@ -63,6 +63,16 @@ describe('mountEngine', () => {
     const result = mountEngine(VISUAL_SPEC, container);
     result.dispatch({ type: 'select', target: { id: 'nl' } });
     expect(result.events().length).toBeGreaterThan(0);
+    result.teardown();
+  });
+
+  it('clicking data-oedu-interactive dispatches select', () => {
+    const result = mountEngine(VISUAL_SPEC, container);
+    const marker = container.querySelector('#nl-marker-7');
+    expect(marker).not.toBeNull();
+    marker!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    const snap = result.snapshot() as { selection?: string[] };
+    expect(snap.selection).toContain('nl-marker-7');
     result.teardown();
   });
 });
