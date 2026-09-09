@@ -15,6 +15,62 @@ Use the Visual Engine when you need to create an interactive educational visuali
 | `geometry` | Teach shape recognition, sides, vertices |
 | `comparison` | Compare two values (greater-than, less-than, equal) |
 | `illustration` | Labeled, selectable/focusable visual entities for narrative scenes |
+| `fraction-circle` | Teach fractions using sector wedges in a circle |
+
+## Practice mode
+
+The `interactive` prop on components enables two modes:
+
+| Mode | `interactive` | Highlight prop | Selectable nodes |
+|------|---------------|----------------|-----------------|
+| **Guided** | `false` or absent | e.g. `highlight`, `highlightedParts`, `highlightHand` | Only the highlighted subset |
+| **Discovery** | `true` | Same (metadata only) | All structurally valid targets |
+
+### Discovery example — number-line
+
+```json
+{
+  "id": "nl",
+  "type": "number-line",
+  "props": { "min": 0, "max": 10, "step": 1, "interactive": true, "highlight": [7] }
+}
+```
+
+All markers `nl-marker-0` through `nl-marker-10` become selectable (event: `visual.nl-marker-{v}-selected`).
+
+### Guided example — clock
+
+```json
+{
+  "id": "ck",
+  "type": "clock",
+  "props": { "hour": 3, "minute": 30, "highlightHand": "hour" }
+}
+```
+
+Only the hour hand `ck-hour-hand` is selectable (event: `visual.ck-hour-hand-selected`).
+
+### Event convention
+
+Every select emits a namespaced event: `visual.{sceneNodeId}-selected`. The `sceneNodeId` follows the pattern:
+- `{componentId}-marker-{v}` (number-line)
+- `{componentId}-object-{i}` (counting-set)
+- `{componentId}-part-{i}` (fraction bar)
+- `{componentId}-sector-{i}` (fraction-circle)
+- `{componentId}-hour-hand` / `{componentId}-minute-hand` (clock)
+- `{componentId}-point-{pointId}` (coordinate-grid)
+- `{componentId}-shape` / `{componentId}-shape-vertex-{i}` / `{componentId}-shape-side-{i}` (geometry)
+
+### fraction-circle props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `numerator` | number | yes | Number of parts to show as selected |
+| `denominator` | number | yes | Total number of equal sectors (≥ 2) |
+| `highlightedParts` | number[] | no | Indices of sectors to mark as interactive |
+| `showFraction` | boolean | no | Show "numerator/denominator" label (default true) |
+| `allowImproper` | boolean | no | Allow numerator > denominator |
+| `interactive` | boolean | no | Enable discovery mode
 
 ## Spec structure
 
@@ -71,10 +127,8 @@ Use the shared Interactive Engine envelope (`type: "visual"`, `version`, `id`). 
 | `min` | number | yes | Start of range |
 | `max` | number | yes | End of range (must be > min) |
 | `step` | number | yes | Interval between ticks (> 0) |
-| `majorStep` | number | no | Interval for major ticks |
 | `showLabels` | boolean | no | Show tick labels (default true) |
 | `highlight` | number[] | no | Values to show as interactive markers |
-| `rangeHighlight` | [number,number][] | no | Ranges to highlight |
 
 ## Validation
 

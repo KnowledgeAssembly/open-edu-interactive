@@ -3,9 +3,12 @@ import type { SceneNode } from '../scene/types.js';
 
 export interface GeometryShapeProps {
   shape: 'triangle' | 'square' | 'rectangle' | 'circle' | 'pentagon' | 'hexagon';
-  size?: number;
   label?: string;
   showVertices?: boolean;
+  highlight?: boolean;
+  highlightVertices?: boolean;
+  highlightSides?: boolean;
+  interactive?: boolean;
 }
 
 const SIDE_COUNTS: Record<string, number> = {
@@ -19,6 +22,7 @@ const SIDE_COUNTS: Record<string, number> = {
 function createPolygonSides(
   shape: string,
   parentId: string,
+  isSelectable: boolean,
 ): SceneNode[] {
   const count = SIDE_COUNTS[shape];
   if (!count) return [];
@@ -29,6 +33,7 @@ function createPolygonSides(
       id: `${parentId}-side-${i}`,
       role: 'diagram-part',
       kind: 'line',
+      ...(isSelectable ? { interactive: true, acceptsActions: ['select', 'focus'] } : {}),
       children: [],
     });
   }
@@ -46,7 +51,7 @@ function createCircleNode(parentId: string): SceneNode[] {
   ];
 }
 
-function createVertices(shape: string, parentId: string): SceneNode[] {
+function createVertices(shape: string, parentId: string, isSelectable: boolean): SceneNode[] {
   const count = shape === 'circle' ? 0 : (SIDE_COUNTS[shape] ?? 0);
   const nodes: SceneNode[] = [];
   for (let i = 0; i < count; i++) {
@@ -54,6 +59,7 @@ function createVertices(shape: string, parentId: string): SceneNode[] {
       id: `${parentId}-vertex-${i}`,
       role: 'marker',
       kind: 'circle',
+      ...(isSelectable ? { interactive: true, acceptsActions: ['select', 'focus'] } : {}),
       children: [],
     });
   }
@@ -66,6 +72,18 @@ export const geometryShapeComponent = {
     const shape = props.shape as string;
     const label = props.label as string | undefined;
     const showVertices = props.showVertices as boolean | undefined;
+    const highlight = props.highlight as boolean | undefined;
+    const highlightVertices = props.highlightVertices as boolean | undefined;
+    const highlightSides = props.highlightSides as boolean | undefined;
+    const discovery = (props.interactive as boolean | undefined) ?? false;
+
+    const flagCount = [highlight, highlightVertices, highlightSides].filter(Boolean).length;
+    if (flagCount > 1) {
+      throw new EngineError('INVALID_SPEC', 'geometry: at most one of highlight, highlightVertices, highlightSides may be true');
+    }
+    if (highlightVertices && !showVertices) {
+      throw new EngineError('INVALID_SPEC', 'geometry: highlightVertices requires showVertices: true');
+    }
 
     if (!shape || (!SIDE_COUNTS[shape] && shape !== 'circle')) {
       throw new EngineError('INVALID_SPEC', `geometry: unknown shape "${shape}"`);
@@ -73,10 +91,15 @@ export const geometryShapeComponent = {
 
     const shapeGroupId = `${parentId}-shape`;
 
+    const isShapeSelectable = discovery || highlight === true;
+    const areSidesSelectable = discovery || highlightSides === true;
+    const areVerticesSelectable = discovery || highlightVertices === true;
+
     const shapeNode: SceneNode = {
       id: shapeGroupId,
       role: 'shape',
       kind: 'shape',
+      ...(isShapeSelectable ? { interactive: true, acceptsActions: ['select', 'focus'] } : {}),
       metadata: { shape, sides: SIDE_COUNTS[shape] ?? 0 },
       children: [],
     };
@@ -88,11 +111,11 @@ export const geometryShapeComponent = {
     if (shape === 'circle') {
       shapeNode.children.push(...createCircleNode(shapeGroupId));
     } else {
-      shapeNode.children.push(...createPolygonSides(shape, shapeGroupId));
+      shapeNode.children.push(...createPolygonSides(shape, shapeGroupId, areSidesSelectable));
     }
 
     if (showVertices) {
-      shapeNode.children.push(...createVertices(shape, shapeGroupId));
+      shapeNode.children.push(...createVertices(shape, shapeGroupId, areVerticesSelectable));
     }
 
     return [shapeNode];

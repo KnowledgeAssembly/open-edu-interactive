@@ -1,0 +1,361 @@
+{
+  "a11y": [
+    {
+      "id": "cg",
+      "role": "group",
+      "label": "cg",
+      "children": [
+        {
+          "id": "cg-x-axis",
+          "role": "img",
+          "label": "cg-x-axis",
+          "children": []
+        },
+        {
+          "id": "cg-y-axis",
+          "role": "img",
+          "label": "cg-y-axis",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-0",
+          "role": "img",
+          "label": "cg-gridline-x-0",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-1",
+          "role": "img",
+          "label": "cg-gridline-x-1",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-2",
+          "role": "img",
+          "label": "cg-gridline-x-2",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-3",
+          "role": "img",
+          "label": "cg-gridline-x-3",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-4",
+          "role": "img",
+          "label": "cg-gridline-x-4",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-5",
+          "role": "img",
+          "label": "cg-gridline-x-5",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-6",
+          "role": "img",
+          "label": "cg-gridline-x-6",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-7",
+          "role": "img",
+          "label": "cg-gridline-x-7",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-8",
+          "role": "img",
+          "label": "cg-gridline-x-8",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-9",
+          "role": "img",
+          "label": "cg-gridline-x-9",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-x-10",
+          "role": "img",
+          "label": "cg-gridline-x-10",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-0",
+          "role": "img",
+          "label": "cg-gridline-y-0",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-1",
+          "role": "img",
+          "label": "cg-gridline-y-1",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-2",
+          "role": "img",
+          "label": "cg-gridline-y-2",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-3",
+          "role": "img",
+          "label": "cg-gridline-y-3",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-4",
+          "role": "img",
+          "label": "cg-gridline-y-4",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-5",
+          "role": "img",
+          "label": "cg-gridline-y-5",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-6",
+          "role": "img",
+          "label": "cg-gridline-y-6",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-7",
+          "role": "img",
+          "label": "cg-gridline-y-7",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-8",
+          "role": "img",
+          "label": "cg-gridline-y-8",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-9",
+          "role": "img",
+          "label": "cg-gridline-y-9",
+          "children": []
+        },
+        {
+          "id": "cg-gridline-y-10",
+          "role": "img",
+          "label": "cg-gridline-y-10",
+          "children": []
+        },
+        {
+          "id": "cg-point-target",
+          "role": "button",
+          "label": "cg-point-target",
+          "children": []
+        },
+        {
+          "id": "cg-point-distractor-a",
+          "role": "button",
+          "label": "cg-point-distractor-a",
+          "children": []
+        },
+        {
+          "id": "cg-point-distractor-b",
+          "role": "button",
+          "label": "cg-point-distractor-b",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cg-x-axis",
+      "role": "img",
+      "label": "cg-x-axis",
+      "children": []
+    },
+    {
+      "id": "cg-y-axis",
+      "role": "img",
+      "label": "cg-y-axis",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-0",
+      "role": "img",
+      "label": "cg-gridline-x-0",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-1",
+      "role": "img",
+      "label": "cg-gridline-x-1",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-2",
+      "role": "img",
+      "label": "cg-gridline-x-2",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-3",
+      "role": "img",
+      "label": "cg-gridline-x-3",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-4",
+      "role": "img",
+      "label": "cg-gridline-x-4",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-5",
+      "role": "img",
+      "label": "cg-gridline-x-5",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-6",
+      "role": "img",
+      "label": "cg-gridline-x-6",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-7",
+      "role": "img",
+      "label": "cg-gridline-x-7",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-8",
+      "role": "img",
+      "label": "cg-gridline-x-8",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-9",
+      "role": "img",
+      "label": "cg-gridline-x-9",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-x-10",
+      "role": "img",
+      "label": "cg-gridline-x-10",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-0",
+      "role": "img",
+      "label": "cg-gridline-y-0",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-1",
+      "role": "img",
+      "label": "cg-gridline-y-1",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-2",
+      "role": "img",
+      "label": "cg-gridline-y-2",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-3",
+      "role": "img",
+      "label": "cg-gridline-y-3",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-4",
+      "role": "img",
+      "label": "cg-gridline-y-4",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-5",
+      "role": "img",
+      "label": "cg-gridline-y-5",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-6",
+      "role": "img",
+      "label": "cg-gridline-y-6",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-7",
+      "role": "img",
+      "label": "cg-gridline-y-7",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-8",
+      "role": "img",
+      "label": "cg-gridline-y-8",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-9",
+      "role": "img",
+      "label": "cg-gridline-y-9",
+      "children": []
+    },
+    {
+      "id": "cg-gridline-y-10",
+      "role": "img",
+      "label": "cg-gridline-y-10",
+      "children": []
+    },
+    {
+      "id": "cg-point-target",
+      "role": "button",
+      "label": "cg-point-target",
+      "children": []
+    },
+    {
+      "id": "cg-point-distractor-a",
+      "role": "button",
+      "label": "cg-point-distractor-a",
+      "children": []
+    },
+    {
+      "id": "cg-point-distractor-b",
+      "role": "button",
+      "label": "cg-point-distractor-b",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "cg-point-target",
+      "action": "select"
+    },
+    {
+      "id": "cg-point-target",
+      "action": "focus"
+    },
+    {
+      "id": "cg-point-distractor-a",
+      "action": "select"
+    },
+    {
+      "id": "cg-point-distractor-a",
+      "action": "focus"
+    },
+    {
+      "id": "cg-point-distractor-b",
+      "action": "select"
+    },
+    {
+      "id": "cg-point-distractor-b",
+      "action": "focus"
+    }
+  ]
+}

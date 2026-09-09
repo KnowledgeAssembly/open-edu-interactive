@@ -187,6 +187,19 @@ export const catalog = [
     "title": "clock"
   },
   {
+    "id": "visual/clock-practice",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "clock-practice",
+    "specPath": "packages/visual-engine/fixture/clock-practice/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/clock-practice/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/clock-practice/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/clock-practice/expected.svg"
+    },
+    "title": "clock-practice"
+  },
+  {
     "id": "visual/comparison",
     "kind": "engine",
     "engine": "visual",
@@ -211,6 +224,19 @@ export const catalog = [
       "svg": "packages/visual-engine/fixture/coordinate-grid/expected.svg"
     },
     "title": "coordinate-grid"
+  },
+  {
+    "id": "visual/coordinate-grid-practice",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "coordinate-grid-practice",
+    "specPath": "packages/visual-engine/fixture/coordinate-grid-practice/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/coordinate-grid-practice/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/coordinate-grid-practice/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/coordinate-grid-practice/expected.svg"
+    },
+    "title": "coordinate-grid-practice"
   },
   {
     "id": "visual/counting-set",
@@ -239,6 +265,19 @@ export const catalog = [
     "title": "fraction"
   },
   {
+    "id": "visual/fraction-circle",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "fraction-circle",
+    "specPath": "packages/visual-engine/fixture/fraction-circle/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/fraction-circle/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/fraction-circle/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/fraction-circle/expected.svg"
+    },
+    "title": "fraction-circle"
+  },
+  {
     "id": "visual/fraction-comparison",
     "kind": "engine",
     "engine": "visual",
@@ -265,6 +304,19 @@ export const catalog = [
     "title": "geometry"
   },
   {
+    "id": "visual/geometry-practice",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "geometry-practice",
+    "specPath": "packages/visual-engine/fixture/geometry-practice/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/geometry-practice/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/geometry-practice/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/geometry-practice/expected.svg"
+    },
+    "title": "geometry-practice"
+  },
+  {
     "id": "visual/illustration",
     "kind": "engine",
     "engine": "visual",
@@ -289,6 +341,19 @@ export const catalog = [
       "svg": "packages/visual-engine/fixture/number-line/expected.svg"
     },
     "title": "number-line"
+  },
+  {
+    "id": "visual/number-line-practice",
+    "kind": "engine",
+    "engine": "visual",
+    "slug": "number-line-practice",
+    "specPath": "packages/visual-engine/fixture/number-line-practice/input.visual.json",
+    "golden": {
+      "scene": "packages/visual-engine/fixture/number-line-practice/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/number-line-practice/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/number-line-practice/expected.svg"
+    },
+    "title": "number-line-practice"
   },
   {
     "id": "lesson/narrative-timeline-visual",

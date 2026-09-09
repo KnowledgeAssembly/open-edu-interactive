@@ -81,4 +81,32 @@ describe('layout', () => {
     expect(xs[0]!).toBeLessThan(xs[1]!);
     expect(xs[1]!).toBeLessThan(xs[2]!);
   });
+
+  it('fraction-circle assigns bounds to all sectors', () => {
+    const scene: Scene = {
+      nodes: [
+        {
+          id: 'fc',
+          role: 'group',
+          kind: 'fraction-circle',
+          children: [
+            { id: 'fc-sector-0', role: 'fraction-part', kind: 'wedge', children: [] },
+            { id: 'fc-sector-1', role: 'fraction-part', kind: 'wedge', children: [] },
+            { id: 'fc-sector-2', role: 'fraction-part', kind: 'wedge', children: [] },
+            { id: 'fc-sector-3', role: 'fraction-part', kind: 'wedge', children: [] },
+          ],
+        },
+      ],
+      semantics: {},
+    };
+    const laid = layout(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    for (const sector of laid.nodes[0]!.children) {
+      expect(sector.bounds).toBeDefined();
+      expect(sector.metadata?.startAngle).toBeDefined();
+      expect(sector.metadata?.endAngle).toBeDefined();
+      expect(sector.metadata?.cx).toBe(400);
+      expect(sector.metadata?.cy).toBe(300);
+      expect(sector.metadata?.r).toBeDefined();
+    }
+  });
 });

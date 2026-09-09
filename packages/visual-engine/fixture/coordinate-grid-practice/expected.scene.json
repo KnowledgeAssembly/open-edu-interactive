@@ -1,0 +1,2012 @@
+{
+  "nodes": [
+    {
+      "id": "cg",
+      "role": "group",
+      "kind": "coordinate-grid",
+      "children": [
+        {
+          "id": "cg-x-axis",
+          "role": "axis",
+          "kind": "line",
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 300
+              },
+              {
+                "x": 752,
+                "y": 300
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 298,
+            "width": 704,
+            "height": 4
+          }
+        },
+        {
+          "id": "cg-y-axis",
+          "role": "axis",
+          "kind": "line",
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 400,
+                "y": 48
+              },
+              {
+                "x": 400,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 398,
+            "y": 48,
+            "width": 4,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-0",
+          "role": "marker",
+          "kind": "line",
+          "value": -5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 224,
+                "y": 48
+              },
+              {
+                "x": 224,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 223,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-1",
+          "role": "marker",
+          "kind": "line",
+          "value": -4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 259.2,
+                "y": 48
+              },
+              {
+                "x": 259.2,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 258.2,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-2",
+          "role": "marker",
+          "kind": "line",
+          "value": -3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 294.4,
+                "y": 48
+              },
+              {
+                "x": 294.4,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 293.4,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-3",
+          "role": "marker",
+          "kind": "line",
+          "value": -2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 329.6,
+                "y": 48
+              },
+              {
+                "x": 329.6,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 328.6,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-4",
+          "role": "marker",
+          "kind": "line",
+          "value": -1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 364.8,
+                "y": 48
+              },
+              {
+                "x": 364.8,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 363.8,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-5",
+          "role": "marker",
+          "kind": "line",
+          "value": 0,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 400,
+                "y": 48
+              },
+              {
+                "x": 400,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 399,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-6",
+          "role": "marker",
+          "kind": "line",
+          "value": 1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 435.2,
+                "y": 48
+              },
+              {
+                "x": 435.2,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 434.2,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-7",
+          "role": "marker",
+          "kind": "line",
+          "value": 2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 470.4,
+                "y": 48
+              },
+              {
+                "x": 470.4,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 469.4,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-8",
+          "role": "marker",
+          "kind": "line",
+          "value": 3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 505.6,
+                "y": 48
+              },
+              {
+                "x": 505.6,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 504.6,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-9",
+          "role": "marker",
+          "kind": "line",
+          "value": 4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 540.8,
+                "y": 48
+              },
+              {
+                "x": 540.8,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 539.8,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-10",
+          "role": "marker",
+          "kind": "line",
+          "value": 5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 576,
+                "y": 48
+              },
+              {
+                "x": 576,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 575,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-y-0",
+          "role": "marker",
+          "kind": "line",
+          "value": -5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 426
+              },
+              {
+                "x": 752,
+                "y": 426
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 425,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-1",
+          "role": "marker",
+          "kind": "line",
+          "value": -4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 400.8
+              },
+              {
+                "x": 752,
+                "y": 400.8
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 399.8,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-2",
+          "role": "marker",
+          "kind": "line",
+          "value": -3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 375.6
+              },
+              {
+                "x": 752,
+                "y": 375.6
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 374.6,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-3",
+          "role": "marker",
+          "kind": "line",
+          "value": -2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 350.4
+              },
+              {
+                "x": 752,
+                "y": 350.4
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 349.4,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-4",
+          "role": "marker",
+          "kind": "line",
+          "value": -1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 325.2
+              },
+              {
+                "x": 752,
+                "y": 325.2
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 324.2,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-5",
+          "role": "marker",
+          "kind": "line",
+          "value": 0,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 300
+              },
+              {
+                "x": 752,
+                "y": 300
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 299,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-6",
+          "role": "marker",
+          "kind": "line",
+          "value": 1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 274.8
+              },
+              {
+                "x": 752,
+                "y": 274.8
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 273.8,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-7",
+          "role": "marker",
+          "kind": "line",
+          "value": 2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 249.6
+              },
+              {
+                "x": 752,
+                "y": 249.6
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 248.6,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-8",
+          "role": "marker",
+          "kind": "line",
+          "value": 3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 224.4
+              },
+              {
+                "x": 752,
+                "y": 224.4
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 223.4,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-9",
+          "role": "marker",
+          "kind": "line",
+          "value": 4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 199.2
+              },
+              {
+                "x": 752,
+                "y": 199.2
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 198.2,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-10",
+          "role": "marker",
+          "kind": "line",
+          "value": 5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 174
+              },
+              {
+                "x": 752,
+                "y": 174
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 173,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-point-target",
+          "role": "marker",
+          "kind": "circle",
+          "value": 1,
+          "geometry": {
+            "x": 1,
+            "y": 2
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 430.2,
+            "y": 244.6,
+            "width": 10,
+            "height": 10
+          }
+        },
+        {
+          "id": "cg-point-distractor-a",
+          "role": "marker",
+          "kind": "circle",
+          "value": -3,
+          "geometry": {
+            "x": -3,
+            "y": 4
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 289.4,
+            "y": 194.2,
+            "width": 10,
+            "height": 10
+          }
+        },
+        {
+          "id": "cg-point-distractor-b",
+          "role": "marker",
+          "kind": "circle",
+          "value": 0,
+          "geometry": {
+            "x": 0,
+            "y": -2
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 395,
+            "y": 345.4,
+            "width": 10,
+            "height": 10
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "cg": {
+      "id": "cg",
+      "role": "group",
+      "kind": "coordinate-grid",
+      "children": [
+        {
+          "id": "cg-x-axis",
+          "role": "axis",
+          "kind": "line",
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 300
+              },
+              {
+                "x": 752,
+                "y": 300
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 298,
+            "width": 704,
+            "height": 4
+          }
+        },
+        {
+          "id": "cg-y-axis",
+          "role": "axis",
+          "kind": "line",
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 400,
+                "y": 48
+              },
+              {
+                "x": 400,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 398,
+            "y": 48,
+            "width": 4,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-0",
+          "role": "marker",
+          "kind": "line",
+          "value": -5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 224,
+                "y": 48
+              },
+              {
+                "x": 224,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 223,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-1",
+          "role": "marker",
+          "kind": "line",
+          "value": -4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 259.2,
+                "y": 48
+              },
+              {
+                "x": 259.2,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 258.2,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-2",
+          "role": "marker",
+          "kind": "line",
+          "value": -3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 294.4,
+                "y": 48
+              },
+              {
+                "x": 294.4,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 293.4,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-3",
+          "role": "marker",
+          "kind": "line",
+          "value": -2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 329.6,
+                "y": 48
+              },
+              {
+                "x": 329.6,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 328.6,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-4",
+          "role": "marker",
+          "kind": "line",
+          "value": -1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 364.8,
+                "y": 48
+              },
+              {
+                "x": 364.8,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 363.8,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-5",
+          "role": "marker",
+          "kind": "line",
+          "value": 0,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 400,
+                "y": 48
+              },
+              {
+                "x": 400,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 399,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-6",
+          "role": "marker",
+          "kind": "line",
+          "value": 1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 435.2,
+                "y": 48
+              },
+              {
+                "x": 435.2,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 434.2,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-7",
+          "role": "marker",
+          "kind": "line",
+          "value": 2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 470.4,
+                "y": 48
+              },
+              {
+                "x": 470.4,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 469.4,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-8",
+          "role": "marker",
+          "kind": "line",
+          "value": 3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 505.6,
+                "y": 48
+              },
+              {
+                "x": 505.6,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 504.6,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-9",
+          "role": "marker",
+          "kind": "line",
+          "value": 4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 540.8,
+                "y": 48
+              },
+              {
+                "x": 540.8,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 539.8,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-x-10",
+          "role": "marker",
+          "kind": "line",
+          "value": 5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 576,
+                "y": 48
+              },
+              {
+                "x": 576,
+                "y": 552
+              }
+            ]
+          },
+          "bounds": {
+            "x": 575,
+            "y": 48,
+            "width": 2,
+            "height": 504
+          }
+        },
+        {
+          "id": "cg-gridline-y-0",
+          "role": "marker",
+          "kind": "line",
+          "value": -5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 426
+              },
+              {
+                "x": 752,
+                "y": 426
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 425,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-1",
+          "role": "marker",
+          "kind": "line",
+          "value": -4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 400.8
+              },
+              {
+                "x": 752,
+                "y": 400.8
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 399.8,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-2",
+          "role": "marker",
+          "kind": "line",
+          "value": -3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 375.6
+              },
+              {
+                "x": 752,
+                "y": 375.6
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 374.6,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-3",
+          "role": "marker",
+          "kind": "line",
+          "value": -2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 350.4
+              },
+              {
+                "x": 752,
+                "y": 350.4
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 349.4,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-4",
+          "role": "marker",
+          "kind": "line",
+          "value": -1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 325.2
+              },
+              {
+                "x": 752,
+                "y": 325.2
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 324.2,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-5",
+          "role": "marker",
+          "kind": "line",
+          "value": 0,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 300
+              },
+              {
+                "x": 752,
+                "y": 300
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 299,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-6",
+          "role": "marker",
+          "kind": "line",
+          "value": 1,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 274.8
+              },
+              {
+                "x": 752,
+                "y": 274.8
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 273.8,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-7",
+          "role": "marker",
+          "kind": "line",
+          "value": 2,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 249.6
+              },
+              {
+                "x": 752,
+                "y": 249.6
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 248.6,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-8",
+          "role": "marker",
+          "kind": "line",
+          "value": 3,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 224.4
+              },
+              {
+                "x": 752,
+                "y": 224.4
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 223.4,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-9",
+          "role": "marker",
+          "kind": "line",
+          "value": 4,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 199.2
+              },
+              {
+                "x": 752,
+                "y": 199.2
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 198.2,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-gridline-y-10",
+          "role": "marker",
+          "kind": "line",
+          "value": 5,
+          "children": [],
+          "geometry": {
+            "points": [
+              {
+                "x": 48,
+                "y": 174
+              },
+              {
+                "x": 752,
+                "y": 174
+              }
+            ]
+          },
+          "bounds": {
+            "x": 48,
+            "y": 173,
+            "width": 704,
+            "height": 2
+          }
+        },
+        {
+          "id": "cg-point-target",
+          "role": "marker",
+          "kind": "circle",
+          "value": 1,
+          "geometry": {
+            "x": 1,
+            "y": 2
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 430.2,
+            "y": 244.6,
+            "width": 10,
+            "height": 10
+          }
+        },
+        {
+          "id": "cg-point-distractor-a",
+          "role": "marker",
+          "kind": "circle",
+          "value": -3,
+          "geometry": {
+            "x": -3,
+            "y": 4
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 289.4,
+            "y": 194.2,
+            "width": 10,
+            "height": 10
+          }
+        },
+        {
+          "id": "cg-point-distractor-b",
+          "role": "marker",
+          "kind": "circle",
+          "value": 0,
+          "geometry": {
+            "x": 0,
+            "y": -2
+          },
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 395,
+            "y": 345.4,
+            "width": 10,
+            "height": 10
+          }
+        }
+      ]
+    },
+    "cg-x-axis": {
+      "id": "cg-x-axis",
+      "role": "axis",
+      "kind": "line",
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 300
+          },
+          {
+            "x": 752,
+            "y": 300
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 298,
+        "width": 704,
+        "height": 4
+      }
+    },
+    "cg-y-axis": {
+      "id": "cg-y-axis",
+      "role": "axis",
+      "kind": "line",
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 400,
+            "y": 48
+          },
+          {
+            "x": 400,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 398,
+        "y": 48,
+        "width": 4,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-0": {
+      "id": "cg-gridline-x-0",
+      "role": "marker",
+      "kind": "line",
+      "value": -5,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 224,
+            "y": 48
+          },
+          {
+            "x": 224,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 223,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-1": {
+      "id": "cg-gridline-x-1",
+      "role": "marker",
+      "kind": "line",
+      "value": -4,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 259.2,
+            "y": 48
+          },
+          {
+            "x": 259.2,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 258.2,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-2": {
+      "id": "cg-gridline-x-2",
+      "role": "marker",
+      "kind": "line",
+      "value": -3,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 294.4,
+            "y": 48
+          },
+          {
+            "x": 294.4,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 293.4,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-3": {
+      "id": "cg-gridline-x-3",
+      "role": "marker",
+      "kind": "line",
+      "value": -2,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 329.6,
+            "y": 48
+          },
+          {
+            "x": 329.6,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 328.6,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-4": {
+      "id": "cg-gridline-x-4",
+      "role": "marker",
+      "kind": "line",
+      "value": -1,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 364.8,
+            "y": 48
+          },
+          {
+            "x": 364.8,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 363.8,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-5": {
+      "id": "cg-gridline-x-5",
+      "role": "marker",
+      "kind": "line",
+      "value": 0,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 400,
+            "y": 48
+          },
+          {
+            "x": 400,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 399,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-6": {
+      "id": "cg-gridline-x-6",
+      "role": "marker",
+      "kind": "line",
+      "value": 1,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 435.2,
+            "y": 48
+          },
+          {
+            "x": 435.2,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 434.2,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-7": {
+      "id": "cg-gridline-x-7",
+      "role": "marker",
+      "kind": "line",
+      "value": 2,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 470.4,
+            "y": 48
+          },
+          {
+            "x": 470.4,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 469.4,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-8": {
+      "id": "cg-gridline-x-8",
+      "role": "marker",
+      "kind": "line",
+      "value": 3,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 505.6,
+            "y": 48
+          },
+          {
+            "x": 505.6,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 504.6,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-9": {
+      "id": "cg-gridline-x-9",
+      "role": "marker",
+      "kind": "line",
+      "value": 4,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 540.8,
+            "y": 48
+          },
+          {
+            "x": 540.8,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 539.8,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-x-10": {
+      "id": "cg-gridline-x-10",
+      "role": "marker",
+      "kind": "line",
+      "value": 5,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 576,
+            "y": 48
+          },
+          {
+            "x": 576,
+            "y": 552
+          }
+        ]
+      },
+      "bounds": {
+        "x": 575,
+        "y": 48,
+        "width": 2,
+        "height": 504
+      }
+    },
+    "cg-gridline-y-0": {
+      "id": "cg-gridline-y-0",
+      "role": "marker",
+      "kind": "line",
+      "value": -5,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 426
+          },
+          {
+            "x": 752,
+            "y": 426
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 425,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-1": {
+      "id": "cg-gridline-y-1",
+      "role": "marker",
+      "kind": "line",
+      "value": -4,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 400.8
+          },
+          {
+            "x": 752,
+            "y": 400.8
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 399.8,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-2": {
+      "id": "cg-gridline-y-2",
+      "role": "marker",
+      "kind": "line",
+      "value": -3,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 375.6
+          },
+          {
+            "x": 752,
+            "y": 375.6
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 374.6,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-3": {
+      "id": "cg-gridline-y-3",
+      "role": "marker",
+      "kind": "line",
+      "value": -2,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 350.4
+          },
+          {
+            "x": 752,
+            "y": 350.4
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 349.4,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-4": {
+      "id": "cg-gridline-y-4",
+      "role": "marker",
+      "kind": "line",
+      "value": -1,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 325.2
+          },
+          {
+            "x": 752,
+            "y": 325.2
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 324.2,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-5": {
+      "id": "cg-gridline-y-5",
+      "role": "marker",
+      "kind": "line",
+      "value": 0,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 300
+          },
+          {
+            "x": 752,
+            "y": 300
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 299,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-6": {
+      "id": "cg-gridline-y-6",
+      "role": "marker",
+      "kind": "line",
+      "value": 1,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 274.8
+          },
+          {
+            "x": 752,
+            "y": 274.8
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 273.8,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-7": {
+      "id": "cg-gridline-y-7",
+      "role": "marker",
+      "kind": "line",
+      "value": 2,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 249.6
+          },
+          {
+            "x": 752,
+            "y": 249.6
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 248.6,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-8": {
+      "id": "cg-gridline-y-8",
+      "role": "marker",
+      "kind": "line",
+      "value": 3,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 224.4
+          },
+          {
+            "x": 752,
+            "y": 224.4
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 223.4,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-9": {
+      "id": "cg-gridline-y-9",
+      "role": "marker",
+      "kind": "line",
+      "value": 4,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 199.2
+          },
+          {
+            "x": 752,
+            "y": 199.2
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 198.2,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-gridline-y-10": {
+      "id": "cg-gridline-y-10",
+      "role": "marker",
+      "kind": "line",
+      "value": 5,
+      "children": [],
+      "geometry": {
+        "points": [
+          {
+            "x": 48,
+            "y": 174
+          },
+          {
+            "x": 752,
+            "y": 174
+          }
+        ]
+      },
+      "bounds": {
+        "x": 48,
+        "y": 173,
+        "width": 704,
+        "height": 2
+      }
+    },
+    "cg-point-target": {
+      "id": "cg-point-target",
+      "role": "marker",
+      "kind": "circle",
+      "value": 1,
+      "geometry": {
+        "x": 1,
+        "y": 2
+      },
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 430.2,
+        "y": 244.6,
+        "width": 10,
+        "height": 10
+      }
+    },
+    "cg-point-distractor-a": {
+      "id": "cg-point-distractor-a",
+      "role": "marker",
+      "kind": "circle",
+      "value": -3,
+      "geometry": {
+        "x": -3,
+        "y": 4
+      },
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 289.4,
+        "y": 194.2,
+        "width": 10,
+        "height": 10
+      }
+    },
+    "cg-point-distractor-b": {
+      "id": "cg-point-distractor-b",
+      "role": "marker",
+      "kind": "circle",
+      "value": 0,
+      "geometry": {
+        "x": 0,
+        "y": -2
+      },
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [],
+      "bounds": {
+        "x": 395,
+        "y": 345.4,
+        "width": 10,
+        "height": 10
+      }
+    }
+  }
+}

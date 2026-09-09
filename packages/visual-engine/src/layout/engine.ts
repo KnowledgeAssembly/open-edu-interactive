@@ -23,6 +23,9 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
       case 'fraction':
         layoutFraction(node, ctx);
         break;
+      case 'fraction-circle':
+        layoutFractionCircle(node, ctx);
+        break;
       case 'fraction-comparison':
       case 'comparison':
         layoutComparison(node, ctx);
@@ -178,6 +181,30 @@ function layoutFraction(node: SceneNode, ctx: LayoutContext): void {
 
   if (label) {
     setBounds(label, rect(pad, barY + barH + 12, 200, 24));
+  }
+}
+
+function layoutFractionCircle(node: SceneNode, ctx: LayoutContext): void {
+  const group = node.children.find(c => c.kind === 'fraction-circle') ?? node;
+  const sectors = group.children.filter(c => c.kind === 'wedge');
+  if (sectors.length === 0) return;
+
+  const cx = ctx.width / 2;
+  const cy = Math.round(ctx.height / 2);
+  const r = Math.min(ctx.width, ctx.height) * 0.35;
+  const n = sectors.length;
+  const span = 360 / n;
+
+  for (let i = 0; i < n; i++) {
+    const startAngle = -90 + i * span;
+    const endAngle = startAngle + span;
+    sectors[i]!.bounds = rect(cx - r, cy - r, 2 * r, 2 * r);
+    sectors[i]!.metadata = { ...sectors[i]!.metadata, startAngle, endAngle, cx, cy, r };
+  }
+
+  const label = node.children.find(c => c.role === 'label');
+  if (label) {
+    setBounds(label, rect(cx - 50, cy + r + 12, 100, 24));
   }
 }
 

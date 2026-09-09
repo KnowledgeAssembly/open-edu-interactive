@@ -1,0 +1,23 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "number-line-practice",
+  "purpose": {
+    "learningObjective": "Identify values on a number line",
+    "interactionGoal": "Select values on the number line",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "number-line",
+    "components": [{
+      "id": "nl",
+      "type": "number-line",
+      "props": { "min": 0, "max": 10, "step": 1, "interactive": true, "highlight": [7] }
+    }]
+  },
+  "accessibility": {
+    "label": "Number line from zero to ten",
+    "description": "Select the highlighted value 7."
+  },
+  "interaction": { "mode": "identify", "actions": ["select", "focus", "deselect", "reset"] }
+}

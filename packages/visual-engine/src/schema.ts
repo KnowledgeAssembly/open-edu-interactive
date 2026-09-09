@@ -4,6 +4,7 @@ export const VISUAL_KINDS = [
   'number-line',
   'counting-set',
   'fraction',
+  'fraction-circle',
   'fraction-comparison',
   'clock',
   'coordinate-grid',

@@ -1,15 +1,16 @@
 import { EngineError } from '@knowledgeassemble/interactive-engine';
 import type { SceneNode } from '../scene/types.js';
 
-export interface FractionBarProps {
+export interface FractionCircleSectorsProps {
   numerator: number;
   denominator: number;
-  showFraction?: boolean;
   highlightedParts?: number[];
+  showFraction?: boolean;
   allowImproper?: boolean;
+  interactive?: boolean;
 }
 
-export function createFractionBar(props: Record<string, unknown>, parentId: string): SceneNode[] {
+export function createFractionCircleSectors(props: Record<string, unknown>, parentId: string): SceneNode[] {
   const numerator = props.numerator as number;
   const denominator = props.denominator as number;
   const showFraction = props.showFraction as boolean | undefined;
@@ -17,30 +18,34 @@ export function createFractionBar(props: Record<string, unknown>, parentId: stri
   const allowImproper = props.allowImproper as boolean | undefined;
   const discovery = (props.interactive as boolean | undefined) ?? false;
 
-  if (denominator <= 0) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-bar: denominator must be greater than 0');
+  if (denominator < 2) {
+    throw new EngineError('INVALID_ENTITY', 'fraction-circle: denominator must be at least 2');
   }
   if (numerator < 0) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-bar: numerator must not be negative');
+    throw new EngineError('INVALID_ENTITY', 'fraction-circle: numerator must not be negative');
   }
   if (!allowImproper && numerator > denominator) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-bar: numerator must not exceed denominator (allow improper fractions)');
+    throw new EngineError('INVALID_ENTITY', 'fraction-circle: numerator must not exceed denominator (allow improper fractions)');
   }
 
   const nodes: SceneNode[] = [];
 
-  const barId = `${parentId}-bar`;
-  const barChildren: SceneNode[] = [];
+  const rootGroup: SceneNode = {
+    id: parentId,
+    role: 'group',
+    kind: 'fraction-circle',
+    children: [],
+  };
 
   for (let i = 0; i < denominator; i++) {
-    const partId = `${parentId}-part-${i}`;
+    const sectorId = `${parentId}-sector-${i}`;
     const isHighlighted = highlightedParts?.includes(i) ?? false;
     const isSelectable = discovery || isHighlighted;
 
-    barChildren.push({
-      id: partId,
+    rootGroup.children.push({
+      id: sectorId,
       role: 'fraction-part',
-      kind: 'rect',
+      kind: 'wedge',
       value: i,
       ...(isSelectable
         ? { interactive: true, acceptsActions: ['select', 'focus'] }
@@ -49,16 +54,11 @@ export function createFractionBar(props: Record<string, unknown>, parentId: stri
     });
   }
 
-  nodes.push({
-    id: barId,
-    role: 'group',
-    kind: 'fraction-bar',
-    children: barChildren,
-  });
+  nodes.push(rootGroup);
 
   if (showFraction !== false) {
     nodes.push({
-      id: `${parentId}-fraction-label`,
+      id: `${parentId}-label`,
       role: 'label',
       kind: 'text',
       label: `${numerator}/${denominator}`,
@@ -69,9 +69,9 @@ export function createFractionBar(props: Record<string, unknown>, parentId: stri
   return nodes;
 }
 
-export const fractionBarComponent = {
-  kind: 'fraction' as const,
+export const fractionCircleSectorsComponent = {
+  kind: 'fraction-circle' as const,
   create(props: Record<string, unknown>, parentId: string): SceneNode[] {
-    return createFractionBar(props, parentId);
+    return createFractionCircleSectors(props, parentId);
   },
 };

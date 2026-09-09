@@ -3078,3 +3078,32 @@ AI agents operate primarily at the **Intent → Semantic Specification** boundar
 The deterministic Visual Engine owns everything downstream.
 
 This allows KnowledgeAssemble to build a reusable visual infrastructure layer while OpenEdu remains only one consumer of that infrastructure.
+
+---
+
+# Appendix A — Practice Mode (Discovery vs Guided)
+
+## A.1 Modes
+
+| Mode | `interactive` prop | Highlight | Selectable nodes |
+|------|-------------------|-----------|-----------------|
+| **Guided** | `false` or absent | `highlight` / `highlightedParts` / `highlightHand` / `highlightPoints` / `highlightVertices` / `highlightSides` | Only highlighted subset |
+| **Discovery** | `true` | Same props (metadata only) | All candidate nodes |
+
+## A.2 `interactive` prop semantics
+
+Each component accepts the optional `interactive: boolean` prop. When `true`, every structurally valid interaction target becomes selectable (markers, parts, hands, points, shape elements). Highlight props still control `metadata` but are not required for interactivity.
+
+## A.3 Scene node id conventions
+
+| Kind | Shape/Group | Children |
+|------|-------------|----------|
+| `number-line` | `{id}-axis` | `{id}-marker-{v}`, `{id}-tick-{v}`, `{id}-label-{v}` |
+| `clock` | `{id}-face` | `{id}-hour-hand`, `{id}-minute-hand`, `{id}-number-{n}` |
+| `coordinate-grid` | `{id}-x-axis`, `{id}-y-axis` | `{id}-point-{pointId}`, `{id}-gridline-x-{i}`, `{id}-gridline-y-{i}` |
+| `geometry` | `{id}-shape` | `{id}-shape-vertex-{i}`, `{id}-shape-side-{i}` |
+| `fraction-circle` | `{id}` | `{id}-sector-{i}`, `{id}-label` |
+
+## A.4 Practice fixtures
+
+See `packages/visual-engine/fixture/*-practice/` for guided and discovery examples, and `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md` for the full specification.

@@ -78,4 +78,27 @@ describe('svgFrom', () => {
     expect(result.a11y.length).toBeGreaterThan(0);
     expect(result.interactive).toContainEqual({ id: 'marker-7', action: 'select' });
   });
+
+  it('renders wedge as path', () => {
+    const scene: Scene = {
+      nodes: [
+        {
+          id: 'fc',
+          role: 'group',
+          kind: 'fraction-circle',
+          children: [
+            {
+              id: 'fc-sector-0', role: 'fraction-part', kind: 'wedge',
+              children: [],
+              metadata: { cx: 100, cy: 100, r: 50, startAngle: 0, endAngle: 90 },
+            },
+          ],
+        },
+      ],
+      semantics: {},
+    };
+    const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    expect(result.svg).toContain('<path');
+    expect(result.svg).toContain('data-oedu-role="fraction-part"');
+  });
 });
