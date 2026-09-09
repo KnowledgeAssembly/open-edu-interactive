@@ -24,7 +24,7 @@ The `interactive` prop on components enables two modes:
 | Mode | `interactive` | Highlight prop | Selectable nodes |
 |------|---------------|----------------|-----------------|
 | **Guided** | `false` or absent | e.g. `highlight`, `highlightedParts`, `highlightHand` | Only the highlighted subset |
-| **Discovery** | `true` | Same (metadata only) | All structurally valid targets |
+| **Discovery** | `true` | Same (metadata only) | All structurally valid targets (per kind; geometry uses `highlight*` to choose shape vs vertices vs sides) |
 
 ### Discovery example — number-line
 
@@ -67,7 +67,7 @@ Every select emits a namespaced event: `visual.{sceneNodeId}-selected`. The `sce
 |------|------|----------|-------------|
 | `numerator` | number | yes | Number of parts to show as selected |
 | `denominator` | number | yes | Total number of equal sectors (≥ 2) |
-| `highlightedParts` | number[] | no | Indices of sectors to mark as interactive |
+| `highlightedParts` | number[] | no | Sector indices for guided selectivity; visual emphasis only when `interactive: true` |
 | `showFraction` | boolean | no | Show "numerator/denominator" label (default true) |
 | `allowImproper` | boolean | no | Allow numerator > denominator |
 | `interactive` | boolean | no | Enable discovery mode

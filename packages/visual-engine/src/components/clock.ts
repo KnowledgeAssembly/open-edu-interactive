@@ -27,7 +27,7 @@ export function createClock(props: Record<string, unknown>, parentId: string): S
     throw new EngineError('INVALID_ENTITY', 'clock: minute must be an integer between 0 and 59');
   }
   if (highlightHand && !VALID_HANDS.has(highlightHand)) {
-    throw new EngineError('INVALID_ENTITY', `clock: invalid highlightHand "${highlightHand}"`);
+    throw new EngineError('INVALID_SPEC', `clock: invalid highlightHand "${highlightHand}"`);
   }
 
   const nodes: SceneNode[] = [];

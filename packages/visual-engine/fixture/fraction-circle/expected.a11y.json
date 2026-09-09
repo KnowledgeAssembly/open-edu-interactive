@@ -6,9 +6,9 @@
       "label": "fc",
       "children": [
         {
-          "id": "fc",
+          "id": "fc-sectors",
           "role": "group",
-          "label": "fc",
+          "label": "fc-sectors",
           "children": [
             {
               "id": "fc-sector-0",
@@ -45,9 +45,9 @@
       ]
     },
     {
-      "id": "fc",
+      "id": "fc-sectors",
       "role": "group",
-      "label": "fc",
+      "label": "fc-sectors",
       "children": [
         {
           "id": "fc-sector-0",

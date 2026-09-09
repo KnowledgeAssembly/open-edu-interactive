@@ -82,6 +82,36 @@ describe('layout', () => {
     expect(xs[1]!).toBeLessThan(xs[2]!);
   });
 
+  it('lays out multiple geometry components side by side', () => {
+    const scene: Scene = {
+      nodes: [
+        {
+          id: 'tri',
+          role: 'group',
+          kind: 'geometry',
+          children: [{ id: 'tri-shape', role: 'shape', kind: 'shape', metadata: { shape: 'triangle', sides: 3 }, children: [] }],
+        },
+        {
+          id: 'hex',
+          role: 'group',
+          kind: 'geometry',
+          children: [{ id: 'hex-shape', role: 'shape', kind: 'shape', metadata: { shape: 'hexagon', sides: 6 }, children: [] }],
+        },
+        {
+          id: 'sq',
+          role: 'group',
+          kind: 'geometry',
+          children: [{ id: 'sq-shape', role: 'shape', kind: 'shape', metadata: { shape: 'square', sides: 4 }, children: [] }],
+        },
+      ],
+      semantics: {},
+    };
+    const laid = layout(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    const xs = laid.nodes.map((n) => n.children[0]?.bounds?.x ?? 0);
+    expect(xs[0]!).toBeLessThan(xs[1]!);
+    expect(xs[1]!).toBeLessThan(xs[2]!);
+  });
+
   it('fraction-circle assigns bounds to all sectors', () => {
     const scene: Scene = {
       nodes: [

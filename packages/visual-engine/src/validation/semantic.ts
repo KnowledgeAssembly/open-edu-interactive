@@ -78,7 +78,7 @@ export function validateSemantic(spec: VisualSpec): ValidationResult {
       const props = comp.props ?? {};
       const highlightHand = props.highlightHand as string | undefined;
       if (highlightHand && !VALID_HANDS.has(highlightHand)) {
-        issues.push({ level: 'L2', code: 'INVALID_ENTITY', message: `clock: invalid highlightHand "${highlightHand}"` });
+        issues.push({ level: 'L2', code: 'INVALID_SPEC', message: `clock: invalid highlightHand "${highlightHand}"` });
       }
     }
   }

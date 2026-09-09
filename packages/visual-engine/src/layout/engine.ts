@@ -12,6 +12,13 @@ interface Scale {
 interface Point { x: number; y: number; }
 
 export function layout(scene: Scene, ctx: LayoutContext): Scene {
+  const geometryNodes = scene.nodes.filter((n) => n.kind === 'geometry');
+  if (geometryNodes.length > 1) {
+    for (let i = 0; i < geometryNodes.length; i++) {
+      layoutGeometry(geometryNodes[i]!, ctx, { index: i, total: geometryNodes.length });
+    }
+  }
+
   for (const node of scene.nodes) {
     switch (node.kind) {
       case 'number-line':
@@ -37,7 +44,9 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
         layoutCoordinateGrid(node, ctx);
         break;
       case 'geometry':
-        layoutGeometry(node, ctx);
+        if (geometryNodes.length <= 1) {
+          layoutGeometry(node, ctx);
+        }
         break;
       case 'illustration':
         layoutIllustration(node, ctx);
@@ -358,14 +367,7 @@ function layoutCoordinateGrid(node: SceneNode, ctx: LayoutContext): void {
   }
 }
 
-function layoutGeometry(node: SceneNode, ctx: LayoutContext): void {
-  const shape = node.children.find(c => c.kind === 'shape');
-  if (!shape) return;
-
-  const size = Math.min(ctx.width, ctx.height) * 0.4;
-  const cx = ctx.width / 2;
-  const cy = Math.round(ctx.height / 2);
-
+function positionGeometryShape(shape: SceneNode, cx: number, cy: number, size: number): void {
   setBounds(shape, rect(cx - size / 2, cy - size / 2, size, size));
 
   const meta = shape.metadata as { sides?: number; shape?: string } | undefined;
@@ -382,6 +384,32 @@ function layoutGeometry(node: SceneNode, ctx: LayoutContext): void {
       }
     }
   }
+}
+
+function layoutGeometry(
+  node: SceneNode,
+  ctx: LayoutContext,
+  slot?: { index: number; total: number },
+): void {
+  const shape = node.children.find(c => c.kind === 'shape');
+  if (!shape) return;
+
+  const defaultSize = Math.min(ctx.width, ctx.height) * 0.4;
+  const cy = Math.round(ctx.height / 2);
+
+  if (slot && slot.total > 1) {
+    const pad = 40;
+    const availW = ctx.width - pad * 2;
+    const boxW = Math.min(availW / slot.total, 260);
+    const gap = (availW - boxW * slot.total) / (slot.total - 1);
+    const cx = pad + slot.index * (boxW + gap) + boxW / 2;
+    const size = Math.min(boxW * 0.85, defaultSize);
+    positionGeometryShape(shape, cx, cy, size);
+    return;
+  }
+
+  const cx = ctx.width / 2;
+  positionGeometryShape(shape, cx, cy, defaultSize);
 }
 
 function layoutIllustration(node: SceneNode, ctx: LayoutContext): void {

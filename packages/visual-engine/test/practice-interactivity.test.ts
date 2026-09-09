@@ -140,12 +140,9 @@ describe('geometry practice', () => {
     ]);
   });
 
-  it('discovery: shape + sides interactive when interactive true', () => {
+  it('discovery: only shape interactive when highlight true', () => {
     const nodes = geometryShapeComponent.create({ shape: 'hexagon', interactive: true, highlight: true }, 'hex');
-    expect(interactiveIds(nodes)).toEqual([
-      'hex-shape', 'hex-shape-side-0', 'hex-shape-side-1', 'hex-shape-side-2',
-      'hex-shape-side-3', 'hex-shape-side-4', 'hex-shape-side-5',
-    ]);
+    expect(interactiveIds(nodes)).toEqual(['hex-shape']);
   });
 
   it('rejects conflicting highlight flags', () => {

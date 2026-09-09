@@ -31,7 +31,7 @@ export function createFractionCircleSectors(props: Record<string, unknown>, pare
   const nodes: SceneNode[] = [];
 
   const rootGroup: SceneNode = {
-    id: parentId,
+    id: `${parentId}-sectors`,
     role: 'group',
     kind: 'fraction-circle',
     children: [],

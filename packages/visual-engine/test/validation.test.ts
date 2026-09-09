@@ -53,7 +53,7 @@ describe('validateSemantic (L2)', () => {
     };
     const result = validateSemantic(spec);
     expect(result.valid).toBe(false);
-    expect(result.issues[0]!.code).toBe('INVALID_ENTITY');
+    expect(result.issues[0]!.code).toBe('INVALID_SPEC');
     expect(result.issues[0]!.message).toContain('highlightHand');
   });
 

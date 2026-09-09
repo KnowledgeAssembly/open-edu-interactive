@@ -4,7 +4,7 @@
   "id": "geometry-practice",
   "purpose": {
     "learningObjective": "Identify geometric shapes and their properties",
-    "interactionGoal": "Select the highlighted shape",
+    "interactionGoal": "Select the hexagon",
     "reasoningMode": "identify"
   },
   "content": {
@@ -29,7 +29,7 @@
   },
   "accessibility": {
     "label": "Three geometric shapes",
-    "description": "Select the highlighted shape."
+    "description": "Three shapes are shown side by side. Select the hexagon."
   },
   "interaction": { "mode": "identify", "actions": ["select", "focus", "reset"] }
 }

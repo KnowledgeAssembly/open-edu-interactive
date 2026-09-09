@@ -75,7 +75,6 @@ export const geometryShapeComponent = {
     const highlight = props.highlight as boolean | undefined;
     const highlightVertices = props.highlightVertices as boolean | undefined;
     const highlightSides = props.highlightSides as boolean | undefined;
-    const discovery = (props.interactive as boolean | undefined) ?? false;
 
     const flagCount = [highlight, highlightVertices, highlightSides].filter(Boolean).length;
     if (flagCount > 1) {
@@ -91,9 +90,9 @@ export const geometryShapeComponent = {
 
     const shapeGroupId = `${parentId}-shape`;
 
-    const isShapeSelectable = discovery || highlight === true;
-    const areSidesSelectable = discovery || highlightSides === true;
-    const areVerticesSelectable = discovery || highlightVertices === true;
+    const isShapeSelectable = highlight === true;
+    const areSidesSelectable = highlightSides === true;
+    const areVerticesSelectable = highlightVertices === true;
 
     const shapeNode: SceneNode = {
       id: shapeGroupId,

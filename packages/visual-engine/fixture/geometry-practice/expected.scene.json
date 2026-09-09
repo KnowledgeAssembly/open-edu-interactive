@@ -23,41 +23,26 @@
               "id": "tri-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "tri-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "tri-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 58,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -85,74 +70,44 @@
               "id": "hex-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-3",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-4",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-5",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 298,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -180,52 +135,32 @@
               "id": "sq-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-3",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 538,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -255,41 +190,26 @@
               "id": "tri-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "tri-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "tri-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 58,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -312,41 +232,26 @@
           "id": "tri-shape-side-0",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "tri-shape-side-1",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "tri-shape-side-2",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         }
       ],
       "bounds": {
-        "x": 280,
-        "y": 180,
-        "width": 240,
-        "height": 240
+        "x": 58,
+        "y": 198,
+        "width": 204,
+        "height": 204
       }
     },
     "hex": {
@@ -372,74 +277,44 @@
               "id": "hex-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-3",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-4",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "hex-shape-side-5",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 298,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -462,74 +337,44 @@
           "id": "hex-shape-side-0",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "hex-shape-side-1",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "hex-shape-side-2",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "hex-shape-side-3",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "hex-shape-side-4",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "hex-shape-side-5",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         }
       ],
       "bounds": {
-        "x": 280,
-        "y": 180,
-        "width": 240,
-        "height": 240
+        "x": 298,
+        "y": 198,
+        "width": 204,
+        "height": 204
       }
     },
     "sq": {
@@ -555,52 +400,32 @@
               "id": "sq-shape-side-0",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-1",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-2",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             },
             {
               "id": "sq-shape-side-3",
               "role": "diagram-part",
               "kind": "line",
-              "interactive": true,
-              "acceptsActions": [
-                "select",
-                "focus"
-              ],
               "children": []
             }
           ],
           "bounds": {
-            "x": 280,
-            "y": 180,
-            "width": 240,
-            "height": 240
+            "x": 538,
+            "y": 198,
+            "width": 204,
+            "height": 204
           }
         }
       ]
@@ -623,52 +448,32 @@
           "id": "sq-shape-side-0",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "sq-shape-side-1",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "sq-shape-side-2",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         },
         {
           "id": "sq-shape-side-3",
           "role": "diagram-part",
           "kind": "line",
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": []
         }
       ],
       "bounds": {
-        "x": 280,
-        "y": 180,
-        "width": 240,
-        "height": 240
+        "x": 538,
+        "y": 198,
+        "width": 204,
+        "height": 204
       }
     }
   }

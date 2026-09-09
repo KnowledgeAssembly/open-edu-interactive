@@ -102,4 +102,97 @@ describe('VisualEngine', () => {
     const nsEvent = events.find((e) => e.name.startsWith('visual.'));
     expect(nsEvent).toBeDefined();
   });
+
+  it('dispatch select on clock hour hand emits visual.ck-hour-hand-selected', () => {
+    const engine = new VisualEngine();
+    const events: Array<{ name: string }> = [];
+    const host = stubHost();
+    (host as unknown as { onEvent: (e: { name: string }) => void }).onEvent = (e) => { events.push(e); };
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'clock-practice-test',
+      content: {
+        kind: 'clock',
+        components: [{ id: 'ck', type: 'clock', props: { hour: 3, minute: 30, highlightHand: 'hour' } }],
+      },
+      accessibility: { label: 'Clock', description: 'Clock practice' },
+    };
+    const instance = engine.instantiate(spec as never, host);
+    instance.dispatch({ type: 'select', target: { id: 'ck-hour-hand' } });
+    expect(events.some((e) => e.name === 'visual.ck-hour-hand-selected')).toBe(true);
+  });
+
+  it('dispatch select on coordinate-grid point emits visual.cg-point-target-selected', () => {
+    const engine = new VisualEngine();
+    const events: Array<{ name: string }> = [];
+    const host = stubHost();
+    (host as unknown as { onEvent: (e: { name: string }) => void }).onEvent = (e) => { events.push(e); };
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'cg-practice-test',
+      content: {
+        kind: 'coordinate-grid',
+        components: [{
+          id: 'cg',
+          type: 'coordinate-grid',
+          props: {
+            x: { min: -5, max: 5, step: 1 },
+            y: { min: -5, max: 5, step: 1 },
+            points: [{ x: 2, y: 3, id: 'target' }],
+            highlightPoints: ['target'],
+          },
+        }],
+      },
+      accessibility: { label: 'Grid', description: 'Coordinate grid practice' },
+    };
+    const instance = engine.instantiate(spec as never, host);
+    instance.dispatch({ type: 'select', target: { id: 'cg-point-target' } });
+    expect(events.some((e) => e.name === 'visual.cg-point-target-selected')).toBe(true);
+  });
+
+  it('dispatch select on geometry shape emits visual.hex-shape-selected', () => {
+    const engine = new VisualEngine();
+    const events: Array<{ name: string }> = [];
+    const host = stubHost();
+    (host as unknown as { onEvent: (e: { name: string }) => void }).onEvent = (e) => { events.push(e); };
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'geometry-practice-test',
+      content: {
+        kind: 'geometry',
+        components: [{ id: 'hex', type: 'geometry', props: { shape: 'hexagon', highlight: true } }],
+      },
+      accessibility: { label: 'Hexagon', description: 'Geometry practice' },
+    };
+    const instance = engine.instantiate(spec as never, host);
+    instance.dispatch({ type: 'select', target: { id: 'hex-shape' } });
+    expect(events.some((e) => e.name === 'visual.hex-shape-selected')).toBe(true);
+  });
+
+  it('dispatch select on fraction-circle sector emits visual.fc-sector-0-selected', () => {
+    const engine = new VisualEngine();
+    const events: Array<{ name: string }> = [];
+    const host = stubHost();
+    (host as unknown as { onEvent: (e: { name: string }) => void }).onEvent = (e) => { events.push(e); };
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'fraction-circle-practice-test',
+      content: {
+        kind: 'fraction-circle',
+        components: [{
+          id: 'fc',
+          type: 'fraction-circle',
+          props: { numerator: 3, denominator: 4, interactive: true, highlightedParts: [0, 1, 2] },
+        }],
+      },
+      accessibility: { label: 'Fraction circle', description: 'Fraction circle practice' },
+    };
+    const instance = engine.instantiate(spec as never, host);
+    instance.dispatch({ type: 'select', target: { id: 'fc-sector-0' } });
+    expect(events.some((e) => e.name === 'visual.fc-sector-0-selected')).toBe(true);
+  });
 });
