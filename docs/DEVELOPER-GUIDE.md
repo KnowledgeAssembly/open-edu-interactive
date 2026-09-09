@@ -391,7 +391,22 @@ pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 - [ ] `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright` green; `pnpm publish:dry` + `publish:smoke` green for packaging changes.
 - [ ] Public API centralized in the package `index.ts`; internals unexported.
 
-## 9. Troubleshooting
+## 9. Playground (developer UI)
+
+`apps/playground` is a local dev UI for manual engine and composition testing.
+
+```bash
+pnpm playground          # serves on port 5174
+```
+
+Routes: `/` (fixture index), `/engine/:engine/:slug`, `/lesson/:slug`, `/custom` (paste JSON).
+The right inspector panel shows Preview, Events, Snapshot, Validation, and A11y tabs.
+Actions are dispatched via buttons generated from `spec.interaction.actions`; a prompt asks for `target.id` when needed.
+The Custom Spec page supports localStorage draft persistence (`playground:custom-spec`) and share via URL hash (`#spec=base64`).
+
+**Non-goals (hard):** no scoring, telemetry, course authoring, or i18n product (D6). JSON in, render out — no SVG/coordinate editors.
+
+## 10. Troubleshooting
 
 | Symptom | Likely cause / fix |
 |---------|--------------------|
@@ -406,6 +421,6 @@ pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
 | `INVALID_REFERENCE` | A spec references an entity id that isn't declared. |
 | Package won't resolve installed | Check `publishConfig` points at `dist` and `prepublishOnly` built it; run `pnpm publish:smoke`. |
 
-## 10. Where the source of truth lives
+## 11. Where the source of truth lives
 
 When docs disagree **with each other**, fix the **higher** document, never the implementation: change the higher doc to reflect the decision, and do not change code just to match a lower doc. Reading order: `docs/DESIGN.md` → `docs/INTERACTIVE-ENGINE-SPEC.md` → `docs/SYSTEM-ARCHITECTURE.md` → `docs/DEVELOPER-GUIDE.md` → engine `SPEC.md` / `VISION.md` → (Visual) `docs/engines/visual/ARCHITECTURE.md` (engine implementation, not system architecture). This guide is a how-to layer on top of those; if it ever conflicts with them, the higher docs win.

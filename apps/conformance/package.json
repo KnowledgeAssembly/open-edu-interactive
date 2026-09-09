@@ -17,7 +17,8 @@
     "@knowledgeassemble/timeline-engine": "workspace:*",
     "@knowledgeassemble/visual-engine": "workspace:*",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@knowledgeassemble/dev-harness": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

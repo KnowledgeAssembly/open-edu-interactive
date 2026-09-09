@@ -98,3 +98,4 @@ Package-scoped: `pnpm --filter @knowledgeassemble/interactive-engine <script>`.
 - Style through semantic tokens (`emphasis`, `danger`, `focus`), never literal colors.
 - Reject Visual-engine scope creep: timeline, flowchart, and label-diagram belong to Timeline/Diagram engines (D9).
 - Additions to the action set or envelope MUST be namespaced, documented in the engine spec, and deliberate — they are contract changes.
+- For manual verification, use `apps/playground` (`pnpm playground`, port 5174) — browse fixtures, dispatch actions, inspect events/snapshot/a11y panels.

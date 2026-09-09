@@ -1,71 +1,14 @@
 import { Lesson, EngineRegistry, type EngineAction, type EngineEvent } from '@knowledgeassemble/interactive-engine';
 import { VisualEngine } from '@knowledgeassemble/visual-engine';
 import { TimelineEngine } from '@knowledgeassemble/timeline-engine';
+import { loadSpec } from '@knowledgeassemble/dev-harness';
 
-const CANONICAL_FIXTURE = {
-  id: 'independence-narrative-demo',
-  title: 'Timeline drives visual focus (composition smoke test)',
-  engines: [
-    {
-      instanceId: 'timeline-independence',
-      engine: 'timeline',
-      spec: {
-        type: 'timeline',
-        version: '1.0.0',
-        id: 'timeline-independence',
-        metadata: { title: 'Indian independence — key events' },
-        content: {
-          kind: 'events',
-          events: [
-            { id: 'event-1857', label: '1857 uprising', date: '1857' },
-            { id: 'event-1947', label: 'Independence', date: '1947-08-15', links: { visualEntityId: 'figure-independence' } },
-          ],
-        },
-        interaction: { mode: 'explore', actions: ['select', 'focus', 'play-pause', 'step', 'reset'] },
-        sources: [{ class: 'authoritative' }],
-        accessibility: { label: 'Timeline of Indian independence' },
-        questions: [],
-        },
-    },
-    {
-      instanceId: 'visual-independence',
-      engine: 'visual',
-      spec: {
-        type: 'visual',
-        version: '1.0.0',
-        id: 'visual-independence',
-        content: { kind: 'illustration', entities: [{ id: 'figure-independence', label: 'Independence celebration' }] },
-        interaction: { mode: 'explore', actions: ['focus', 'select', 'reset'] },
-        accessibility: { label: 'Historical illustration for selected timeline event' },
-        questions: [],
-      },
-    },
-  ],
-  bindings: [
-    { on: 'timeline.event-selected', from: 'timeline-independence', dispatch: { to: 'visual-independence', action: 'focus', targetIdFrom: 'links.visualEntityId' } },
-  ],
-};
-
-interface CompositionHarnessRemote {
-  dispatch(instanceId: string, action: { type: string; target?: { id: string } }): void;
-  snapshot(instanceId: string): unknown;
-  events(): ReadonlyArray<{ seq: number; name: string }>;
-  svg(instanceId: string): string;
-  tryCreate(lesson: unknown): { ok: boolean; code?: string };
-}
-
-declare global {
-  interface Window {
-    __compositionHarness?: CompositionHarnessRemote;
-  }
-}
-
-export function mountComposition(app: HTMLElement): void {
+export function mountComposition(app: HTMLElement, lesson?: unknown): void {
+  const spec = lesson ?? (loadSpec('docs/fixtures/p7/composed-lesson.json') as never);
   const registry = new EngineRegistry();
   registry.register(new VisualEngine());
   registry.register(new TimelineEngine());
 
-  const lesson = Lesson.load(CANONICAL_FIXTURE, registry);
   const emitted: Array<{ seq: number; name: string; action?: unknown }> = [];
   const host = {
     locale: 'en' as const,
@@ -78,7 +21,7 @@ export function mountComposition(app: HTMLElement): void {
     resolveAsset: (id: string) => id,
   };
 
-  const runtime = lesson.start(host);
+  const runtime = Lesson.load(spec, registry).start(host);
 
   const visualSnapshot = runtime.snapshot('visual-independence') as { svgResult?: { svg: string } };
   const svgContent = visualSnapshot.svgResult?.svg ?? '';
@@ -113,22 +56,23 @@ export function mountComposition(app: HTMLElement): void {
   app.appendChild(timelineList);
 
   window.__compositionHarness = {
-    dispatch(instanceId: string, action: { type: string; target?: { id: string } }): void {
-      runtime.dispatch(instanceId, action as EngineAction);
+    dispatch(instanceId?: string, action?: unknown): void {
+      if (instanceId) runtime.dispatch(instanceId, action as EngineAction);
     },
-    snapshot(instanceId: string): unknown {
-      return runtime.snapshot(instanceId);
+    snapshot(instanceId?: unknown): unknown {
+      if (typeof instanceId === 'string') return runtime.snapshot(instanceId);
+      return runtime.snapshot('');
     },
-    events(): ReadonlyArray<{ seq: number; name: string }> {
-      return [...emitted];
+    events(): Array<{ seq: number; name: string; action?: unknown }> {
+      return [...emitted] as Array<{ seq: number; name: string; action?: unknown }>;
     },
-    svg(instanceId: string): string {
-      const snap = runtime.snapshot(instanceId) as { svgResult?: { svg: string } };
+    svg(_instanceId?: string): string {
+      const snap = runtime.snapshot(_instanceId ?? 'timeline-independence') as { svgResult?: { svg: string } };
       return snap?.svgResult?.svg ?? '';
     },
-    tryCreate(lesson: unknown): { ok: boolean; code?: string } {
+    tryCreate(l: unknown): { ok: boolean; code?: string } {
       try {
-        Lesson.load(lesson, registry);
+        Lesson.load(l, registry);
         return { ok: true };
       } catch (e) {
         const err = e as { code?: string };
@@ -136,4 +80,5 @@ export function mountComposition(app: HTMLElement): void {
       }
     },
   };
+  window.__harness = window.__compositionHarness as unknown as Window['__harness'];
 }
