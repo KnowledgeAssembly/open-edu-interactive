@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Comparing the numbers five and three</title>
+  <desc>Select which number is larger.</desc>
+  <g id="visual-root">
+  <g id="cp" data-oedu-role="group">
+    <g id="cp-item-a" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="40,245,260,110">
+      <text id="cp-item-a-label" data-oedu-role="label" aria-label="5" data-oedu-bounds="40,259,260,24" x="170" y="271" text-anchor="middle" dominant-baseline="central">5</text>
+      <text id="cp-item-a-value" data-oedu-role="number" data-oedu-value="5" aria-label="5" data-oedu-bounds="40,289,260,40" x="170" y="309" text-anchor="middle" dominant-baseline="central">5</text>
+    </g>
+    <g id="cp-item-b" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="500,245,260,110">
+      <text id="cp-item-b-label" data-oedu-role="label" aria-label="3" data-oedu-bounds="500,259,260,24" x="630" y="271" text-anchor="middle" dominant-baseline="central">3</text>
+      <text id="cp-item-b-value" data-oedu-role="number" data-oedu-value="3" aria-label="3" data-oedu-bounds="500,289,260,40" x="630" y="309" text-anchor="middle" dominant-baseline="central">3</text>
+    </g>
+    <text id="cp-comparison-operator" data-oedu-role="label" aria-label="&gt;" data-oedu-bounds="380,280,40,40" x="400" y="300" text-anchor="middle" dominant-baseline="central">&gt;</text>
+  </g>
+  </g>
+</svg>

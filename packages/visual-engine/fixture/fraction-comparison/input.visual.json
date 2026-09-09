@@ -1,0 +1,35 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "fraction-comparison-golden",
+  "purpose": {
+    "learningObjective": "Compare one half to one quarter",
+    "interactionGoal": "Select the larger fraction",
+    "reasoningMode": "compare"
+  },
+  "content": {
+    "kind": "fraction-comparison",
+    "components": [
+      {
+        "id": "fc",
+        "type": "fraction-comparison",
+        "props": {
+          "items": [
+            { "id": "a", "label": "1/2", "value": 0.5 },
+            { "id": "b", "label": "1/4", "value": 0.25 }
+          ],
+          "comparison": "greater-than",
+          "interactive": true
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Comparing one half to one quarter",
+    "description": "Select which fraction is larger."
+  },
+  "interaction": {
+    "mode": "compare",
+    "actions": ["select", "focus", "reset"]
+  }
+}

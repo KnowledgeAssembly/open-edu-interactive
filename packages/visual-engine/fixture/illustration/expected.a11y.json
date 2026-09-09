@@ -1,0 +1,73 @@
+{
+  "a11y": [
+    {
+      "id": "illustration-sun-illustration",
+      "role": "group",
+      "label": "illustration-sun-illustration",
+      "children": [
+        {
+          "id": "illustration-sun",
+          "role": "button",
+          "label": "Sun",
+          "children": []
+        },
+        {
+          "id": "illustration-moon",
+          "role": "button",
+          "label": "Moon",
+          "children": []
+        },
+        {
+          "id": "illustration-star",
+          "role": "button",
+          "label": "Star",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "illustration-sun",
+      "role": "button",
+      "label": "Sun",
+      "children": []
+    },
+    {
+      "id": "illustration-moon",
+      "role": "button",
+      "label": "Moon",
+      "children": []
+    },
+    {
+      "id": "illustration-star",
+      "role": "button",
+      "label": "Star",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "illustration-sun",
+      "action": "select"
+    },
+    {
+      "id": "illustration-sun",
+      "action": "focus"
+    },
+    {
+      "id": "illustration-moon",
+      "action": "select"
+    },
+    {
+      "id": "illustration-moon",
+      "action": "focus"
+    },
+    {
+      "id": "illustration-star",
+      "action": "select"
+    },
+    {
+      "id": "illustration-star",
+      "action": "focus"
+    }
+  ]
+}

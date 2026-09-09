@@ -1,0 +1,31 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "clock-golden",
+  "purpose": {
+    "learningObjective": "Read the time three thirty on an analog clock",
+    "interactionGoal": "Read the position of the hour and minute hands",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "clock",
+    "components": [
+      {
+        "id": "cl",
+        "type": "clock",
+        "props": {
+          "hour": 3,
+          "minute": 30
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Analog clock showing three thirty",
+    "description": "An analog clock with the hour hand at three and the minute hand at six."
+  },
+  "interaction": {
+    "mode": "identify",
+    "actions": ["focus", "reset"]
+  }
+}

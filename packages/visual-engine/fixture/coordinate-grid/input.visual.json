@@ -1,0 +1,32 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "coordinate-grid-golden",
+  "purpose": {
+    "learningObjective": "Locate the point at coordinate (2, 3) on a coordinate grid",
+    "interactionGoal": "Read the marked point",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "coordinate-grid",
+    "components": [
+      {
+        "id": "cg",
+        "type": "coordinate-grid",
+        "props": {
+          "x": { "min": -5, "max": 5, "step": 2 },
+          "y": { "min": -5, "max": 5, "step": 2 },
+          "points": [{ "x": 2, "y": 3 }]
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Coordinate grid from negative five to five",
+    "description": "A coordinate grid with a point plotted at (2, 3)."
+  },
+  "interaction": {
+    "mode": "identify",
+    "actions": ["focus", "reset"]
+  }
+}

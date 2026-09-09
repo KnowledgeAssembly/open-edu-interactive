@@ -1,0 +1,338 @@
+{
+  "nodes": [
+    {
+      "id": "cp",
+      "role": "group",
+      "kind": "comparison",
+      "children": [
+        {
+          "id": "cp-item-a",
+          "role": "selectable",
+          "kind": "group",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [
+            {
+              "id": "cp-item-a-label",
+              "role": "label",
+              "kind": "text",
+              "label": "5",
+              "children": [],
+              "bounds": {
+                "x": 40,
+                "y": 259,
+                "width": 260,
+                "height": 24
+              }
+            },
+            {
+              "id": "cp-item-a-value",
+              "role": "number",
+              "kind": "text",
+              "value": 5,
+              "label": "5",
+              "children": [],
+              "bounds": {
+                "x": 40,
+                "y": 289,
+                "width": 260,
+                "height": 40
+              }
+            }
+          ],
+          "bounds": {
+            "x": 40,
+            "y": 245,
+            "width": 260,
+            "height": 110
+          }
+        },
+        {
+          "id": "cp-item-b",
+          "role": "selectable",
+          "kind": "group",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [
+            {
+              "id": "cp-item-b-label",
+              "role": "label",
+              "kind": "text",
+              "label": "3",
+              "children": [],
+              "bounds": {
+                "x": 500,
+                "y": 259,
+                "width": 260,
+                "height": 24
+              }
+            },
+            {
+              "id": "cp-item-b-value",
+              "role": "number",
+              "kind": "text",
+              "value": 3,
+              "label": "3",
+              "children": [],
+              "bounds": {
+                "x": 500,
+                "y": 289,
+                "width": 260,
+                "height": 40
+              }
+            }
+          ],
+          "bounds": {
+            "x": 500,
+            "y": 245,
+            "width": 260,
+            "height": 110
+          }
+        },
+        {
+          "id": "cp-comparison-operator",
+          "role": "label",
+          "kind": "text",
+          "label": ">",
+          "metadata": {
+            "comparison": "greater-than"
+          },
+          "children": [],
+          "bounds": {
+            "x": 380,
+            "y": 280,
+            "width": 40,
+            "height": 40
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "cp": {
+      "id": "cp",
+      "role": "group",
+      "kind": "comparison",
+      "children": [
+        {
+          "id": "cp-item-a",
+          "role": "selectable",
+          "kind": "group",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [
+            {
+              "id": "cp-item-a-label",
+              "role": "label",
+              "kind": "text",
+              "label": "5",
+              "children": [],
+              "bounds": {
+                "x": 40,
+                "y": 259,
+                "width": 260,
+                "height": 24
+              }
+            },
+            {
+              "id": "cp-item-a-value",
+              "role": "number",
+              "kind": "text",
+              "value": 5,
+              "label": "5",
+              "children": [],
+              "bounds": {
+                "x": 40,
+                "y": 289,
+                "width": 260,
+                "height": 40
+              }
+            }
+          ],
+          "bounds": {
+            "x": 40,
+            "y": 245,
+            "width": 260,
+            "height": 110
+          }
+        },
+        {
+          "id": "cp-item-b",
+          "role": "selectable",
+          "kind": "group",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [
+            {
+              "id": "cp-item-b-label",
+              "role": "label",
+              "kind": "text",
+              "label": "3",
+              "children": [],
+              "bounds": {
+                "x": 500,
+                "y": 259,
+                "width": 260,
+                "height": 24
+              }
+            },
+            {
+              "id": "cp-item-b-value",
+              "role": "number",
+              "kind": "text",
+              "value": 3,
+              "label": "3",
+              "children": [],
+              "bounds": {
+                "x": 500,
+                "y": 289,
+                "width": 260,
+                "height": 40
+              }
+            }
+          ],
+          "bounds": {
+            "x": 500,
+            "y": 245,
+            "width": 260,
+            "height": 110
+          }
+        },
+        {
+          "id": "cp-comparison-operator",
+          "role": "label",
+          "kind": "text",
+          "label": ">",
+          "metadata": {
+            "comparison": "greater-than"
+          },
+          "children": [],
+          "bounds": {
+            "x": 380,
+            "y": 280,
+            "width": 40,
+            "height": 40
+          }
+        }
+      ]
+    },
+    "cp-item-a": {
+      "id": "cp-item-a",
+      "role": "selectable",
+      "kind": "group",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [
+        {
+          "id": "cp-item-a-label",
+          "role": "label",
+          "kind": "text",
+          "label": "5",
+          "children": [],
+          "bounds": {
+            "x": 40,
+            "y": 259,
+            "width": 260,
+            "height": 24
+          }
+        },
+        {
+          "id": "cp-item-a-value",
+          "role": "number",
+          "kind": "text",
+          "value": 5,
+          "label": "5",
+          "children": [],
+          "bounds": {
+            "x": 40,
+            "y": 289,
+            "width": 260,
+            "height": 40
+          }
+        }
+      ],
+      "bounds": {
+        "x": 40,
+        "y": 245,
+        "width": 260,
+        "height": 110
+      }
+    },
+    "cp-item-b": {
+      "id": "cp-item-b",
+      "role": "selectable",
+      "kind": "group",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "children": [
+        {
+          "id": "cp-item-b-label",
+          "role": "label",
+          "kind": "text",
+          "label": "3",
+          "children": [],
+          "bounds": {
+            "x": 500,
+            "y": 259,
+            "width": 260,
+            "height": 24
+          }
+        },
+        {
+          "id": "cp-item-b-value",
+          "role": "number",
+          "kind": "text",
+          "value": 3,
+          "label": "3",
+          "children": [],
+          "bounds": {
+            "x": 500,
+            "y": 289,
+            "width": 260,
+            "height": 40
+          }
+        }
+      ],
+      "bounds": {
+        "x": 500,
+        "y": 245,
+        "width": 260,
+        "height": 110
+      }
+    },
+    "cp-comparison-operator": {
+      "id": "cp-comparison-operator",
+      "role": "label",
+      "kind": "text",
+      "label": ">",
+      "metadata": {
+        "comparison": "greater-than"
+      },
+      "children": [],
+      "bounds": {
+        "x": 380,
+        "y": 280,
+        "width": 40,
+        "height": 40
+      }
+    }
+  }
+}

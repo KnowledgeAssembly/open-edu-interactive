@@ -1,0 +1,141 @@
+{
+  "a11y": [
+    {
+      "id": "cp",
+      "role": "group",
+      "label": "cp",
+      "children": [
+        {
+          "id": "cp-item-a",
+          "role": "button",
+          "label": "cp-item-a",
+          "children": [
+            {
+              "id": "cp-item-a-label",
+              "role": "img",
+              "label": "5",
+              "children": []
+            },
+            {
+              "id": "cp-item-a-value",
+              "role": "img",
+              "label": "5",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "cp-item-b",
+          "role": "button",
+          "label": "cp-item-b",
+          "children": [
+            {
+              "id": "cp-item-b-label",
+              "role": "img",
+              "label": "3",
+              "children": []
+            },
+            {
+              "id": "cp-item-b-value",
+              "role": "img",
+              "label": "3",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "cp-comparison-operator",
+          "role": "img",
+          "label": ">",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cp-item-a",
+      "role": "button",
+      "label": "cp-item-a",
+      "children": [
+        {
+          "id": "cp-item-a-label",
+          "role": "img",
+          "label": "5",
+          "children": []
+        },
+        {
+          "id": "cp-item-a-value",
+          "role": "img",
+          "label": "5",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cp-item-a-label",
+      "role": "img",
+      "label": "5",
+      "children": []
+    },
+    {
+      "id": "cp-item-a-value",
+      "role": "img",
+      "label": "5",
+      "children": []
+    },
+    {
+      "id": "cp-item-b",
+      "role": "button",
+      "label": "cp-item-b",
+      "children": [
+        {
+          "id": "cp-item-b-label",
+          "role": "img",
+          "label": "3",
+          "children": []
+        },
+        {
+          "id": "cp-item-b-value",
+          "role": "img",
+          "label": "3",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cp-item-b-label",
+      "role": "img",
+      "label": "3",
+      "children": []
+    },
+    {
+      "id": "cp-item-b-value",
+      "role": "img",
+      "label": "3",
+      "children": []
+    },
+    {
+      "id": "cp-comparison-operator",
+      "role": "img",
+      "label": ">",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "cp-item-a",
+      "action": "select"
+    },
+    {
+      "id": "cp-item-a",
+      "action": "focus"
+    },
+    {
+      "id": "cp-item-b",
+      "action": "select"
+    },
+    {
+      "id": "cp-item-b",
+      "action": "focus"
+    }
+  ]
+}

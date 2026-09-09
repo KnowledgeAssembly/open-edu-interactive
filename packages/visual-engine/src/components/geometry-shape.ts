@@ -76,6 +76,7 @@ export const geometryShapeComponent = {
       id: shapeGroupId,
       role: 'shape',
       kind: 'shape',
+      metadata: { shape, sides: SIDE_COUNTS[shape] ?? 0 },
       children: [],
     };
 

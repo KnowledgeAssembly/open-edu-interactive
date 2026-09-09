@@ -17,6 +17,8 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
   const count = props.count as number;
   const object = props.object as string;
   const arrangement = props.arrangement as string;
+  const rows = props.rows as number | undefined;
+  const columns = props.columns as number | undefined;
   const highlight = props.highlight as number[] | undefined;
   const labels = props.labels as string[] | undefined;
 
@@ -33,6 +35,7 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
   }
 
   const highlightSet = highlight ? new Set(highlight) : null;
+  const layoutMeta = { arrangement, rows, columns };
 
   const nodes: SceneNode[] = [];
 
@@ -47,6 +50,7 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
       label: labels?.[i],
       interactive: isHighlighted || undefined,
       acceptsActions: isHighlighted ? ['select', 'focus'] : undefined,
+      metadata: layoutMeta,
       children: [],
     });
   }

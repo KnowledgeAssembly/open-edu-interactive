@@ -1,0 +1,192 @@
+{
+  "a11y": [
+    {
+      "id": "cl",
+      "role": "group",
+      "label": "cl",
+      "children": [
+        {
+          "id": "cl-face",
+          "role": "img",
+          "label": "cl-face",
+          "children": []
+        },
+        {
+          "id": "cl-hour-hand",
+          "role": "img",
+          "label": "cl-hour-hand",
+          "children": []
+        },
+        {
+          "id": "cl-minute-hand",
+          "role": "img",
+          "label": "cl-minute-hand",
+          "children": []
+        },
+        {
+          "id": "cl-number-1",
+          "role": "img",
+          "label": "1",
+          "children": []
+        },
+        {
+          "id": "cl-number-2",
+          "role": "img",
+          "label": "2",
+          "children": []
+        },
+        {
+          "id": "cl-number-3",
+          "role": "img",
+          "label": "3",
+          "children": []
+        },
+        {
+          "id": "cl-number-4",
+          "role": "img",
+          "label": "4",
+          "children": []
+        },
+        {
+          "id": "cl-number-5",
+          "role": "img",
+          "label": "5",
+          "children": []
+        },
+        {
+          "id": "cl-number-6",
+          "role": "img",
+          "label": "6",
+          "children": []
+        },
+        {
+          "id": "cl-number-7",
+          "role": "img",
+          "label": "7",
+          "children": []
+        },
+        {
+          "id": "cl-number-8",
+          "role": "img",
+          "label": "8",
+          "children": []
+        },
+        {
+          "id": "cl-number-9",
+          "role": "img",
+          "label": "9",
+          "children": []
+        },
+        {
+          "id": "cl-number-10",
+          "role": "img",
+          "label": "10",
+          "children": []
+        },
+        {
+          "id": "cl-number-11",
+          "role": "img",
+          "label": "11",
+          "children": []
+        },
+        {
+          "id": "cl-number-12",
+          "role": "img",
+          "label": "12",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cl-face",
+      "role": "img",
+      "label": "cl-face",
+      "children": []
+    },
+    {
+      "id": "cl-hour-hand",
+      "role": "img",
+      "label": "cl-hour-hand",
+      "children": []
+    },
+    {
+      "id": "cl-minute-hand",
+      "role": "img",
+      "label": "cl-minute-hand",
+      "children": []
+    },
+    {
+      "id": "cl-number-1",
+      "role": "img",
+      "label": "1",
+      "children": []
+    },
+    {
+      "id": "cl-number-2",
+      "role": "img",
+      "label": "2",
+      "children": []
+    },
+    {
+      "id": "cl-number-3",
+      "role": "img",
+      "label": "3",
+      "children": []
+    },
+    {
+      "id": "cl-number-4",
+      "role": "img",
+      "label": "4",
+      "children": []
+    },
+    {
+      "id": "cl-number-5",
+      "role": "img",
+      "label": "5",
+      "children": []
+    },
+    {
+      "id": "cl-number-6",
+      "role": "img",
+      "label": "6",
+      "children": []
+    },
+    {
+      "id": "cl-number-7",
+      "role": "img",
+      "label": "7",
+      "children": []
+    },
+    {
+      "id": "cl-number-8",
+      "role": "img",
+      "label": "8",
+      "children": []
+    },
+    {
+      "id": "cl-number-9",
+      "role": "img",
+      "label": "9",
+      "children": []
+    },
+    {
+      "id": "cl-number-10",
+      "role": "img",
+      "label": "10",
+      "children": []
+    },
+    {
+      "id": "cl-number-11",
+      "role": "img",
+      "label": "11",
+      "children": []
+    },
+    {
+      "id": "cl-number-12",
+      "role": "img",
+      "label": "12",
+      "children": []
+    }
+  ],
+  "interactive": []
+}

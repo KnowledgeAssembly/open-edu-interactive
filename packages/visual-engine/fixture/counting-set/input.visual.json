@@ -1,0 +1,34 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "counting-set-golden",
+  "purpose": {
+    "learningObjective": "Count a set of six objects and identify the highlighted stars",
+    "interactionGoal": "Select the highlighted objects",
+    "reasoningMode": "explore"
+  },
+  "content": {
+    "kind": "counting-set",
+    "components": [
+      {
+        "id": "cs",
+        "type": "counting-set",
+        "props": {
+          "count": 6,
+          "object": "star",
+          "arrangement": "grid",
+          "columns": 3,
+          "highlight": [2, 5]
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Counting set of six stars",
+    "description": "Six stars arranged in a grid. Highlighted stars can be selected."
+  },
+  "interaction": {
+    "mode": "explore",
+    "actions": ["select", "focus", "reset"]
+  }
+}

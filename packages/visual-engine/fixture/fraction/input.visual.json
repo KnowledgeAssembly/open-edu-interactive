@@ -1,0 +1,32 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "fraction-golden",
+  "purpose": {
+    "learningObjective": "Recognize three quarters as a fraction of a whole bar",
+    "interactionGoal": "Identify the fraction represented by the highlighted parts",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "fraction",
+    "components": [
+      {
+        "id": "fb",
+        "type": "fraction",
+        "props": {
+          "numerator": 3,
+          "denominator": 4,
+          "highlightedParts": [0, 1, 2]
+        }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Fraction bar showing three quarters",
+    "description": "A bar divided into four equal parts with the first three highlighted."
+  },
+  "interaction": {
+    "mode": "identify",
+    "actions": ["select", "focus", "reset"]
+  }
+}

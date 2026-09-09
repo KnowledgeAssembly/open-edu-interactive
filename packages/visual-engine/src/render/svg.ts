@@ -28,6 +28,21 @@ function nodeToSvg(node: SceneNode, indent: number): string {
     attrs += ` data-oedu-bounds="${node.bounds.x},${node.bounds.y},${node.bounds.width},${node.bounds.height}"`;
   }
 
+  if (node.kind === 'shape') {
+    const b = node.bounds ?? { x: 0, y: 0, width: 100, height: 100 };
+    const cx = b.x + b.width / 2;
+    const cy = b.y + b.height / 2;
+    const meta = node.metadata as { shape?: string; sides?: number } | undefined;
+    const shapeKind = meta?.shape;
+    const sides = meta?.sides ?? 0;
+    const r = Math.max(4, Math.min(b.width, b.height) / 2);
+    if (shapeKind === 'circle') {
+      return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${r}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+    }
+    const pts = polygonPoints(cx, cy, r, sides);
+    return `${pad}<polygon ${attrs} points="${pts.map((p) => `${p.x},${p.y}`).join(' ')}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+  }
+
   if (node.children.length > 0) {
     const children = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
     return `${pad}<g ${attrs}>\n${children}\n${pad}</g>`;
@@ -37,8 +52,14 @@ function nodeToSvg(node: SceneNode, indent: number): string {
   const { cx, cy } = centerOf(b);
 
   switch (node.kind) {
-    case 'line':
+    case 'line': {
+      const pts = node.geometry?.points as Array<{ x: number; y: number }> | undefined;
+      if (Array.isArray(pts) && pts.length >= 2) {
+        const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+        return `${pad}<path ${attrs} d="${d}" stroke="currentColor" stroke-width="2" fill="none"/>`;
+      }
       return `${pad}<line ${attrs} x1="${b.x}" y1="${cy}" x2="${b.x + b.width}" y2="${cy}" stroke="currentColor" stroke-width="2"/>`;
+    }
     case 'tick':
       return `${pad}<line ${attrs} x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y + b.height}" stroke="currentColor" stroke-width="1"/>`;
     case 'text':
@@ -55,11 +76,12 @@ function nodeToSvg(node: SceneNode, indent: number): string {
       const d = points.map((p) => `${p.x},${p.y}`).join(' L');
       return `${pad}<path ${attrs} d="M${d} Z" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
     }
-    case 'shape': {
-      const sides = node.metadata?.sides as number | undefined ?? 0;
-      const r = Math.max(4, Math.min(b.width, b.height) / 2);
-      const pts = polygonPoints(cx, cy, r, sides);
-      return `${pad}<polygon ${attrs} points="${pts.map((p) => `${p.x},${p.y}`).join(' ')}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+    case 'entity': {
+      const labelText = node.label ?? '';
+      return `${pad}<g ${attrs}>
+${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" rx="6" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
+${pad}  <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="currentColor">${escapeXml(labelText)}</text>
+${pad}</g>`;
     }
     case 'fraction-circle': {
       const r = Math.max(4, Math.min(b.width, b.height) / 2);

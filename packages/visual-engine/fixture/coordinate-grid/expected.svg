@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Coordinate grid from negative five to five</title>
+  <desc>A coordinate grid with a point plotted at (2, 3).</desc>
+  <g id="visual-root">
+  <g id="cg" data-oedu-role="group">
+    <path id="cg-x-axis" data-oedu-role="axis" data-oedu-bounds="48,298,704,4" d="M48,300 L752,300" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-y-axis" data-oedu-role="axis" data-oedu-bounds="398,48,4,504" d="M400,48 L400,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-0" data-oedu-role="marker" data-oedu-value="-5" data-oedu-bounds="223,48,2,504" d="M224,48 L224,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-1" data-oedu-role="marker" data-oedu-value="-3" data-oedu-bounds="293.4,48,2,504" d="M294.4,48 L294.4,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-2" data-oedu-role="marker" data-oedu-value="-1" data-oedu-bounds="363.8,48,2,504" d="M364.8,48 L364.8,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-3" data-oedu-role="marker" data-oedu-value="1" data-oedu-bounds="434.2,48,2,504" d="M435.2,48 L435.2,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-4" data-oedu-role="marker" data-oedu-value="3" data-oedu-bounds="504.6,48,2,504" d="M505.6,48 L505.6,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-x-5" data-oedu-role="marker" data-oedu-value="5" data-oedu-bounds="575,48,2,504" d="M576,48 L576,552" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-0" data-oedu-role="marker" data-oedu-value="-5" data-oedu-bounds="48,425,704,2" d="M48,426 L752,426" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-1" data-oedu-role="marker" data-oedu-value="-3" data-oedu-bounds="48,374.6,704,2" d="M48,375.6 L752,375.6" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-2" data-oedu-role="marker" data-oedu-value="-1" data-oedu-bounds="48,324.2,704,2" d="M48,325.2 L752,325.2" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-3" data-oedu-role="marker" data-oedu-value="1" data-oedu-bounds="48,273.8,704,2" d="M48,274.8 L752,274.8" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-4" data-oedu-role="marker" data-oedu-value="3" data-oedu-bounds="48,223.4,704,2" d="M48,224.4 L752,224.4" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path id="cg-gridline-y-5" data-oedu-role="marker" data-oedu-value="5" data-oedu-bounds="48,173,704,2" d="M48,174 L752,174" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle id="cg-point-0" data-oedu-role="marker" data-oedu-value="2" data-oedu-bounds="465.4,219.4,10,10" cx="470.4" cy="224.4" r="5" fill="transparent" stroke="currentColor" stroke-width="2"/>
+  </g>
+  </g>
+</svg>

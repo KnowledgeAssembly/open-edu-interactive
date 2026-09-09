@@ -1,0 +1,101 @@
+{
+  "a11y": [
+    {
+      "id": "cs",
+      "role": "group",
+      "label": "cs",
+      "children": [
+        {
+          "id": "cs-object-0",
+          "role": "img",
+          "label": "cs-object-0",
+          "children": []
+        },
+        {
+          "id": "cs-object-1",
+          "role": "img",
+          "label": "cs-object-1",
+          "children": []
+        },
+        {
+          "id": "cs-object-2",
+          "role": "button",
+          "label": "cs-object-2",
+          "children": []
+        },
+        {
+          "id": "cs-object-3",
+          "role": "img",
+          "label": "cs-object-3",
+          "children": []
+        },
+        {
+          "id": "cs-object-4",
+          "role": "img",
+          "label": "cs-object-4",
+          "children": []
+        },
+        {
+          "id": "cs-object-5",
+          "role": "button",
+          "label": "cs-object-5",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "cs-object-0",
+      "role": "img",
+      "label": "cs-object-0",
+      "children": []
+    },
+    {
+      "id": "cs-object-1",
+      "role": "img",
+      "label": "cs-object-1",
+      "children": []
+    },
+    {
+      "id": "cs-object-2",
+      "role": "button",
+      "label": "cs-object-2",
+      "children": []
+    },
+    {
+      "id": "cs-object-3",
+      "role": "img",
+      "label": "cs-object-3",
+      "children": []
+    },
+    {
+      "id": "cs-object-4",
+      "role": "img",
+      "label": "cs-object-4",
+      "children": []
+    },
+    {
+      "id": "cs-object-5",
+      "role": "button",
+      "label": "cs-object-5",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "cs-object-2",
+      "action": "select"
+    },
+    {
+      "id": "cs-object-2",
+      "action": "focus"
+    },
+    {
+      "id": "cs-object-5",
+      "action": "select"
+    },
+    {
+      "id": "cs-object-5",
+      "action": "focus"
+    }
+  ]
+}
