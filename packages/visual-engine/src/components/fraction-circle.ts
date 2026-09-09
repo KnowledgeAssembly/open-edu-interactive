@@ -47,6 +47,14 @@ export function createFractionComparison(props: Record<string, unknown>, parentI
     const itemChildren: SceneNode[] = [];
 
     itemChildren.push({
+      id: `${parentId}-item-${item.id}-circle`,
+      role: 'visual',
+      kind: 'fraction-circle',
+      value: item.value,
+      children: [],
+    });
+
+    itemChildren.push({
       id: `${parentId}-item-${item.id}-label`,
       role: 'label',
       kind: 'text',

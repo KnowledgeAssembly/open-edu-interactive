@@ -3,13 +3,17 @@
   <desc>Select which fraction is larger.</desc>
   <g id="visual-root">
   <g id="fc" data-oedu-role="group">
-    <g id="fc-item-a" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="40,245,260,110">
-      <text id="fc-item-a-label" data-oedu-role="label" aria-label="1/2" data-oedu-bounds="40,259,260,24" x="170" y="271" text-anchor="middle" dominant-baseline="central">1/2</text>
-      <text id="fc-item-a-value" data-oedu-role="number" data-oedu-value="0.5" aria-label="0.5" data-oedu-bounds="40,289,260,40" x="170" y="309" text-anchor="middle" dominant-baseline="central">0.5</text>
+    <g id="fc-item-a" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="40,225,260,150">
+      <circle id="fc-item-a-circle" data-oedu-role="visual" data-oedu-value="0.5" data-oedu-bounds="128,237,84,84" cx="170" cy="279" r="42" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M170,279 L170,237 A42,42 0 0 1 170,321 Z" fill="currentColor" opacity="0.35"/>
+      <text id="fc-item-a-label" data-oedu-role="label" aria-label="1/2" data-oedu-bounds="40,331,260,24" x="170" y="343" text-anchor="middle" dominant-baseline="central">1/2</text>
+      <text id="fc-item-a-value" data-oedu-role="number" data-oedu-value="0.5" aria-label="0.5" data-oedu-bounds="40,355,260,16" x="170" y="363" text-anchor="middle" dominant-baseline="central">0.5</text>
     </g>
-    <g id="fc-item-b" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="500,245,260,110">
-      <text id="fc-item-b-label" data-oedu-role="label" aria-label="1/4" data-oedu-bounds="500,259,260,24" x="630" y="271" text-anchor="middle" dominant-baseline="central">1/4</text>
-      <text id="fc-item-b-value" data-oedu-role="number" data-oedu-value="0.25" aria-label="0.25" data-oedu-bounds="500,289,260,40" x="630" y="309" text-anchor="middle" dominant-baseline="central">0.25</text>
+    <g id="fc-item-b" data-oedu-role="selectable" data-oedu-interactive="true" data-oedu-bounds="500,225,260,150">
+      <circle id="fc-item-b-circle" data-oedu-role="visual" data-oedu-value="0.25" data-oedu-bounds="588,237,84,84" cx="630" cy="279" r="42" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M630,279 L630,237 A42,42 0 0 1 672,279 Z" fill="currentColor" opacity="0.35"/>
+      <text id="fc-item-b-label" data-oedu-role="label" aria-label="1/4" data-oedu-bounds="500,331,260,24" x="630" y="343" text-anchor="middle" dominant-baseline="central">1/4</text>
+      <text id="fc-item-b-value" data-oedu-role="number" data-oedu-value="0.25" aria-label="0.25" data-oedu-bounds="500,355,260,16" x="630" y="363" text-anchor="middle" dominant-baseline="central">0.25</text>
     </g>
     <text id="fc-comparison-operator" data-oedu-role="label" aria-label="&gt;" data-oedu-bounds="380,280,40,40" x="400" y="300" text-anchor="middle" dominant-baseline="central">&gt;</text>
   </g>

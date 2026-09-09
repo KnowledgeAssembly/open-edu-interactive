@@ -205,14 +205,34 @@ function layoutComparison(node: SceneNode, ctx: LayoutContext): void {
 }
 
 function layoutItemGroup(item: SceneNode, x: number, centerY: number, w: number): void {
-  const label = item.children.find(c => c.role === 'label');
-  const value = item.children.find(c => c.role === 'number');
+  const cx = x + w / 2;
+  const circle = item.children.find(c => c.kind === 'fraction-circle');
+
+  if (circle) {
+    const boxH = 150;
+    const y = centerY - boxH / 2;
+    setBounds(item, rect(x, y, w, boxH));
+    const d = Math.min(w * 0.45, 84);
+    setBounds(circle, rect(cx - d / 2, y + 12, d, d));
+    const label = item.children.find(c => c.role === 'label');
+    if (label) {
+      setBounds(label, rect(x, y + boxH - 44, w, 24));
+    }
+    const value = item.children.find(c => c.role === 'number');
+    if (value) {
+      setBounds(value, rect(x, y + boxH - 20, w, 16));
+    }
+    return;
+  }
+
   const boxH = 110;
   const y = centerY - boxH / 2;
   setBounds(item, rect(x, y, w, boxH));
+  const label = item.children.find(c => c.role === 'label');
   if (label) {
     setBounds(label, rect(x, y + 14, w, 24));
   }
+  const value = item.children.find(c => c.role === 'number');
   if (value) {
     setBounds(value, rect(x, y + 44, w, 40));
   }

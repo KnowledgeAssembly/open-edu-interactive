@@ -16,6 +16,19 @@
           ],
           "children": [
             {
+              "id": "fc-item-a-circle",
+              "role": "visual",
+              "kind": "fraction-circle",
+              "value": 0.5,
+              "children": [],
+              "bounds": {
+                "x": 128,
+                "y": 237,
+                "width": 84,
+                "height": 84
+              }
+            },
+            {
               "id": "fc-item-a-label",
               "role": "label",
               "kind": "text",
@@ -23,7 +36,7 @@
               "children": [],
               "bounds": {
                 "x": 40,
-                "y": 259,
+                "y": 331,
                 "width": 260,
                 "height": 24
               }
@@ -37,17 +50,17 @@
               "children": [],
               "bounds": {
                 "x": 40,
-                "y": 289,
+                "y": 355,
                 "width": 260,
-                "height": 40
+                "height": 16
               }
             }
           ],
           "bounds": {
             "x": 40,
-            "y": 245,
+            "y": 225,
             "width": 260,
-            "height": 110
+            "height": 150
           }
         },
         {
@@ -61,6 +74,19 @@
           ],
           "children": [
             {
+              "id": "fc-item-b-circle",
+              "role": "visual",
+              "kind": "fraction-circle",
+              "value": 0.25,
+              "children": [],
+              "bounds": {
+                "x": 588,
+                "y": 237,
+                "width": 84,
+                "height": 84
+              }
+            },
+            {
               "id": "fc-item-b-label",
               "role": "label",
               "kind": "text",
@@ -68,7 +94,7 @@
               "children": [],
               "bounds": {
                 "x": 500,
-                "y": 259,
+                "y": 331,
                 "width": 260,
                 "height": 24
               }
@@ -82,17 +108,17 @@
               "children": [],
               "bounds": {
                 "x": 500,
-                "y": 289,
+                "y": 355,
                 "width": 260,
-                "height": 40
+                "height": 16
               }
             }
           ],
           "bounds": {
             "x": 500,
-            "y": 245,
+            "y": 225,
             "width": 260,
-            "height": 110
+            "height": 150
           }
         },
         {
@@ -131,6 +157,19 @@
           ],
           "children": [
             {
+              "id": "fc-item-a-circle",
+              "role": "visual",
+              "kind": "fraction-circle",
+              "value": 0.5,
+              "children": [],
+              "bounds": {
+                "x": 128,
+                "y": 237,
+                "width": 84,
+                "height": 84
+              }
+            },
+            {
               "id": "fc-item-a-label",
               "role": "label",
               "kind": "text",
@@ -138,7 +177,7 @@
               "children": [],
               "bounds": {
                 "x": 40,
-                "y": 259,
+                "y": 331,
                 "width": 260,
                 "height": 24
               }
@@ -152,17 +191,17 @@
               "children": [],
               "bounds": {
                 "x": 40,
-                "y": 289,
+                "y": 355,
                 "width": 260,
-                "height": 40
+                "height": 16
               }
             }
           ],
           "bounds": {
             "x": 40,
-            "y": 245,
+            "y": 225,
             "width": 260,
-            "height": 110
+            "height": 150
           }
         },
         {
@@ -176,6 +215,19 @@
           ],
           "children": [
             {
+              "id": "fc-item-b-circle",
+              "role": "visual",
+              "kind": "fraction-circle",
+              "value": 0.25,
+              "children": [],
+              "bounds": {
+                "x": 588,
+                "y": 237,
+                "width": 84,
+                "height": 84
+              }
+            },
+            {
               "id": "fc-item-b-label",
               "role": "label",
               "kind": "text",
@@ -183,7 +235,7 @@
               "children": [],
               "bounds": {
                 "x": 500,
-                "y": 259,
+                "y": 331,
                 "width": 260,
                 "height": 24
               }
@@ -197,17 +249,17 @@
               "children": [],
               "bounds": {
                 "x": 500,
-                "y": 289,
+                "y": 355,
                 "width": 260,
-                "height": 40
+                "height": 16
               }
             }
           ],
           "bounds": {
             "x": 500,
-            "y": 245,
+            "y": 225,
             "width": 260,
-            "height": 110
+            "height": 150
           }
         },
         {
@@ -239,6 +291,19 @@
       ],
       "children": [
         {
+          "id": "fc-item-a-circle",
+          "role": "visual",
+          "kind": "fraction-circle",
+          "value": 0.5,
+          "children": [],
+          "bounds": {
+            "x": 128,
+            "y": 237,
+            "width": 84,
+            "height": 84
+          }
+        },
+        {
           "id": "fc-item-a-label",
           "role": "label",
           "kind": "text",
@@ -246,7 +311,7 @@
           "children": [],
           "bounds": {
             "x": 40,
-            "y": 259,
+            "y": 331,
             "width": 260,
             "height": 24
           }
@@ -260,17 +325,17 @@
           "children": [],
           "bounds": {
             "x": 40,
-            "y": 289,
+            "y": 355,
             "width": 260,
-            "height": 40
+            "height": 16
           }
         }
       ],
       "bounds": {
         "x": 40,
-        "y": 245,
+        "y": 225,
         "width": 260,
-        "height": 110
+        "height": 150
       }
     },
     "fc-item-b": {
@@ -284,6 +349,19 @@
       ],
       "children": [
         {
+          "id": "fc-item-b-circle",
+          "role": "visual",
+          "kind": "fraction-circle",
+          "value": 0.25,
+          "children": [],
+          "bounds": {
+            "x": 588,
+            "y": 237,
+            "width": 84,
+            "height": 84
+          }
+        },
+        {
           "id": "fc-item-b-label",
           "role": "label",
           "kind": "text",
@@ -291,7 +369,7 @@
           "children": [],
           "bounds": {
             "x": 500,
-            "y": 259,
+            "y": 331,
             "width": 260,
             "height": 24
           }
@@ -305,17 +383,17 @@
           "children": [],
           "bounds": {
             "x": 500,
-            "y": 289,
+            "y": 355,
             "width": 260,
-            "height": 40
+            "height": 16
           }
         }
       ],
       "bounds": {
         "x": 500,
-        "y": 245,
+        "y": 225,
         "width": 260,
-        "height": 110
+        "height": 150
       }
     },
     "fc-comparison-operator": {

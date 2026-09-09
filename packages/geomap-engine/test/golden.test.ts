@@ -61,7 +61,7 @@ function writeOrCompare(name: string, dir: string, spec: Record<string, unknown>
     expect(existsSync(r.file), `missing golden file ${r.file}`).toBe(true);
   }
   expect(JSON.parse(readFileSync(files.scene, 'utf8'))).toEqual(scene);
-  expect(readFileSync(files.svg, 'utf8')).toBe(result.svg + '\n');
+  expect(readFileSync(files.svg, 'utf8')).toBe(result.svg);
   expect(JSON.parse(readFileSync(files.a11y, 'utf8'))).toEqual(result.a11y);
   expect(JSON.parse(readFileSync(files.alternative, 'utf8'))).toEqual(result.alternative);
 }
