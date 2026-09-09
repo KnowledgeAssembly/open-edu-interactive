@@ -67,7 +67,21 @@
             "toNodeId": "b",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-a-b"
+            "edgeId": "edge-a-b",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 640,
+                  "y": 300
+                },
+                {
+                  "x": 160,
+                  "y": 300
+                }
+              ],
+              "path": "M640,300 L160,300"
+            }
           },
           "children": []
         },
@@ -85,7 +99,21 @@
             "toNodeId": "a",
             "relationship": "leads-to",
             "labels": [],
-            "edgeId": "edge-b-a"
+            "edgeId": "edge-b-a",
+            "edgeGeometry": {
+              "type": "line",
+              "points": [
+                {
+                  "x": 160,
+                  "y": 300
+                },
+                {
+                  "x": 640,
+                  "y": 300
+                }
+              ],
+              "path": "M160,300 L640,300"
+            }
           },
           "children": []
         }

@@ -9,11 +9,11 @@ const CTX = { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' }
 
 const input = JSON.parse(
   readFileSync(new URL('../fixture/number-line/input.visual.json', import.meta.url), 'utf8'),
-) as { content: VisualContent };
+) as { content: VisualContent; accessibility?: { label?: string; description?: string } };
 
 function render(): { svg: string; scene: unknown } {
   const scene = layout(buildScene(input.content), CTX);
-  return { svg: svgFrom(scene, CTX).svg, scene };
+  return { svg: svgFrom(scene, CTX, input.accessibility?.label, input.accessibility?.description).svg, scene };
 }
 
 describe('golden fixtures — number-line', () => {

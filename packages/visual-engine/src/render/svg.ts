@@ -47,10 +47,48 @@ function nodeToSvg(node: SceneNode, indent: number): string {
       return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${Math.max(4, Math.min(b.width, b.height) / 2)}" fill="${node.interactive ? 'currentColor' : 'transparent'}" stroke="currentColor" stroke-width="2"/>`;
     case 'rect':
       return `${pad}<rect ${attrs} x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="currentColor" opacity="0.2"/>`;
+    case 'square':
+      return `${pad}<rect ${attrs} x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+    case 'star': {
+      const r = Math.max(4, Math.min(b.width, b.height) / 2);
+      const points = starPoints(cx, cy, r, r * 0.4, 5);
+      const d = points.map((p) => `${p.x},${p.y}`).join(' L');
+      return `${pad}<path ${attrs} d="M${d} Z" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+    }
+    case 'shape': {
+      const sides = node.metadata?.sides as number | undefined ?? 0;
+      const r = Math.max(4, Math.min(b.width, b.height) / 2);
+      const pts = polygonPoints(cx, cy, r, sides);
+      return `${pad}<polygon ${attrs} points="${pts.map((p) => `${p.x},${p.y}`).join(' ')}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
+    }
+    case 'fraction-circle': {
+      const r = Math.max(4, Math.min(b.width, b.height) / 2);
+      return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${r}" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="2"/>`;
+    }
     case 'group':
     default:
       return `${pad}<g ${attrs}></g>`;
   }
+}
+
+function starPoints(cx: number, cy: number, outerR: number, innerR: number, points: number): Array<{ x: number; y: number }> {
+  const result: Array<{ x: number; y: number }> = [];
+  for (let i = 0; i < points * 2; i++) {
+    const angle = (Math.PI * i) / points - Math.PI / 2;
+    const r = i % 2 === 0 ? outerR : innerR;
+    result.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+  }
+  return result;
+}
+
+function polygonPoints(cx: number, cy: number, r: number, sides: number): Array<{ x: number; y: number }> {
+  if (sides < 3) return [{ x: cx, y: cy }];
+  const result: Array<{ x: number; y: number }> = [];
+  for (let i = 0; i < sides; i++) {
+    const angle = (2 * Math.PI * i) / sides - Math.PI / 2;
+    result.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+  }
+  return result;
 }
 
 function sceneNodeToA11y(node: SceneNode): SvgResult['a11y'][number] {
@@ -62,15 +100,18 @@ function sceneNodeToA11y(node: SceneNode): SvgResult['a11y'][number] {
   };
 }
 
-export function svgFrom(scene: Scene, ctx: LayoutContext): SvgResult {
+export function svgFrom(scene: Scene, ctx: LayoutContext, label?: string, desc?: string): SvgResult {
   const width = ctx.width;
   const height = ctx.height;
 
   const childrenSvg = scene.nodes.map((n) => nodeToSvg(n, 1)).join('\n');
 
+  const title = label ?? 'Visual';
+  const description = desc ?? 'An interactive educational visualization';
+
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img">
-  <title>Interactive number line</title>
-  <desc>An interactive educational number line visualization</desc>
+  <title>${escapeXml(title)}</title>
+  <desc>${escapeXml(description)}</desc>
   <g id="visual-root">
 ${childrenSvg}
   </g>

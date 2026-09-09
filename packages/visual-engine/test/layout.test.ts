@@ -58,17 +58,26 @@ describe('layout', () => {
     expect(laid1.nodes[1]!.bounds).toEqual(laid2.nodes[1]!.bounds);
   });
 
-  it('assigns monotonic x positions for horizontal layout', () => {
+  it('assigns monotonic x positions for a horizontal number-line', () => {
     const scene: Scene = {
       nodes: [
-        { id: 'a', role: 'tick', kind: 'tick', value: 0, children: [] },
-        { id: 'b', role: 'tick', kind: 'tick', value: 1, children: [] },
-        { id: 'c', role: 'tick', kind: 'tick', value: 2, children: [] },
+        {
+          id: 'nl',
+          role: 'group',
+          kind: 'number-line',
+          children: [
+            { id: 'nl-axis', role: 'axis', kind: 'line', metadata: { scale: { min: 0, max: 2, step: 1, direction: 'horizontal' } }, children: [] },
+            { id: 'nl-tick-0', role: 'tick', kind: 'tick', value: 0, children: [] },
+            { id: 'nl-tick-1', role: 'tick', kind: 'tick', value: 1, children: [] },
+            { id: 'nl-tick-2', role: 'tick', kind: 'tick', value: 2, children: [] },
+          ],
+        },
       ],
       semantics: {},
     };
     const laid = layout(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
-    const xs = laid.nodes.map((n) => n.bounds?.x ?? 0);
+    const ticks = laid.nodes[0]!.children.filter((n) => n.role === 'tick');
+    const xs = ticks.map((n) => n.bounds?.x ?? 0);
     expect(xs[0]!).toBeLessThan(xs[1]!);
     expect(xs[1]!).toBeLessThan(xs[2]!);
   });

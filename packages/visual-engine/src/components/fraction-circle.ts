@@ -1,76 +1,92 @@
 import { EngineError } from '@knowledgeassemble/interactive-engine';
 import type { SceneNode } from '../scene/types.js';
 
-export interface FractionCircleProps {
-  numerator: number;
-  denominator: number;
-  showFraction?: boolean;
-  highlightedParts?: number[];
-  allowImproper?: boolean;
+export interface FractionComparisonProps {
+  items: [ComparisonItem, ComparisonItem];
+  comparison: ComparisonKind;
+  interactive?: boolean;
 }
 
-export function createFractionCircle(props: Record<string, unknown>, parentId: string): SceneNode[] {
-  const numerator = props.numerator as number;
-  const denominator = props.denominator as number;
-  const showFraction = props.showFraction !== false;
-  const highlightedParts = props.highlightedParts as number[] | undefined;
-  const allowImproper = props.allowImproper as boolean | undefined;
+export interface ComparisonItem {
+  id: string;
+  label: string;
+  value: number;
+}
 
-  if (typeof numerator !== 'number' || !Number.isFinite(numerator) || numerator < 0) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-circle: numerator must be a non-negative finite number');
+export type ComparisonKind = 'greater-than' | 'less-than' | 'equal-to' | 'not-equal-to';
+
+const OPERATOR_SYMBOLS: Record<ComparisonKind, string> = {
+  'greater-than': '>',
+  'less-than': '<',
+  'equal-to': '=',
+  'not-equal-to': '≠',
+};
+
+export function createFractionComparison(props: Record<string, unknown>, parentId: string): SceneNode[] {
+  const items = props.items as [ComparisonItem, ComparisonItem] | undefined;
+  const comparison = props.comparison as ComparisonKind | undefined;
+  const interactive = (props.interactive as boolean | undefined) ?? false;
+
+  if (!items || items.length < 2) {
+    throw new EngineError('INVALID_SPEC', 'fraction-comparison: items must have exactly 2 entries');
   }
-  if (typeof denominator !== 'number' || !Number.isFinite(denominator) || denominator <= 0) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-circle: denominator must be a positive finite number');
+
+  if (!comparison) {
+    throw new EngineError('INVALID_SPEC', 'fraction-comparison: comparison kind is required');
   }
-  if (!allowImproper && numerator > denominator) {
-    throw new EngineError('INVALID_ENTITY', 'fraction-circle: numerator must not exceed denominator when allowImproper is false');
+
+  if (!OPERATOR_SYMBOLS[comparison]) {
+    throw new EngineError('INVALID_SPEC', `fraction-comparison: unknown comparison kind "${comparison}"`);
   }
 
   const nodes: SceneNode[] = [];
 
-  // Root fraction-circle group
-  const circleId = `${parentId}-circle`;
-  nodes.push({
-    id: circleId,
-    role: 'fraction',
-    kind: 'fraction-circle',
-    children: [],
-  });
+  for (let i = 0; i < 2; i++) {
+    const item = items[i]!;
+    const itemId = `${parentId}-item-${item.id}`;
+    const itemChildren: SceneNode[] = [];
 
-  // Fraction parts
-  for (let i = 0; i < denominator; i++) {
-    const partId = `${parentId}-part-${i}`;
-    const isHighlighted = highlightedParts?.includes(i) ?? false;
-    nodes.push({
-      id: partId,
-      role: 'fraction-part',
-      kind: 'circle',
-      value: i,
-      ...(isHighlighted ? {
-        interactive: true,
-        acceptsActions: ['select', 'focus'],
-      } : {}),
-      children: [],
-    });
-  }
-
-  // Label
-  if (showFraction) {
-    nodes.push({
-      id: `${parentId}-label`,
+    itemChildren.push({
+      id: `${parentId}-item-${item.id}-label`,
       role: 'label',
       kind: 'text',
-      label: `${numerator}/${denominator}`,
+      label: item.label,
       children: [],
     });
+
+    itemChildren.push({
+      id: `${parentId}-item-${item.id}-value`,
+      role: 'number',
+      kind: 'text',
+      value: item.value,
+      label: String(item.value),
+      children: [],
+    });
+
+    nodes.push({
+      id: itemId,
+      role: interactive ? 'selectable' : 'visual',
+      kind: 'group',
+      ...(interactive ? { interactive: true, acceptsActions: ['select', 'focus'] } : {}),
+      children: itemChildren,
+    });
   }
+
+  nodes.push({
+    id: `${parentId}-comparison-operator`,
+    role: 'label',
+    kind: 'text',
+    label: OPERATOR_SYMBOLS[comparison],
+    metadata: { comparison },
+    children: [],
+  });
 
   return nodes;
 }
 
-export const fractionCircleComponent = {
+export const fractionComparisonComponent = {
   kind: 'fraction-comparison' as const,
   create(props: Record<string, unknown>, parentId: string): SceneNode[] {
-    return createFractionCircle(props, parentId);
+    return createFractionComparison(props, parentId);
   },
 };
