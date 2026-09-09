@@ -48,16 +48,29 @@ export function EngineStoryPage(): React.JSX.Element {
     resultRef.current?.teardown();
     containerRef.current.replaceChildren();
     try {
-      const result = mountEngine(spec as never, containerRef.current, {
-        host: stubHostOptions(hostConfig),
-      });
-      resultRef.current = {
-        teardown: result.teardown.bind(result),
-        snapshot: result.snapshot.bind(result),
-        events: result.events.bind(result),
-        validate: result.validate.bind(result),
-        dispatch: result.dispatch.bind(result) as (action: unknown) => void,
+      const handle: MountHandle = {
+        teardown: () => {},
+        snapshot: () => ({}),
+        events: () => [],
+        validate: () => ({ issues: [] }),
+        dispatch: () => {},
       };
+      const result = mountEngine(spec as never, containerRef.current, {
+        host: {
+          ...stubHostOptions(hostConfig),
+          onEvent: () => {
+            if (resultRef.current) {
+              refreshFromHandle(resultRef.current);
+            }
+          },
+        },
+      });
+      handle.teardown = result.teardown.bind(result);
+      handle.snapshot = result.snapshot.bind(result);
+      handle.events = result.events.bind(result);
+      handle.validate = result.validate.bind(result);
+      handle.dispatch = result.dispatch.bind(result) as (action: unknown) => void;
+      resultRef.current = handle;
       const validation = result.validate(spec);
       setValidationIssues(formatValidationIssues(validation.issues));
       refreshFromHandle(resultRef.current);

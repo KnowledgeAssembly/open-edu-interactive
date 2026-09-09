@@ -75,4 +75,15 @@ describe('mountEngine', () => {
     expect(snap.selection).toContain('nl-marker-7');
     result.teardown();
   });
+
+  it('clicking data-oedu-interactive marks the target as selected in the DOM', () => {
+    const result = mountEngine(VISUAL_SPEC, container);
+    const marker = container.querySelector('#nl-marker-7');
+    expect(marker).not.toBeNull();
+    marker!.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    const selected = container.querySelector('#nl-marker-7');
+    expect(selected?.getAttribute('data-oedu-selected')).toBe('true');
+    expect(selected?.getAttribute('aria-selected')).toBe('true');
+    result.teardown();
+  });
 });

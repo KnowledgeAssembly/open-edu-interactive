@@ -6,6 +6,8 @@ import { createStubHost } from './stub-host.js';
 import type { EngineMountResult, RenderTarget } from './types.js';
 
 interface SvgSnapshot {
+  selection?: string[];
+  focus?: string | null;
   svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[]; linear?: unknown[] };
 }
 
@@ -46,8 +48,39 @@ function ensureInteractivePointerStyle(svgRoot: HTMLElement): void {
   if (svgRoot.querySelector(`#${INTERACTIVE_STYLE_ID}`)) return;
   const style = document.createElement('style');
   style.id = INTERACTIVE_STYLE_ID;
-  style.textContent = '[data-oedu-interactive="true"] { cursor: pointer; }';
+  style.textContent = `
+[data-oedu-interactive="true"] { cursor: pointer; }
+[data-oedu-selected="true"] { stroke: #1d4ed8 !important; stroke-width: 4 !important; }
+[data-oedu-focused="true"] { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+`.trim();
   svgRoot.appendChild(style);
+}
+
+function applySelectionState(
+  svgContent: HTMLElement,
+  selection: string[],
+  focus: string | null,
+): void {
+  for (const el of svgContent.querySelectorAll('[data-oedu-selected]')) {
+    el.removeAttribute('data-oedu-selected');
+    el.removeAttribute('aria-selected');
+  }
+  for (const el of svgContent.querySelectorAll('[data-oedu-focused]')) {
+    el.removeAttribute('data-oedu-focused');
+  }
+  for (const id of selection) {
+    const el = svgContent.querySelector(`#${id}`);
+    if (el) {
+      el.setAttribute('data-oedu-selected', 'true');
+      el.setAttribute('aria-selected', 'true');
+    }
+  }
+  if (focus) {
+    const el = svgContent.querySelector(`#${focus}`);
+    if (el) {
+      el.setAttribute('data-oedu-focused', 'true');
+    }
+  }
 }
 
 /** Delegated pointer input: renderer click → D5 select (host boundary, not spec). */
@@ -241,6 +274,7 @@ export function mountEngine(
   function renderDom(): void {
     const snap = instance.snapshot() as SvgSnapshot;
     renderSvg(svgContent, snap.svgResult?.svg);
+    applySelectionState(svgContent, snap.selection ?? [], snap.focus ?? null);
     if (tabularRoot) {
       renderChartTable(tabularRoot, (snap.svgResult?.tabular ?? []) as TabularRow[]);
     }
