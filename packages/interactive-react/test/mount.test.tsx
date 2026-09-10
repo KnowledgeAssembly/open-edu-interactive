@@ -50,6 +50,65 @@ describe('InteractiveLesson mount (jsdom)', () => {
     const events = ref.current?.events() ?? [];
     expect(events.map((e) => e.name)).toContain('visual.figure-independence-focused');
 
+    const svgContent = container.querySelector('[data-instance-id="timeline-independence"] [data-oedu-svg-content]');
+    expect(svgContent?.innerHTML.length).toBeGreaterThan(0);
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  it('learner mode: SVG click on timeline instance dispatches select', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const ref = createRef<InteractiveLessonHandle>();
+    const emitted: string[] = [];
+    const root = createRoot(container);
+    act(() => {
+      root.render(createElement(InteractiveLesson, { lesson: COMPOSED_LESSON, host: makeBridge((e) => emitted.push(e.name)), ref }));
+    });
+
+    const eventEl = container.querySelector('#event-1947')!;
+    expect(eventEl).toBeTruthy();
+
+    act(() => {
+      eventEl.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    const snap = ref.current?.snapshot('timeline-independence') as { selection?: string[] } | undefined;
+    expect(snap?.selection).toContain('event-1947');
+    expect(emitted).toContain('timeline.event-selected');
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  it('imperative dispatch refreshes selection visuals', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const ref = createRef<InteractiveNodeHandle>();
+    const root = createRoot(container);
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: makeBridge(),
+          ref,
+        }),
+      );
+    });
+
+    act(() => {
+      ref.current?.dispatch({ type: 'select', target: { id: 'nl-marker-7' } });
+    });
+
+    const marker = container.querySelector('#nl-marker-7');
+    expect(marker?.getAttribute('data-oedu-selected')).toBe('true');
+
     act(() => {
       root.unmount();
     });

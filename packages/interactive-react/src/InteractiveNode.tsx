@@ -153,6 +153,7 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       () => ({
         dispatch(action: EngineAction): void {
           instanceRef.current?.dispatch(action);
+          refreshRef.current();
         },
         snapshot(): unknown {
           return instanceRef.current?.snapshot();
@@ -202,11 +203,11 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
     );
 
     if (controlsMode === 'dev' && interactiveMap.length > 0) {
-      const buttons = interactiveMap.map((item) =>
+      const buttons = interactiveMap.map((item, index) =>
         createElement(
           'button',
           {
-            key: item.id,
+            key: `${item.id}-${item.action}-${index}`,
             'data-interactive-id': item.id,
             'data-action': item.action,
             onClick: () => {

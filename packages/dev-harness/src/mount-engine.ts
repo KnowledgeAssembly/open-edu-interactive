@@ -1,13 +1,15 @@
 import type { EngineAction, EngineEvent, EngineSpec, EngineType, ValidationResult } from '@knowledgeassemble/interactive-engine';
-import type { EngineHost } from '@knowledgeassemble/interactive-engine';
+import {
+  bindSvgInteraction,
+  syncSvgSurface,
+} from '@knowledgeassemble/interactive-react/svg-surface';
+import type { SvgSurfaceSnapshot } from '@knowledgeassemble/interactive-react/svg-surface';
 import { getEngine } from './engine-registry.js';
 import type { StubHostOptions } from './stub-host.js';
 import { createStubHost } from './stub-host.js';
 import type { EngineMountResult, RenderTarget } from './types.js';
 
-interface SvgSnapshot {
-  selection?: string[];
-  focus?: string | null;
+interface SvgSnapshot extends SvgSurfaceSnapshot {
   svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[]; linear?: unknown[] };
 }
 
@@ -36,72 +38,6 @@ interface RelRow {
   fromLabel?: string;
   toLabel?: string;
   members?: string[];
-}
-
-function renderSvg(container: HTMLElement, svg: string | undefined): void {
-  container.innerHTML = svg ?? '';
-}
-
-const INTERACTIVE_STYLE_ID = 'oedu-interactive-pointer-style';
-
-function ensureInteractivePointerStyle(svgRoot: HTMLElement): void {
-  if (svgRoot.querySelector(`#${INTERACTIVE_STYLE_ID}`)) return;
-  const style = document.createElement('style');
-  style.id = INTERACTIVE_STYLE_ID;
-  style.textContent = `
-[data-oedu-interactive="true"] { cursor: pointer; }
-[data-oedu-selected="true"] { stroke: #1d4ed8 !important; stroke-width: 4 !important; }
-[data-oedu-selected="true"] text { fill: #1d4ed8; font-weight: 700; }
-[data-oedu-selected="true"] > rect[data-oedu-hit-target="true"] { fill: rgba(29, 78, 216, 0.12); stroke: #1d4ed8; stroke-width: 2; }
-[data-oedu-focused="true"] { outline: 2px solid #1d4ed8; outline-offset: 2px; }
-`.trim();
-  svgRoot.appendChild(style);
-}
-
-function applySelectionState(
-  svgContent: HTMLElement,
-  selection: string[],
-  focus: string | null,
-): void {
-  for (const el of svgContent.querySelectorAll('[data-oedu-selected]')) {
-    el.removeAttribute('data-oedu-selected');
-    el.removeAttribute('aria-selected');
-  }
-  for (const el of svgContent.querySelectorAll('[data-oedu-focused]')) {
-    el.removeAttribute('data-oedu-focused');
-  }
-  for (const id of selection) {
-    const el = svgContent.querySelector(`#${id}`);
-    if (el) {
-      el.setAttribute('data-oedu-selected', 'true');
-      el.setAttribute('aria-selected', 'true');
-    }
-  }
-  if (focus) {
-    const el = svgContent.querySelector(`#${focus}`);
-    if (el) {
-      el.setAttribute('data-oedu-focused', 'true');
-    }
-  }
-}
-
-/** Delegated pointer input: renderer click → D5 select (host boundary, not spec). */
-function bindSvgInteraction(
-  svgRoot: HTMLElement,
-  dispatch: (action: EngineAction) => void,
-): () => void {
-  ensureInteractivePointerStyle(svgRoot);
-
-  function onClick(event: MouseEvent): void {
-    const el = (event.target as Element | null)?.closest('[data-oedu-interactive="true"]');
-    const id = el?.id;
-    if (!id) return;
-    event.preventDefault();
-    dispatch({ type: 'select', target: { id } });
-  }
-
-  svgRoot.addEventListener('click', onClick);
-  return () => svgRoot.removeEventListener('click', onClick);
 }
 
 function renderChartTable(container: HTMLElement, rows: TabularRow[]): void {
@@ -275,8 +211,7 @@ export function mountEngine(
 
   function renderDom(): void {
     const snap = instance.snapshot() as SvgSnapshot;
-    renderSvg(svgContent, snap.svgResult?.svg);
-    applySelectionState(svgContent, snap.selection ?? [], snap.focus ?? null);
+    syncSvgSurface(svgContent, snap);
     if (tabularRoot) {
       renderChartTable(tabularRoot, (snap.svgResult?.tabular ?? []) as TabularRow[]);
     }
