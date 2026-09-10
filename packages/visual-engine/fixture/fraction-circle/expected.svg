@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Circle divided into four equal parts</title>
+  <desc>Select three sectors that show three quarters.</desc>
+  <g id="visual-root">
+  <g id="fc" data-oedu-role="group">
+    <g id="fc-sectors" data-oedu-role="group">
+      <path id="fc-sector-0" data-oedu-role="fraction-part" data-oedu-value="0" data-oedu-interactive="true" data-oedu-bounds="190,90,420,420" d="M400,300 L400,90 A210,210 0 0 1 610,300 Z" fill="currentColor" opacity="0.35" stroke="currentColor" stroke-width="1.5"/>
+      <path id="fc-sector-1" data-oedu-role="fraction-part" data-oedu-value="1" data-oedu-interactive="true" data-oedu-bounds="190,90,420,420" d="M400,300 L610,300 A210,210 0 0 1 400,510 Z" fill="currentColor" opacity="0.35" stroke="currentColor" stroke-width="1.5"/>
+      <path id="fc-sector-2" data-oedu-role="fraction-part" data-oedu-value="2" data-oedu-interactive="true" data-oedu-bounds="190,90,420,420" d="M400,300 L400,510 A210,210 0 0 1 190,300 Z" fill="currentColor" opacity="0.35" stroke="currentColor" stroke-width="1.5"/>
+      <path id="fc-sector-3" data-oedu-role="fraction-part" data-oedu-value="3" data-oedu-interactive="true" data-oedu-bounds="190,90,420,420" d="M400,300 L190,300 A210,210 0 0 1 399.99999999999994,90 Z" fill="currentColor" opacity="0.35" stroke="currentColor" stroke-width="1.5"/>
+    </g>
+    <text id="fc-label" data-oedu-role="label" aria-label="3/4" data-oedu-bounds="350,522,100,24" x="400" y="534" text-anchor="middle" dominant-baseline="central">3/4</text>
+  </g>
+  </g>
+</svg>

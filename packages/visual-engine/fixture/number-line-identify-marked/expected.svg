@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Number line from zero to ten</title>
+  <desc>Select the emphasized number.</desc>
+  <g id="visual-root">
+  <g id="nl" data-oedu-role="group">
+    <line id="nl-axis" data-oedu-role="axis" data-oedu-bounds="20,298,760,4" x1="20" y1="300" x2="780" y2="300" stroke="currentColor" stroke-width="2"/>
+    <line id="nl-tick-0" data-oedu-role="tick" data-oedu-value="0" data-oedu-bounds="19,294,2,12" x1="20" y1="294" x2="20" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-0" data-oedu-role="number" data-oedu-value="0" data-oedu-interactive="true" aria-label="0" data-oedu-bounds="-2,314,44,44">
+      <rect x="-2" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="20" y="336" text-anchor="middle" dominant-baseline="central">0</text>
+    </g>
+    <line id="nl-tick-1" data-oedu-role="tick" data-oedu-value="1" data-oedu-bounds="95,294,2,12" x1="96" y1="294" x2="96" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-1" data-oedu-role="number" data-oedu-value="1" data-oedu-interactive="true" aria-label="1" data-oedu-bounds="74,314,44,44">
+      <rect x="74" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="96" y="336" text-anchor="middle" dominant-baseline="central">1</text>
+    </g>
+    <line id="nl-tick-2" data-oedu-role="tick" data-oedu-value="2" data-oedu-bounds="171,294,2,12" x1="172" y1="294" x2="172" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-2" data-oedu-role="number" data-oedu-value="2" data-oedu-interactive="true" aria-label="2" data-oedu-bounds="150,314,44,44">
+      <rect x="150" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="172" y="336" text-anchor="middle" dominant-baseline="central">2</text>
+    </g>
+    <line id="nl-tick-3" data-oedu-role="tick" data-oedu-value="3" data-oedu-bounds="247,294,2,12" x1="248" y1="294" x2="248" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-3" data-oedu-role="number" data-oedu-value="3" data-oedu-interactive="true" aria-label="3" data-oedu-bounds="226,314,44,44">
+      <rect x="226" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="248" y="336" text-anchor="middle" dominant-baseline="central">3</text>
+    </g>
+    <line id="nl-tick-4" data-oedu-role="tick" data-oedu-value="4" data-oedu-bounds="323,294,2,12" x1="324" y1="294" x2="324" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-4" data-oedu-role="number" data-oedu-value="4" data-oedu-interactive="true" aria-label="4" data-oedu-bounds="302,314,44,44">
+      <rect x="302" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="324" y="336" text-anchor="middle" dominant-baseline="central">4</text>
+    </g>
+    <line id="nl-tick-5" data-oedu-role="tick" data-oedu-value="5" data-oedu-bounds="399,294,2,12" x1="400" y1="294" x2="400" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-5" data-oedu-role="number" data-oedu-value="5" data-oedu-interactive="true" aria-label="5" data-oedu-bounds="378,314,44,44">
+      <rect x="378" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="400" y="336" text-anchor="middle" dominant-baseline="central">5</text>
+    </g>
+    <line id="nl-tick-6" data-oedu-role="tick" data-oedu-value="6" data-oedu-bounds="475,294,2,12" x1="476" y1="294" x2="476" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-6" data-oedu-role="number" data-oedu-value="6" data-oedu-interactive="true" aria-label="6" data-oedu-bounds="454,314,44,44">
+      <rect x="454" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="476" y="336" text-anchor="middle" dominant-baseline="central">6</text>
+    </g>
+    <line id="nl-tick-7" data-oedu-role="tick" data-oedu-value="7" data-oedu-bounds="551,294,2,12" x1="552" y1="294" x2="552" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-7" data-oedu-role="number" data-oedu-value="7" data-oedu-interactive="true" aria-label="7" data-oedu-bounds="530,314,44,44">
+      <rect x="530" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="552" y="336" text-anchor="middle" dominant-baseline="central" font-weight="bold">7</text>
+    </g>
+    <line id="nl-tick-8" data-oedu-role="tick" data-oedu-value="8" data-oedu-bounds="627,294,2,12" x1="628" y1="294" x2="628" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-8" data-oedu-role="number" data-oedu-value="8" data-oedu-interactive="true" aria-label="8" data-oedu-bounds="606,314,44,44">
+      <rect x="606" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="628" y="336" text-anchor="middle" dominant-baseline="central">8</text>
+    </g>
+    <line id="nl-tick-9" data-oedu-role="tick" data-oedu-value="9" data-oedu-bounds="703,294,2,12" x1="704" y1="294" x2="704" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-9" data-oedu-role="number" data-oedu-value="9" data-oedu-interactive="true" aria-label="9" data-oedu-bounds="682,314,44,44">
+      <rect x="682" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="704" y="336" text-anchor="middle" dominant-baseline="central">9</text>
+    </g>
+    <line id="nl-tick-10" data-oedu-role="tick" data-oedu-value="10" data-oedu-bounds="779,294,2,12" x1="780" y1="294" x2="780" y2="306" stroke="currentColor" stroke-width="1"/>
+    <g id="nl-label-10" data-oedu-role="number" data-oedu-value="10" data-oedu-interactive="true" aria-label="10" data-oedu-bounds="758,314,44,44">
+      <rect x="758" y="314" width="44" height="44" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+      <text x="780" y="336" text-anchor="middle" dominant-baseline="central">10</text>
+    </g>
+  </g>
+  </g>
+</svg>

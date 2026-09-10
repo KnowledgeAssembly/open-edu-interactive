@@ -43,17 +43,91 @@ describe('validateSemantic (L2)', () => {
     expect(result.issues[0]!.code).toBe('INVALID_REFERENCE');
   });
 
-  it('rejects invalid action in acceptsActions', () => {
+  it('rejects invalid highlightHand at L2', () => {
     const spec: VisualSpec = {
       ...VALID_SPEC,
       content: {
-        ...VALID_SPEC.content,
-        elements: [{ id: 'x', type: 'circle', interactive: true, acceptsActions: ['invalid-action' as never] }],
+        kind: 'clock',
+        components: [{ id: 'ck', type: 'clock', props: { hour: 3, minute: 0, highlightHand: 'second' } }],
       },
     };
     const result = validateSemantic(spec);
     expect(result.valid).toBe(false);
-    expect(result.issues[0]!.code).toBe('INVALID_ACTION');
+    expect(result.issues[0]!.code).toBe('INVALID_SPEC');
+    expect(result.issues[0]!.message).toContain('highlightHand');
+  });
+
+  it('rejects coordinate-grid missing point ids when highlightPoints set', () => {
+    const spec: VisualSpec = {
+      ...VALID_SPEC,
+      content: {
+        kind: 'coordinate-grid',
+        components: [{
+          id: 'cg', type: 'coordinate-grid', props: {
+            x: { min: 0, max: 6, step: 1 },
+            y: { min: 0, max: 6, step: 1 },
+            points: [{ x: 1, y: 2 }],
+            highlightPoints: ['target'],
+          },
+        }],
+      },
+    };
+    const result = validateSemantic(spec);
+    expect(result.valid).toBe(false);
+    expect(result.issues[0]!.code).toBe('INVALID_SPEC');
+  });
+
+  it('rejects geometry conflicting highlight flags', () => {
+    const spec: VisualSpec = {
+      ...VALID_SPEC,
+      content: {
+        kind: 'geometry',
+        components: [{
+          id: 'geo', type: 'geometry', props: {
+            shape: 'triangle',
+            highlight: true,
+            highlightVertices: true,
+          },
+        }],
+      },
+    };
+    const result = validateSemantic(spec);
+    expect(result.valid).toBe(false);
+    expect(result.issues[0]!.code).toBe('INVALID_SPEC');
+    expect(result.issues[0]!.message).toContain('at most one');
+  });
+
+  it('rejects geometry highlightVertices without showVertices', () => {
+    const spec: VisualSpec = {
+      ...VALID_SPEC,
+      content: {
+        kind: 'geometry',
+        components: [{
+          id: 'geo', type: 'geometry', props: {
+            shape: 'triangle',
+            highlightVertices: true,
+          },
+        }],
+      },
+    };
+    const result = validateSemantic(spec);
+    expect(result.valid).toBe(false);
+    expect(result.issues[0]!.code).toBe('INVALID_SPEC');
+    expect(result.issues[0]!.message).toContain('highlightVertices requires');
+  });
+
+  it('rejects fraction-circle denominator below 2', () => {
+    const spec: VisualSpec = {
+      ...VALID_SPEC,
+      content: {
+        kind: 'fraction-circle',
+        components: [{ id: 'fc', type: 'fraction-circle', props: { numerator: 1, denominator: 1 } }],
+      },
+    };
+    const result = validateSemantic(spec);
+    expect(result.valid).toBe(false);
+    expect(result.issues[0]!.code).toBe('INVALID_ENTITY');
+    expect(result.issues[0]!.message).toContain('denominator must be at least 2');
   });
 });
 

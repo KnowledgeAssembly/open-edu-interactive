@@ -1,11 +1,15 @@
 import type { EngineAction, EngineEvent, EngineSpec, EngineType, ValidationResult } from '@knowledgeassemble/interactive-engine';
-import type { EngineHost } from '@knowledgeassemble/interactive-engine';
+import {
+  bindSvgInteraction,
+  syncSvgSurface,
+} from '@knowledgeassemble/interactive-react/svg-surface';
+import type { SvgSurfaceSnapshot } from '@knowledgeassemble/interactive-react/svg-surface';
 import { getEngine } from './engine-registry.js';
 import type { StubHostOptions } from './stub-host.js';
 import { createStubHost } from './stub-host.js';
 import type { EngineMountResult, RenderTarget } from './types.js';
 
-interface SvgSnapshot {
+interface SvgSnapshot extends SvgSurfaceSnapshot {
   svgResult?: { svg?: string; tabular?: unknown[]; alternative?: unknown[]; linear?: unknown[] };
 }
 
@@ -34,10 +38,6 @@ interface RelRow {
   fromLabel?: string;
   toLabel?: string;
   members?: string[];
-}
-
-function renderSvg(container: HTMLElement, svg: string | undefined): void {
-  container.innerHTML = svg ?? '';
 }
 
 function renderChartTable(container: HTMLElement, rows: TabularRow[]): void {
@@ -170,6 +170,9 @@ export function mountEngine(
 
   const svgRoot = document.createElement('div');
   svgRoot.setAttribute('data-oedu-root', spec.type);
+  const svgContent = document.createElement('div');
+  svgContent.setAttribute('data-oedu-svg', spec.type);
+  svgRoot.appendChild(svgContent);
   container.appendChild(svgRoot);
 
   let tabularRoot: HTMLElement | undefined;
@@ -208,7 +211,7 @@ export function mountEngine(
 
   function renderDom(): void {
     const snap = instance.snapshot() as SvgSnapshot;
-    renderSvg(svgRoot, snap.svgResult?.svg);
+    syncSvgSurface(svgContent, snap);
     if (tabularRoot) {
       renderChartTable(tabularRoot, (snap.svgResult?.tabular ?? []) as TabularRow[]);
     }
@@ -221,17 +224,23 @@ export function mountEngine(
       }
     }
     if (linearRoot) {
-      renderTimelineLinear(linearRoot, (snap.svgResult?.linear ?? []) as TimeRow[], (action) => instance.dispatch(action));
+      renderTimelineLinear(linearRoot, (snap.svgResult?.linear ?? []) as TimeRow[], dispatchAndRender);
     }
   }
+
+  function dispatchAndRender(action: EngineAction): void {
+    instance.dispatch(action);
+    renderDom();
+  }
+
+  const unbindSvg = bindSvgInteraction(svgRoot, dispatchAndRender);
 
   renderDom();
 
   return {
     instanceId,
     dispatch(action: EngineAction): void {
-      instance.dispatch(action);
-      renderDom();
+      dispatchAndRender(action);
     },
     snapshot(): unknown {
       return instance.snapshot();
@@ -243,6 +252,7 @@ export function mountEngine(
       return engine.validate(spec as EngineSpec);
     },
     teardown(): void {
+      unbindSvg();
       instance.teardown();
       clearEvents();
     },

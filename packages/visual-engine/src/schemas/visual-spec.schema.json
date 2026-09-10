@@ -9,7 +9,7 @@
   "properties": {
     "kind": {
       "type": "string",
-      "enum": ["number-line", "counting-set", "fraction", "fraction-comparison", "clock", "coordinate-grid", "geometry", "comparison", "illustration"]
+      "enum": ["number-line", "counting-set", "fraction", "fraction-circle", "fraction-comparison", "clock", "coordinate-grid", "geometry", "comparison", "illustration"]
     },
     "canvas": {
       "type": "object",

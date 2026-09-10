@@ -21,6 +21,7 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
   const columns = props.columns as number | undefined;
   const highlight = props.highlight as number[] | undefined;
   const labels = props.labels as string[] | undefined;
+  const discovery = (props.interactive as boolean | undefined) ?? false;
 
   if (!Number.isInteger(count) || count <= 0) {
     throw new EngineError('INVALID_ENTITY', 'counting-set: count must be a positive integer');
@@ -42,14 +43,15 @@ export function createCountingSet(props: Record<string, unknown>, parentId: stri
   for (let i = 0; i < count; i++) {
     const id = `${parentId}-object-${i}`;
     const isHighlighted = highlightSet?.has(i) ?? false;
+    const isSelectable = discovery || isHighlighted;
 
     nodes.push({
       id,
       role: 'counting-object',
       kind: object,
       label: labels?.[i] ?? `${object.charAt(0).toUpperCase() + object.slice(1)} ${i + 1}`,
-      interactive: isHighlighted || undefined,
-      acceptsActions: isHighlighted ? ['select', 'focus'] : undefined,
+      interactive: isSelectable || undefined,
+      acceptsActions: isSelectable ? ['select', 'focus'] : undefined,
       metadata: layoutMeta,
       children: [],
     });

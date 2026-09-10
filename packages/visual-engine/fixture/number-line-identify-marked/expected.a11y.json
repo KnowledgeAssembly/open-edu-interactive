@@ -1,0 +1,377 @@
+{
+  "a11y": [
+    {
+      "id": "nl",
+      "role": "group",
+      "label": "nl",
+      "children": [
+        {
+          "id": "nl-axis",
+          "role": "img",
+          "label": "nl-axis",
+          "children": []
+        },
+        {
+          "id": "nl-tick-0",
+          "role": "img",
+          "label": "nl-tick-0",
+          "children": []
+        },
+        {
+          "id": "nl-label-0",
+          "role": "button",
+          "label": "0",
+          "children": []
+        },
+        {
+          "id": "nl-tick-1",
+          "role": "img",
+          "label": "nl-tick-1",
+          "children": []
+        },
+        {
+          "id": "nl-label-1",
+          "role": "button",
+          "label": "1",
+          "children": []
+        },
+        {
+          "id": "nl-tick-2",
+          "role": "img",
+          "label": "nl-tick-2",
+          "children": []
+        },
+        {
+          "id": "nl-label-2",
+          "role": "button",
+          "label": "2",
+          "children": []
+        },
+        {
+          "id": "nl-tick-3",
+          "role": "img",
+          "label": "nl-tick-3",
+          "children": []
+        },
+        {
+          "id": "nl-label-3",
+          "role": "button",
+          "label": "3",
+          "children": []
+        },
+        {
+          "id": "nl-tick-4",
+          "role": "img",
+          "label": "nl-tick-4",
+          "children": []
+        },
+        {
+          "id": "nl-label-4",
+          "role": "button",
+          "label": "4",
+          "children": []
+        },
+        {
+          "id": "nl-tick-5",
+          "role": "img",
+          "label": "nl-tick-5",
+          "children": []
+        },
+        {
+          "id": "nl-label-5",
+          "role": "button",
+          "label": "5",
+          "children": []
+        },
+        {
+          "id": "nl-tick-6",
+          "role": "img",
+          "label": "nl-tick-6",
+          "children": []
+        },
+        {
+          "id": "nl-label-6",
+          "role": "button",
+          "label": "6",
+          "children": []
+        },
+        {
+          "id": "nl-tick-7",
+          "role": "img",
+          "label": "nl-tick-7",
+          "children": []
+        },
+        {
+          "id": "nl-label-7",
+          "role": "button",
+          "label": "7",
+          "children": []
+        },
+        {
+          "id": "nl-tick-8",
+          "role": "img",
+          "label": "nl-tick-8",
+          "children": []
+        },
+        {
+          "id": "nl-label-8",
+          "role": "button",
+          "label": "8",
+          "children": []
+        },
+        {
+          "id": "nl-tick-9",
+          "role": "img",
+          "label": "nl-tick-9",
+          "children": []
+        },
+        {
+          "id": "nl-label-9",
+          "role": "button",
+          "label": "9",
+          "children": []
+        },
+        {
+          "id": "nl-tick-10",
+          "role": "img",
+          "label": "nl-tick-10",
+          "children": []
+        },
+        {
+          "id": "nl-label-10",
+          "role": "button",
+          "label": "10",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "nl-axis",
+      "role": "img",
+      "label": "nl-axis",
+      "children": []
+    },
+    {
+      "id": "nl-tick-0",
+      "role": "img",
+      "label": "nl-tick-0",
+      "children": []
+    },
+    {
+      "id": "nl-label-0",
+      "role": "button",
+      "label": "0",
+      "children": []
+    },
+    {
+      "id": "nl-tick-1",
+      "role": "img",
+      "label": "nl-tick-1",
+      "children": []
+    },
+    {
+      "id": "nl-label-1",
+      "role": "button",
+      "label": "1",
+      "children": []
+    },
+    {
+      "id": "nl-tick-2",
+      "role": "img",
+      "label": "nl-tick-2",
+      "children": []
+    },
+    {
+      "id": "nl-label-2",
+      "role": "button",
+      "label": "2",
+      "children": []
+    },
+    {
+      "id": "nl-tick-3",
+      "role": "img",
+      "label": "nl-tick-3",
+      "children": []
+    },
+    {
+      "id": "nl-label-3",
+      "role": "button",
+      "label": "3",
+      "children": []
+    },
+    {
+      "id": "nl-tick-4",
+      "role": "img",
+      "label": "nl-tick-4",
+      "children": []
+    },
+    {
+      "id": "nl-label-4",
+      "role": "button",
+      "label": "4",
+      "children": []
+    },
+    {
+      "id": "nl-tick-5",
+      "role": "img",
+      "label": "nl-tick-5",
+      "children": []
+    },
+    {
+      "id": "nl-label-5",
+      "role": "button",
+      "label": "5",
+      "children": []
+    },
+    {
+      "id": "nl-tick-6",
+      "role": "img",
+      "label": "nl-tick-6",
+      "children": []
+    },
+    {
+      "id": "nl-label-6",
+      "role": "button",
+      "label": "6",
+      "children": []
+    },
+    {
+      "id": "nl-tick-7",
+      "role": "img",
+      "label": "nl-tick-7",
+      "children": []
+    },
+    {
+      "id": "nl-label-7",
+      "role": "button",
+      "label": "7",
+      "children": []
+    },
+    {
+      "id": "nl-tick-8",
+      "role": "img",
+      "label": "nl-tick-8",
+      "children": []
+    },
+    {
+      "id": "nl-label-8",
+      "role": "button",
+      "label": "8",
+      "children": []
+    },
+    {
+      "id": "nl-tick-9",
+      "role": "img",
+      "label": "nl-tick-9",
+      "children": []
+    },
+    {
+      "id": "nl-label-9",
+      "role": "button",
+      "label": "9",
+      "children": []
+    },
+    {
+      "id": "nl-tick-10",
+      "role": "img",
+      "label": "nl-tick-10",
+      "children": []
+    },
+    {
+      "id": "nl-label-10",
+      "role": "button",
+      "label": "10",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "nl-label-0",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-0",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-1",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-1",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-2",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-2",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-3",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-3",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-4",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-4",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-5",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-5",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-6",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-6",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-7",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-7",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-8",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-8",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-9",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-9",
+      "action": "focus"
+    },
+    {
+      "id": "nl-label-10",
+      "action": "select"
+    },
+    {
+      "id": "nl-label-10",
+      "action": "focus"
+    }
+  ]
+}

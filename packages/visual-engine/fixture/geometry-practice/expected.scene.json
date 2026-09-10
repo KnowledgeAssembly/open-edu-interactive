@@ -1,0 +1,480 @@
+{
+  "nodes": [
+    {
+      "id": "tri",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "tri-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "triangle",
+            "sides": 3
+          },
+          "children": [
+            {
+              "id": "tri-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "tri-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "tri-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 58,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    },
+    {
+      "id": "hex",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "hex-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "hexagon",
+            "sides": 6
+          },
+          "children": [
+            {
+              "id": "hex-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-4",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-5",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 298,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    },
+    {
+      "id": "sq",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "sq-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "square",
+            "sides": 4
+          },
+          "children": [
+            {
+              "id": "sq-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 538,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "tri": {
+      "id": "tri",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "tri-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "triangle",
+            "sides": 3
+          },
+          "children": [
+            {
+              "id": "tri-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "tri-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "tri-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 58,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    },
+    "tri-shape": {
+      "id": "tri-shape",
+      "role": "shape",
+      "kind": "shape",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "shape": "triangle",
+        "sides": 3
+      },
+      "children": [
+        {
+          "id": "tri-shape-side-0",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "tri-shape-side-1",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "tri-shape-side-2",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        }
+      ],
+      "bounds": {
+        "x": 58,
+        "y": 198,
+        "width": 204,
+        "height": 204
+      }
+    },
+    "hex": {
+      "id": "hex",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "hex-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "hexagon",
+            "sides": 6
+          },
+          "children": [
+            {
+              "id": "hex-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-4",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "hex-shape-side-5",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 298,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    },
+    "hex-shape": {
+      "id": "hex-shape",
+      "role": "shape",
+      "kind": "shape",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "shape": "hexagon",
+        "sides": 6
+      },
+      "children": [
+        {
+          "id": "hex-shape-side-0",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "hex-shape-side-1",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "hex-shape-side-2",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "hex-shape-side-3",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "hex-shape-side-4",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "hex-shape-side-5",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        }
+      ],
+      "bounds": {
+        "x": 298,
+        "y": 198,
+        "width": 204,
+        "height": 204
+      }
+    },
+    "sq": {
+      "id": "sq",
+      "role": "group",
+      "kind": "geometry",
+      "children": [
+        {
+          "id": "sq-shape",
+          "role": "shape",
+          "kind": "shape",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "metadata": {
+            "shape": "square",
+            "sides": 4
+          },
+          "children": [
+            {
+              "id": "sq-shape-side-0",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-1",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-2",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            },
+            {
+              "id": "sq-shape-side-3",
+              "role": "diagram-part",
+              "kind": "line",
+              "children": []
+            }
+          ],
+          "bounds": {
+            "x": 538,
+            "y": 198,
+            "width": 204,
+            "height": 204
+          }
+        }
+      ]
+    },
+    "sq-shape": {
+      "id": "sq-shape",
+      "role": "shape",
+      "kind": "shape",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "shape": "square",
+        "sides": 4
+      },
+      "children": [
+        {
+          "id": "sq-shape-side-0",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "sq-shape-side-1",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "sq-shape-side-2",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        },
+        {
+          "id": "sq-shape-side-3",
+          "role": "diagram-part",
+          "kind": "line",
+          "children": []
+        }
+      ],
+      "bounds": {
+        "x": 538,
+        "y": 198,
+        "width": 204,
+        "height": 204
+      }
+    }
+  }
+}

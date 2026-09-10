@@ -43,7 +43,7 @@ function nodeToSvg(node: SceneNode, indent: number): string {
     return `${pad}<polygon ${attrs} points="${pts.map((p) => `${p.x},${p.y}`).join(' ')}" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>`;
   }
 
-  if (node.children.length > 0) {
+  if (node.children.length > 0 && node.kind !== 'wedge') {
     const children = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
     return `${pad}<g ${attrs}>\n${children}\n${pad}</g>`;
   }
@@ -60,10 +60,28 @@ function nodeToSvg(node: SceneNode, indent: number): string {
       }
       return `${pad}<line ${attrs} x1="${b.x}" y1="${cy}" x2="${b.x + b.width}" y2="${cy}" stroke="currentColor" stroke-width="2"/>`;
     }
-    case 'tick':
+    case 'tick': {
+      const tickLine = `${pad}  <line x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y + b.height}" stroke="currentColor" stroke-width="1"/>`;
+      if (node.interactive) {
+        return `${pad}<g ${attrs}>
+${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+${tickLine}
+${pad}</g>`;
+      }
       return `${pad}<line ${attrs} x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y + b.height}" stroke="currentColor" stroke-width="1"/>`;
-    case 'text':
-      return `${pad}<text ${attrs} x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central">${escapeXml(node.label ?? String(node.value ?? ''))}</text>`;
+    }
+    case 'text': {
+      const isEmphasized = (node.metadata as Record<string, unknown> | undefined)?.emphasized === true;
+      const label = escapeXml(node.label ?? String(node.value ?? ''));
+      const textInner = `${pad}  <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"${isEmphasized ? ' font-weight="bold"' : ''}>${label}</text>`;
+      if (node.interactive) {
+        return `${pad}<g ${attrs}>
+${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+${textInner}
+${pad}</g>`;
+      }
+      return `${pad}<text ${attrs} x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"${isEmphasized ? ' font-weight="bold"' : ''}>${label}</text>`;
+    }
     case 'circle':
       return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${Math.max(4, Math.min(b.width, b.height) / 2)}" fill="${node.interactive ? 'currentColor' : 'transparent'}" stroke="currentColor" stroke-width="2"/>`;
     case 'rect':
@@ -82,6 +100,23 @@ function nodeToSvg(node: SceneNode, indent: number): string {
 ${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" rx="6" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
 ${pad}  <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="currentColor">${escapeXml(labelText)}</text>
 ${pad}</g>`;
+    }
+    case 'wedge': {
+      const meta = node.metadata as { cx?: number; cy?: number; r?: number; startAngle?: number; endAngle?: number } | undefined;
+      if (meta && meta.cx !== undefined && meta.cy !== undefined && meta.r !== undefined && meta.startAngle !== undefined && meta.endAngle !== undefined) {
+        const { cx: wcx, cy: wcy, r: wr, startAngle, endAngle } = meta;
+        const startRad = (startAngle * Math.PI) / 180;
+        const endRad = (endAngle * Math.PI) / 180;
+        const x1 = wcx + wr * Math.cos(startRad);
+        const y1 = wcy + wr * Math.sin(startRad);
+        const x2 = wcx + wr * Math.cos(endRad);
+        const y2 = wcy + wr * Math.sin(endRad);
+        const largeArc = endAngle - startAngle > 180 ? 1 : 0;
+        const d = `M${wcx},${wcy} L${x1},${y1} A${wr},${wr} 0 ${largeArc} 1 ${x2},${y2} Z`;
+        const fillOpacity = node.interactive ? '0.35' : '0.15';
+        return `${pad}<path ${attrs} d="${d}" fill="currentColor" opacity="${fillOpacity}" stroke="currentColor" stroke-width="1.5"/>`;
+      }
+      return `${pad}<g ${attrs}></g>`;
     }
     case 'fraction-circle': {
       const r = Math.max(4, Math.min(b.width, b.height) / 2);

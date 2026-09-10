@@ -12,6 +12,13 @@ interface Scale {
 interface Point { x: number; y: number; }
 
 export function layout(scene: Scene, ctx: LayoutContext): Scene {
+  const geometryNodes = scene.nodes.filter((n) => n.kind === 'geometry');
+  if (geometryNodes.length > 1) {
+    for (let i = 0; i < geometryNodes.length; i++) {
+      layoutGeometry(geometryNodes[i]!, ctx, { index: i, total: geometryNodes.length });
+    }
+  }
+
   for (const node of scene.nodes) {
     switch (node.kind) {
       case 'number-line':
@@ -22,6 +29,9 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
         break;
       case 'fraction':
         layoutFraction(node, ctx);
+        break;
+      case 'fraction-circle':
+        layoutFractionCircle(node, ctx);
         break;
       case 'fraction-comparison':
       case 'comparison':
@@ -34,7 +44,9 @@ export function layout(scene: Scene, ctx: LayoutContext): Scene {
         layoutCoordinateGrid(node, ctx);
         break;
       case 'geometry':
-        layoutGeometry(node, ctx);
+        if (geometryNodes.length <= 1) {
+          layoutGeometry(node, ctx);
+        }
         break;
       case 'illustration':
         layoutIllustration(node, ctx);
@@ -86,17 +98,29 @@ function layoutNumberLine(node: SceneNode, ctx: LayoutContext): void {
 
     switch (child.role) {
       case 'tick': {
-        child.bounds = vertical
-          ? rect(cx - 6, cy - 1, 12, 2)
-          : rect(cx - 1, cy - 6, 2, 12);
+        if (child.interactive) {
+          const size = Math.max(ctx.minTouchTarget, 12);
+          child.bounds = rect(cx - size / 2, cy - size / 2, size, size);
+        } else {
+          child.bounds = vertical
+            ? rect(cx - 6, cy - 1, 12, 2)
+            : rect(cx - 1, cy - 6, 2, 12);
+        }
         break;
       }
       case 'number': {
         const w = 28;
         const h = 18;
-        child.bounds = vertical
-          ? rect(cx + 12, cy - h / 2, w, h)
-          : rect(cx - w / 2, cy + 14, w, h);
+        if (child.interactive) {
+          const size = Math.max(ctx.minTouchTarget, w);
+          child.bounds = vertical
+            ? rect(cx + 12, cy - size / 2, size, size)
+            : rect(cx - size / 2, cy + 14, size, size);
+        } else {
+          child.bounds = vertical
+            ? rect(cx + 12, cy - h / 2, w, h)
+            : rect(cx - w / 2, cy + 14, w, h);
+        }
         break;
       }
       case 'marker': {
@@ -178,6 +202,30 @@ function layoutFraction(node: SceneNode, ctx: LayoutContext): void {
 
   if (label) {
     setBounds(label, rect(pad, barY + barH + 12, 200, 24));
+  }
+}
+
+function layoutFractionCircle(node: SceneNode, ctx: LayoutContext): void {
+  const group = node.children.find(c => c.kind === 'fraction-circle') ?? node;
+  const sectors = group.children.filter(c => c.kind === 'wedge');
+  if (sectors.length === 0) return;
+
+  const cx = ctx.width / 2;
+  const cy = Math.round(ctx.height / 2);
+  const r = Math.min(ctx.width, ctx.height) * 0.35;
+  const n = sectors.length;
+  const span = 360 / n;
+
+  for (let i = 0; i < n; i++) {
+    const startAngle = -90 + i * span;
+    const endAngle = startAngle + span;
+    sectors[i]!.bounds = rect(cx - r, cy - r, 2 * r, 2 * r);
+    sectors[i]!.metadata = { ...sectors[i]!.metadata, startAngle, endAngle, cx, cy, r };
+  }
+
+  const label = node.children.find(c => c.role === 'label');
+  if (label) {
+    setBounds(label, rect(cx - 50, cy + r + 12, 100, 24));
   }
 }
 
@@ -331,14 +379,7 @@ function layoutCoordinateGrid(node: SceneNode, ctx: LayoutContext): void {
   }
 }
 
-function layoutGeometry(node: SceneNode, ctx: LayoutContext): void {
-  const shape = node.children.find(c => c.kind === 'shape');
-  if (!shape) return;
-
-  const size = Math.min(ctx.width, ctx.height) * 0.4;
-  const cx = ctx.width / 2;
-  const cy = Math.round(ctx.height / 2);
-
+function positionGeometryShape(shape: SceneNode, cx: number, cy: number, size: number): void {
   setBounds(shape, rect(cx - size / 2, cy - size / 2, size, size));
 
   const meta = shape.metadata as { sides?: number; shape?: string } | undefined;
@@ -355,6 +396,32 @@ function layoutGeometry(node: SceneNode, ctx: LayoutContext): void {
       }
     }
   }
+}
+
+function layoutGeometry(
+  node: SceneNode,
+  ctx: LayoutContext,
+  slot?: { index: number; total: number },
+): void {
+  const shape = node.children.find(c => c.kind === 'shape');
+  if (!shape) return;
+
+  const defaultSize = Math.min(ctx.width, ctx.height) * 0.4;
+  const cy = Math.round(ctx.height / 2);
+
+  if (slot && slot.total > 1) {
+    const pad = 40;
+    const availW = ctx.width - pad * 2;
+    const boxW = Math.min(availW / slot.total, 260);
+    const gap = (availW - boxW * slot.total) / (slot.total - 1);
+    const cx = pad + slot.index * (boxW + gap) + boxW / 2;
+    const size = Math.min(boxW * 0.85, defaultSize);
+    positionGeometryShape(shape, cx, cy, size);
+    return;
+  }
+
+  const cx = ctx.width / 2;
+  positionGeometryShape(shape, cx, cy, defaultSize);
 }
 
 function layoutIllustration(node: SceneNode, ctx: LayoutContext): void {

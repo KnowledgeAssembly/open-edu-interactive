@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Three geometric shapes</title>
+  <desc>Three shapes are shown side by side. Select the hexagon.</desc>
+  <g id="visual-root">
+  <g id="tri" data-oedu-role="group">
+    <polygon id="tri-shape" data-oedu-role="shape" data-oedu-interactive="true" data-oedu-bounds="58,198,204,204" points="160,198 248.33459118601274,351 71.66540881398727,351.00000000000006" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  <g id="hex" data-oedu-role="group">
+    <polygon id="hex-shape" data-oedu-role="shape" data-oedu-interactive="true" data-oedu-bounds="298,198,204,204" points="400,198 488.33459118601274,249 488.33459118601274,351 400,402 311.66540881398726,351.00000000000006 311.66540881398726,249" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  <g id="sq" data-oedu-role="group">
+    <polygon id="sq-shape" data-oedu-role="shape" data-oedu-interactive="true" data-oedu-bounds="538,198,204,204" points="640,198 742,300 640,402 538,300" fill="currentColor" opacity="0.2" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  </g>
+</svg>

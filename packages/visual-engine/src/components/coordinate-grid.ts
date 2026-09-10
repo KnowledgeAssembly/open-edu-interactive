@@ -6,11 +6,15 @@ export interface CoordinateGridProps {
   y: { min: number; max: number; step: number };
   points?: { x: number; y: number; id?: string }[];
   lines?: { points: { x: number; y: number }[]; id?: string }[];
+  highlightPoints?: string[];
+  interactive?: boolean;
 }
 
 export function createCoordinateGrid(props: Record<string, unknown>, parentId: string): SceneNode[] {
   const x = props.x as { min: number; max: number; step: number };
   const y = props.y as { min: number; max: number; step: number };
+  const highlightPoints = props.highlightPoints as string[] | undefined;
+  const discovery = (props.interactive as boolean | undefined) ?? false;
 
   if (x.max <= x.min) {
     throw new EngineError('INVALID_ENTITY', 'coordinate-grid: x.max must be greater than x.min');
@@ -72,15 +76,22 @@ export function createCoordinateGrid(props: Record<string, unknown>, parentId: s
   // Points
   const points = props.points as { x: number; y: number; id?: string }[] | undefined;
   if (points) {
+    const highlightSet = highlightPoints ? new Set(highlightPoints) : null;
     for (let i = 0; i < points.length; i++) {
       const pt = points[i]!;
+      if (!pt.id && (discovery || (highlightPoints != null && highlightPoints.length > 0))) {
+        throw new EngineError('INVALID_SPEC', 'coordinate-grid: points must have id when interactive or highlightPoints is set');
+      }
       const suffix = pt.id ?? String(i);
+      const isHighlighted = highlightSet?.has(pt.id ?? '') ?? false;
+      const isSelectable = discovery || isHighlighted;
       nodes.push({
         id: `${parentId}-point-${suffix}`,
         role: 'marker',
         kind: 'circle',
         value: pt.x,
         geometry: { x: pt.x, y: pt.y },
+        ...(isSelectable ? { interactive: true, acceptsActions: ['select', 'focus'] } : {}),
         children: [],
       });
     }

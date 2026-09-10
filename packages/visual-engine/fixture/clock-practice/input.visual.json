@@ -1,0 +1,23 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "clock-practice-hour-hand",
+  "purpose": {
+    "learningObjective": "Identify the hour hand",
+    "interactionGoal": "Select the hour hand",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "clock",
+    "components": [{
+      "id": "ck",
+      "type": "clock",
+      "props": { "hour": 3, "minute": 30, "highlightHand": "hour" }
+    }]
+  },
+  "accessibility": {
+    "label": "Clock showing 3:30",
+    "description": "Select the hour hand."
+  },
+  "interaction": { "mode": "identify", "actions": ["select", "focus", "reset"] }
+}

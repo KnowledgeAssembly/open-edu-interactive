@@ -1,0 +1,380 @@
+{
+  "nodes": [
+    {
+      "id": "fc",
+      "role": "group",
+      "kind": "fraction-circle",
+      "children": [
+        {
+          "id": "fc-sectors",
+          "role": "group",
+          "kind": "fraction-circle",
+          "children": [
+            {
+              "id": "fc-sector-0",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 0,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": -90,
+                "endAngle": 0,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-1",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 1,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 0,
+                "endAngle": 90,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-2",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 2,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 90,
+                "endAngle": 180,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-3",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 3,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 180,
+                "endAngle": 270,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            }
+          ]
+        },
+        {
+          "id": "fc-label",
+          "role": "label",
+          "kind": "text",
+          "label": "3/4",
+          "children": [],
+          "bounds": {
+            "x": 350,
+            "y": 522,
+            "width": 100,
+            "height": 24
+          }
+        }
+      ]
+    }
+  ],
+  "semantics": {
+    "fc": {
+      "id": "fc",
+      "role": "group",
+      "kind": "fraction-circle",
+      "children": [
+        {
+          "id": "fc-sectors",
+          "role": "group",
+          "kind": "fraction-circle",
+          "children": [
+            {
+              "id": "fc-sector-0",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 0,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": -90,
+                "endAngle": 0,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-1",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 1,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 0,
+                "endAngle": 90,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-2",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 2,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 90,
+                "endAngle": 180,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            },
+            {
+              "id": "fc-sector-3",
+              "role": "fraction-part",
+              "kind": "wedge",
+              "value": 3,
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "children": [],
+              "bounds": {
+                "x": 190,
+                "y": 90,
+                "width": 420,
+                "height": 420
+              },
+              "metadata": {
+                "startAngle": 180,
+                "endAngle": 270,
+                "cx": 400,
+                "cy": 300,
+                "r": 210
+              }
+            }
+          ]
+        },
+        {
+          "id": "fc-label",
+          "role": "label",
+          "kind": "text",
+          "label": "3/4",
+          "children": [],
+          "bounds": {
+            "x": 350,
+            "y": 522,
+            "width": 100,
+            "height": 24
+          }
+        }
+      ]
+    },
+    "fc-sectors": {
+      "id": "fc-sectors",
+      "role": "group",
+      "kind": "fraction-circle",
+      "children": [
+        {
+          "id": "fc-sector-0",
+          "role": "fraction-part",
+          "kind": "wedge",
+          "value": 0,
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 190,
+            "y": 90,
+            "width": 420,
+            "height": 420
+          },
+          "metadata": {
+            "startAngle": -90,
+            "endAngle": 0,
+            "cx": 400,
+            "cy": 300,
+            "r": 210
+          }
+        },
+        {
+          "id": "fc-sector-1",
+          "role": "fraction-part",
+          "kind": "wedge",
+          "value": 1,
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 190,
+            "y": 90,
+            "width": 420,
+            "height": 420
+          },
+          "metadata": {
+            "startAngle": 0,
+            "endAngle": 90,
+            "cx": 400,
+            "cy": 300,
+            "r": 210
+          }
+        },
+        {
+          "id": "fc-sector-2",
+          "role": "fraction-part",
+          "kind": "wedge",
+          "value": 2,
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 190,
+            "y": 90,
+            "width": 420,
+            "height": 420
+          },
+          "metadata": {
+            "startAngle": 90,
+            "endAngle": 180,
+            "cx": 400,
+            "cy": 300,
+            "r": 210
+          }
+        },
+        {
+          "id": "fc-sector-3",
+          "role": "fraction-part",
+          "kind": "wedge",
+          "value": 3,
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "children": [],
+          "bounds": {
+            "x": 190,
+            "y": 90,
+            "width": 420,
+            "height": 420
+          },
+          "metadata": {
+            "startAngle": 180,
+            "endAngle": 270,
+            "cx": 400,
+            "cy": 300,
+            "r": 210
+          }
+        }
+      ]
+    },
+    "fc-label": {
+      "id": "fc-label",
+      "role": "label",
+      "kind": "text",
+      "label": "3/4",
+      "children": [],
+      "bounds": {
+        "x": 350,
+        "y": 522,
+        "width": 100,
+        "height": 24
+      }
+    }
+  }
+}

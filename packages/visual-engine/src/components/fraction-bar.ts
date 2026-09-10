@@ -4,7 +4,6 @@ import type { SceneNode } from '../scene/types.js';
 export interface FractionBarProps {
   numerator: number;
   denominator: number;
-  orientation?: 'horizontal' | 'vertical';
   showFraction?: boolean;
   highlightedParts?: number[];
   allowImproper?: boolean;
@@ -16,6 +15,7 @@ export function createFractionBar(props: Record<string, unknown>, parentId: stri
   const showFraction = props.showFraction as boolean | undefined;
   const highlightedParts = props.highlightedParts as number[] | undefined;
   const allowImproper = props.allowImproper as boolean | undefined;
+  const discovery = (props.interactive as boolean | undefined) ?? false;
 
   if (denominator <= 0) {
     throw new EngineError('INVALID_ENTITY', 'fraction-bar: denominator must be greater than 0');
@@ -35,13 +35,14 @@ export function createFractionBar(props: Record<string, unknown>, parentId: stri
   for (let i = 0; i < denominator; i++) {
     const partId = `${parentId}-part-${i}`;
     const isHighlighted = highlightedParts?.includes(i) ?? false;
+    const isSelectable = discovery || isHighlighted;
 
     barChildren.push({
       id: partId,
       role: 'fraction-part',
       kind: 'rect',
       value: i,
-      ...(isHighlighted
+      ...(isSelectable
         ? { interactive: true, acceptsActions: ['select', 'focus'] }
         : {}),
       children: [],

@@ -86,6 +86,8 @@ Finish what PLAN-Px already required for the MVP picture, with tests that fail i
 
 Number-line satisfied PLAN.md P2 **exit**. Production still needs PLAN.md P2 item 5 / PLAN-P2 T7: `counting-set`, `fraction-bar`, `fraction-circle`, `clock`, `coordinate-grid`, `geometry-shape`, `comparison` as real scene + accessible SVG + tests (full goldens per kind as claimed). No timeline/flowchart/label-diagram in Visual (D9).
 
+- Visual use-case catalog drives slice honesty; first slice = `nl-identify-marked` + `cg-plot-point`.
+
 ### A3 — Playground honesty bar
 
 For every catalog fixture, a human (and a test where practical) sees the slice the SPEC names. After A1, audit Chart → GeoMap → Timeline → Visual the same way: **hollow render** vs **layout bug** vs **harness**. Fix hollow/layout in-engine; do not “fix” with a library.

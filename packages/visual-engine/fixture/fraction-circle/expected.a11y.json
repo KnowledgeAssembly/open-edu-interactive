@@ -1,0 +1,143 @@
+{
+  "a11y": [
+    {
+      "id": "fc",
+      "role": "group",
+      "label": "fc",
+      "children": [
+        {
+          "id": "fc-sectors",
+          "role": "group",
+          "label": "fc-sectors",
+          "children": [
+            {
+              "id": "fc-sector-0",
+              "role": "button",
+              "label": "fc-sector-0",
+              "children": []
+            },
+            {
+              "id": "fc-sector-1",
+              "role": "button",
+              "label": "fc-sector-1",
+              "children": []
+            },
+            {
+              "id": "fc-sector-2",
+              "role": "button",
+              "label": "fc-sector-2",
+              "children": []
+            },
+            {
+              "id": "fc-sector-3",
+              "role": "button",
+              "label": "fc-sector-3",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "fc-label",
+          "role": "img",
+          "label": "3/4",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "fc-sectors",
+      "role": "group",
+      "label": "fc-sectors",
+      "children": [
+        {
+          "id": "fc-sector-0",
+          "role": "button",
+          "label": "fc-sector-0",
+          "children": []
+        },
+        {
+          "id": "fc-sector-1",
+          "role": "button",
+          "label": "fc-sector-1",
+          "children": []
+        },
+        {
+          "id": "fc-sector-2",
+          "role": "button",
+          "label": "fc-sector-2",
+          "children": []
+        },
+        {
+          "id": "fc-sector-3",
+          "role": "button",
+          "label": "fc-sector-3",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "fc-sector-0",
+      "role": "button",
+      "label": "fc-sector-0",
+      "children": []
+    },
+    {
+      "id": "fc-sector-1",
+      "role": "button",
+      "label": "fc-sector-1",
+      "children": []
+    },
+    {
+      "id": "fc-sector-2",
+      "role": "button",
+      "label": "fc-sector-2",
+      "children": []
+    },
+    {
+      "id": "fc-sector-3",
+      "role": "button",
+      "label": "fc-sector-3",
+      "children": []
+    },
+    {
+      "id": "fc-label",
+      "role": "img",
+      "label": "3/4",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "fc-sector-0",
+      "action": "select"
+    },
+    {
+      "id": "fc-sector-0",
+      "action": "focus"
+    },
+    {
+      "id": "fc-sector-1",
+      "action": "select"
+    },
+    {
+      "id": "fc-sector-1",
+      "action": "focus"
+    },
+    {
+      "id": "fc-sector-2",
+      "action": "select"
+    },
+    {
+      "id": "fc-sector-2",
+      "action": "focus"
+    },
+    {
+      "id": "fc-sector-3",
+      "action": "select"
+    },
+    {
+      "id": "fc-sector-3",
+      "action": "focus"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ export interface ProjectorOptions {
 }
 
 export function makeProjector(
-  type: 'equirectangular',
+  _type: 'equirectangular',
   width: number,
   height: number,
   options?: ProjectorOptions,

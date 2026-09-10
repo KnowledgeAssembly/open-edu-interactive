@@ -10,6 +10,10 @@ const schema = JSON.parse(readFileSync(SCHEMA_URL, 'utf8')) as {
 };
 
 describe('schema parity guardrail — visual', () => {
+  it('includes fraction-circle in VISUAL_KINDS', () => {
+    expect(VISUAL_KINDS).toContain('fraction-circle');
+  });
+
   it('content.kind.enum (sorted) matches VISUAL_KINDS (sorted)', () => {
     const kinds: string[] = (schema.properties?.kind as { enum?: string[] })?.enum ?? [];
     expect([...kinds].sort()).toEqual([...VISUAL_KINDS].sort());

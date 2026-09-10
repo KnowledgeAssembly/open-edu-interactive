@@ -1,0 +1,35 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "geometry-practice",
+  "purpose": {
+    "learningObjective": "Identify geometric shapes and their properties",
+    "interactionGoal": "Select the hexagon",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "geometry",
+    "components": [
+      {
+        "id": "tri",
+        "type": "geometry",
+        "props": { "shape": "triangle", "interactive": true, "highlight": true }
+      },
+      {
+        "id": "hex",
+        "type": "geometry",
+        "props": { "shape": "hexagon", "interactive": true, "highlight": true }
+      },
+      {
+        "id": "sq",
+        "type": "geometry",
+        "props": { "shape": "square", "interactive": true, "highlight": true }
+      }
+    ]
+  },
+  "accessibility": {
+    "label": "Three geometric shapes",
+    "description": "Three shapes are shown side by side. Select the hexagon."
+  },
+  "interaction": { "mode": "identify", "actions": ["select", "focus", "reset"] }
+}

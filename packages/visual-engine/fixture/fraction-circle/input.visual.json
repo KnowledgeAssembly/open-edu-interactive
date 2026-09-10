@@ -1,0 +1,28 @@
+{
+  "type": "visual",
+  "version": "1.0.0",
+  "id": "fraction-circle-practice",
+  "purpose": {
+    "learningObjective": "Identify three quarters on a circle",
+    "interactionGoal": "Select three of four sectors",
+    "reasoningMode": "identify"
+  },
+  "content": {
+    "kind": "fraction-circle",
+    "components": [{
+      "id": "fc",
+      "type": "fraction-circle",
+      "props": {
+        "numerator": 3,
+        "denominator": 4,
+        "interactive": true,
+        "highlightedParts": [0, 1, 2]
+      }
+    }]
+  },
+  "accessibility": {
+    "label": "Circle divided into four equal parts",
+    "description": "Select three sectors that show three quarters."
+  },
+  "interaction": { "mode": "identify", "actions": ["select", "focus", "deselect", "reset"] }
+}
