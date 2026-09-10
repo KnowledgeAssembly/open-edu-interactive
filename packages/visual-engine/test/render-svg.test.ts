@@ -119,6 +119,8 @@ describe('svgFrom', () => {
     };
     const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
     expect(result.svg).toContain('data-oedu-interactive="true"');
+    expect(result.svg).toContain('data-oedu-hit-target="true"');
+    expect(result.svg).toContain('id="nl-label-5"');
   });
 
   it('renders emphasized text with font-weight bold', () => {

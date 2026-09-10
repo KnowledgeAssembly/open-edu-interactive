@@ -3092,7 +3092,7 @@ This allows KnowledgeAssemble to build a reusable visual infrastructure layer wh
 
 ## A.2 `interactive` prop semantics
 
-Each component accepts the optional `interactive: boolean` prop. When `true`, every structurally valid interaction target becomes selectable (markers, parts, hands, points, shape elements). Highlight props still control `metadata` but are not required for interactivity.
+Each component accepts the optional `interactive: boolean` prop. When `true`, every structurally valid interaction target for that kind becomes selectable (see A.3 — e.g. number-line labels/ticks, fraction parts, clock hands, grid points). Highlight props still control `metadata` but are not required for interactivity.
 
 ## A.3 Scene node id conventions
 
@@ -3106,7 +3106,7 @@ Each component accepts the optional `interactive: boolean` prop. When `true`, ev
 
 ## A.4 Practice fixtures
 
-See `packages/visual-engine/fixture/*-practice/` for guided and discovery examples, and `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md` for the full specification.
+See `packages/visual-engine/fixture/*-practice/` and `number-line-identify-marked` for guided and discovery examples, `docs/use-cases/visual.md` for learner scenarios, and `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md` for the full specification.
 
 ### A.4.1 Use case `nl-identify-marked`
 

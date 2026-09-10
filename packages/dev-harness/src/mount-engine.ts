@@ -51,6 +51,8 @@ function ensureInteractivePointerStyle(svgRoot: HTMLElement): void {
   style.textContent = `
 [data-oedu-interactive="true"] { cursor: pointer; }
 [data-oedu-selected="true"] { stroke: #1d4ed8 !important; stroke-width: 4 !important; }
+[data-oedu-selected="true"] text { fill: #1d4ed8; font-weight: 700; }
+[data-oedu-selected="true"] > rect[data-oedu-hit-target="true"] { fill: rgba(29, 78, 216, 0.12); stroke: #1d4ed8; stroke-width: 2; }
 [data-oedu-focused="true"] { outline: 2px solid #1d4ed8; outline-offset: 2px; }
 `.trim();
   svgRoot.appendChild(style);

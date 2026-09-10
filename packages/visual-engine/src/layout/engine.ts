@@ -98,9 +98,14 @@ function layoutNumberLine(node: SceneNode, ctx: LayoutContext): void {
 
     switch (child.role) {
       case 'tick': {
-        child.bounds = vertical
-          ? rect(cx - 6, cy - 1, 12, 2)
-          : rect(cx - 1, cy - 6, 2, 12);
+        if (child.interactive) {
+          const size = Math.max(ctx.minTouchTarget, 12);
+          child.bounds = rect(cx - size / 2, cy - size / 2, size, size);
+        } else {
+          child.bounds = vertical
+            ? rect(cx - 6, cy - 1, 12, 2)
+            : rect(cx - 1, cy - 6, 2, 12);
+        }
         break;
       }
       case 'number': {

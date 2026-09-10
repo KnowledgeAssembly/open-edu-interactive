@@ -61,7 +61,7 @@ Reference UX: OpenEdu `math.number-line` widget (place + snap). Engine targets *
 | **Action** | Select the emphasized tick/label (or the only marked position). |
 | **Acceptance** | One visible emphasis (stroke, pointer, or label weight); other positions are **ticks/labels only**, not identical filled circles; all tick labels remain selectable hit targets if discovery requires distractors. |
 | **Spec** | `interactive: true` + `highlight: [n]` where highlight is **presentation only**; candidates are tick/label nodes, not `{id}-marker-{v}` filled circles for every `v`. |
-| **Fixture** | `number-line-identify-marked` (planned; replace `number-line-practice`) |
+| **Fixture** | `number-line-identify-marked` |
 | **Host** | Answer key: value `n` matching emphasis. |
 | **Status** | `done` |
 

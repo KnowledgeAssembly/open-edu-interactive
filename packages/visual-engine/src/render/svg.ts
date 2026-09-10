@@ -60,13 +60,27 @@ function nodeToSvg(node: SceneNode, indent: number): string {
       }
       return `${pad}<line ${attrs} x1="${b.x}" y1="${cy}" x2="${b.x + b.width}" y2="${cy}" stroke="currentColor" stroke-width="2"/>`;
     }
-    case 'tick':
+    case 'tick': {
+      const tickLine = `${pad}  <line x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y + b.height}" stroke="currentColor" stroke-width="1"/>`;
+      if (node.interactive) {
+        return `${pad}<g ${attrs}>
+${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+${tickLine}
+${pad}</g>`;
+      }
       return `${pad}<line ${attrs} x1="${cx}" y1="${b.y}" x2="${cx}" y2="${b.y + b.height}" stroke="currentColor" stroke-width="1"/>`;
+    }
     case 'text': {
       const isEmphasized = (node.metadata as Record<string, unknown> | undefined)?.emphasized === true;
-      let textAttrs = attrs;
-      if (isEmphasized) textAttrs += ` font-weight="bold"`;
-      return `${pad}<text ${textAttrs} x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central">${escapeXml(node.label ?? String(node.value ?? ''))}</text>`;
+      const label = escapeXml(node.label ?? String(node.value ?? ''));
+      const textInner = `${pad}  <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"${isEmphasized ? ' font-weight="bold"' : ''}>${label}</text>`;
+      if (node.interactive) {
+        return `${pad}<g ${attrs}>
+${pad}  <rect x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" fill="transparent" data-oedu-hit-target="true" aria-hidden="true"/>
+${textInner}
+${pad}</g>`;
+      }
+      return `${pad}<text ${attrs} x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"${isEmphasized ? ' font-weight="bold"' : ''}>${label}</text>`;
     }
     case 'circle':
       return `${pad}<circle ${attrs} cx="${cx}" cy="${cy}" r="${Math.max(4, Math.min(b.width, b.height) / 2)}" fill="${node.interactive ? 'currentColor' : 'transparent'}" stroke="currentColor" stroke-width="2"/>`;

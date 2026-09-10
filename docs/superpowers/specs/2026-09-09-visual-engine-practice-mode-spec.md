@@ -476,7 +476,7 @@ Full agent-ready task breakdown: **`docs/superpowers/specs/2026-09-09-visual-pra
 | `clock-practice` | `clock` | Guided `highlightHand: 'hour'` |
 | `coordinate-grid-practice` | `coordinate-grid` | Discovery `interactive: true` + distractor points |
 | `geometry-practice` | `geometry` | Multi-shape discovery (hexagon correct) |
-| `number-line-practice` | `number-line` | Discovery all markers (optional; can extend existing) |
+| `number-line-identify-marked` | `number-line` | Discovery label targets (`interactive: true`, `highlight` for emphasis) |
 
 Existing fixtures MUST keep passing **guided** behavior without `interactive: true`.
 

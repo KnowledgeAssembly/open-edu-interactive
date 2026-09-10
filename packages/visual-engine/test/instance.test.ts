@@ -103,6 +103,31 @@ describe('VisualEngine', () => {
     expect(nsEvent).toBeDefined();
   });
 
+  it('discovery number-line dispatches select on nl-label-7', () => {
+    const engine = new VisualEngine();
+    const events: Array<{ name: string }> = [];
+    const host = stubHost();
+    (host as unknown as { onEvent: (e: { name: string }) => void }).onEvent = (e) => { events.push(e); };
+    const spec = {
+      type: 'visual',
+      version: '1.0.0',
+      id: 'number-line-identify-marked-test',
+      content: {
+        kind: 'number-line',
+        components: [{
+          id: 'nl',
+          type: 'number-line',
+          props: { min: 0, max: 10, step: 1, interactive: true, highlight: [7] },
+        }],
+      },
+      accessibility: { label: 'Number line', description: 'Identify marked number' },
+    };
+    const instance = engine.instantiate(spec as never, host);
+    instance.dispatch({ type: 'select', target: { id: 'nl-label-7' } });
+    expect(instance.snapshot().selection).toContain('nl-label-7');
+    expect(events.some((e) => e.name === 'visual.nl-label-7-selected')).toBe(true);
+  });
+
   it('dispatch select on clock hour hand emits visual.ck-hour-hand-selected', () => {
     const engine = new VisualEngine();
     const events: Array<{ name: string }> = [];
