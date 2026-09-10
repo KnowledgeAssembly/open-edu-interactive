@@ -24,14 +24,35 @@ describe('number-line practice', () => {
     expect(interactiveIds(nodes)).toEqual(['nl-marker-2']);
   });
 
-  it('discovery: all step markers interactive when interactive true', () => {
+  it('discovery: label targets interactive, not marker circles', () => {
     const nodes = createNumberLine(
       { min: 0, max: 3, step: 1, interactive: true, highlight: [2] },
       'nl',
     );
     expect(interactiveIds(nodes)).toEqual([
-      'nl-marker-0', 'nl-marker-1', 'nl-marker-2', 'nl-marker-3',
+      'nl-label-0', 'nl-label-1', 'nl-label-2', 'nl-label-3',
     ]);
+    const markers = nodes.filter((n) => n.role === 'marker');
+    expect(markers).toHaveLength(0);
+  });
+
+  it('discovery: emphasized highlight metadata on labels', () => {
+    const nodes = createNumberLine(
+      { min: 0, max: 3, step: 1, interactive: true, highlight: [2] },
+      'nl',
+    );
+    const label2 = nodes.find((n) => n.id === 'nl-label-2');
+    expect(label2?.metadata?.emphasized).toBe(true);
+    const label0 = nodes.find((n) => n.id === 'nl-label-0');
+    expect(label0?.metadata?.emphasized).toBeFalsy();
+  });
+
+  it('discovery without labels: tick targets interactive', () => {
+    const nodes = createNumberLine(
+      { min: 0, max: 2, step: 1, interactive: true, showLabels: false },
+      'nl',
+    );
+    expect(interactiveIds(nodes)).toEqual(['nl-tick-0', 'nl-tick-1', 'nl-tick-2']);
   });
 });
 

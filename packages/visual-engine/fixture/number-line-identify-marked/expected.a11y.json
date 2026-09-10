@@ -19,7 +19,7 @@
         },
         {
           "id": "nl-label-0",
-          "role": "img",
+          "role": "button",
           "label": "0",
           "children": []
         },
@@ -31,7 +31,7 @@
         },
         {
           "id": "nl-label-1",
-          "role": "img",
+          "role": "button",
           "label": "1",
           "children": []
         },
@@ -43,7 +43,7 @@
         },
         {
           "id": "nl-label-2",
-          "role": "img",
+          "role": "button",
           "label": "2",
           "children": []
         },
@@ -55,7 +55,7 @@
         },
         {
           "id": "nl-label-3",
-          "role": "img",
+          "role": "button",
           "label": "3",
           "children": []
         },
@@ -67,7 +67,7 @@
         },
         {
           "id": "nl-label-4",
-          "role": "img",
+          "role": "button",
           "label": "4",
           "children": []
         },
@@ -79,7 +79,7 @@
         },
         {
           "id": "nl-label-5",
-          "role": "img",
+          "role": "button",
           "label": "5",
           "children": []
         },
@@ -91,7 +91,7 @@
         },
         {
           "id": "nl-label-6",
-          "role": "img",
+          "role": "button",
           "label": "6",
           "children": []
         },
@@ -103,7 +103,7 @@
         },
         {
           "id": "nl-label-7",
-          "role": "img",
+          "role": "button",
           "label": "7",
           "children": []
         },
@@ -115,7 +115,7 @@
         },
         {
           "id": "nl-label-8",
-          "role": "img",
+          "role": "button",
           "label": "8",
           "children": []
         },
@@ -127,7 +127,7 @@
         },
         {
           "id": "nl-label-9",
-          "role": "img",
+          "role": "button",
           "label": "9",
           "children": []
         },
@@ -139,74 +139,8 @@
         },
         {
           "id": "nl-label-10",
-          "role": "img",
+          "role": "button",
           "label": "10",
-          "children": []
-        },
-        {
-          "id": "nl-marker-0",
-          "role": "button",
-          "label": "nl-marker-0",
-          "children": []
-        },
-        {
-          "id": "nl-marker-1",
-          "role": "button",
-          "label": "nl-marker-1",
-          "children": []
-        },
-        {
-          "id": "nl-marker-2",
-          "role": "button",
-          "label": "nl-marker-2",
-          "children": []
-        },
-        {
-          "id": "nl-marker-3",
-          "role": "button",
-          "label": "nl-marker-3",
-          "children": []
-        },
-        {
-          "id": "nl-marker-4",
-          "role": "button",
-          "label": "nl-marker-4",
-          "children": []
-        },
-        {
-          "id": "nl-marker-5",
-          "role": "button",
-          "label": "nl-marker-5",
-          "children": []
-        },
-        {
-          "id": "nl-marker-6",
-          "role": "button",
-          "label": "nl-marker-6",
-          "children": []
-        },
-        {
-          "id": "nl-marker-7",
-          "role": "button",
-          "label": "nl-marker-7",
-          "children": []
-        },
-        {
-          "id": "nl-marker-8",
-          "role": "button",
-          "label": "nl-marker-8",
-          "children": []
-        },
-        {
-          "id": "nl-marker-9",
-          "role": "button",
-          "label": "nl-marker-9",
-          "children": []
-        },
-        {
-          "id": "nl-marker-10",
-          "role": "button",
-          "label": "nl-marker-10",
           "children": []
         }
       ]
@@ -225,7 +159,7 @@
     },
     {
       "id": "nl-label-0",
-      "role": "img",
+      "role": "button",
       "label": "0",
       "children": []
     },
@@ -237,7 +171,7 @@
     },
     {
       "id": "nl-label-1",
-      "role": "img",
+      "role": "button",
       "label": "1",
       "children": []
     },
@@ -249,7 +183,7 @@
     },
     {
       "id": "nl-label-2",
-      "role": "img",
+      "role": "button",
       "label": "2",
       "children": []
     },
@@ -261,7 +195,7 @@
     },
     {
       "id": "nl-label-3",
-      "role": "img",
+      "role": "button",
       "label": "3",
       "children": []
     },
@@ -273,7 +207,7 @@
     },
     {
       "id": "nl-label-4",
-      "role": "img",
+      "role": "button",
       "label": "4",
       "children": []
     },
@@ -285,7 +219,7 @@
     },
     {
       "id": "nl-label-5",
-      "role": "img",
+      "role": "button",
       "label": "5",
       "children": []
     },
@@ -297,7 +231,7 @@
     },
     {
       "id": "nl-label-6",
-      "role": "img",
+      "role": "button",
       "label": "6",
       "children": []
     },
@@ -309,7 +243,7 @@
     },
     {
       "id": "nl-label-7",
-      "role": "img",
+      "role": "button",
       "label": "7",
       "children": []
     },
@@ -321,7 +255,7 @@
     },
     {
       "id": "nl-label-8",
-      "role": "img",
+      "role": "button",
       "label": "8",
       "children": []
     },
@@ -333,7 +267,7 @@
     },
     {
       "id": "nl-label-9",
-      "role": "img",
+      "role": "button",
       "label": "9",
       "children": []
     },
@@ -345,164 +279,98 @@
     },
     {
       "id": "nl-label-10",
-      "role": "img",
+      "role": "button",
       "label": "10",
-      "children": []
-    },
-    {
-      "id": "nl-marker-0",
-      "role": "button",
-      "label": "nl-marker-0",
-      "children": []
-    },
-    {
-      "id": "nl-marker-1",
-      "role": "button",
-      "label": "nl-marker-1",
-      "children": []
-    },
-    {
-      "id": "nl-marker-2",
-      "role": "button",
-      "label": "nl-marker-2",
-      "children": []
-    },
-    {
-      "id": "nl-marker-3",
-      "role": "button",
-      "label": "nl-marker-3",
-      "children": []
-    },
-    {
-      "id": "nl-marker-4",
-      "role": "button",
-      "label": "nl-marker-4",
-      "children": []
-    },
-    {
-      "id": "nl-marker-5",
-      "role": "button",
-      "label": "nl-marker-5",
-      "children": []
-    },
-    {
-      "id": "nl-marker-6",
-      "role": "button",
-      "label": "nl-marker-6",
-      "children": []
-    },
-    {
-      "id": "nl-marker-7",
-      "role": "button",
-      "label": "nl-marker-7",
-      "children": []
-    },
-    {
-      "id": "nl-marker-8",
-      "role": "button",
-      "label": "nl-marker-8",
-      "children": []
-    },
-    {
-      "id": "nl-marker-9",
-      "role": "button",
-      "label": "nl-marker-9",
-      "children": []
-    },
-    {
-      "id": "nl-marker-10",
-      "role": "button",
-      "label": "nl-marker-10",
       "children": []
     }
   ],
   "interactive": [
     {
-      "id": "nl-marker-0",
+      "id": "nl-label-0",
       "action": "select"
     },
     {
-      "id": "nl-marker-0",
+      "id": "nl-label-0",
       "action": "focus"
     },
     {
-      "id": "nl-marker-1",
+      "id": "nl-label-1",
       "action": "select"
     },
     {
-      "id": "nl-marker-1",
+      "id": "nl-label-1",
       "action": "focus"
     },
     {
-      "id": "nl-marker-2",
+      "id": "nl-label-2",
       "action": "select"
     },
     {
-      "id": "nl-marker-2",
+      "id": "nl-label-2",
       "action": "focus"
     },
     {
-      "id": "nl-marker-3",
+      "id": "nl-label-3",
       "action": "select"
     },
     {
-      "id": "nl-marker-3",
+      "id": "nl-label-3",
       "action": "focus"
     },
     {
-      "id": "nl-marker-4",
+      "id": "nl-label-4",
       "action": "select"
     },
     {
-      "id": "nl-marker-4",
+      "id": "nl-label-4",
       "action": "focus"
     },
     {
-      "id": "nl-marker-5",
+      "id": "nl-label-5",
       "action": "select"
     },
     {
-      "id": "nl-marker-5",
+      "id": "nl-label-5",
       "action": "focus"
     },
     {
-      "id": "nl-marker-6",
+      "id": "nl-label-6",
       "action": "select"
     },
     {
-      "id": "nl-marker-6",
+      "id": "nl-label-6",
       "action": "focus"
     },
     {
-      "id": "nl-marker-7",
+      "id": "nl-label-7",
       "action": "select"
     },
     {
-      "id": "nl-marker-7",
+      "id": "nl-label-7",
       "action": "focus"
     },
     {
-      "id": "nl-marker-8",
+      "id": "nl-label-8",
       "action": "select"
     },
     {
-      "id": "nl-marker-8",
+      "id": "nl-label-8",
       "action": "focus"
     },
     {
-      "id": "nl-marker-9",
+      "id": "nl-label-9",
       "action": "select"
     },
     {
-      "id": "nl-marker-9",
+      "id": "nl-label-9",
       "action": "focus"
     },
     {
-      "id": "nl-marker-10",
+      "id": "nl-label-10",
       "action": "select"
     },
     {
-      "id": "nl-marker-10",
+      "id": "nl-label-10",
       "action": "focus"
     }
   ]

@@ -28,8 +28,8 @@
     <path id="cg-gridline-y-9" data-oedu-role="marker" data-oedu-value="4" data-oedu-bounds="48,198.2,704,2" d="M48,199.2 L752,199.2" stroke="currentColor" stroke-width="2" fill="none"/>
     <path id="cg-gridline-y-10" data-oedu-role="marker" data-oedu-value="5" data-oedu-bounds="48,173,704,2" d="M48,174 L752,174" stroke="currentColor" stroke-width="2" fill="none"/>
     <circle id="cg-point-target" data-oedu-role="marker" data-oedu-value="1" data-oedu-interactive="true" data-oedu-bounds="430.2,244.6,10,10" cx="435.2" cy="249.6" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/>
-    <circle id="cg-point-distractor-a" data-oedu-role="marker" data-oedu-value="-3" data-oedu-interactive="true" data-oedu-bounds="289.4,194.2,10,10" cx="294.4" cy="199.2" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/>
-    <circle id="cg-point-distractor-b" data-oedu-role="marker" data-oedu-value="0" data-oedu-interactive="true" data-oedu-bounds="395,345.4,10,10" cx="400" cy="350.4" r="5" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <circle id="cg-point-distractor-a" data-oedu-role="marker" data-oedu-value="-3" data-oedu-bounds="289.4,194.2,10,10" cx="294.4" cy="199.2" r="5" fill="transparent" stroke="currentColor" stroke-width="2"/>
+    <circle id="cg-point-distractor-b" data-oedu-role="marker" data-oedu-value="0" data-oedu-bounds="395,345.4,10,10" cx="400" cy="350.4" r="5" fill="transparent" stroke="currentColor" stroke-width="2"/>
   </g>
   </g>
 </svg>

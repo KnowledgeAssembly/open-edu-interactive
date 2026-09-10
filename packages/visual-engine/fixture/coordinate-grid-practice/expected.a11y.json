@@ -157,13 +157,13 @@
         },
         {
           "id": "cg-point-distractor-a",
-          "role": "button",
+          "role": "img",
           "label": "cg-point-distractor-a",
           "children": []
         },
         {
           "id": "cg-point-distractor-b",
-          "role": "button",
+          "role": "img",
           "label": "cg-point-distractor-b",
           "children": []
         }
@@ -321,13 +321,13 @@
     },
     {
       "id": "cg-point-distractor-a",
-      "role": "button",
+      "role": "img",
       "label": "cg-point-distractor-a",
       "children": []
     },
     {
       "id": "cg-point-distractor-b",
-      "role": "button",
+      "role": "img",
       "label": "cg-point-distractor-b",
       "children": []
     }
@@ -339,22 +339,6 @@
     },
     {
       "id": "cg-point-target",
-      "action": "focus"
-    },
-    {
-      "id": "cg-point-distractor-a",
-      "action": "select"
-    },
-    {
-      "id": "cg-point-distractor-a",
-      "action": "focus"
-    },
-    {
-      "id": "cg-point-distractor-b",
-      "action": "select"
-    },
-    {
-      "id": "cg-point-distractor-b",
       "action": "focus"
     }
   ]

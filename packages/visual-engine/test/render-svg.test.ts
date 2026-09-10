@@ -1,6 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { svgFrom } from '../src/render/svg.js';
-import type { Scene } from '../src/scene/types.js';
+import type { SceneNode, Scene } from '../src/scene/types.js';
+
+function makeInteractiveLabel(id: string, value: number, emphasized?: boolean): SceneNode {
+  return {
+    id, role: 'number', kind: 'text', value, label: String(value),
+    interactive: true, acceptsActions: ['select', 'focus'],
+    metadata: emphasized ? { emphasized: true } : undefined,
+    bounds: { x: 20, y: 20, width: 44, height: 44 },
+    children: [],
+  };
+}
 
 describe('svgFrom', () => {
   it('produces valid SVG output', () => {
@@ -100,5 +110,36 @@ describe('svgFrom', () => {
     const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
     expect(result.svg).toContain('<path');
     expect(result.svg).toContain('data-oedu-role="fraction-part"');
+  });
+
+  it('renders interactive text with data-oedu-interactive attribute', () => {
+    const scene: Scene = {
+      nodes: [makeInteractiveLabel('nl-label-5', 5)],
+      semantics: {},
+    };
+    const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    expect(result.svg).toContain('data-oedu-interactive="true"');
+  });
+
+  it('renders emphasized text with font-weight bold', () => {
+    const scene: Scene = {
+      nodes: [makeInteractiveLabel('nl-label-7', 7, true)],
+      semantics: {},
+    };
+    const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    expect(result.svg).toContain('font-weight="bold"');
+  });
+
+  it('discovery SVG text labels have no marker circles', () => {
+    const scene: Scene = {
+      nodes: [
+        makeInteractiveLabel('nl-label-0', 0),
+        makeInteractiveLabel('nl-label-1', 1),
+      ],
+      semantics: {},
+    };
+    const result = svgFrom(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    const circleMatches = result.svg.match(/data-oedu-role="marker"/g) ?? [];
+    expect(circleMatches).toHaveLength(0);
   });
 });

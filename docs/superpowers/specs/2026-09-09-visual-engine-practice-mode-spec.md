@@ -1,11 +1,14 @@
 # Visual Engine Practice-Mode Spec
 
 **Date:** 2026-09-09  
-**Status:** Ready for implementation  
+**Status:** Implemented (contract); UX superseded by use-case catalog  
 **Implementation plan:** `docs/superpowers/specs/2026-09-09-visual-practice-mode-implementation-plan.md`  
+**Use cases (canonical UX):** `docs/use-cases/visual.md`  
 **Scope:** All 10 visual `content.kind` values (9 existing + new `fraction-circle`)  
 **Depends on:** P0–P7 gates (done); P8 Workstream A layout/render baseline (green on branch)  
 **Plan home:** derive `docs/PLAN-P8.md` Workstream A follow-up or dedicated Visual practice slice (record in `PLAN.md` §11 when scheduled)
+
+> **UX authority.** Discovery/guided mechanics and event ids below remain normative for implementers. **What the learner sees** (e.g. number-line: no filled marker on every tick) is defined in `docs/use-cases/visual.md`. When this spec and the catalog disagree, update this spec or the catalog — do not ship playground-only fixes.
 
 ---
 
@@ -96,7 +99,7 @@ Kinds that already use `interactive` (`comparison`, `fraction-comparison`, `illu
 
 | Kind | Guided (legacy) | Discovery (`interactive: true`) | New/changed props |
 |------|-----------------|--------------------------------|-------------------|
-| `number-line` | `highlight: [n]` → markers at n | Every integer step: `{id}-marker-{v}` OR tick+label targets (see §4.1) | Remove dead props |
+| `number-line` | `highlight: [n]` → markers at n | `{id}-label-{v}` (or `{id}-tick-{v}` if `showLabels: false`); no marker circles; `highlight` → `metadata.emphasized` only (see §4.1) | Remove dead props |
 | `counting-set` | `highlight: [indices]` | All `{id}-object-{i}` for `i in 0..count-1` | — |
 | `fraction` | `highlightedParts: [i]` | All `{id}-part-{i}` | Remove `orientation` |
 | `fraction-circle` | **new** same as fraction | All `{id}-sector-{i}` | New kind |
@@ -113,7 +116,7 @@ Kinds that already use `interactive` (`comparison`, `fraction-comparison`, `illu
 
 **Remove dead props:** `majorStep`, `rangeHighlight` (from component props and content-level duplicates if present).
 
-**Candidates when `interactive: true`:** For each integer `v` in `[min, max]` step `step`, create `{parentId}-marker-{v}` with `interactive: true` (same ids as guided highlights). Ticks/labels remain inert unless future spec adds `selectableTicks` — v1 uses markers only.
+**Candidates when `interactive: true`:** For each integer `v` in range, `{parentId}-label-{v}` (or `{parentId}-tick-{v}` when `showLabels: false`) with `interactive: true`. Do **not** emit `{parentId}-marker-{v}` in discovery. `highlight` sets `metadata.emphasized` only.
 
 **Guided:** `highlight: [7]` → only `nl-marker-7` interactive (unchanged).
 

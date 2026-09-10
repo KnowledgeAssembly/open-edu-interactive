@@ -1,5 +1,11 @@
 # Educational Visual Engine — AI Authoring Skill
 
+## References
+
+- **Use-case catalog:** `docs/use-cases/visual.md` — canonical UX for each kind
+- **Practice-mode spec:** `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md`
+- **Implementation plan:** `docs/superpowers/specs/2026-09-10-visual-use-cases-implementation-plan.md`
+
 ## When to use
 
 Use the Visual Engine when you need to create an interactive educational visualization. The Visual Engine supports these kinds (set `content.kind`):
@@ -36,7 +42,21 @@ The `interactive` prop on components enables two modes:
 }
 ```
 
-All markers `nl-marker-0` through `nl-marker-10` become selectable (event: `visual.nl-marker-{v}-selected`).
+**Rule:** In discovery mode, labels (or ticks when `showLabels: false`) become the interactive targets — not marker circles. Each step produces `{parentId}-label-{v}` with `interactive: true`; `highlight` controls `metadata.emphasized` only. Do **not** set `interactive: true` expecting a marker per step — the engine emits label targets instead.
+
+Events: `visual.nl-label-7-selected` (label target, not `nl-marker-7`).
+
+### Guided example — number-line
+
+```json
+{
+  "id": "nl",
+  "type": "number-line",
+  "props": { "min": 0, "max": 10, "step": 1, "highlight": [7] }
+}
+```
+
+Only `nl-marker-7` is interactive. Event: `visual.nl-marker-7-selected`.
 
 ### Guided example — clock
 
@@ -53,7 +73,8 @@ Only the hour hand `ck-hour-hand` is selectable (event: `visual.ck-hour-hand-sel
 ### Event convention
 
 Every select emits a namespaced event: `visual.{sceneNodeId}-selected`. The `sceneNodeId` follows the pattern:
-- `{componentId}-marker-{v}` (number-line)
+- `{componentId}-marker-{v}` (number-line guided)
+- `{componentId}-label-{v}` (number-line discovery; `{componentId}-tick-{v}` when `showLabels: false`)
 - `{componentId}-object-{i}` (counting-set)
 - `{componentId}-part-{i}` (fraction bar)
 - `{componentId}-sector-{i}` (fraction-circle)

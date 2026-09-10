@@ -10,9 +10,10 @@ Shared infrastructure that turns declarative, renderer-independent JSON into int
 
 ## Reading order (source of truth)
 
-`docs/DESIGN.md` → `docs/INTERACTIVE-ENGINE-SPEC.md` → engine `SPEC.md` / `VISION.md` → (Visual) `engines/visual/ARCHITECTURE.md` is the engine's **implementation** guide. System-level architecture and integration/extending guidance live in `docs/SYSTEM-ARCHITECTURE.md` and `docs/DEVELOPER-GUIDE.md` (after the contract).
+`docs/DESIGN.md` → `docs/use-cases/<engine>.md` (learner scenarios before props) → `docs/INTERACTIVE-ENGINE-SPEC.md` → engine `SPEC.md` / `VISION.md` → (Visual) `engines/visual/ARCHITECTURE.md` is the engine's **implementation** guide. System-level architecture and integration/extending guidance live in `docs/SYSTEM-ARCHITECTURE.md` and `docs/DEVELOPER-GUIDE.md` (after the contract).
 
 - **DESIGN.md** — canonical. System-wide principles (P1–P12), decisions D1–D9 (§16). Every change must trace back to it.
+- **use-cases/** — learner scenarios, acceptance criteria, fixture names; derive specs from these, not prop matrices.
 - **INTERACTIVE-ENGINE-SPEC.md** — shared contract: vocabulary (§7.1), state/events (§7.2), lifecycle (§7.3), D5 actions (§7.4), error codes (§67), spec hierarchy (§91).
 - **SYSTEM-ARCHITECTURE.md** — system-level architecture (system-wide, distinct from an engine's own `engines/<engine>/ARCHITECTURE.md`).
 - **DEVELOPER-GUIDE.md** — how to integrate and extend; how-to layer below the contract.

@@ -1,10 +1,10 @@
 {
   "type": "visual",
   "version": "1.0.0",
-  "id": "number-line-practice",
+  "id": "number-line-identify-marked",
   "purpose": {
-    "learningObjective": "Identify values on a number line",
-    "interactionGoal": "Select values on the number line",
+    "learningObjective": "Identify a marked value on a number line",
+    "interactionGoal": "Select the number that is emphasized",
     "reasoningMode": "identify"
   },
   "content": {
@@ -17,7 +17,7 @@
   },
   "accessibility": {
     "label": "Number line from zero to ten",
-    "description": "Select the highlighted value 7."
+    "description": "Select the emphasized number."
   },
   "interaction": { "mode": "identify", "actions": ["select", "focus", "deselect", "reset"] }
 }

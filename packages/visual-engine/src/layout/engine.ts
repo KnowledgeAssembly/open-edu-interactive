@@ -106,9 +106,16 @@ function layoutNumberLine(node: SceneNode, ctx: LayoutContext): void {
       case 'number': {
         const w = 28;
         const h = 18;
-        child.bounds = vertical
-          ? rect(cx + 12, cy - h / 2, w, h)
-          : rect(cx - w / 2, cy + 14, w, h);
+        if (child.interactive) {
+          const size = Math.max(ctx.minTouchTarget, w);
+          child.bounds = vertical
+            ? rect(cx + 12, cy - size / 2, size, size)
+            : rect(cx - size / 2, cy + 14, size, size);
+        } else {
+          child.bounds = vertical
+            ? rect(cx + 12, cy - h / 2, w, h)
+            : rect(cx - w / 2, cy + 14, w, h);
+        }
         break;
       }
       case 'marker': {

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "id": "coordinate-grid-practice",
   "purpose": {
-    "learningObjective": "Identify points on a coordinate grid",
-    "interactionGoal": "Select points on the grid",
+    "learningObjective": "Select a target point on a coordinate grid",
+    "interactionGoal": "Select the target point on the grid",
     "reasoningMode": "identify"
   },
   "content": {
@@ -15,7 +15,6 @@
       "props": {
         "x": { "min": -5, "max": 5, "step": 1 },
         "y": { "min": -5, "max": 5, "step": 1 },
-        "interactive": true,
         "points": [
           { "x": 1, "y": 2, "id": "target" },
           { "x": -3, "y": 4, "id": "distractor-a" },

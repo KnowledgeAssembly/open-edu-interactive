@@ -3096,9 +3096,9 @@ Each component accepts the optional `interactive: boolean` prop. When `true`, ev
 
 ## A.3 Scene node id conventions
 
-| Kind | Shape/Group | Children |
-|------|-------------|----------|
-| `number-line` | `{id}-axis` | `{id}-marker-{v}`, `{id}-tick-{v}`, `{id}-label-{v}` |
+| Kind | Shape/Group | Children (guided) | Discovery interactive targets |
+|------|-------------|-------------------|-------------------------------|
+| `number-line` | `{id}-axis` | `{id}-marker-{v}` (highlighted only) | `{id}-label-{v}` or `{id}-tick-{v}` (when `showLabels: false`) |
 | `clock` | `{id}-face` | `{id}-hour-hand`, `{id}-minute-hand`, `{id}-number-{n}` |
 | `coordinate-grid` | `{id}-x-axis`, `{id}-y-axis` | `{id}-point-{pointId}`, `{id}-gridline-x-{i}`, `{id}-gridline-y-{i}` |
 | `geometry` | `{id}-shape` | `{id}-shape-vertex-{i}`, `{id}-shape-side-{i}` |
@@ -3107,3 +3107,10 @@ Each component accepts the optional `interactive: boolean` prop. When `true`, ev
 ## A.4 Practice fixtures
 
 See `packages/visual-engine/fixture/*-practice/` for guided and discovery examples, and `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md` for the full specification.
+
+### A.4.1 Use case `nl-identify-marked`
+
+Discovery fixture `number-line-identify-marked` (`packages/visual-engine/fixture/number-line-identify-marked/`):
+- `interactive: true` → labels are interactive targets (not marker circles)
+- `highlight: [7]` → `metadata.emphasized: true` on `nl-label-7` (bold text)
+- No `{id}-marker-{v}` nodes are emitted in discovery mode

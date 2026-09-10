@@ -634,11 +634,6 @@
             "x": -3,
             "y": 4
           },
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": [],
           "bounds": {
             "x": 289.4,
@@ -656,11 +651,6 @@
             "x": 0,
             "y": -2
           },
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": [],
           "bounds": {
             "x": 395,
@@ -1307,11 +1297,6 @@
             "x": -3,
             "y": 4
           },
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": [],
           "bounds": {
             "x": 289.4,
@@ -1329,11 +1314,6 @@
             "x": 0,
             "y": -2
           },
-          "interactive": true,
-          "acceptsActions": [
-            "select",
-            "focus"
-          ],
           "children": [],
           "bounds": {
             "x": 395,
@@ -1973,11 +1953,6 @@
         "x": -3,
         "y": 4
       },
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
       "children": [],
       "bounds": {
         "x": 289.4,
@@ -1995,11 +1970,6 @@
         "x": 0,
         "y": -2
       },
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
       "children": [],
       "bounds": {
         "x": 395,

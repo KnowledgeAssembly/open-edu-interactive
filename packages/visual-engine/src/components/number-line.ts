@@ -9,6 +9,7 @@ export interface NumberLineProps {
   direction?: 'horizontal' | 'vertical';
   points?: number[];
   highlight?: number[];
+  interactive?: boolean;
 }
 
 export function createNumberLine(props: Record<string, unknown>, parentId: string): SceneNode[] {
@@ -66,10 +67,31 @@ export function createNumberLine(props: Record<string, unknown>, parentId: strin
       });
     }
 
-    // Marker: interactive if discovery (all values) or if in highlight set
+    // Marker/Interactive logic
     const isHighlighted = highlightSet?.has(v) ?? false;
-    const isSelectable = discovery || isHighlighted;
-    if (isSelectable) {
+
+    if (discovery) {
+      // Discovery: no marker circles. Labels (or ticks) are interactive targets.
+      if (showLabels) {
+        const labelNode = nodes.find((n) => n.id === `${parentId}-label-${v}`);
+        if (labelNode) {
+          labelNode.interactive = true;
+          labelNode.acceptsActions = ['select', 'focus'];
+          if (isHighlighted) {
+            labelNode.metadata = { ...labelNode.metadata, emphasized: true };
+          }
+        }
+      } else {
+        const tickNode = nodes.find((n) => n.id === `${parentId}-tick-${v}`);
+        if (tickNode) {
+          tickNode.interactive = true;
+          tickNode.acceptsActions = ['select', 'focus'];
+          if (isHighlighted) {
+            tickNode.metadata = { ...tickNode.metadata, emphasized: true };
+          }
+        }
+      }
+    } else if (isHighlighted) {
       markers.push({
         id: `${parentId}-marker-${v}`,
         role: 'marker',

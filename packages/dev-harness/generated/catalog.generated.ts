@@ -343,17 +343,17 @@ export const catalog = [
     "title": "number-line"
   },
   {
-    "id": "visual/number-line-practice",
+    "id": "visual/number-line-identify-marked",
     "kind": "engine",
     "engine": "visual",
-    "slug": "number-line-practice",
-    "specPath": "packages/visual-engine/fixture/number-line-practice/input.visual.json",
+    "slug": "number-line-identify-marked",
+    "specPath": "packages/visual-engine/fixture/number-line-identify-marked/input.visual.json",
     "golden": {
-      "scene": "packages/visual-engine/fixture/number-line-practice/expected.scene.json",
-      "a11y": "packages/visual-engine/fixture/number-line-practice/expected.a11y.json",
-      "svg": "packages/visual-engine/fixture/number-line-practice/expected.svg"
+      "scene": "packages/visual-engine/fixture/number-line-identify-marked/expected.scene.json",
+      "a11y": "packages/visual-engine/fixture/number-line-identify-marked/expected.a11y.json",
+      "svg": "packages/visual-engine/fixture/number-line-identify-marked/expected.svg"
     },
-    "title": "number-line-practice"
+    "title": "number-line-identify-marked"
   },
   {
     "id": "lesson/narrative-timeline-visual",
