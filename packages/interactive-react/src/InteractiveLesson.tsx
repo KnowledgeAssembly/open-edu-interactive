@@ -8,10 +8,13 @@ import { TimelineEngine } from '@knowledgeassemble/timeline-engine';
 import { DiagramEngine } from '@knowledgeassemble/diagram-engine';
 import type { OpenEduBridge } from './bridge.js';
 import { bridgeToHost } from './bridge.js';
+import { ensureInteractivePointerStyle, syncSvgSurface, bindSvgInteraction } from './svg-surface.js';
+import type { SvgSurfaceSnapshot } from './svg-surface.js';
 
 export interface InteractiveLessonProps {
   lesson: unknown;
   host: OpenEduBridge;
+  controlsMode?: 'learner' | 'dev';
 }
 
 export interface InteractiveLessonHandle {
@@ -24,8 +27,11 @@ export interface InteractiveLessonHandle {
 export const InteractiveLesson = forwardRef<InteractiveLessonHandle, InteractiveLessonProps>(
   function InteractiveLesson({ lesson, host }: InteractiveLessonProps, ref) {
     const runtimeRef = useRef<LessonRuntime | null>(null);
+    const rootRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState<string | null>(null);
-    const [instanceContainers, setInstanceContainers] = useState<Map<string, string>>(new Map());
+    const [instanceIds, setInstanceIds] = useState<string[]>([]);
+    const unbindMapRef = useRef<Map<string, () => void>>(new Map());
+    const contentMapRef = useRef<Map<string, HTMLElement>>(new Map());
 
     useEffect(() => {
       const registry = new EngineRegistry();
@@ -42,21 +48,50 @@ export const InteractiveLesson = forwardRef<InteractiveLessonHandle, Interactive
         const runtime = parsed.start(bridgeToHost({ ...host, onEvent }));
         runtimeRef.current = runtime;
 
-        const containers = new Map<string, string>();
-        for (const [instanceId, instance] of runtime.instances) {
-          const state = instance.snapshot() as Record<string, unknown>;
-          const svgResult = state.svgResult as { svg: string } | undefined;
-          if (svgResult) {
-            containers.set(instanceId, svgResult.svg);
+        const ids: string[] = [];
+        for (const instanceId of runtime.instances.keys()) {
+          ids.push(instanceId);
+        }
+
+        setInstanceIds(ids);
+        setError(null);
+
+        // Bind SVG interaction per instance
+        const root = rootRef.current;
+        if (root) {
+          ensureInteractivePointerStyle(root);
+          for (const instanceId of ids) {
+            const instance = runtime.instances.get(instanceId);
+            if (!instance) continue;
+
+            const content = document.createElement('div');
+            content.setAttribute('data-oedu-svg-content', '');
+            content.setAttribute('data-instance-id', instanceId);
+            root.appendChild(content);
+            contentMapRef.current.set(instanceId, content);
+
+            syncSvgSurface(content, instance.snapshot() as SvgSurfaceSnapshot);
+
+            const unbind = bindSvgInteraction(content, (action) => {
+              runtime.dispatch(instanceId, action);
+              const updatedContent = contentMapRef.current.get(instanceId);
+              if (updatedContent) {
+                syncSvgSurface(updatedContent, instance.snapshot() as SvgSurfaceSnapshot);
+              }
+            });
+            unbindMapRef.current.set(instanceId, unbind);
           }
         }
-        setInstanceContainers(containers);
-        setError(null);
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
       }
 
       return () => {
+        for (const unbind of unbindMapRef.current.values()) {
+          unbind();
+        }
+        unbindMapRef.current.clear();
+        contentMapRef.current.clear();
         runtimeRef.current?.stop();
         runtimeRef.current = null;
       };
@@ -86,17 +121,21 @@ export const InteractiveLesson = forwardRef<InteractiveLessonHandle, Interactive
     }
 
     const children: Array<ReturnType<typeof createElement>> = [];
-    for (const [instanceId, svg] of instanceContainers) {
+
+    for (const instanceId of instanceIds) {
       children.push(
         createElement('div', {
           key: instanceId,
           'data-instance-id': instanceId,
           'data-oedu-root': instanceId,
-          dangerouslySetInnerHTML: { __html: svg },
         }),
       );
     }
 
-    return createElement('div', { 'data-interactive-lesson': '' }, ...children);
+    return createElement('div', {
+      ref: rootRef,
+      'data-interactive-lesson': '',
+      'data-oedu-lesson-root': '',
+    }, ...children);
   },
 );

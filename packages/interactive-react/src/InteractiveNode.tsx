@@ -1,4 +1,4 @@
-import { createElement, useEffect, useImperativeHandle, useRef, useState, forwardRef } from 'react';
+import { createElement, useEffect, useImperativeHandle, useRef, useState, forwardRef, useCallback } from 'react';
 import type { Engine, EngineAction, EngineEvent, EngineInstance, EngineSpec } from '@knowledgeassemble/interactive-engine';
 import { EngineError } from '@knowledgeassemble/interactive-engine';
 import { VisualEngine } from '@knowledgeassemble/visual-engine';
@@ -8,6 +8,8 @@ import { TimelineEngine } from '@knowledgeassemble/timeline-engine';
 import { DiagramEngine } from '@knowledgeassemble/diagram-engine';
 import type { OpenEduBridge } from './bridge.js';
 import { bridgeToHost } from './bridge.js';
+import { ensureInteractivePointerStyle, syncSvgSurface, bindSvgInteraction } from './svg-surface.js';
+import type { SvgSurfaceSnapshot } from './svg-surface.js';
 
 const ENGINE_MAP: Record<string, new () => Engine> = {
   visual: VisualEngine,
@@ -28,6 +30,7 @@ export interface InteractiveNodeProps {
   engineType: string;
   host: OpenEduBridge;
   id?: string;
+  controlsMode?: 'learner' | 'dev';
 }
 
 function flattenA11y(
@@ -46,15 +49,34 @@ function flattenA11y(
 }
 
 export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNodeProps>(
-  function InteractiveNode({ spec, engineType, host, id }: InteractiveNodeProps, ref) {
-    const containerRef = useRef<HTMLDivElement>(null);
+  function InteractiveNode({ spec, engineType, host, id, controlsMode = 'learner' }: InteractiveNodeProps, ref) {
+    const svgRootRef = useRef<HTMLDivElement>(null);
+    const svgContentRef = useRef<HTMLDivElement>(null);
     const a11yRef = useRef<HTMLDivElement>(null);
     const instanceRef = useRef<EngineInstance | null>(null);
+    const unbindRef = useRef<(() => void) | null>(null);
     const bufferRef = useRef<EngineEvent[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [svg, setSvg] = useState<string>('');
     const [a11yText, setA11yText] = useState<string>('');
     const [interactiveMap, setInteractiveMap] = useState<Array<{ id: string; action: string }>>([]);
+    const refreshRef = useRef<() => void>(() => {});
+
+    const refresh = useCallback(() => {
+      const inst = instanceRef.current;
+      if (!inst) return;
+      const snap = inst.snapshot() as SvgSurfaceSnapshot;
+      const content = svgContentRef.current;
+      if (content) {
+        syncSvgSurface(content, snap);
+      }
+      const svgResult = snap.svgResult as { a11y?: Array<unknown>; interactive?: Array<{ id: string; action: string }> } | undefined;
+      if (svgResult) {
+        setA11yText(flattenA11y(svgResult.a11y as Array<{ id: string; role: string; label?: string; description?: string; children: unknown[] }>));
+        setInteractiveMap(svgResult.interactive ?? []);
+      }
+    }, []);
+
+    refreshRef.current = refresh;
 
     useEffect(() => {
       const EngineClass = ENGINE_MAP[engineType];
@@ -97,16 +119,30 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       instanceRef.current = instance;
       setError(null);
 
-      const state = instance.snapshot() as Record<string, unknown>;
-      const svgResult = state.svgResult as { svg: string; a11y: Array<unknown>; interactive: Array<{ id: string; action: string }> } | undefined;
+      const root = svgRootRef.current;
+      const content = svgContentRef.current;
 
-      if (svgResult) {
-        setSvg(svgResult.svg);
-        setA11yText(flattenA11y(svgResult.a11y as Array<{ id: string; role: string; label?: string; description?: string; children: unknown[] }>));
-        setInteractiveMap(svgResult.interactive);
+      if (root && content) {
+        ensureInteractivePointerStyle(root);
+        syncSvgSurface(content, instance.snapshot() as SvgSurfaceSnapshot);
+
+        const unbind = bindSvgInteraction(root, (action) => {
+          instance.dispatch(action);
+          refreshRef.current();
+        });
+        unbindRef.current = unbind;
+
+        const state = instance.snapshot() as SvgSurfaceSnapshot;
+        const svgResult = state.svgResult as { a11y?: Array<unknown>; interactive?: Array<{ id: string; action: string }> } | undefined;
+        if (svgResult) {
+          setA11yText(flattenA11y(svgResult.a11y as Array<{ id: string; role: string; label?: string; description?: string; children: unknown[] }>));
+          setInteractiveMap(svgResult.interactive ?? []);
+        }
       }
 
       return () => {
+        if (unbindRef.current) unbindRef.current();
+        unbindRef.current = null;
         instance.teardown();
         instanceRef.current = null;
       };
@@ -132,14 +168,20 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       return createElement('div', { role: 'alert', style: { color: 'red' } }, error);
     }
 
-    const children = [];
+    const children: Array<ReturnType<typeof createElement>> = [];
 
     children.push(
       createElement('div', {
-        key: 'svg-container',
-        ref: containerRef,
-        dangerouslySetInnerHTML: { __html: svg },
-      }),
+        key: 'svg-root',
+        ref: svgRootRef,
+        'data-oedu-svg-root': '',
+      },
+        createElement('div', {
+          key: 'svg-content',
+          ref: svgContentRef,
+          'data-oedu-svg-content': '',
+        }),
+      ),
     );
 
     children.push(
@@ -159,7 +201,7 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       }, a11yText),
     );
 
-    if (interactiveMap.length > 0) {
+    if (controlsMode === 'dev' && interactiveMap.length > 0) {
       const buttons = interactiveMap.map((item) =>
         createElement(
           'button',
@@ -169,10 +211,12 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
             'data-action': item.action,
             onClick: () => {
               instanceRef.current?.dispatch({ type: item.action as EngineAction['type'], target: { id: item.id } });
+              refreshRef.current();
             },
             onKeyDown: (e: KeyboardEvent) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 instanceRef.current?.dispatch({ type: item.action as EngineAction['type'], target: { id: item.id } });
+                refreshRef.current();
               }
             },
           },

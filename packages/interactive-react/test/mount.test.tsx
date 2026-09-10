@@ -89,4 +89,89 @@ describe('InteractiveNode mount (jsdom)', () => {
     });
     container.remove();
   });
+
+  it('learner mode: clicking SVG interactive target dispatches select', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const ref = createRef<InteractiveNodeHandle>();
+    const emitted: string[] = [];
+    const root = createRoot(container);
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: makeBridge((e) => emitted.push(e.name)),
+          ref,
+        }),
+      );
+    });
+
+    const marker = container.querySelector('#nl-marker-7')!;
+    expect(marker).toBeTruthy();
+
+    act(() => {
+      marker.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+
+    const snap = ref.current?.snapshot() as { selection?: string[] } | undefined;
+    expect(snap?.selection).toContain('nl-marker-7');
+    expect(emitted.some((n) => n === 'visual.nl-marker-7-selected')).toBe(true);
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  it('learner mode: no dev control buttons by default', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: makeBridge(),
+          ref: createRef<InteractiveNodeHandle>(),
+        }),
+      );
+    });
+
+    const buttons = container.querySelectorAll('button');
+    expect(buttons).toHaveLength(0);
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  it('dev mode: renders control map buttons', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const root = createRoot(container);
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: makeBridge(),
+          ref: createRef<InteractiveNodeHandle>(),
+          controlsMode: 'dev',
+        }),
+      );
+    });
+
+    const buttons = container.querySelectorAll('button');
+    expect(buttons.length).toBeGreaterThan(0);
+    const hasSelectAction = Array.from(buttons).some((b) => b.textContent?.includes('(select)'));
+    expect(hasSelectAction).toBe(true);
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
 });
