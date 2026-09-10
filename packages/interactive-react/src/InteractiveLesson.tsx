@@ -52,6 +52,8 @@ export const InteractiveLesson = forwardRef<InteractiveLessonHandle, Interactive
     const unbindMapRef = useRef<Map<string, () => void>>(new Map());
     const rootMapRef = useRef<Map<string, HTMLDivElement>>(new Map());
     const contentMapRef = useRef<Map<string, HTMLDivElement>>(new Map());
+    const hostRef = useRef(host);
+    hostRef.current = host;
 
     const refreshInstance = useCallback((instanceId: string) => {
       const runtime = runtimeRef.current;
@@ -91,12 +93,13 @@ export const InteractiveLesson = forwardRef<InteractiveLessonHandle, Interactive
       registry.register(new GeoMapEngine());
       registry.register(new TimelineEngine());
       registry.register(new DiagramEngine());
-      const originalOnEvent = host.onEvent;
+      const bridge = hostRef.current;
+      const originalOnEvent = bridge.onEvent;
       const onEvent = (event: EngineEvent) => { originalOnEvent(event); };
 
       try {
         const parsed = Lesson.load(lesson, registry);
-        const runtime = parsed.start(bridgeToHost({ ...host, onEvent }));
+        const runtime = parsed.start(bridgeToHost({ ...bridge, onEvent }));
         runtimeRef.current = runtime;
 
         const ids: string[] = [];
@@ -122,7 +125,7 @@ export const InteractiveLesson = forwardRef<InteractiveLessonHandle, Interactive
         setInstanceIds([]);
         setDevMaps({});
       };
-    }, [lesson, host]);
+    }, [lesson]);
 
     useEffect(() => {
       const runtime = runtimeRef.current;

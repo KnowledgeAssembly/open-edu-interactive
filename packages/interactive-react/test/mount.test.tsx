@@ -175,7 +175,53 @@ describe('InteractiveNode mount (jsdom)', () => {
 
     const snap = ref.current?.snapshot() as { selection?: string[] } | undefined;
     expect(snap?.selection).toContain('nl-marker-7');
+    expect(container.querySelector('#nl-marker-7')?.getAttribute('data-oedu-selected')).toBe('true');
     expect(emitted.some((n) => n === 'visual.nl-marker-7-selected')).toBe(true);
+
+    act(() => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  it('learner mode: selection persists after host object identity changes', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const ref = createRef<InteractiveNodeHandle>();
+    const root = createRoot(container);
+    const bridgeA = makeBridge();
+    const bridgeB = { ...makeBridge() };
+
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: bridgeA,
+          ref,
+        }),
+      );
+    });
+
+    const marker = container.querySelector('#nl-marker-7')!;
+    act(() => {
+      marker.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.querySelector('#nl-marker-7')?.getAttribute('data-oedu-selected')).toBe('true');
+
+    act(() => {
+      root.render(
+        createElement(InteractiveNode, {
+          spec: ENGINE_REPS.visual,
+          engineType: 'visual',
+          host: bridgeB,
+          ref,
+        }),
+      );
+    });
+
+    const markerAfterRerender = container.querySelector('#nl-marker-7')!;
+    expect(markerAfterRerender.getAttribute('data-oedu-selected')).toBe('true');
 
     act(() => {
       root.unmount();

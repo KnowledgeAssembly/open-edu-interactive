@@ -60,6 +60,8 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
     const [a11yText, setA11yText] = useState<string>('');
     const [interactiveMap, setInteractiveMap] = useState<Array<{ id: string; action: string }>>([]);
     const refreshRef = useRef<() => void>(() => {});
+    const hostRef = useRef(host);
+    hostRef.current = host;
 
     const refresh = useCallback(() => {
       const inst = instanceRef.current;
@@ -89,10 +91,10 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
       const eventsRef: EngineEvent[] = [];
       bufferRef.current = eventsRef;
       const engineHost = bridgeToHost({
-        ...host,
+        ...hostRef.current,
         onEvent: (event) => {
           eventsRef.push(event as EngineEvent);
-          host.onEvent(event);
+          hostRef.current.onEvent(event);
         },
       });
       const instanceId = id ?? (spec as Record<string, unknown>).id as string | undefined ?? 'interactive-node';
@@ -146,7 +148,7 @@ export const InteractiveNode = forwardRef<InteractiveNodeHandle, InteractiveNode
         instance.teardown();
         instanceRef.current = null;
       };
-    }, [spec, engineType, host, id]);
+    }, [spec, engineType, id]);
 
     useImperativeHandle(
       ref,
