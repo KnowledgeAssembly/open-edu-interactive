@@ -1,0 +1,62 @@
+[
+  {
+    "id": "geom-states-odisha",
+    "role": "button",
+    "label": "Odisha",
+    "children": []
+  },
+  {
+    "id": "geom-states-west-bengal",
+    "role": "button",
+    "label": "West Bengal",
+    "children": []
+  },
+  {
+    "id": "geom-states-andhra-pradesh",
+    "role": "button",
+    "label": "Andhra Pradesh",
+    "children": []
+  },
+  {
+    "id": "geom-states-chhattisgarh",
+    "role": "button",
+    "label": "Chhattisgarh",
+    "children": []
+  },
+  {
+    "id": "geom-states-jharkhand",
+    "role": "button",
+    "label": "Jharkhand",
+    "children": []
+  },
+  {
+    "id": "geom-cities-bhubaneswar",
+    "role": "button",
+    "label": "Bhubaneswar",
+    "children": []
+  },
+  {
+    "id": "geom-cities-cuttack",
+    "role": "button",
+    "label": "Cuttack",
+    "children": []
+  },
+  {
+    "id": "geom-mahanadi-course-seg-0",
+    "role": "button",
+    "label": "Mahanadi upper course",
+    "children": []
+  },
+  {
+    "id": "geom-mahanadi-course-seg-1",
+    "role": "button",
+    "label": "Mahanadi middle course",
+    "children": []
+  },
+  {
+    "id": "geom-mahanadi-course-seg-2",
+    "role": "button",
+    "label": "Mahanadi delta",
+    "children": []
+  }
+]

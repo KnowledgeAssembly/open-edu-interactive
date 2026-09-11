@@ -100,6 +100,20 @@
     "title": "Encoding map with 5 regions, 3 breakpoints, categories"
   },
   {
+    "id": "geomap/india-coastal",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "india-coastal",
+    "specPath": "packages/geomap-engine/fixture/india-coastal/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/india-coastal/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/india-coastal/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/india-coastal/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/india-coastal/expected.svg"
+    },
+    "title": "Odisha and the eastern coast (real boundaries)"
+  },
+  {
     "id": "geomap/linear",
     "kind": "engine",
     "engine": "geomap",

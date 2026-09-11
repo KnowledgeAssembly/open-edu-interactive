@@ -74,11 +74,14 @@ function writeOrCompare(name: string, dir: string, spec: Record<string, unknown>
   expect(JSON.parse(readFileSync(files.alternative, 'utf8'))).toEqual(result.alternative);
 }
 
-const FIXTURES = ['region', 'marker', 'route', 'odisha-coastal', 'encoding', 'overlay', 'route-step', 'linear'];
+const FIXTURES = ['region', 'marker', 'route', 'odisha-coastal', 'encoding', 'overlay', 'route-step', 'linear', 'india-coastal'];
 
 function validateFixture(name: string, spec: unknown) {
   const result = ENGINE.validate(spec as never);
   if (GENERATE) {
+    if (!result.valid) {
+      console.log(`INVALID (${name}):`, JSON.stringify(result.issues, null, 2));
+    }
     return result;
   }
   const expected = JSON.parse(readFileSync(join(FIXTURE_DIR, name, 'validation.json'), 'utf8')) as {
