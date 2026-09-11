@@ -67,11 +67,8 @@ function writeOrCompare(name: string, dir: string, spec: Record<string, unknown>
   }
   for (const r of renders) {
     expect(existsSync(r.file), `missing golden file ${r.file}`).toBe(true);
+    expect(readFileSync(r.file, 'utf8')).toBe(r.payload);
   }
-  expect(JSON.parse(readFileSync(files.scene, 'utf8'))).toEqual(scene);
-  expect(readFileSync(files.svg, 'utf8')).toBe(result.svg);
-  expect(JSON.parse(readFileSync(files.a11y, 'utf8'))).toEqual(result.a11y);
-  expect(JSON.parse(readFileSync(files.alternative, 'utf8'))).toEqual(result.alternative);
 }
 
 const FIXTURES = ['region', 'marker', 'route', 'odisha-coastal', 'encoding', 'overlay', 'route-step', 'linear', 'india-coastal'];
