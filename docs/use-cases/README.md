@@ -48,7 +48,7 @@ New props or contract changes are allowed only when **two or more** catalogued u
 
 ## Adding a use case
 
-1. Add the entry to the engine catalog (`visual.md`, etc.).
+1. Add the entry to the engine catalog (`visual.md`, `geomap.md`, `chart.md`, `diagram.md`, `timeline.md`, etc.).
 2. Add or update a fixture named after the scenario (not `*-practice` with every flag set).
 3. Implement until acceptance criteria pass (unit + browser + a11y golden).
 4. Update engine SPEC.md if the contract changes.
@@ -59,6 +59,16 @@ New props or contract changes are allowed only when **two or more** catalogued u
 **Agent plan (deepseek-4-flash):** `docs/superpowers/specs/2026-09-10-visual-use-cases-implementation-plan.md`
 
 Phased tasks U0–U4 map catalog use-case IDs to code, fixtures, and tests. Start with `ux-debt` rows in `visual.md` before `planned` rows.
+
+## Engine catalogs
+
+| Engine | Catalog |
+|--------|---------|
+| Visual | `docs/use-cases/visual.md` |
+| GeoMap | `docs/use-cases/geomap.md` |
+| Chart | `docs/use-cases/chart.md` |
+| Diagram | `docs/use-cases/diagram.md` |
+| Timeline | `docs/use-cases/timeline.md` |
 
 ## Supersedes
 
