@@ -1,6 +1,6 @@
 import type { Scene, SceneNode, XY } from '../scene/types.js';
 import type { ViewportSpec } from '../schema.js';
-import { bboxOf, fitViewport, makeProjector } from './projection.js';
+import { bboxOf, fitViewport, makeProjector, type Projector, type ProjectionType } from './projection.js';
 import { rect, union, type Rect } from './geometry.js';
 
 export interface LayoutContext {
@@ -8,6 +8,12 @@ export interface LayoutContext {
   height: number;
   minTouchTarget: number;
   textStyle: string;
+}
+
+export interface ProjectorFit {
+  projector: Projector;
+  centerLat: number;
+  centerLon: number;
 }
 
 function ringVertices(geometry?: { type: string; coordinates: unknown }): Array<[number, number]> {
@@ -33,7 +39,12 @@ function expandToMin(r: Rect, min: number): Rect {
   return rect(cx - width / 2, cy - height / 2, width, height);
 }
 
-export function layout(scene: Scene, ctx: LayoutContext, viewport?: ViewportSpec): Scene {
+export function fitScene(
+  scene: Scene,
+  ctx: LayoutContext,
+  viewport?: ViewportSpec,
+  projectionType: ProjectionType = 'equirectangular',
+): ProjectorFit {
   const allLons: number[] = [];
   const allLats: number[] = [];
 
@@ -61,7 +72,8 @@ export function layout(scene: Scene, ctx: LayoutContext, viewport?: ViewportSpec
   }
 
   if (allLons.length === 0) {
-    return scene;
+    const project = makeProjector(projectionType, ctx.width, ctx.height, { scale: Math.min(ctx.width, ctx.height) / (2 * Math.PI) });
+    return { projector: project, centerLat: 0, centerLon: 0 };
   }
 
   const bbox = bboxOf(allLons, allLats);
@@ -71,7 +83,18 @@ export function layout(scene: Scene, ctx: LayoutContext, viewport?: ViewportSpec
   const scale =
     viewport?.zoom !== undefined ? fitted.scale * Math.pow(2, viewport.zoom / 10) : fitted.scale;
 
-  const project = makeProjector('equirectangular', ctx.width, ctx.height, { center, scale });
+  const project = makeProjector(projectionType, ctx.width, ctx.height, { center, scale });
+  return { projector: project, centerLat: center.lat, centerLon: center.lon };
+}
+
+export function layout(
+  scene: Scene,
+  ctx: LayoutContext,
+  viewport?: ViewportSpec,
+  projectionType?: ProjectionType,
+): Scene {
+  const { projector } = fitScene(scene, ctx, viewport, projectionType ?? 'equirectangular');
+  const project = projector;
 
   function projectPolygon(node: SceneNode): XY[] | undefined {
     const pts = ringVertices(node.geometry);
@@ -136,19 +159,26 @@ export function layout(scene: Scene, ctx: LayoutContext, viewport?: ViewportSpec
     assignBounds(node);
   }
 
-  for (const node of scene.nodes) {
-    if (node.kind === 'route') {
-      const ordered = [...node.children]
-        .sort((a, b) => Number(a.metadata?.entityIndex) - Number(b.metadata?.entityIndex))
-        .filter((c) => c.bounds);
-      if (ordered.length > 0) {
-        node.points = ordered.map((c) => ({
-          x: c.bounds!.x + c.bounds!.width / 2,
-          y: c.bounds!.y + c.bounds!.height / 2,
-        }));
-        node.bounds = union(...ordered.map((c) => c.bounds!));
-      }
+  function walkRoutePoints(node: SceneNode): void {
+  if (node.kind === 'route') {
+    const ordered = [...node.children]
+      .sort((a, b) => Number(a.metadata?.entityIndex) - Number(b.metadata?.entityIndex))
+      .filter((c) => c.bounds);
+    if (ordered.length > 0) {
+      node.points = ordered.map((c) => ({
+        x: c.bounds!.x + c.bounds!.width / 2,
+        y: c.bounds!.y + c.bounds!.height / 2,
+      }));
+      node.bounds = union(...ordered.map((c) => c.bounds!));
     }
+  }
+  for (const child of node.children) {
+    walkRoutePoints(child);
+  }
+}
+
+  for (const node of scene.nodes) {
+    walkRoutePoints(node);
   }
 
   return scene;

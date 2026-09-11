@@ -72,11 +72,22 @@ describe('validateSemantic', () => {
   it('fails for unknown projection type (INVALID_ENTITY)', () => {
     const spec: GeoMapSpec = {
       ...validSpec,
-      content: { ...validSpec.content!, projection: { type: 'mercator' as 'equirectangular' } },
+      content: { ...validSpec.content!, projection: { type: 'orthographic' as 'equirectangular' } },
     };
     const result = validateSemantic(spec);
     expect(result.valid).toBe(false);
     expect(result.issues.some((i) => i.code === 'INVALID_ENTITY')).toBe(true);
+  });
+
+  it('accepts mercator and albers projection types', () => {
+    for (const type of ['mercator', 'albers'] as const) {
+      const spec: GeoMapSpec = {
+        ...validSpec,
+        content: { ...validSpec.content!, projection: { type } },
+      };
+      const result = validateSemantic(spec);
+      expect(result.valid).toBe(true);
+    }
   });
 
   it('fails for unknown entity type (INVALID_ENTITY)', () => {

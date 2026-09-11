@@ -9,30 +9,40 @@ export function validateLayout(scene: Scene, ctx: LayoutContext): ValidationResu
 
   const interactiveRegions: Array<{ id: string; bounds: NonNullable<SceneNode['bounds']> }> = [];
 
-  for (const node of scene.nodes) {
-    if (node.hidden) continue;
-    if (!node.bounds) continue;
-    if (!contained(node.bounds, canvas)) {
-      issues.push({
-        level: 'L3',
-        code: 'INVALID_STATE',
-        message: `node "${node.id}" bounds extend beyond the canvas (${node.bounds.x},${node.bounds.y},${node.bounds.width},${node.bounds.height})`,
-      });
-    }
-    if (node.interactive) {
-      const reachable =
-        node.bounds.width >= ctx.minTouchTarget || node.bounds.height >= ctx.minTouchTarget;
-      if (!reachable) {
+  function walk(node: SceneNode): void {
+    if (node.hidden) return;
+    if (node.bounds) {
+      if (!contained(node.bounds, canvas)) {
         issues.push({
           level: 'L3',
-          code: 'ACCESSIBILITY_ERROR',
-          message: `interactive node "${node.id}" is smaller than minTouchTarget in both dimensions (${node.bounds.width}×${node.bounds.height} < ${ctx.minTouchTarget})`,
+          code: 'INVALID_STATE',
+          message: `node "${node.id}" bounds extend beyond the canvas (${node.bounds.x},${node.bounds.y},${node.bounds.width},${node.bounds.height})`,
         });
       }
-      if (node.role === 'region') {
-        interactiveRegions.push({ id: node.id, bounds: node.bounds });
+    }
+    if (node.interactive) {
+      const b = node.bounds;
+      if (b) {
+        const reachable = b.width >= ctx.minTouchTarget || b.height >= ctx.minTouchTarget;
+        if (!reachable) {
+          issues.push({
+            level: 'L3',
+            code: 'ACCESSIBILITY_ERROR',
+            message: `interactive node "${node.id}" is smaller than minTouchTarget in both dimensions (${b.width}×${b.height} < ${ctx.minTouchTarget})`,
+          });
+        }
+        if (node.role === 'region') {
+          interactiveRegions.push({ id: node.id, bounds: b });
+        }
       }
     }
+    for (const child of node.children) {
+      walk(child);
+    }
+  }
+
+  for (const node of scene.nodes) {
+    walk(node);
   }
 
   for (let i = 0; i < interactiveRegions.length; i++) {

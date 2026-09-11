@@ -12,6 +12,9 @@ export interface EntityRow {
   description?: string;
   location: string;
   sourceClass?: string;
+  adjacentTo?: string[];
+  measureValue?: number;
+  encodingBucket?: string;
 }
 
 export interface A11yNode {

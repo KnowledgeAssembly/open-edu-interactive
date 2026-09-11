@@ -1,0 +1,1767 @@
+{
+  "nodes": [
+    {
+      "id": "geom-eco",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Eco Zones",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "eco"
+      },
+      "children": [
+        {
+          "id": "geom-eco-r1",
+          "role": "region",
+          "kind": "region",
+          "label": "R1-Low",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r1",
+            "entityType": "region",
+            "name": "R1-Low",
+            "location": {
+              "source": "src",
+              "featureId": "r1"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534433,
+            "lon": 5.000000000000029,
+            "categories": [
+              "zone-a"
+            ],
+            "measureValue": 10,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-1"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  10,
+                  0
+                ],
+                [
+                  10,
+                  10
+                ],
+                [
+                  0,
+                  10
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 510
+            },
+            {
+              "x": 232,
+              "y": 510
+            },
+            {
+              "x": 232,
+              "y": 342
+            },
+            {
+              "x": 64,
+              "y": 342
+            },
+            {
+              "x": 64,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r2",
+          "role": "region",
+          "kind": "region",
+          "label": "R2-Medium",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r2",
+            "entityType": "region",
+            "name": "R2-Medium",
+            "location": {
+              "source": "src",
+              "featureId": "r2"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534431,
+            "lon": 20.000000000000004,
+            "categories": [
+              "zone-a"
+            ],
+            "measureValue": 150,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-2"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  0
+                ],
+                [
+                  25,
+                  0
+                ],
+                [
+                  25,
+                  10
+                ],
+                [
+                  15,
+                  10
+                ],
+                [
+                  15,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 316,
+              "y": 510
+            },
+            {
+              "x": 484,
+              "y": 510
+            },
+            {
+              "x": 484,
+              "y": 342
+            },
+            {
+              "x": 316,
+              "y": 342
+            },
+            {
+              "x": 316,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 316,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r3",
+          "role": "region",
+          "kind": "region",
+          "label": "R3-High",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r3",
+            "entityType": "region",
+            "name": "R3-High",
+            "location": {
+              "source": "src",
+              "featureId": "r3"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534455,
+            "lon": 35.000000000000036,
+            "categories": [
+              "zone-b"
+            ],
+            "measureValue": 300,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-3"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  30,
+                  0
+                ],
+                [
+                  40,
+                  0
+                ],
+                [
+                  40,
+                  10
+                ],
+                [
+                  30,
+                  10
+                ],
+                [
+                  30,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 568,
+              "y": 510
+            },
+            {
+              "x": 736,
+              "y": 510
+            },
+            {
+              "x": 736,
+              "y": 342
+            },
+            {
+              "x": 568,
+              "y": 342
+            },
+            {
+              "x": 568,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 568,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r4",
+          "role": "region",
+          "kind": "region",
+          "label": "R4-VHigh",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r4",
+            "entityType": "region",
+            "name": "R4-VHigh",
+            "location": {
+              "source": "src",
+              "featureId": "r4"
+            },
+            "sourceClass": "illustrative",
+            "lat": 20.016211087268715,
+            "lon": 4.999999999999983,
+            "categories": [
+              "zone-b"
+            ],
+            "measureValue": 500,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-3"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  15
+                ],
+                [
+                  10,
+                  15
+                ],
+                [
+                  10,
+                  25
+                ],
+                [
+                  0,
+                  25
+                ],
+                [
+                  0,
+                  15
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 258
+            },
+            {
+              "x": 232,
+              "y": 258
+            },
+            {
+              "x": 232,
+              "y": 90
+            },
+            {
+              "x": 64,
+              "y": 90
+            },
+            {
+              "x": 64,
+              "y": 258
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 90,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r5",
+          "role": "region",
+          "kind": "region",
+          "label": "R5-Same",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r5",
+            "entityType": "region",
+            "name": "R5-Same",
+            "location": {
+              "source": "src",
+              "featureId": "r5"
+            },
+            "sourceClass": "illustrative",
+            "lat": 20.01621108726869,
+            "lon": 19.99999999999997,
+            "categories": [
+              "zone-c"
+            ],
+            "measureValue": 50,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-1"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  15
+                ],
+                [
+                  25,
+                  15
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  15,
+                  25
+                ],
+                [
+                  15,
+                  15
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 316,
+              "y": 258
+            },
+            {
+              "x": 484,
+              "y": 258
+            },
+            {
+              "x": 484,
+              "y": 90
+            },
+            {
+              "x": 316,
+              "y": 90
+            },
+            {
+              "x": 316,
+              "y": 258
+            }
+          ],
+          "bounds": {
+            "x": 316,
+            "y": 90,
+            "width": 168,
+            "height": 168
+          }
+        }
+      ]
+    },
+    {
+      "id": "geom-legend",
+      "role": "legend",
+      "kind": "legend",
+      "label": "Legend",
+      "children": [
+        {
+          "id": "geom-legend-item-0",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "Region",
+          "metadata": {
+            "role": "primary-region"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 14,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-1",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [0–100)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-1",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 32,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-2",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [100–250)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-2",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 50,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-3",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [250–1000)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-3",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 68,
+            "width": 126,
+            "height": 16
+          }
+        }
+      ],
+      "bounds": {
+        "x": 8,
+        "y": 8,
+        "width": 142,
+        "height": 82
+      }
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "1000 KM",
+      "bounds": {
+        "x": 24,
+        "y": 512,
+        "width": 161,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 1000,
+        "lengthPx": 155,
+        "unit": "km",
+        "label": "1000 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
+    }
+  ],
+  "semantics": {
+    "geom-eco-r1": {
+      "id": "geom-eco-r1",
+      "role": "region",
+      "kind": "region",
+      "label": "R1-Low",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r1",
+        "entityType": "region",
+        "name": "R1-Low",
+        "location": {
+          "source": "src",
+          "featureId": "r1"
+        },
+        "sourceClass": "illustrative",
+        "lat": 5.005958633534433,
+        "lon": 5.000000000000029,
+        "categories": [
+          "zone-a"
+        ],
+        "measureValue": 10,
+        "measureAttribute": "area",
+        "encodingAttribute": "area",
+        "encodingType": "fill",
+        "encodingBreakpoints": [
+          [
+            0,
+            100
+          ],
+          [
+            100,
+            250
+          ],
+          [
+            250,
+            1000
+          ]
+        ],
+        "encodingBucket": "encoding-bucket-1"
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              10,
+              0
+            ],
+            [
+              10,
+              10
+            ],
+            [
+              0,
+              10
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 64,
+          "y": 510
+        },
+        {
+          "x": 232,
+          "y": 510
+        },
+        {
+          "x": 232,
+          "y": 342
+        },
+        {
+          "x": 64,
+          "y": 342
+        },
+        {
+          "x": 64,
+          "y": 510
+        }
+      ],
+      "bounds": {
+        "x": 64,
+        "y": 342,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-eco-r2": {
+      "id": "geom-eco-r2",
+      "role": "region",
+      "kind": "region",
+      "label": "R2-Medium",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r2",
+        "entityType": "region",
+        "name": "R2-Medium",
+        "location": {
+          "source": "src",
+          "featureId": "r2"
+        },
+        "sourceClass": "illustrative",
+        "lat": 5.005958633534431,
+        "lon": 20.000000000000004,
+        "categories": [
+          "zone-a"
+        ],
+        "measureValue": 150,
+        "measureAttribute": "area",
+        "encodingAttribute": "area",
+        "encodingType": "fill",
+        "encodingBreakpoints": [
+          [
+            0,
+            100
+          ],
+          [
+            100,
+            250
+          ],
+          [
+            250,
+            1000
+          ]
+        ],
+        "encodingBucket": "encoding-bucket-2"
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              15,
+              0
+            ],
+            [
+              25,
+              0
+            ],
+            [
+              25,
+              10
+            ],
+            [
+              15,
+              10
+            ],
+            [
+              15,
+              0
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 316,
+          "y": 510
+        },
+        {
+          "x": 484,
+          "y": 510
+        },
+        {
+          "x": 484,
+          "y": 342
+        },
+        {
+          "x": 316,
+          "y": 342
+        },
+        {
+          "x": 316,
+          "y": 510
+        }
+      ],
+      "bounds": {
+        "x": 316,
+        "y": 342,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-eco-r3": {
+      "id": "geom-eco-r3",
+      "role": "region",
+      "kind": "region",
+      "label": "R3-High",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r3",
+        "entityType": "region",
+        "name": "R3-High",
+        "location": {
+          "source": "src",
+          "featureId": "r3"
+        },
+        "sourceClass": "illustrative",
+        "lat": 5.005958633534455,
+        "lon": 35.000000000000036,
+        "categories": [
+          "zone-b"
+        ],
+        "measureValue": 300,
+        "measureAttribute": "area",
+        "encodingAttribute": "area",
+        "encodingType": "fill",
+        "encodingBreakpoints": [
+          [
+            0,
+            100
+          ],
+          [
+            100,
+            250
+          ],
+          [
+            250,
+            1000
+          ]
+        ],
+        "encodingBucket": "encoding-bucket-3"
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30,
+              0
+            ],
+            [
+              40,
+              0
+            ],
+            [
+              40,
+              10
+            ],
+            [
+              30,
+              10
+            ],
+            [
+              30,
+              0
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 568,
+          "y": 510
+        },
+        {
+          "x": 736,
+          "y": 510
+        },
+        {
+          "x": 736,
+          "y": 342
+        },
+        {
+          "x": 568,
+          "y": 342
+        },
+        {
+          "x": 568,
+          "y": 510
+        }
+      ],
+      "bounds": {
+        "x": 568,
+        "y": 342,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-eco-r4": {
+      "id": "geom-eco-r4",
+      "role": "region",
+      "kind": "region",
+      "label": "R4-VHigh",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r4",
+        "entityType": "region",
+        "name": "R4-VHigh",
+        "location": {
+          "source": "src",
+          "featureId": "r4"
+        },
+        "sourceClass": "illustrative",
+        "lat": 20.016211087268715,
+        "lon": 4.999999999999983,
+        "categories": [
+          "zone-b"
+        ],
+        "measureValue": 500,
+        "measureAttribute": "area",
+        "encodingAttribute": "area",
+        "encodingType": "fill",
+        "encodingBreakpoints": [
+          [
+            0,
+            100
+          ],
+          [
+            100,
+            250
+          ],
+          [
+            250,
+            1000
+          ]
+        ],
+        "encodingBucket": "encoding-bucket-3"
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              15
+            ],
+            [
+              10,
+              15
+            ],
+            [
+              10,
+              25
+            ],
+            [
+              0,
+              25
+            ],
+            [
+              0,
+              15
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 64,
+          "y": 258
+        },
+        {
+          "x": 232,
+          "y": 258
+        },
+        {
+          "x": 232,
+          "y": 90
+        },
+        {
+          "x": 64,
+          "y": 90
+        },
+        {
+          "x": 64,
+          "y": 258
+        }
+      ],
+      "bounds": {
+        "x": 64,
+        "y": 90,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-eco-r5": {
+      "id": "geom-eco-r5",
+      "role": "region",
+      "kind": "region",
+      "label": "R5-Same",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "r5",
+        "entityType": "region",
+        "name": "R5-Same",
+        "location": {
+          "source": "src",
+          "featureId": "r5"
+        },
+        "sourceClass": "illustrative",
+        "lat": 20.01621108726869,
+        "lon": 19.99999999999997,
+        "categories": [
+          "zone-c"
+        ],
+        "measureValue": 50,
+        "measureAttribute": "area",
+        "encodingAttribute": "area",
+        "encodingType": "fill",
+        "encodingBreakpoints": [
+          [
+            0,
+            100
+          ],
+          [
+            100,
+            250
+          ],
+          [
+            250,
+            1000
+          ]
+        ],
+        "encodingBucket": "encoding-bucket-1"
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              15,
+              15
+            ],
+            [
+              25,
+              15
+            ],
+            [
+              25,
+              25
+            ],
+            [
+              15,
+              25
+            ],
+            [
+              15,
+              15
+            ]
+          ]
+        ]
+      },
+      "path": [
+        {
+          "x": 316,
+          "y": 258
+        },
+        {
+          "x": 484,
+          "y": 258
+        },
+        {
+          "x": 484,
+          "y": 90
+        },
+        {
+          "x": 316,
+          "y": 90
+        },
+        {
+          "x": 316,
+          "y": 258
+        }
+      ],
+      "bounds": {
+        "x": 316,
+        "y": 90,
+        "width": 168,
+        "height": 168
+      }
+    },
+    "geom-eco": {
+      "id": "geom-eco",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Eco Zones",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "eco"
+      },
+      "children": [
+        {
+          "id": "geom-eco-r1",
+          "role": "region",
+          "kind": "region",
+          "label": "R1-Low",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r1",
+            "entityType": "region",
+            "name": "R1-Low",
+            "location": {
+              "source": "src",
+              "featureId": "r1"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534433,
+            "lon": 5.000000000000029,
+            "categories": [
+              "zone-a"
+            ],
+            "measureValue": 10,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-1"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  10,
+                  0
+                ],
+                [
+                  10,
+                  10
+                ],
+                [
+                  0,
+                  10
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 510
+            },
+            {
+              "x": 232,
+              "y": 510
+            },
+            {
+              "x": 232,
+              "y": 342
+            },
+            {
+              "x": 64,
+              "y": 342
+            },
+            {
+              "x": 64,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r2",
+          "role": "region",
+          "kind": "region",
+          "label": "R2-Medium",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r2",
+            "entityType": "region",
+            "name": "R2-Medium",
+            "location": {
+              "source": "src",
+              "featureId": "r2"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534431,
+            "lon": 20.000000000000004,
+            "categories": [
+              "zone-a"
+            ],
+            "measureValue": 150,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-2"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  0
+                ],
+                [
+                  25,
+                  0
+                ],
+                [
+                  25,
+                  10
+                ],
+                [
+                  15,
+                  10
+                ],
+                [
+                  15,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 316,
+              "y": 510
+            },
+            {
+              "x": 484,
+              "y": 510
+            },
+            {
+              "x": 484,
+              "y": 342
+            },
+            {
+              "x": 316,
+              "y": 342
+            },
+            {
+              "x": 316,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 316,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r3",
+          "role": "region",
+          "kind": "region",
+          "label": "R3-High",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r3",
+            "entityType": "region",
+            "name": "R3-High",
+            "location": {
+              "source": "src",
+              "featureId": "r3"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.005958633534455,
+            "lon": 35.000000000000036,
+            "categories": [
+              "zone-b"
+            ],
+            "measureValue": 300,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-3"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  30,
+                  0
+                ],
+                [
+                  40,
+                  0
+                ],
+                [
+                  40,
+                  10
+                ],
+                [
+                  30,
+                  10
+                ],
+                [
+                  30,
+                  0
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 568,
+              "y": 510
+            },
+            {
+              "x": 736,
+              "y": 510
+            },
+            {
+              "x": 736,
+              "y": 342
+            },
+            {
+              "x": 568,
+              "y": 342
+            },
+            {
+              "x": 568,
+              "y": 510
+            }
+          ],
+          "bounds": {
+            "x": 568,
+            "y": 342,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r4",
+          "role": "region",
+          "kind": "region",
+          "label": "R4-VHigh",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r4",
+            "entityType": "region",
+            "name": "R4-VHigh",
+            "location": {
+              "source": "src",
+              "featureId": "r4"
+            },
+            "sourceClass": "illustrative",
+            "lat": 20.016211087268715,
+            "lon": 4.999999999999983,
+            "categories": [
+              "zone-b"
+            ],
+            "measureValue": 500,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-3"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  15
+                ],
+                [
+                  10,
+                  15
+                ],
+                [
+                  10,
+                  25
+                ],
+                [
+                  0,
+                  25
+                ],
+                [
+                  0,
+                  15
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 258
+            },
+            {
+              "x": 232,
+              "y": 258
+            },
+            {
+              "x": 232,
+              "y": 90
+            },
+            {
+              "x": 64,
+              "y": 90
+            },
+            {
+              "x": 64,
+              "y": 258
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 90,
+            "width": 168,
+            "height": 168
+          }
+        },
+        {
+          "id": "geom-eco-r5",
+          "role": "region",
+          "kind": "region",
+          "label": "R5-Same",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r5",
+            "entityType": "region",
+            "name": "R5-Same",
+            "location": {
+              "source": "src",
+              "featureId": "r5"
+            },
+            "sourceClass": "illustrative",
+            "lat": 20.01621108726869,
+            "lon": 19.99999999999997,
+            "categories": [
+              "zone-c"
+            ],
+            "measureValue": 50,
+            "measureAttribute": "area",
+            "encodingAttribute": "area",
+            "encodingType": "fill",
+            "encodingBreakpoints": [
+              [
+                0,
+                100
+              ],
+              [
+                100,
+                250
+              ],
+              [
+                250,
+                1000
+              ]
+            ],
+            "encodingBucket": "encoding-bucket-1"
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  15,
+                  15
+                ],
+                [
+                  25,
+                  15
+                ],
+                [
+                  25,
+                  25
+                ],
+                [
+                  15,
+                  25
+                ],
+                [
+                  15,
+                  15
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 316,
+              "y": 258
+            },
+            {
+              "x": 484,
+              "y": 258
+            },
+            {
+              "x": 484,
+              "y": 90
+            },
+            {
+              "x": 316,
+              "y": 90
+            },
+            {
+              "x": 316,
+              "y": 258
+            }
+          ],
+          "bounds": {
+            "x": 316,
+            "y": 90,
+            "width": 168,
+            "height": 168
+          }
+        }
+      ]
+    },
+    "geom-legend-item-0": {
+      "id": "geom-legend-item-0",
+      "role": "legend-item",
+      "kind": "legend-item",
+      "label": "Region",
+      "metadata": {
+        "role": "primary-region"
+      },
+      "children": [],
+      "bounds": {
+        "x": 16,
+        "y": 14,
+        "width": 126,
+        "height": 16
+      }
+    },
+    "geom-legend": {
+      "id": "geom-legend",
+      "role": "legend",
+      "kind": "legend",
+      "label": "Legend",
+      "children": [
+        {
+          "id": "geom-legend-item-0",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "Region",
+          "metadata": {
+            "role": "primary-region"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 14,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-1",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [0–100)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-1",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 32,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-2",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [100–250)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-2",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 50,
+            "width": 126,
+            "height": 16
+          }
+        },
+        {
+          "id": "geom-legend-item-3",
+          "role": "legend-item",
+          "kind": "legend-item",
+          "label": "area: [250–1000)",
+          "metadata": {
+            "role": "encoding",
+            "encodingBucket": "encoding-bucket-3",
+            "encodingAttribute": "area"
+          },
+          "children": [],
+          "bounds": {
+            "x": 16,
+            "y": 68,
+            "width": 126,
+            "height": 16
+          }
+        }
+      ],
+      "bounds": {
+        "x": 8,
+        "y": 8,
+        "width": 142,
+        "height": 82
+      }
+    }
+  }
+}

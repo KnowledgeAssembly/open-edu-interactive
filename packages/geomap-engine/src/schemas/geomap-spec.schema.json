@@ -54,9 +54,17 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "type": { "type": "string", "enum": ["equirectangular"] }
+            "type": { "type": "string", "enum": ["equirectangular", "mercator", "albers"] }
           },
           "required": ["type"]
+        },
+        "scaleBar": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "visible": { "type": "boolean" },
+            "unit": { "type": "string", "enum": ["km", "mi"] }
+          }
         },
         "geography": {
           "type": "object",
@@ -115,7 +123,9 @@
                   { "required": ["coordinates"] }
                 ]
               },
-              "links": { "type": "object", "additionalProperties": { "type": "string" } }
+              "links": { "type": "object", "additionalProperties": { "type": "string" } },
+              "categories": { "type": "array", "items": { "type": "string" } },
+              "adjacentTo": { "type": "array", "items": { "type": "string" } }
             },
             "required": ["id", "type", "name", "location"]
           }
@@ -137,7 +147,53 @@
                   "role": { "type": "string", "enum": ["primary-region", "secondary-region", "marker", "route", "label", "highlight", "selected", "approximate"] }
                 }
               },
-              "items": { "type": "array", "minItems": 1 }
+              "encoding": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "attribute": { "type": "string" },
+                  "type": { "type": "string", "enum": ["fill", "size"] },
+                  "breakpoints": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": { "type": "number" }
+                    }
+                  }
+                },
+                "required": ["attribute", "type", "breakpoints"]
+              },
+              "items": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "entity": { "type": "string" },
+                    "label": { "type": "boolean" },
+                    "interactive": { "type": "boolean" },
+                    "id": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$" },
+                    "path": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
+                    "measure": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "attribute": { "type": "string" },
+                        "value": { "type": "number" }
+                      },
+                      "required": ["attribute", "value"]
+                    }
+                  },
+                  "anyOf": [
+                    { "required": ["entity"] },
+                    { "required": ["id", "path"] }
+                  ]
+                }
+              }
             },
             "required": ["id", "type", "items"]
           }
@@ -154,7 +210,9 @@
                 "additionalProperties": false,
                 "properties": {
                   "role": { "type": "string", "minLength": 1 },
-                  "label": { "type": "string", "minLength": 1 }
+                  "label": { "type": "string", "minLength": 1 },
+                  "linkedEntities": { "type": "array", "items": { "type": "string" } },
+                  "interactive": { "type": "boolean" }
                 },
                 "required": ["role", "label"]
               }

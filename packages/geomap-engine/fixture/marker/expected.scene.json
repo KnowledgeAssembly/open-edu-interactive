@@ -1,43 +1,77 @@
 {
   "nodes": [
     {
-      "id": "geom-markers-city1",
-      "role": "marker",
-      "kind": "marker",
-      "label": "Test City",
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
+      "id": "geom-markers",
+      "role": "layer",
+      "kind": "layer",
+      "label": "markers",
       "hidden": false,
+      "interactive": false,
       "metadata": {
-        "entityId": "city1",
-        "entityType": "city",
-        "name": "Test City",
-        "location": {
-          "coordinates": {
+        "layerId": "markers"
+      },
+      "children": [
+        {
+          "id": "geom-markers-city1",
+          "role": "marker",
+          "kind": "marker",
+          "label": "Test City",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "city1",
+            "entityType": "city",
+            "name": "Test City",
+            "location": {
+              "coordinates": {
+                "lat": 20,
+                "lon": 85
+              }
+            },
             "lat": 20,
             "lon": 85
+          },
+          "children": [],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              85,
+              20
+            ]
+          },
+          "bounds": {
+            "x": 378,
+            "y": 278,
+            "width": 44,
+            "height": 44
           }
-        },
-        "lat": 20,
-        "lon": 85
-      },
-      "children": [],
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          85,
-          20
-        ]
-      },
+        }
+      ]
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "2000 KM",
       "bounds": {
-        "x": 378,
-        "y": 278,
-        "width": 44,
-        "height": 44
-      }
+        "x": 24,
+        "y": 512,
+        "width": 174,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 2000,
+        "lengthPx": 168,
+        "unit": "km",
+        "label": "2000 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
     }
   ],
   "semantics": {
@@ -79,6 +113,58 @@
         "width": 44,
         "height": 44
       }
+    },
+    "geom-markers": {
+      "id": "geom-markers",
+      "role": "layer",
+      "kind": "layer",
+      "label": "markers",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "markers"
+      },
+      "children": [
+        {
+          "id": "geom-markers-city1",
+          "role": "marker",
+          "kind": "marker",
+          "label": "Test City",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "city1",
+            "entityType": "city",
+            "name": "Test City",
+            "location": {
+              "coordinates": {
+                "lat": 20,
+                "lon": 85
+              }
+            },
+            "lat": 20,
+            "lon": 85
+          },
+          "children": [],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              85,
+              20
+            ]
+          },
+          "bounds": {
+            "x": 378,
+            "y": 278,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
     }
   }
 }

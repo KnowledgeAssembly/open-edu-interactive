@@ -1,127 +1,174 @@
 {
   "nodes": [
     {
-      "id": "geom-states-odisha",
-      "role": "region",
-      "kind": "region",
-      "label": "Odisha",
-      "description": "A state on the eastern coast of India.",
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
+      "id": "geom-states",
+      "role": "layer",
+      "kind": "layer",
+      "label": "states",
       "hidden": false,
+      "interactive": false,
       "metadata": {
-        "entityId": "odisha",
-        "entityType": "state",
-        "name": "Odisha",
-        "description": "A state on the eastern coast of India.",
-        "location": {
-          "source": "india-states",
-          "featureId": "odisha"
-        },
-        "sourceClass": "illustrative",
-        "lat": 18.8,
-        "lon": 82.8
+        "layerId": "states"
       },
-      "children": [],
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              82,
-              18
-            ],
-            [
-              84,
-              18
-            ],
-            [
-              84,
-              20
-            ],
-            [
-              82,
-              20
-            ],
-            [
-              82,
-              18
+      "children": [
+        {
+          "id": "geom-states-odisha",
+          "role": "region",
+          "kind": "region",
+          "label": "Odisha",
+          "description": "A state on the eastern coast of India.",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "odisha",
+            "entityType": "state",
+            "name": "Odisha",
+            "description": "A state on the eastern coast of India.",
+            "location": {
+              "source": "india-states",
+              "featureId": "odisha"
+            },
+            "sourceClass": "illustrative",
+            "lat": 19.000681633968306,
+            "lon": 83
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  82,
+                  18
+                ],
+                [
+                  84,
+                  18
+                ],
+                [
+                  84,
+                  20
+                ],
+                [
+                  82,
+                  20
+                ],
+                [
+                  82,
+                  18
+                ]
+              ]
             ]
-          ]
-        ]
-      },
-      "path": [
-        {
-          "x": 64,
-          "y": 501.7229964701264
-        },
-        {
-          "x": 415.41848607661126,
-          "y": 501.7229964701264
-        },
-        {
-          "x": 415.41848607661126,
-          "y": 150.3045103935151
-        },
-        {
-          "x": 64,
-          "y": 150.3045103935151
-        },
-        {
-          "x": 64,
-          "y": 501.7229964701264
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 501.7229964701264
+            },
+            {
+              "x": 415.41848607661086,
+              "y": 501.7229964701264
+            },
+            {
+              "x": 415.41848607661086,
+              "y": 150.30451039351556
+            },
+            {
+              "x": 64,
+              "y": 150.30451039351556
+            },
+            {
+              "x": 64,
+              "y": 501.7229964701264
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 150.30451039351556,
+            "width": 351.41848607661086,
+            "height": 351.41848607661086
+          }
         }
-      ],
-      "bounds": {
-        "x": 64,
-        "y": 150.3045103935151,
-        "width": 351.41848607661126,
-        "height": 351.4184860766113
-      }
+      ]
     },
     {
-      "id": "geom-cities-bhubaneswar",
-      "role": "marker",
-      "kind": "marker",
-      "label": "Bhubaneswar",
-      "description": "Capital of Odisha.",
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
+      "id": "geom-cities",
+      "role": "layer",
+      "kind": "layer",
+      "label": "cities",
       "hidden": false,
+      "interactive": false,
       "metadata": {
-        "entityId": "bhubaneswar",
-        "entityType": "city",
-        "name": "Bhubaneswar",
-        "description": "Capital of Odisha.",
-        "location": {
-          "coordinates": {
+        "layerId": "cities"
+      },
+      "children": [
+        {
+          "id": "geom-cities-bhubaneswar",
+          "role": "marker",
+          "kind": "marker",
+          "label": "Bhubaneswar",
+          "description": "Capital of Odisha.",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "bhubaneswar",
+            "entityType": "city",
+            "name": "Bhubaneswar",
+            "description": "Capital of Odisha.",
+            "location": {
+              "coordinates": {
+                "lat": 20.2961,
+                "lon": 85.8245
+              }
+            },
             "lat": 20.2961,
             "lon": 85.8245
+          },
+          "children": [],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              85.8245,
+              20.2961
+            ]
+          },
+          "bounds": {
+            "x": 714,
+            "y": 76.27700352987313,
+            "width": 44,
+            "height": 44
           }
-        },
-        "lat": 20.2961,
-        "lon": 85.8245
-      },
-      "children": [],
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          85.8245,
-          20.2961
-        ]
-      },
+        }
+      ]
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "100 KM",
       "bounds": {
-        "x": 714,
-        "y": 76.27700352987296,
-        "width": 44,
-        "height": 44
-      }
+        "x": 24,
+        "y": 512,
+        "width": 173,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 100,
+        "lengthPx": 167,
+        "unit": "km",
+        "label": "100 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
     }
   ],
   "semantics": {
@@ -147,8 +194,8 @@
           "featureId": "odisha"
         },
         "sourceClass": "illustrative",
-        "lat": 18.8,
-        "lon": 82.8
+        "lat": 19.000681633968306,
+        "lon": 83
       },
       "children": [],
       "geometry": {
@@ -184,16 +231,16 @@
           "y": 501.7229964701264
         },
         {
-          "x": 415.41848607661126,
+          "x": 415.41848607661086,
           "y": 501.7229964701264
         },
         {
-          "x": 415.41848607661126,
-          "y": 150.3045103935151
+          "x": 415.41848607661086,
+          "y": 150.30451039351556
         },
         {
           "x": 64,
-          "y": 150.3045103935151
+          "y": 150.30451039351556
         },
         {
           "x": 64,
@@ -202,10 +249,105 @@
       ],
       "bounds": {
         "x": 64,
-        "y": 150.3045103935151,
-        "width": 351.41848607661126,
-        "height": 351.4184860766113
+        "y": 150.30451039351556,
+        "width": 351.41848607661086,
+        "height": 351.41848607661086
       }
+    },
+    "geom-states": {
+      "id": "geom-states",
+      "role": "layer",
+      "kind": "layer",
+      "label": "states",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "states"
+      },
+      "children": [
+        {
+          "id": "geom-states-odisha",
+          "role": "region",
+          "kind": "region",
+          "label": "Odisha",
+          "description": "A state on the eastern coast of India.",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "odisha",
+            "entityType": "state",
+            "name": "Odisha",
+            "description": "A state on the eastern coast of India.",
+            "location": {
+              "source": "india-states",
+              "featureId": "odisha"
+            },
+            "sourceClass": "illustrative",
+            "lat": 19.000681633968306,
+            "lon": 83
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  82,
+                  18
+                ],
+                [
+                  84,
+                  18
+                ],
+                [
+                  84,
+                  20
+                ],
+                [
+                  82,
+                  20
+                ],
+                [
+                  82,
+                  18
+                ]
+              ]
+            ]
+          },
+          "path": [
+            {
+              "x": 64,
+              "y": 501.7229964701264
+            },
+            {
+              "x": 415.41848607661086,
+              "y": 501.7229964701264
+            },
+            {
+              "x": 415.41848607661086,
+              "y": 150.30451039351556
+            },
+            {
+              "x": 64,
+              "y": 150.30451039351556
+            },
+            {
+              "x": 64,
+              "y": 501.7229964701264
+            }
+          ],
+          "bounds": {
+            "x": 64,
+            "y": 150.30451039351556,
+            "width": 351.41848607661086,
+            "height": 351.41848607661086
+          }
+        }
+      ]
     },
     "geom-cities-bhubaneswar": {
       "id": "geom-cities-bhubaneswar",
@@ -243,10 +385,64 @@
       },
       "bounds": {
         "x": 714,
-        "y": 76.27700352987296,
+        "y": 76.27700352987313,
         "width": 44,
         "height": 44
       }
+    },
+    "geom-cities": {
+      "id": "geom-cities",
+      "role": "layer",
+      "kind": "layer",
+      "label": "cities",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "cities"
+      },
+      "children": [
+        {
+          "id": "geom-cities-bhubaneswar",
+          "role": "marker",
+          "kind": "marker",
+          "label": "Bhubaneswar",
+          "description": "Capital of Odisha.",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "bhubaneswar",
+            "entityType": "city",
+            "name": "Bhubaneswar",
+            "description": "Capital of Odisha.",
+            "location": {
+              "coordinates": {
+                "lat": 20.2961,
+                "lon": 85.8245
+              }
+            },
+            "lat": 20.2961,
+            "lon": 85.8245
+          },
+          "children": [],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              85.8245,
+              20.2961
+            ]
+          },
+          "bounds": {
+            "x": 714,
+            "y": 76.27700352987313,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ]
     }
   }
 }

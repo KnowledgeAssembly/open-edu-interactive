@@ -3,7 +3,14 @@
   <desc>An interactive geographic map</desc>
   <g id="map-root">
     <g id="map-layers">
-  <circle id="geom-markers-city1" data-oedu-role="marker" data-oedu-interactive="true" aria-label="Test City" cx="400" cy="300" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  <g id="geom-markers" data-oedu-role="layer" aria-label="markers">
+    <circle id="geom-markers-city1" data-oedu-role="marker" data-oedu-interactive="true" aria-label="Test City" cx="400" cy="300" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="2000 KM">
+    <line x1="26" y1="530" x2="196" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="196" y1="526" x2="196" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
     </g>
   </g>
 </svg>

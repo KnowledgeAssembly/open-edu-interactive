@@ -16,5 +16,11 @@
     "type": "city",
     "name": "City C",
     "location": "12.0000, 22.0000"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "100 KM",
+    "location": "100 KM"
   }
 ]

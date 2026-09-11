@@ -1,3 +1,9 @@
+import {
+  geoEquirectangular,
+  geoMercator,
+  geoAlbers,
+  type GeoProjection,
+} from 'd3-geo';
 import type { Point } from './geometry.js';
 
 function toRadians(deg: number): number {
@@ -24,8 +30,22 @@ export interface ProjectorOptions {
   scale?: number;
 }
 
+export type ProjectionType = 'equirectangular' | 'mercator' | 'albers';
+
+function makeD3Projector(type: ProjectionType): GeoProjection {
+  switch (type) {
+    case 'mercator':
+      return geoMercator();
+    case 'albers':
+      return geoAlbers();
+    case 'equirectangular':
+    default:
+      return geoEquirectangular();
+  }
+}
+
 export function makeProjector(
-  _type: 'equirectangular',
+  type: ProjectionType,
   width: number,
   height: number,
   options?: ProjectorOptions,
@@ -36,20 +56,21 @@ export function makeProjector(
   const cx = width / 2;
   const cy = height / 2;
 
+  const d3Proj = makeD3Projector(type);
+  d3Proj.center([center.lon, center.lat]);
+  d3Proj.scale(scale);
+  d3Proj.translate([cx, cy]);
+
   const project = function (lon: number, lat: number): Point {
-    const lonRad = toRadians(lon - center.lon);
-    const latRad = toRadians(lat - center.lat);
-    const x = cx + lonRad * scale;
-    const y = cy - latRad * scale;
-    return { x, y };
+    const p = d3Proj([lon, lat]);
+    if (!p) return { x: 0, y: 0 };
+    return { x: p[0], y: p[1] };
   };
 
   project.invert = function (x: number, y: number): { lon: number; lat: number } {
-    const lonRad = (x - cx) / scale;
-    const latRad = (cy - y) / scale;
-    const lon = (lonRad * 180) / Math.PI + center.lon;
-    const lat = (latRad * 180) / Math.PI + center.lat;
-    return { lon, lat };
+    const p = d3Proj.invert!([x, y]);
+    if (!p) return { lon: 0, lat: 0 };
+    return { lon: p[0], lat: p[1] };
   };
 
   project.scale = scale;

@@ -1,0 +1,695 @@
+{
+  "nodes": [
+    {
+      "id": "geom-journey",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Journey",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "journey"
+      },
+      "children": [
+        {
+          "id": "geom-journey-r1",
+          "role": "route",
+          "kind": "route",
+          "label": "Journey",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "layerId": "journey",
+            "routeId": "r1"
+          },
+          "children": [
+            {
+              "id": "geom-journey-r1-seg-0",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Start",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "a",
+                "entityType": "city",
+                "name": "Start",
+                "entityIndex": 0,
+                "location": {
+                  "coordinates": {
+                    "lat": 18,
+                    "lon": 82
+                  }
+                },
+                "lat": 18,
+                "lon": 82
+              },
+              "children": [],
+              "bounds": {
+                "x": 126,
+                "y": 530,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-1",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Stop B",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "b",
+                "entityType": "city",
+                "name": "Stop B",
+                "entityIndex": 1,
+                "location": {
+                  "coordinates": {
+                    "lat": 19,
+                    "lon": 83
+                  }
+                },
+                "lat": 19,
+                "lon": 83
+              },
+              "children": [],
+              "bounds": {
+                "x": 294.0000000000018,
+                "y": 361.99999999999955,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-2",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Stop C",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "c",
+                "entityType": "city",
+                "name": "Stop C",
+                "entityIndex": 2,
+                "location": {
+                  "coordinates": {
+                    "lat": 20,
+                    "lon": 84
+                  }
+                },
+                "lat": 20,
+                "lon": 84
+              },
+              "children": [],
+              "bounds": {
+                "x": 462.0000000000018,
+                "y": 194,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-3",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "End",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "d",
+                "entityType": "city",
+                "name": "End",
+                "entityIndex": 3,
+                "location": {
+                  "coordinates": {
+                    "lat": 21,
+                    "lon": 85
+                  }
+                },
+                "lat": 21,
+                "lon": 85
+              },
+              "children": [],
+              "bounds": {
+                "x": 630.0000000000018,
+                "y": 25.999999999999545,
+                "width": 44,
+                "height": 44
+              }
+            }
+          ],
+          "points": [
+            {
+              "x": 148,
+              "y": 552
+            },
+            {
+              "x": 316.0000000000018,
+              "y": 383.99999999999955
+            },
+            {
+              "x": 484.0000000000018,
+              "y": 216
+            },
+            {
+              "x": 652.0000000000018,
+              "y": 47.999999999999545
+            }
+          ],
+          "bounds": {
+            "x": 126,
+            "y": 25.999999999999545,
+            "width": 548.0000000000018,
+            "height": 548.0000000000005
+          }
+        }
+      ]
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "100 KM",
+      "bounds": {
+        "x": 24,
+        "y": 512,
+        "width": 166,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 100,
+        "lengthPx": 160,
+        "unit": "km",
+        "label": "100 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
+    }
+  ],
+  "semantics": {
+    "geom-journey-r1": {
+      "id": "geom-journey-r1",
+      "role": "route",
+      "kind": "route",
+      "label": "Journey",
+      "interactive": false,
+      "hidden": false,
+      "metadata": {
+        "layerId": "journey",
+        "routeId": "r1"
+      },
+      "children": [
+        {
+          "id": "geom-journey-r1-seg-0",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "Start",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "a",
+            "entityType": "city",
+            "name": "Start",
+            "entityIndex": 0,
+            "location": {
+              "coordinates": {
+                "lat": 18,
+                "lon": 82
+              }
+            },
+            "lat": 18,
+            "lon": 82
+          },
+          "children": [],
+          "bounds": {
+            "x": 126,
+            "y": 530,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "id": "geom-journey-r1-seg-1",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "Stop B",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "b",
+            "entityType": "city",
+            "name": "Stop B",
+            "entityIndex": 1,
+            "location": {
+              "coordinates": {
+                "lat": 19,
+                "lon": 83
+              }
+            },
+            "lat": 19,
+            "lon": 83
+          },
+          "children": [],
+          "bounds": {
+            "x": 294.0000000000018,
+            "y": 361.99999999999955,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "id": "geom-journey-r1-seg-2",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "Stop C",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "c",
+            "entityType": "city",
+            "name": "Stop C",
+            "entityIndex": 2,
+            "location": {
+              "coordinates": {
+                "lat": 20,
+                "lon": 84
+              }
+            },
+            "lat": 20,
+            "lon": 84
+          },
+          "children": [],
+          "bounds": {
+            "x": 462.0000000000018,
+            "y": 194,
+            "width": 44,
+            "height": 44
+          }
+        },
+        {
+          "id": "geom-journey-r1-seg-3",
+          "role": "route-segment",
+          "kind": "route-segment",
+          "label": "End",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "d",
+            "entityType": "city",
+            "name": "End",
+            "entityIndex": 3,
+            "location": {
+              "coordinates": {
+                "lat": 21,
+                "lon": 85
+              }
+            },
+            "lat": 21,
+            "lon": 85
+          },
+          "children": [],
+          "bounds": {
+            "x": 630.0000000000018,
+            "y": 25.999999999999545,
+            "width": 44,
+            "height": 44
+          }
+        }
+      ],
+      "points": [
+        {
+          "x": 148,
+          "y": 552
+        },
+        {
+          "x": 316.0000000000018,
+          "y": 383.99999999999955
+        },
+        {
+          "x": 484.0000000000018,
+          "y": 216
+        },
+        {
+          "x": 652.0000000000018,
+          "y": 47.999999999999545
+        }
+      ],
+      "bounds": {
+        "x": 126,
+        "y": 25.999999999999545,
+        "width": 548.0000000000018,
+        "height": 548.0000000000005
+      }
+    },
+    "geom-journey-r1-seg-0": {
+      "id": "geom-journey-r1-seg-0",
+      "role": "route-segment",
+      "kind": "route-segment",
+      "label": "Start",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "a",
+        "entityType": "city",
+        "name": "Start",
+        "entityIndex": 0,
+        "location": {
+          "coordinates": {
+            "lat": 18,
+            "lon": 82
+          }
+        },
+        "lat": 18,
+        "lon": 82
+      },
+      "children": [],
+      "bounds": {
+        "x": 126,
+        "y": 530,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-journey-r1-seg-1": {
+      "id": "geom-journey-r1-seg-1",
+      "role": "route-segment",
+      "kind": "route-segment",
+      "label": "Stop B",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "b",
+        "entityType": "city",
+        "name": "Stop B",
+        "entityIndex": 1,
+        "location": {
+          "coordinates": {
+            "lat": 19,
+            "lon": 83
+          }
+        },
+        "lat": 19,
+        "lon": 83
+      },
+      "children": [],
+      "bounds": {
+        "x": 294.0000000000018,
+        "y": 361.99999999999955,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-journey-r1-seg-2": {
+      "id": "geom-journey-r1-seg-2",
+      "role": "route-segment",
+      "kind": "route-segment",
+      "label": "Stop C",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "c",
+        "entityType": "city",
+        "name": "Stop C",
+        "entityIndex": 2,
+        "location": {
+          "coordinates": {
+            "lat": 20,
+            "lon": 84
+          }
+        },
+        "lat": 20,
+        "lon": 84
+      },
+      "children": [],
+      "bounds": {
+        "x": 462.0000000000018,
+        "y": 194,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-journey-r1-seg-3": {
+      "id": "geom-journey-r1-seg-3",
+      "role": "route-segment",
+      "kind": "route-segment",
+      "label": "End",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "d",
+        "entityType": "city",
+        "name": "End",
+        "entityIndex": 3,
+        "location": {
+          "coordinates": {
+            "lat": 21,
+            "lon": 85
+          }
+        },
+        "lat": 21,
+        "lon": 85
+      },
+      "children": [],
+      "bounds": {
+        "x": 630.0000000000018,
+        "y": 25.999999999999545,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "geom-journey": {
+      "id": "geom-journey",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Journey",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "journey"
+      },
+      "children": [
+        {
+          "id": "geom-journey-r1",
+          "role": "route",
+          "kind": "route",
+          "label": "Journey",
+          "interactive": false,
+          "hidden": false,
+          "metadata": {
+            "layerId": "journey",
+            "routeId": "r1"
+          },
+          "children": [
+            {
+              "id": "geom-journey-r1-seg-0",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Start",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "a",
+                "entityType": "city",
+                "name": "Start",
+                "entityIndex": 0,
+                "location": {
+                  "coordinates": {
+                    "lat": 18,
+                    "lon": 82
+                  }
+                },
+                "lat": 18,
+                "lon": 82
+              },
+              "children": [],
+              "bounds": {
+                "x": 126,
+                "y": 530,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-1",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Stop B",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "b",
+                "entityType": "city",
+                "name": "Stop B",
+                "entityIndex": 1,
+                "location": {
+                  "coordinates": {
+                    "lat": 19,
+                    "lon": 83
+                  }
+                },
+                "lat": 19,
+                "lon": 83
+              },
+              "children": [],
+              "bounds": {
+                "x": 294.0000000000018,
+                "y": 361.99999999999955,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-2",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "Stop C",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "c",
+                "entityType": "city",
+                "name": "Stop C",
+                "entityIndex": 2,
+                "location": {
+                  "coordinates": {
+                    "lat": 20,
+                    "lon": 84
+                  }
+                },
+                "lat": 20,
+                "lon": 84
+              },
+              "children": [],
+              "bounds": {
+                "x": 462.0000000000018,
+                "y": 194,
+                "width": 44,
+                "height": 44
+              }
+            },
+            {
+              "id": "geom-journey-r1-seg-3",
+              "role": "route-segment",
+              "kind": "route-segment",
+              "label": "End",
+              "interactive": true,
+              "acceptsActions": [
+                "select",
+                "focus"
+              ],
+              "hidden": false,
+              "metadata": {
+                "entityId": "d",
+                "entityType": "city",
+                "name": "End",
+                "entityIndex": 3,
+                "location": {
+                  "coordinates": {
+                    "lat": 21,
+                    "lon": 85
+                  }
+                },
+                "lat": 21,
+                "lon": 85
+              },
+              "children": [],
+              "bounds": {
+                "x": 630.0000000000018,
+                "y": 25.999999999999545,
+                "width": 44,
+                "height": 44
+              }
+            }
+          ],
+          "points": [
+            {
+              "x": 148,
+              "y": 552
+            },
+            {
+              "x": 316.0000000000018,
+              "y": 383.99999999999955
+            },
+            {
+              "x": 484.0000000000018,
+              "y": 216
+            },
+            {
+              "x": 652.0000000000018,
+              "y": 47.999999999999545
+            }
+          ],
+          "bounds": {
+            "x": 126,
+            "y": 25.999999999999545,
+            "width": 548.0000000000018,
+            "height": 548.0000000000005
+          }
+        }
+      ]
+    }
+  }
+}

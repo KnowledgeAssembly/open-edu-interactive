@@ -64,7 +64,7 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
         version: '1.0.0',
         id: 'bad-proj',
         content: {
-          projection: { type: 'mercator' },
+          projection: { type: 'orthographic' },
           geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
           entities: [{ id: 'pt', type: 'city', name: 'Pt', location: { coordinates: { lat: 0, lon: 0 } } }],
           layers: [{ id: 'l', type: 'marker', items: [{ entity: 'pt' }] }],

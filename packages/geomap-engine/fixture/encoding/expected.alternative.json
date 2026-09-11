@@ -1,0 +1,53 @@
+[
+  {
+    "entityId": "r1",
+    "type": "region",
+    "name": "R1-Low",
+    "location": "5.0060, 5.0000",
+    "sourceClass": "illustrative",
+    "measureValue": 10,
+    "encodingBucket": "encoding-bucket-1"
+  },
+  {
+    "entityId": "r2",
+    "type": "region",
+    "name": "R2-Medium",
+    "location": "5.0060, 20.0000",
+    "sourceClass": "illustrative",
+    "measureValue": 150,
+    "encodingBucket": "encoding-bucket-2"
+  },
+  {
+    "entityId": "r3",
+    "type": "region",
+    "name": "R3-High",
+    "location": "5.0060, 35.0000",
+    "sourceClass": "illustrative",
+    "measureValue": 300,
+    "encodingBucket": "encoding-bucket-3"
+  },
+  {
+    "entityId": "r4",
+    "type": "region",
+    "name": "R4-VHigh",
+    "location": "20.0162, 5.0000",
+    "sourceClass": "illustrative",
+    "measureValue": 500,
+    "encodingBucket": "encoding-bucket-3"
+  },
+  {
+    "entityId": "r5",
+    "type": "region",
+    "name": "R5-Same",
+    "location": "20.0162, 20.0000",
+    "sourceClass": "illustrative",
+    "measureValue": 50,
+    "encodingBucket": "encoding-bucket-1"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "1000 KM",
+    "location": "1000 KM"
+  }
+]

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Encoding map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <g id="geom-eco" data-oedu-role="layer" aria-label="Eco Zones">
+    <path id="geom-eco-r1" data-oedu-role="region" data-oedu-interactive="true" data-oedu-encoding="encoding-bucket-1" aria-label="R1-Low" d="M 64 510 L 232 510 L 232 342 L 64 342 L 64 510 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path id="geom-eco-r2" data-oedu-role="region" data-oedu-interactive="true" data-oedu-encoding="encoding-bucket-2" aria-label="R2-Medium" d="M 316 510 L 484 510 L 484 342 L 316 342 L 316 510 Z" fill="currentColor" opacity="0.45" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path id="geom-eco-r3" data-oedu-role="region" data-oedu-interactive="true" data-oedu-encoding="encoding-bucket-3" aria-label="R3-High" d="M 568 510 L 736 510 L 736 342 L 568 342 L 568 510 Z" fill="currentColor" opacity="0.6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path id="geom-eco-r4" data-oedu-role="region" data-oedu-interactive="true" data-oedu-encoding="encoding-bucket-3" aria-label="R4-VHigh" d="M 64 258 L 232 258 L 232 90 L 64 90 L 64 258 Z" fill="currentColor" opacity="0.6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    <path id="geom-eco-r5" data-oedu-role="region" data-oedu-interactive="true" data-oedu-encoding="encoding-bucket-1" aria-label="R5-Same" d="M 316 258 L 484 258 L 484 90 L 316 90 L 316 258 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </g>
+  <g id="geom-legend" data-oedu-role="legend" aria-label="Legend">
+    <text id="geom-legend-item-0" data-oedu-role="legend-item" aria-label="Region" x="22" y="22" text-anchor="start" dominant-baseline="central" font-size="12">Region</text>
+    <text id="geom-legend-item-1" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-1" data-oedu-encoding="encoding-bucket-1" aria-label="area: [0–100)" x="22" y="40" text-anchor="start" dominant-baseline="central" font-size="12">area: [0–100)</text>
+    <text id="geom-legend-item-2" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-2" data-oedu-encoding="encoding-bucket-2" aria-label="area: [100–250)" x="22" y="58" text-anchor="start" dominant-baseline="central" font-size="12">area: [100–250)</text>
+    <text id="geom-legend-item-3" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-3" data-oedu-encoding="encoding-bucket-3" aria-label="area: [250–1000)" x="22" y="76" text-anchor="start" dominant-baseline="central" font-size="12">area: [250–1000)</text>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="1000 KM">
+    <line x1="26" y1="530" x2="183" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="183" y1="526" x2="183" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+    </g>
+  </g>
+</svg>

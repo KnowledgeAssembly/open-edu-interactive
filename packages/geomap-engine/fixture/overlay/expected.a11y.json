@@ -1,0 +1,14 @@
+[
+  {
+    "id": "geom-risk-nz",
+    "role": "button",
+    "label": "North Zone",
+    "children": []
+  },
+  {
+    "id": "geom-risk-sz",
+    "role": "button",
+    "label": "South Zone",
+    "children": []
+  }
+]

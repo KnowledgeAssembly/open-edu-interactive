@@ -4,7 +4,7 @@
     "type": "state",
     "name": "Odisha",
     "description": "A state on the eastern coast of India.",
-    "location": "18.8000, 82.8000",
+    "location": "19.0007, 83.0000",
     "sourceClass": "illustrative"
   },
   {
@@ -12,7 +12,7 @@
     "type": "state",
     "name": "West Bengal",
     "description": "A state in eastern India.",
-    "location": "22.8000, 86.8000",
+    "location": "23.0007, 87.0000",
     "sourceClass": "illustrative"
   },
   {
@@ -28,5 +28,11 @@
     "name": "Chilika Lake",
     "description": "A brackish water lagoon.",
     "location": "19.7000, 85.3000"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "200 KM",
+    "location": "200 KM"
   }
 ]

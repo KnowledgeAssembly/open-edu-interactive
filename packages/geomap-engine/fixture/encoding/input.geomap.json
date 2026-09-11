@@ -1,0 +1,62 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "encoding",
+  "metadata": { "title": "Encoding map with 5 regions, 3 breakpoints, categories" },
+  "purpose": { "learningObjective": "Verify encoding bucketing, data-oedu-encoding, auto-legend" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [
+        {
+          "id": "src",
+          "type": "geojson",
+          "class": "illustrative",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              { "id": "r1", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]] } },
+              { "id": "r2", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[15, 0], [25, 0], [25, 10], [15, 10], [15, 0]]] } },
+              { "id": "r3", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[30, 0], [40, 0], [40, 10], [30, 10], [30, 0]]] } },
+              { "id": "r4", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 15], [10, 15], [10, 25], [0, 25], [0, 15]]] } },
+              { "id": "r5", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[15, 15], [25, 15], [25, 25], [15, 25], [15, 15]]] } }
+            ]
+          }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "r1", "type": "region", "name": "R1-Low", "location": { "source": "src", "featureId": "r1" }, "categories": ["zone-a"] },
+      { "id": "r2", "type": "region", "name": "R2-Medium", "location": { "source": "src", "featureId": "r2" }, "categories": ["zone-a"] },
+      { "id": "r3", "type": "region", "name": "R3-High", "location": { "source": "src", "featureId": "r3" }, "categories": ["zone-b"] },
+      { "id": "r4", "type": "region", "name": "R4-VHigh", "location": { "source": "src", "featureId": "r4" }, "categories": ["zone-b"] },
+      { "id": "r5", "type": "region", "name": "R5-Same", "location": { "source": "src", "featureId": "r5" }, "categories": ["zone-c"] }
+    ],
+    "layers": [
+      {
+        "id": "eco",
+        "type": "region",
+        "title": "Eco Zones",
+        "items": [
+          { "entity": "r1", "interactive": true, "measure": { "attribute": "area", "value": 10 } },
+          { "entity": "r2", "interactive": true, "measure": { "attribute": "area", "value": 150 } },
+          { "entity": "r3", "interactive": true, "measure": { "attribute": "area", "value": 300 } },
+          { "entity": "r4", "interactive": true, "measure": { "attribute": "area", "value": 500 } },
+          { "entity": "r5", "interactive": true, "measure": { "attribute": "area", "value": 50 } }
+        ],
+        "encoding": {
+          "attribute": "area",
+          "type": "fill",
+          "breakpoints": [[0, 100], [100, 250], [250, 1000]]
+        }
+      }
+    ],
+    "legend": { "visible": true, "items": [
+      { "role": "primary-region", "label": "Region" }
+    ] }
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "filter", "clear-filter"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Encoding map" }
+}

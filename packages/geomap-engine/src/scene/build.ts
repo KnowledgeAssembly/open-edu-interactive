@@ -1,4 +1,6 @@
 import { EngineError } from '@knowledgeassemble/interactive-engine';
+import { geoCentroid, geoArea } from 'd3-geo';
+import type { GeoGeometryObjects } from 'd3-geo';
 import type { GeoMapContent, GeoSourceSpec, EntitySpec } from '../schema.js';
 import type { Scene, SceneNode } from './types.js';
 
@@ -29,31 +31,44 @@ function centroidOf(geom: Record<string, unknown> | undefined): { lat: number; l
   if (!geom) return undefined;
   const geomType = String(geom.type ?? '');
   const coords = geom.coordinates as unknown;
-  let ring: number[][] | undefined;
   if (geomType === 'Point' && Array.isArray(coords) && coords.length >= 2) {
     return { lon: Number(coords[0] ?? 0), lat: Number(coords[1] ?? 0) };
   }
-  if (geomType === 'Polygon' && Array.isArray(coords) && coords.length > 0) {
-    ring = (coords as unknown[][])[0] as number[][] | undefined;
-  } else if (geomType === 'MultiPolygon' && Array.isArray(coords) && coords.length > 0 && Array.isArray(coords[0]) && (coords[0] as unknown[]).length > 0) {
-    ring = ((coords as unknown[][])[0] as unknown[][])[0] as number[][] | undefined;
-  }
-  if (ring && ring.length > 0) {
-    let sumLat = 0;
-    let sumLon = 0;
-    let count = 0;
-    for (const pt of ring) {
-      if (Array.isArray(pt) && pt.length >= 2) {
-        sumLon += Number(pt[0] ?? 0);
-        sumLat += Number(pt[1] ?? 0);
-        count++;
-      }
+  try {
+    const geomObj: Record<string, unknown> = geom as Record<string, unknown>;
+    let g = { ...geomObj };
+    const innerType = String(g.type ?? '');
+    if (geoArea(g as unknown as GeoGeometryObjects) > 2 * Math.PI && (innerType === 'Polygon' || innerType === 'MultiPolygon')) {
+      g = { ...g, coordinates: reverseRings(g.coordinates, innerType) };
     }
-    if (count > 0) {
-      return { lat: sumLat / count, lon: sumLon / count };
+    const pt = geoCentroid(g as unknown as GeoGeometryObjects);
+    if (Array.isArray(pt) && pt.length >= 2) {
+      return { lon: pt[0] as number, lat: pt[1] as number };
     }
+  } catch {
   }
   return undefined;
+}
+
+function reverseRings(coords: unknown, type: string): unknown {
+  if (type === 'Polygon' && Array.isArray(coords)) {
+    return coords.map((ring: unknown) => {
+      if (Array.isArray(ring)) return [...ring].reverse();
+      return ring;
+    });
+  }
+  if (type === 'MultiPolygon' && Array.isArray(coords)) {
+    return coords.map((poly: unknown) => {
+      if (Array.isArray(poly)) {
+        return poly.map((ring: unknown) => {
+          if (Array.isArray(ring)) return [...ring].reverse();
+          return ring;
+        });
+      }
+      return poly;
+    });
+  }
+  return coords;
 }
 
 export function buildScene(
@@ -124,7 +139,17 @@ export function buildScene(
 
   for (const layer of layers) {
     assertUnique(seen, layer.id);
+    const layerId = layer.id;
     const layerHidden = layer.visible === false;
+    const layerChildren: SceneNode[] = [];
+
+    const layerEncoding = layer.encoding;
+    const encodingMeta: Record<string, unknown> = {};
+    if (layerEncoding) {
+      encodingMeta.encodingAttribute = layerEncoding.attribute;
+      encodingMeta.encodingType = layerEncoding.type;
+      encodingMeta.encodingBreakpoints = layerEncoding.breakpoints;
+    }
 
     for (const item of layer.items) {
       const itemRecord = item as Record<string, unknown>;
@@ -134,24 +159,27 @@ export function buildScene(
 
       if (layer.type === 'route') {
         if (!routeId || !path) continue;
-        const routeNodeId = `geom-${layer.id}-${routeId}`;
+        const routeNodeId = `geom-${layerId}-${routeId}`;
         assertUnique(seen, routeNodeId);
 
+        const routeInteractive = itemRecord.interactive === true;
         const segmentNodes: SceneNode[] = [];
         for (let i = 0; i < path.length; i++) {
-          const segId = `geom-${layer.id}-${routeId}-seg-${i}`;
+          const segId = `geom-${layerId}-${routeId}-seg-${i}`;
           const entity = entityById.get(path[i]!);
           if (!entity) {
             throw new EngineError('INVALID_REFERENCE', `geomap: route "${routeId}" path references unknown entity "${path[i]}"`);
           }
           const pos = resolvedPos.get(entity.id);
+          const segInteractive = routeInteractive;
           const segNode: SceneNode = {
             id: segId,
             role: 'route-segment',
             kind: 'route-segment',
             label: entity.name,
             description: entity.description,
-            interactive: false,
+            interactive: segInteractive,
+            acceptsActions: segInteractive ? ['select', 'focus'] : undefined,
             hidden: layerHidden,
             metadata: {
               entityId: entity.id,
@@ -162,6 +190,9 @@ export function buildScene(
               links: entity.links ?? undefined,
               lat: pos?.lat,
               lon: pos?.lon,
+              categories: entity.categories ?? undefined,
+              adjacentTo: entity.adjacentTo ?? undefined,
+              ...encodingMeta,
             },
             children: [],
           };
@@ -179,7 +210,13 @@ export function buildScene(
           children: segmentNodes,
         };
         semantics[routeNodeId] = routeNode;
-        nodes.push(routeNode);
+        layerChildren.push(routeNode);
+
+        if (routeInteractive) {
+          for (const seg of segmentNodes) {
+            semantics[seg.id] = seg;
+          }
+        }
         continue;
       }
 
@@ -189,7 +226,7 @@ export function buildScene(
           throw new EngineError('INVALID_REFERENCE', `geomap: layer "${layer.id}" item references unknown entity "${entityId}"`);
         }
 
-        const nodeId = `geom-${layer.id}-${entityId}`;
+        const nodeId = `geom-${layerId}-${entityId}`;
         assertUnique(seen, nodeId);
 
         const interactive = !layerHidden && itemRecord.interactive !== false;
@@ -198,6 +235,8 @@ export function buildScene(
 
         const geometry = resolvedGeom.get(entity.id);
         const pos = resolvedPos.get(entity.id);
+
+        const itemMeasure = (itemRecord.measure as { attribute: string; value: number } | undefined);
 
         const node: SceneNode = {
           id: nodeId,
@@ -218,6 +257,10 @@ export function buildScene(
             links: entity.links ?? undefined,
             lat: pos?.lat,
             lon: pos?.lon,
+            categories: entity.categories ?? undefined,
+            adjacentTo: entity.adjacentTo ?? undefined,
+            ...(itemMeasure ? { measureValue: itemMeasure.value, measureAttribute: itemMeasure.attribute } : {}),
+            ...encodingMeta,
           },
           children: [],
         };
@@ -227,9 +270,24 @@ export function buildScene(
         }
 
         semantics[nodeId] = node;
-        nodes.push(node);
+        layerChildren.push(node);
       }
     }
+
+    const layerNodeId = `geom-${layerId}`;
+    assertUnique(seen, layerNodeId);
+    const layerNode: SceneNode = {
+      id: layerNodeId,
+      role: 'layer',
+      kind: 'layer',
+      label: layer.title ?? layerId,
+      hidden: layerHidden,
+      interactive: false,
+      metadata: { layerId },
+      children: layerChildren,
+    };
+    semantics[layerNodeId] = layerNode;
+    nodes.push(layerNode);
   }
 
   const legend = content.legend;
@@ -239,14 +297,20 @@ export function buildScene(
     const legendItems: SceneNode[] = legend.items.map((item, i) => {
       const itemId = `geom-legend-item-${i}`;
       assertUnique(seen, itemId);
-      return {
+      const node: SceneNode = {
         id: itemId,
         role: 'legend-item',
         kind: 'legend-item',
         label: item.label,
-        metadata: { role: item.role },
+        metadata: {
+          role: item.role,
+          linkedEntities: item.linkedEntities ?? undefined,
+          interactive: item.interactive ?? undefined,
+        },
         children: [],
       };
+      semantics[itemId] = node;
+      return node;
     });
     const legendNode: SceneNode = {
       id: legendNodeId,

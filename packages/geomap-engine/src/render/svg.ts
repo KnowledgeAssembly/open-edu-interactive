@@ -14,11 +14,24 @@ function polylinePoints(pts: Array<{ x: number; y: number }>): string {
   return pts.map((p) => `${fmt(p.x)},${fmt(p.y)}`).join(' ');
 }
 
-function nodeToSvg(node: SceneNode, indent: number): string {
+function nodeToSvg(node: SceneNode, indent: number, minTouchTarget: number): string {
   const pad = '  '.repeat(indent);
   let attrs = `id="${escapeXml(node.id)}" data-oedu-role="${escapeXml(node.role)}"`;
   if (node.interactive) {
     attrs += ` data-oedu-interactive="true"`;
+  }
+  if (node.role === 'route-completed') {
+    attrs += ` data-oedu-state="completed"`;
+  } else if (node.role === 'route-active') {
+    attrs += ` data-oedu-state="active"`;
+  }
+  const encodingBucket = node.metadata?.encodingBucket as string | undefined;
+  const encodingType = node.metadata?.encodingType as string | undefined;
+  if (encodingBucket) {
+    attrs += ` data-oedu-encoding="${escapeXml(encodingBucket)}"`;
+  }
+  if (node.role === 'legend-item' && encodingBucket) {
+    attrs += ` data-oedu-encoding="${escapeXml(encodingBucket)}"`;
   }
   if (node.label) {
     attrs += ` aria-label="${escapeXml(node.label)}"`;
@@ -28,13 +41,13 @@ function nodeToSvg(node: SceneNode, indent: number): string {
   }
 
   if (node.kind === 'route' && node.points && node.points.length > 0) {
-    const dots = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
+    const dots = node.children.map((c) => nodeToSvg(c, indent + 1, minTouchTarget)).join('\n');
     const line = `${pad}  <polyline ${attrs} points="${polylinePoints(node.points)}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
     return `${pad}<g ${attrs}>\n${line}\n${dots}\n${pad}</g>`;
   }
 
   if (node.children.length > 0) {
-    const children = node.children.map((c) => nodeToSvg(c, indent + 1)).join('\n');
+    const children = node.children.map((c) => nodeToSvg(c, indent + 1, minTouchTarget)).join('\n');
     return `${pad}<g ${attrs}>\n${children}\n${pad}</g>`;
   }
 
@@ -46,19 +59,40 @@ function nodeToSvg(node: SceneNode, indent: number): string {
   switch (node.kind) {
     case 'region': {
       if (node.path && node.path.length > 1) {
+        const encodingType = node.metadata?.encodingType as string | undefined;
+        let opacity = 0.3;
+        if (encodingType === 'fill' && encodingBucket) {
+          const idx = parseInt(encodingBucket.split('-').pop() ?? '1', 10);
+          opacity = 0.15 + idx * 0.15;
+        }
         const d = `${node.path.map((p, i) => (i === 0 ? `M ${fmt(p.x)} ${fmt(p.y)}` : `L ${fmt(p.x)} ${fmt(p.y)}`)).join(' ')} Z`;
-        return `${pad}<path ${attrs} d="${d}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`;
+        return `${pad}<path ${attrs} d="${d}" fill="currentColor" opacity="${fmt(opacity)}" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`;
       }
       return `${pad}<rect ${attrs} x="${x}" y="${y}" width="${width}" height="${height}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" rx="2"/>`;
     }
-    case 'marker':
-      return `${pad}<circle ${attrs} cx="${fmt(cx)}" cy="${fmt(cy)}" r="${Math.max(4, Math.min(width, height) / 2)}" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>`;
+    case 'marker': {
+      let r = Math.max(4, Math.min(width, height) / 2);
+      if (encodingType === 'size' && encodingBucket) {
+        const idx = parseInt(encodingBucket.split('-').pop() ?? '1', 10);
+        r = Math.min(26, Math.max(6, 6 + (idx - 1) * 5));
+      }
+      return `${pad}<circle ${attrs} cx="${fmt(cx)}" cy="${fmt(cy)}" r="${fmt(r)}" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>`;
+    }
     case 'label':
       return `${pad}<text ${attrs} x="${fmt(cx)}" y="${fmt(cy)}" text-anchor="middle" dominant-baseline="central" font-size="12">${escapeXml(node.label ?? '')}</text>`;
     case 'legend-item':
       return `${pad}<text ${attrs} x="${fmt(x + 6)}" y="${fmt(cy)}" text-anchor="start" dominant-baseline="central" font-size="12">${escapeXml(node.label ?? '')}</text>`;
     case 'route-segment':
       return `${pad}<circle ${attrs} cx="${fmt(cx)}" cy="${fmt(cy)}" r="3" fill="currentColor" opacity="0.5"/>`;
+    case 'scale-bar': {
+      const x0 = x + 2;
+      const y0 = y + 18;
+      const x1 = x0 + width - 4;
+      const line = `<line x1="${fmt(x0)}" y1="${fmt(y0)}" x2="${fmt(x1)}" y2="${fmt(y0)}" stroke="currentColor" stroke-width="2"/>`;
+      const tickL = `<line x1="${fmt(x0)}" y1="${fmt(y0 - 4)}" x2="${fmt(x0)}" y2="${fmt(y0 + 4)}" stroke="currentColor" stroke-width="1.5"/>`;
+      const tickR = `<line x1="${fmt(x1)}" y1="${fmt(y0 - 4)}" x2="${fmt(x1)}" y2="${fmt(y0 + 4)}" stroke="currentColor" stroke-width="1.5"/>`;
+      return `${pad}<g ${attrs}>\n${pad}  ${line}\n${pad}  ${tickL}\n${pad}  ${tickR}\n${pad}</g>`;
+    }
     default:
       return `${pad}<g ${attrs}></g>`;
   }
@@ -84,7 +118,7 @@ export function svgFrom(scene: Scene, ctx: LayoutContext, label?: string, desc?:
   const width = ctx.width;
   const height = ctx.height;
 
-  const childrenSvg = scene.nodes.filter((n) => !n.hidden).map((n) => nodeToSvg(n, 1)).join('\n');
+  const childrenSvg = scene.nodes.filter((n) => !n.hidden).map((n) => nodeToSvg(n, 1, ctx.minTouchTarget)).join('\n');
 
   const title = label ?? 'GeoMap';
   const description = desc ?? 'An interactive geographic map';
@@ -128,6 +162,19 @@ ${childrenSvg}
           description: node.metadata.description as string | undefined,
           location: locationString(node),
           sourceClass: node.metadata.sourceClass as string | undefined,
+          adjacentTo: node.metadata.adjacentTo as string[] | undefined,
+          measureValue: node.metadata.measureValue as number | undefined,
+          encodingBucket: node.metadata.encodingBucket as string | undefined,
+        });
+      }
+      if (node.kind === 'scale-bar') {
+        alternative.push({
+          entityId: node.id,
+          type: 'scale-bar',
+          name: String(node.metadata.label ?? ''),
+          description: undefined,
+          location: `${String(node.metadata.lengthKm)} ${String(node.metadata.unit).toUpperCase()}`,
+          sourceClass: undefined,
         });
       }
     }

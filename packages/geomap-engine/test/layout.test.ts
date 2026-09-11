@@ -23,12 +23,7 @@ describe('layout', () => {
   it('assigns bounds to nodes', () => {
     const scene = buildScene(odishaContent, identityAsset);
     const laidOut = layout(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
-    for (const node of laidOut.nodes) {
-      if (node.kind === 'marker') {
-        expect(node.bounds).toBeDefined();
-      }
-    }
-    const marker = laidOut.nodes.find((n) => n.role === 'marker');
+    const marker = laidOut.semantics['geom-cities-bhubaneswar'];
     expect(marker!.bounds).toBeDefined();
     expect(marker!.bounds!.width).toBeGreaterThan(0);
   });
@@ -39,7 +34,9 @@ describe('layout', () => {
     const ctx = { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' };
     const laid1 = layout(scene1, ctx);
     const laid2 = layout(scene2, ctx);
-    expect(JSON.stringify(laid1.nodes[0]!.bounds)).toBe(JSON.stringify(laid2.nodes[0]!.bounds));
+    const marker1 = laid1.semantics['geom-cities-bhubaneswar'];
+    const marker2 = laid2.semantics['geom-cities-bhubaneswar'];
+    expect(JSON.stringify(marker1!.bounds)).toBe(JSON.stringify(marker2!.bounds));
   });
 });
 
