@@ -1,13 +1,13 @@
 import type { ValidationResult } from '@knowledgeassemble/interactive-engine';
-import type { Scene, SceneNode } from '../scene/types.js';
-import { contained, overlaps } from '../layout/geometry.js';
+import type { Scene, SceneNode, XY } from '../scene/types.js';
+import { contained, regionsOverlap } from '../layout/geometry.js';
 import type { LayoutContext } from '../layout/engine.js';
 
 export function validateLayout(scene: Scene, ctx: LayoutContext): ValidationResult {
   const canvas = { x: 0, y: 0, width: ctx.width, height: ctx.height };
   const issues: ValidationResult['issues'] = [];
 
-  const interactiveRegions: Array<{ id: string; bounds: NonNullable<SceneNode['bounds']> }> = [];
+  const interactiveRegions: Array<{ id: string; bounds: NonNullable<SceneNode['bounds']>; rings: XY[][] }> = [];
 
   function walk(node: SceneNode): void {
     if (node.hidden) return;
@@ -32,7 +32,8 @@ export function validateLayout(scene: Scene, ctx: LayoutContext): ValidationResu
           });
         }
         if (node.role === 'region') {
-          interactiveRegions.push({ id: node.id, bounds: b });
+          const rings = node.rings && node.rings.length > 0 ? node.rings : node.path ? [node.path] : [];
+          interactiveRegions.push({ id: node.id, bounds: b, rings });
         }
       }
     }
@@ -49,7 +50,8 @@ export function validateLayout(scene: Scene, ctx: LayoutContext): ValidationResu
     for (let j = i + 1; j < interactiveRegions.length; j++) {
       const a = interactiveRegions[i]!;
       const b = interactiveRegions[j]!;
-      if (overlaps(a.bounds, b.bounds)) {
+      if (a.rings.length === 0 || b.rings.length === 0) continue;
+      if (regionsOverlap(a.rings, b.rings)) {
         issues.push({
           level: 'L3',
           code: 'INVALID_STATE',

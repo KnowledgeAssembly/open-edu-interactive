@@ -22,6 +22,7 @@ export interface SceneNode {
   geometry?: { type: string; coordinates: unknown };
   bounds?: Bounds;
   path?: XY[];
+  rings?: XY[][];
   points?: XY[];
   hidden?: boolean;
   label?: string;

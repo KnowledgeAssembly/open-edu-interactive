@@ -16,17 +16,21 @@ export interface ProjectorFit {
   centerLon: number;
 }
 
-function ringVertices(geometry?: { type: string; coordinates: unknown }): Array<[number, number]> {
+function outerRings(geometry?: { type: string; coordinates: unknown }): Array<Array<[number, number]>> {
   if (!geometry) return [];
   const coords = geometry.coordinates as unknown;
   const type = geometry.type;
   if (type === 'Polygon' && Array.isArray(coords) && coords.length > 0) {
     const ring = coords[0] as unknown[];
-    return ring.filter((p) => Array.isArray(p) && p.length >= 2) as Array<[number, number]>;
+    return [ring.filter((p) => Array.isArray(p) && p.length >= 2) as Array<[number, number]>];
   }
-  if (type === 'MultiPolygon' && Array.isArray(coords) && coords.length > 0 && Array.isArray(coords[0])) {
-    const ring = (coords[0] as unknown[])[0] as unknown[];
-    return ring.filter((p) => Array.isArray(p) && p.length >= 2) as Array<[number, number]>;
+  if (type === 'MultiPolygon' && Array.isArray(coords)) {
+    return coords
+      .filter((poly) => Array.isArray(poly) && poly.length > 0 && Array.isArray(poly[0]))
+      .map((poly) => {
+        const ring = poly[0] as unknown[];
+        return ring.filter((p) => Array.isArray(p) && p.length >= 2) as Array<[number, number]>;
+      });
   }
   return [];
 }
@@ -58,9 +62,11 @@ export function fitScene(
         allLats.push(lat);
       }
     }
-    for (const pt of ringVertices(node.geometry)) {
-      allLons.push(pt[0]!);
-      allLats.push(pt[1]!);
+    for (const ring of outerRings(node.geometry)) {
+      for (const pt of ring) {
+        allLons.push(pt[0]!);
+        allLats.push(pt[1]!);
+      }
     }
     for (const child of node.children) {
       collectDegrees(child);
@@ -96,10 +102,19 @@ export function layout(
   const { projector } = fitScene(scene, ctx, viewport, projectionType ?? 'equirectangular');
   const project = projector;
 
-  function projectPolygon(node: SceneNode): XY[] | undefined {
-    const pts = ringVertices(node.geometry);
-    if (pts.length === 0) return undefined;
-    return pts.map(([lon, lat]) => project(lon, lat));
+  function projectRings(node: SceneNode): XY[][] | undefined {
+    const rings = outerRings(node.geometry);
+    if (rings.length === 0) return undefined;
+    return rings
+      .map((ring) => ring.map(([lon, lat]) => project(lon, lat)) as XY[])
+      .filter((ring) => {
+        if (ring.length < 3) return false;
+        const l = Math.min(...ring.map((p) => p.x));
+        const r = Math.max(...ring.map((p) => p.x));
+        const t = Math.min(...ring.map((p) => p.y));
+        const b = Math.max(...ring.map((p) => p.y));
+        return r - l > 1e-6 || b - t > 1e-6;
+      });
   }
 
   function assignBounds(node: SceneNode): void {
@@ -108,10 +123,12 @@ export function layout(
     const lon = meta?.lon as number | undefined;
 
     if (node.kind === 'region') {
-      const projected = projectPolygon(node);
+      const projected = projectRings(node);
       if (projected && projected.length > 0) {
-        node.path = projected;
-        const r = union(...projected.map((p) => rect(p.x, p.y, 0, 0)));
+        node.rings = projected;
+        node.path = projected[0];
+        const allRects = projected.flatMap((ring) => ring.map((p) => rect(p.x, p.y, 0, 0)));
+        const r = union(...allRects);
         node.bounds = expandToMin(r, node.interactive ? ctx.minTouchTarget : 8);
         return;
       }

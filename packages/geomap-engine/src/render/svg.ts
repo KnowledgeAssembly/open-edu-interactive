@@ -54,14 +54,17 @@ function nodeToSvg(node: SceneNode, indent: number, minTouchTarget: number): str
 
   switch (node.kind) {
     case 'region': {
-      if (node.path && node.path.length > 1) {
-        const encodingType = node.metadata?.encodingType as string | undefined;
-        let opacity = 0.3;
-        if (encodingType === 'fill' && encodingBucket) {
-          const idx = parseInt(encodingBucket.split('-').pop() ?? '1', 10);
-          opacity = 0.15 + idx * 0.15;
-        }
-        const d = `${node.path.map((p, i) => (i === 0 ? `M ${fmt(p.x)} ${fmt(p.y)}` : `L ${fmt(p.x)} ${fmt(p.y)}`)).join(' ')} Z`;
+      const rings = node.rings && node.rings.length > 0 ? node.rings : node.path ? [node.path] : [];
+      const encodingType = node.metadata?.encodingType as string | undefined;
+      let opacity = 0.3;
+      if (encodingType === 'fill' && encodingBucket) {
+        const idx = parseInt(encodingBucket.split('-').pop() ?? '1', 10);
+        opacity = 0.15 + idx * 0.15;
+      }
+      if (rings.length > 0) {
+        const d = rings
+          .map((ring) => `${ring.map((p, i) => `${i === 0 ? 'M' : 'L'} ${fmt(p.x)} ${fmt(p.y)}`).join(' ')} Z`)
+          .join(' ');
         return `${pad}<path ${attrs} d="${d}" fill="currentColor" opacity="${fmt(opacity)}" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`;
       }
       return `${pad}<rect ${attrs} x="${x}" y="${y}" width="${width}" height="${height}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" rx="2"/>`;

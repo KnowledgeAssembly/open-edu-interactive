@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { layout } from '../src/layout/engine.js';
 import { buildScene } from '../src/scene/build.js';
-import { rect, union, contained, polygonCentroid, pointInPolygon } from '../src/layout/geometry.js';
+import { validateLayout } from '../src/validation/layout.js';
+import { rect, union, contained, polygonCentroid, pointInPolygon, polygonArea, polygonsOverlap, regionsOverlap } from '../src/layout/geometry.js';
 import type { GeoMapContent } from '../src/schema.js';
 
 function identityAsset(id: string): string { return id; }
@@ -38,6 +39,48 @@ describe('layout', () => {
     const marker2 = laid2.semantics['geom-cities-bhubaneswar'];
     expect(JSON.stringify(marker1!.bounds)).toBe(JSON.stringify(marker2!.bounds));
   });
+
+  it('multipolygon region: keeps all outer rings and bounds cover them', () => {
+    const mpContent: GeoMapContent = {
+      projection: { type: 'equirectangular' },
+      geography: {
+        sources: [{
+          id: 'src',
+          type: 'geojson',
+          class: 'illustrative',
+          data: {
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              id: 'split',
+              geometry: {
+                type: 'MultiPolygon',
+                coordinates: [
+                  [[[82, 18], [84, 18], [84, 20], [82, 20], [82, 18]]],
+                  [[[86, 22], [88, 22], [88, 24], [86, 24], [86, 22]]],
+                ],
+              },
+              properties: {},
+            }],
+          },
+        }],
+      },
+      entities: [
+        { id: 'split', type: 'region', name: 'Split', location: { source: 'src', featureId: 'split' } },
+      ],
+      layers: [{ id: 'states', type: 'region', items: [{ entity: 'split' }] }],
+    };
+    const scene = buildScene(mpContent, identityAsset);
+    const laidOut = layout(scene, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    const region = laidOut.semantics['geom-states-split'];
+    expect(region!.rings).toHaveLength(2);
+    expect(region!.path).toBe(region!.rings![0]);
+    const farWest = region!.rings![0]![0]!.x;
+    const farEast = region!.rings![1]![0]!.x;
+    expect(region!.bounds!.width).toBeGreaterThan(farEast - farWest);
+    const result = validateLayout(laidOut, { width: 800, height: 600, minTouchTarget: 44, textStyle: 'normal' });
+    expect(result.valid).toBe(true);
+  });
 });
 
 describe('geometry', () => {
@@ -72,5 +115,37 @@ describe('geometry', () => {
     const poly = [[0, 0], [10, 0], [10, 10], [0, 10]];
     expect(pointInPolygon({ x: 5, y: 5 }, poly)).toBe(true);
     expect(pointInPolygon({ x: 15, y: 5 }, poly)).toBe(false);
+  });
+
+  it('polygonsOverlap returns false for adjacent (border-touching) polygons', () => {
+    const a = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    const b = [{ x: 10, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 10 }, { x: 10, y: 10 }];
+    expect(polygonsOverlap(a, b)).toBe(false);
+  });
+
+  it('polygonsOverlap returns true for crossing polygons', () => {
+    const a = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    const b = [{ x: 5, y: 5 }, { x: 15, y: 5 }, { x: 15, y: 15 }, { x: 5, y: 15 }];
+    expect(polygonsOverlap(a, b)).toBe(true);
+  });
+
+  it('polygonsOverlap returns true when one polygon contains another', () => {
+    const a = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    const b = [{ x: 3, y: 3 }, { x: 7, y: 3 }, { x: 7, y: 7 }, { x: 3, y: 7 }];
+    expect(polygonsOverlap(a, b)).toBe(true);
+  });
+
+  it('regionsOverlap checks all ring pairs across multipolygons', () => {
+    const a = [[{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }]];
+    const b = [
+      [{ x: 30, y: 30 }, { x: 40, y: 30 }, { x: 40, y: 40 }, { x: 30, y: 40 }],
+      [{ x: 5, y: 5 }, { x: 15, y: 5 }, { x: 15, y: 15 }, { x: 5, y: 15 }],
+    ];
+    expect(regionsOverlap(a, b)).toBe(true);
+  });
+
+  it('polygonArea measures the ring area', () => {
+    const square = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    expect(polygonArea(square)).toBe(100);
   });
 });
