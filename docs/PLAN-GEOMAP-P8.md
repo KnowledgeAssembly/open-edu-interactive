@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-The [geomap.md](file:///Users/sarthakpatnaik/Code/openedu-interactive/docs/use-cases/geomap.md) use-case catalog describes **37 use cases** across 12 groups. Of these, **9 are `done`** (the P0–P1 priority slice) and **28 are `planned`**. 
+The [geomap.md](file:///Users/sarthakpatnaik/Code/openedu-interactive/docs/use-cases/geomap.md) use-case catalog describes **48 use cases**. Of these, **10 are `done`** (the P0–P1 priority slice, incl. the NIOS location/legend/distance/route/region-filter cases landed in this slice) and **38 are `planned`**. 
 
 Based on recent design decisions, the planned cases require **8 new capabilities** (down from 10, as `construct-mark` is deferred and `period-slice` will leverage existing Timeline engine composition). 
 

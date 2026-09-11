@@ -307,6 +307,20 @@ describe('GeoMapEngine scale bar', () => {
     expect(snap.scaleBar.label.endsWith('MI')).toBe(true);
   });
 
+  it('snapshot scaleBar is null when visible is false', () => {
+    const engine = new GeoMapEngine();
+    const host = makeHost();
+    const hiddenSpec: GeoMapSpec = {
+      ...validSpec,
+      content: { ...validSpec.content!, scaleBar: { visible: false, unit: 'km' } },
+    };
+    const instance = engine.instantiate(hiddenSpec as never, host, 'test-map-hidden-scale');
+    const snap = instance.snapshot() as unknown as { scaleBar: unknown };
+    expect(snap.scaleBar).toBeNull();
+    const alt = snap as unknown as { alternative: Array<{ type: string }> };
+    expect(alt.alternative.some((r) => r.type === 'scale-bar')).toBe(false);
+  });
+
   it('scale bar is deterministic across instances', () => {
     const engine = new GeoMapEngine();
     const host = makeHost();

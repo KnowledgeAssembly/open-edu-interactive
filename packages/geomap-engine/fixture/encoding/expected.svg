@@ -12,9 +12,9 @@
   </g>
   <g id="geom-legend" data-oedu-role="legend" aria-label="Legend">
     <text id="geom-legend-item-0" data-oedu-role="legend-item" aria-label="Region" x="22" y="22" text-anchor="start" dominant-baseline="central" font-size="12">Region</text>
-    <text id="geom-legend-item-1" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-1" data-oedu-encoding="encoding-bucket-1" aria-label="area: [0–100)" x="22" y="40" text-anchor="start" dominant-baseline="central" font-size="12">area: [0–100)</text>
-    <text id="geom-legend-item-2" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-2" data-oedu-encoding="encoding-bucket-2" aria-label="area: [100–250)" x="22" y="58" text-anchor="start" dominant-baseline="central" font-size="12">area: [100–250)</text>
-    <text id="geom-legend-item-3" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-3" data-oedu-encoding="encoding-bucket-3" aria-label="area: [250–1000)" x="22" y="76" text-anchor="start" dominant-baseline="central" font-size="12">area: [250–1000)</text>
+    <text id="geom-legend-item-1" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-1" aria-label="area: [0–100)" x="22" y="40" text-anchor="start" dominant-baseline="central" font-size="12">area: [0–100)</text>
+    <text id="geom-legend-item-2" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-2" aria-label="area: [100–250)" x="22" y="58" text-anchor="start" dominant-baseline="central" font-size="12">area: [100–250)</text>
+    <text id="geom-legend-item-3" data-oedu-role="legend-item" data-oedu-encoding="encoding-bucket-3" aria-label="area: [250–1000)" x="22" y="76" text-anchor="start" dominant-baseline="central" font-size="12">area: [250–1000)</text>
   </g>
   <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="1000 KM">
     <line x1="26" y1="530" x2="183" y2="530" stroke="currentColor" stroke-width="2"/>

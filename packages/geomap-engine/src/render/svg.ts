@@ -26,11 +26,7 @@ function nodeToSvg(node: SceneNode, indent: number, minTouchTarget: number): str
     attrs += ` data-oedu-state="active"`;
   }
   const encodingBucket = node.metadata?.encodingBucket as string | undefined;
-  const encodingType = node.metadata?.encodingType as string | undefined;
   if (encodingBucket) {
-    attrs += ` data-oedu-encoding="${escapeXml(encodingBucket)}"`;
-  }
-  if (node.role === 'legend-item' && encodingBucket) {
     attrs += ` data-oedu-encoding="${escapeXml(encodingBucket)}"`;
   }
   if (node.label) {
@@ -71,6 +67,7 @@ function nodeToSvg(node: SceneNode, indent: number, minTouchTarget: number): str
       return `${pad}<rect ${attrs} x="${x}" y="${y}" width="${width}" height="${height}" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" rx="2"/>`;
     }
     case 'marker': {
+      const encodingType = node.metadata?.encodingType as string | undefined;
       let r = Math.max(4, Math.min(width, height) / 2);
       if (encodingType === 'size' && encodingBucket) {
         const idx = parseInt(encodingBucket.split('-').pop() ?? '1', 10);

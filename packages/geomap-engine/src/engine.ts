@@ -324,7 +324,7 @@ export class GeoMapEngine implements Engine {
           svgResult,
           alternative: svgResult.alternative,
           displayState,
-          scaleBar: scaleBarConfig,
+          scaleBar: scaleBarVisible ? scaleBarConfig : null,
         };
       },
       subscribe(fn: Parameters<EngineInstance['subscribe']>[0]): () => void {
