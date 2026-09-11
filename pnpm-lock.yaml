@@ -185,16 +185,15 @@ importers:
       '@knowledgeassemble/interactive-engine':
         specifier: workspace:*
         version: link:../interactive-engine
+      '@types/d3-geo':
+        specifier: ^3.1.1
+        version: 3.1.1
       d3-geo:
         specifier: ^3.1.1
         version: 3.1.1
       zod:
         specifier: ^3.23.0
         version: 3.25.76
-    devDependencies:
-      '@types/d3-geo':
-        specifier: ^3.1.1
-        version: 3.1.1
 
   packages/interactive-engine:
     dependencies:
