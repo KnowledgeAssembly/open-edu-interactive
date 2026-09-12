@@ -96,9 +96,9 @@ packages/engine-skills/
 }
 ```
 
-- `manifest.json` is a **generated/committed artifact**. A build script reads `package.json` version and each engine package's kind constants (`CHART_KINDS`, `DIAGRAM_KINDS`, `VISUAL_KINDS`, …) to produce the `engines[]` array. It is checked in so the package remains a stable shipping artifact with no runtime build dependency. CI freshness guard: regeneration produces no diff.
+- `manifest.json` is a **generated/committed artifact**. A build script reads `package.json` version and each engine's JSON Schema `content.kind` enum (from `packages/<engine>/src/schemas/<e>-spec.schema.json`, and `docs/schemas/composition.schema.json` for composition) to produce the `engines[]` array. The generator **must not import engine packages**: their dev `exports` map to `src/index.ts`, which plain `node` cannot load. It is checked in so the package remains a stable shipping artifact with no runtime build dependency. CI freshness guard: regeneration produces no diff.
 - Field semantics mirror the OpenEdu `widget-catalog-data.json` discovery pattern: agents/companions enumerate `engines[]`, never hardcode engine lists.
-- `validationContract` is machine-resolvable: install `package`, import `symbol`, call `method(spec)`. For `composition` the contract points to `@knowledgeassemble/interactive-engine` (`Lesson.load` at runtime; ajv against `schema.json` for portable draft validation).
+- `validationContract` is machine-resolvable: install `package`, import `symbol`, call `method(spec)`. For `composition` — which has no exported single-argument runtime validator (`Lesson.load(input, registry)` is two-argument instantiation) — the contract points to this package's `validateSpec` (ajv against `schema.json`) with `method: "composition"`; `validateSkillExample('composition')` is the example-level equivalent. Consumers may also ajv-compile `skills/composition/schema.json` directly.
 - Paths are package-relative (from the installed package root). `index.ts` exposes resolved helpers so consumers do not hardcode path math.
 
 ### 3.2 Full-spec schema generation
@@ -106,7 +106,7 @@ packages/engine-skills/
 Each `skills/<engine>/schema.json` is a **generated/committed, self-contained full spec schema** that validates the entire envelope (`type`, `version`, `id`, …) plus engine content.
 
 - For engines whose existing JSON Schema is already full-envelope (`chart`, `diagram`, `geomap`, `timeline`), the generator copies it as-is.
-- For `composition` — whose runtime lives in `@knowledgeassemble/interactive-engine` — `schema.json` is the lesson-level `composition.schema.json` and the validation contract points to that package (`Lesson.load` at runtime; ajv against `schema.json` for portable validation).
+- For `composition` — whose runtime host lives in `@knowledgeassemble/interactive-engine` — `schema.json` is the lesson-level `composition.schema.json`. There is no exported single-argument runtime validator (`Lesson.load(input, registry)` is two-argument instantiation), so the manifest's `validationContract` points to this package's `validateSpec` (ajv against `schema.json`) with `method: "composition"`.
 - For `visual` — whose published schema (`visual-spec.schema.json`) describes the `content` block only — the generator composes `interactive-engine.schema.json` (envelope) with the visual content schema and emits a single self-contained `schema.json`.
 - The generator is a build script in `packages/engine-skills/scripts/generate-skills.mjs`. It is the single place where envelope + content are combined; consumers see only the resulting full schema.
 
@@ -127,13 +127,15 @@ export {
   loadSkillExample,
   getEngineEntry,
 } from './manifest.js';
-export { validateSkillExample } from './validate-example.js';
+export { validateSkillExample, validateSpec } from './validate-example.js';
 // Re-export authoritative D5 action enum from the core contract
 export { ACTION_TYPES } from '@knowledgeassemble/interactive-engine';
 export type { ActionType } from '@knowledgeassemble/interactive-engine';
 ```
 
-No D5 action enum is re-declared in this package; `ACTION_TYPES` is imported from `@knowledgeassemble/interactive-engine` to avoid drift.
+- `validateSkillExample(type)` validates that engine's shipped `skill-example.json` against its `schema.json` (ajv).
+- `validateSpec(type, spec)` validates an arbitrary candidate spec against that engine's `schema.json` (ajv). It is the portable validator the composition `validationContract` resolves to, and a convenience for consumers that would otherwise recompile schemas with ajv.
+- No D5 action enum is re-declared in this package; `ACTION_TYPES` is imported from `@knowledgeassemble/interactive-engine` to avoid drift.
 
 ## 4. Portability rewrites (the SKILL.md delta)
 
@@ -142,13 +144,18 @@ Each published SKILL.md's validate/cite steps are rewritten from in-repo paths t
 | Today (in-repo) | Published (consumer) |
 |------------------|------------------------|
 | `packages/<engine>/src/schemas/<e>-spec.schema.json` | `./schema.json` — generated full spec schema (envelope + content), validate with ajv |
+| `packages/interactive-engine/src/schemas/interactive-engine.schema.json` (envelope reference in `chart` / `diagram`) | `./schema.json` — the full spec schema already bundles the envelope |
 | `docs/schemas/composition.schema.json` | `./schema.json` for `composition` — the full lesson spec |
-| `ChartEngine.validate(spec)` / `VisualEngine.validate` | `validationContract` from manifest: install `package`, import `symbol`, call `method(spec)` |
+| `docs/schemas/interactive-engine.schema.json` (embedded-spec reference in `composition`) | `./schema.json` |
+| `<X>Engine.validate(spec)` (any engine) | `validationContract` from manifest: install `package`, import `symbol`, call `method(spec)` |
+| Inline `pnpm --filter @knowledgeassemble/<engine> exec tsx -e "…"` verification snippets | a portable note pointing at the manifest `validationContract` |
 | `docs/fixtures/<engine>/skill-example.json` | `./skill-example.json` |
+| Header references to in-repo specs (`docs/use-cases/visual.md`, `docs/superpowers/specs/…`) | removed; those files do not ship |
 | Inline full-envelope examples in `educational-visual` / `quantitative-chart` SKILL.md | `./skill-example.json` extracted and checked in |
 
 Rules:
 - `skills/<engine>/SKILL.md`, `schema.json`, and `skill-example.json` are **generated/committed artifacts** produced by `scripts/generate-skills.mjs` from the in-repo source. The in-repo docs stay the authoring source; the package copies are the stable shipping view. CI freshness guard: regeneration produces no diff for any of the three files.
+- After rewriting, the generator **fails loudly** if any generated `SKILL.md` still contains a `packages/` or `docs/` path fragment. The freshness guard and the test suite assert the same condition, so a new in-repo reference cannot silently leak into a published skill.
 - SKILL.md remains **prose-first**; consumers load it into agent context verbatim.
 - Every published `skill-example.json` must round-trip ajv against its `schema.json` in the **installed** package (consumers validate with the tarball, not the workspace — mirrors P7 `publish:smoke` discipline).
 - `visual` and `chart` get a first canonical `skill-example.json` extracted from their SKILL.md full-envelope examples (`example-nl` in educational-visual; `rainfall-monthly` in quantitative-chart) and checked in — closing the gap that these two currently lack a file fixture. If an extracted example is not yet valid, the generator normalizes it (e.g. adding required envelope fields) and the change is reviewed; the canonical example must round-trip validation exactly like the four existing fixtures.
@@ -181,8 +188,9 @@ Rules:
 |------|-------|-----------|
 | Example ↔ schema round-trip | `packages/engine-skills/test/` | every `skills/*/skill-example.json` validates ajv against its `schema.json`; composition example additionally round-trips embedded-L1 |
 | Full-spec schema generation | `packages/engine-skills/test/` | `skills/visual/schema.json` validates the full envelope (not only the content block); no unresolved `$ref` |
-| Manifest ↔ engine enums | `packages/engine-skills/test/` | `manifest.engines[*].kinds` equals the kind constants from each engine package (import from published source) |
-| Skill content freshness | CI script | regenerating `skills/<engine>/SKILL.md`, `schema.json`, and `skill-example.json` from in-repo sources produces no diff |
+| Manifest ↔ engine enums | `packages/engine-skills/test/` | `manifest.engines[*].kinds` equals the kind constants from each engine package (imported in tests, where TS resolves). The generator derives kinds from the engine JSON Schema, not by importing packages. |
+| Published SKILL.md portability | `packages/engine-skills/test/` (also enforced by the generator and freshness guard) | no generated `skills/*/SKILL.md` contains a `packages/` or `docs/` path fragment |
+| Skill content freshness | CI script | regenerating `skills/<engine>/SKILL.md`, `schema.json`, and `skill-example.json` from in-repo sources produces no diff, including no new untracked files |
 | Installed-package smoke | `scripts/` + `publish:smoke` | a temp consumer installs the tarball, ajv-validates each `skill-example.json` against the **installed** `schema.json`, reads `manifest.json` via exports |
 | Cross-repo shared fixtures | OpenEdu (open item) | `openedu-course-authoring`'s `engine-skill-catalog.mjs` and companion resolver run the same manifest fixtures and agree |
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-12  
 **Design spec:** `docs/superpowers/specs/2026-09-12-engine-skills-consumable-design.md`  
-**Branch:** `feat/engine-skills-package` from current `main`  
+**Branch:** `feat/engine-skills-package`, branched from `main` (not from the current `feat/engine-use-case-catalogs` feature branch)  
 **Target model:** deepseek-4-flash (agentic implementation; plan is written as bounded, test-first tasks with explicit file paths and verification commands)
 
 > Execute tasks in order. Each task has a "Done when" gate; do not start the next task until the current gate is green. The final gate is the repo's full exit gate.
@@ -37,6 +37,7 @@ Create the package skeleton mirroring engine conventions.
 - `packages/engine-skills/vitest.config.ts`
 - `packages/engine-skills/README.md`
 - `packages/engine-skills/.gitignore` (dist, node_modules)
+- `packages/engine-skills/src/index.ts` — **minimal stub now** (an empty module with the first import below already in place is fine). Required so `main`/`types`/`exports` targets exist and `tsc` does not fail with "No inputs were found in config file". The real public surface lands in Task 5.
 
 ### `package.json` requirements
 
@@ -58,7 +59,7 @@ Create the package skeleton mirroring engine conventions.
     "build": "tsc -p tsconfig.build.json",
     "generate": "node scripts/generate-skills.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "lint": "eslint src test scripts",
+    "lint": "eslint src test",
     "test": "vitest run",
     "prepublishOnly": "pnpm generate && pnpm build && pnpm typecheck && pnpm lint && pnpm test"
   },
@@ -82,8 +83,9 @@ Create the package skeleton mirroring engine conventions.
 
 Notes:
 - `dependencies` only what runtime consumers need: core contract, ajv, zod.
-- `devDependencies` include all five standalone engine packages + composition host (`interactive-engine`) so generation can read kind enums and validate examples.
+- `devDependencies` include all five standalone engine packages + composition host (`interactive-engine`) **only for the tests in Task 7**, which run under vitest where TypeScript imports resolve. The generator (Task 6) must **not** import these packages — see Task 6.
 - `files` must ship generated `manifest.json` and `skills/**`; do **not** rely on `src` alone.
+- `lint` targets `src test` only. The repo's flat ESLint config (`tseslint.configs.recommended`) has no `.mjs` handling and no `.mjs` is linted in-tree today; `scripts/*.mjs` is exempt by convention and the freshness guard is the gate for generators.
 
 ### `tsconfig.json` / `tsconfig.build.json`
 
@@ -98,7 +100,7 @@ Copy from `packages/chart-engine/vitest.config.ts`.
 ```bash
 pnpm --filter @knowledgeassemble/engine-skills typecheck
 ```
-runs green (it will be empty src for now; that is fine).
+runs green — with the `src/index.ts` stub in place so the otherwise-empty-src `tsc` invocation succeeds.
 
 ---
 
@@ -121,16 +123,14 @@ If either extracted example is missing required envelope fields, add the minimal
 
 ### Done when
 
-Both files exist, are valid JSON, and round-trip against their engine's runtime validator:
+Both files exist, are valid JSON with no BOM, and parse + re-serialize stably:
 
 ```bash
-node -e "import('@knowledgeassemble/visual-engine').then(m=>console.log(m.VisualEngine.validate((await import('fs')).readFileSync('docs/fixtures/visual/skill-example.json','utf8'))))"
-# expect { valid: true, issues: [] }
-node -e "import('@knowledgeassemble/chart-engine').then(m=>console.log(m.ChartEngine.validate((await import('fs')).readFileSync('docs/fixtures/chart/skill-example.json','utf8'))))"
-# expect { valid: true, issues: [] }
+node -e "for (const f of ['docs/fixtures/visual/skill-example.json','docs/fixtures/chart/skill-example.json']) { const s=require('fs').readFileSync(f,'utf8'); JSON.parse(s); console.log(f, 'parses OK'); }"
+# expect both files to parse
 ```
 
-Use a small temporary test script if the one-liner is unwieldy.
+Do **not** try to runtime-validate the fixtures from `node` here: engine packages' dev `exports` map to `src/index.ts`, which plain `node` cannot import, and `readFileSync(…, 'utf8')` returns a string, not a parsed object — `*Engine.validate` would reject it. The runtime round-trip is asserted in Task 7's tests (which run under vitest, where the TypeScript entry points resolve).
 
 ---
 
@@ -179,8 +179,8 @@ export declare function loadSkillExample(type: string): unknown;
 ```
 
 Implementation notes:
-- `MANIFEST_PATH` resolves to `manifest.json` relative to package root.
-- Loaders resolve package-relative paths using `import.meta.url`.
+- `MANIFEST_PATH` resolves to `manifest.json` relative to **package root**, not to the emitting module's directory. Emitting modules always sit exactly one level below the root (`src/` in dev, `dist/` in the installed package), so resolve `../manifest.json` from `import.meta.url`. A naive `import.meta.url`-based lookup from `dist/` would point at a nonexistent `dist/manifest.json`; Task 9's installed-tarball smoke asserts the shipped paths resolve.
+- Loaders resolve package-relative paths (`./skills/<type>/schema.json`, etc.) the same way, from package root.
 - Use `fs.readFileSync` + `JSON.parse`; return `unknown` for schema/example to keep consumers strict.
 
 ### Done when
@@ -197,20 +197,28 @@ Ajv round-trip helper.
 
 `packages/engine-skills/src/validate-example.ts`
 
-### Required export
+### Required exports
 
 ```ts
 export declare function validateSkillExample(type: string): {
   valid: boolean;
   errors: string[];
 };
+
+export declare function validateSpec(type: string, spec: unknown): {
+  valid: boolean;
+  errors: string[];
+};
 ```
 
-Behavior:
-1. Load `loadSchema(type)` and `loadSkillExample(type)`.
+Behavior (shared for both exports):
+1. Load `loadSchema(type)` (and for `validateSkillExample`, `loadSkillExample(type)`).
 2. Compile schema with Ajv (draft-2020-12, strict mode).
-3. Validate example.
+3. Validate the target (`type`'s shipped example, or the `spec` argument).
 4. Return `{ valid: true, errors: [] }` or `{ valid: false, errors: [...] }`.
+
+- `validateSkillExample` validates that engine's shipped example — this is the portable smoke every consumer and the installed-package smoke runs.
+- `validateSpec` validates an **arbitrary candidate spec**; it is the machine-resolvable validator the composition `validationContract` points to (`method: "composition"`) and a convenience so consumers need not recompile schemas with ajv.
 
 ### Done when
 
@@ -241,7 +249,7 @@ export {
   loadSkillExample,
   getEngineEntry,
 } from './manifest.js';
-export { validateSkillExample } from './validate-example.js';
+export { validateSkillExample, validateSpec } from './validate-example.js';
 export { ACTION_TYPES } from '@knowledgeassemble/interactive-engine';
 export type { ActionType } from '@knowledgeassemble/interactive-engine';
 ```
@@ -277,17 +285,20 @@ This is the central build artifact. It produces `manifest.json` and the `skills/
 
 Envelope schema source: `packages/interactive-engine/src/schemas/interactive-engine.schema.json`.
 
-Kind constant sources (imported at generator runtime):
-- `visual`: `@knowledgeassemble/visual-engine` → `VISUAL_KINDS`
-- `chart`: `@knowledgeassemble/chart-engine` → `CHART_KINDS`
-- `diagram`: `@knowledgeassemble/diagram-engine` → `DIAGRAM_KINDS`
-- `geomap`: no `content.kind`; `kinds: []`
-- `timeline`: no exported kind constant; derive from `content.kind` in `timeline-spec.schema.json` (expected `['events']`), else `[]`
-- `composition`: no kinds; `kinds: []`
+Kind sources — **derive from the engine JSON Schema files, never by importing engine packages**:
 
-Rule: if the engine has a closed `content.kind` enum, populate `kinds` from the exported constant when available, otherwise from the schema's `content.kind.enum`. If the engine has no `content.kind` (e.g. geomap), use `[]`.
+| Engine | Kind source | Expected |
+|--------|-------------|----------|
+| `visual` | `kind` enum in `packages/visual-engine/src/schemas/visual-spec.schema.json` `content` block | 10 kinds incl. `fraction-circle` |
+| `chart` | `kind` enum in `packages/chart-engine/src/schemas/chart-spec.schema.json` | `['bar', 'line']` |
+| `diagram` | `kind` enum in `packages/diagram-engine/src/schemas/diagram-spec.schema.json` | 4 kinds incl. `concept-map` |
+| `timeline` | `kind` enum in `packages/timeline-engine/src/schemas/timeline-spec.schema.json` | `['events']` |
+| `geomap` | no `content.kind` | `[]` |
+| `composition` | no content kinds | `[]` |
 
-Do not invent kind values.
+Rule: if the engine's schema has a closed `content.kind` enum, populate `kinds` from it; otherwise use `[]`. Do not invent kind values.
+
+> **Critical:** the generator runs under plain `node`. Engine packages' `exports` map to `src/index.ts`, which `node` cannot execute — `import('@knowledgeassemble/visual-engine')` throws at runtime. All inputs are read as JSON/text from the repo paths in the table above. The generator has zero package imports; this is what makes it runnable with `node scripts/generate-skills.mjs` before any build. The tests in Task 7 are the place where engine constants are imported for comparison (vitest resolves the TypeScript entries).
 
 ### Outputs (written to `packages/engine-skills/`)
 
@@ -298,12 +309,20 @@ Do not invent kind values.
 
 ### Generator rules
 
-1. **SKILL.md rewrite**: replace in-repo paths with package-relative paths:
-   - `packages/<engine>/src/schemas/<e>-spec.schema.json` → `./schema.json`
-   - `docs/schemas/composition.schema.json` → `./schema.json`
-   - `docs/fixtures/<engine>/skill-example.json` → `./skill-example.json`
-   - `ChartEngine.validate(spec)` / `VisualEngine.validate(spec)` → reference `validationContract` in manifest
+1. **SKILL.md rewrite** — replace every in-repo reference with a package-relative one. This exact set covers every reference currently present in the six SKILL.md files (verified):
+
+   - `packages/<engine>/src/schemas/<e>-spec.schema.json` → `./schema.json` (chart, diagram, geomap, timeline)
+   - `packages/visual-engine/src/schemas/visual-spec.schema.json` → `./schema.json` (visual; the content-only schema is composed — see rule 2)
+   - `packages/interactive-engine/src/schemas/interactive-engine.schema.json` → `./schema.json` (envelope reference in chart, diagram; the full spec schema bundles the envelope)
+   - `docs/schemas/<name>.schema.json` → `./schema.json` (composition: lesson schema; embedded-spec reference to the envelope)
+   - `docs/fixtures/<engine>/skill-example.json` → `./skill-example.json` (geomap, timeline)
+   - `<X>Engine.validate(spec)` (any engine: `ChartEngine`, `VisualEngine`, `DiagramEngine`, `GeoMapEngine`, `TimelineEngine`) → "runtime validation is via the manifest `validationContract` (`./manifest.json` → `engines[].validationContract`): install `package`, import `symbol`, call `method(spec)`"
+   - Inline verification blocks such as `pnpm --filter @knowledgeassemble/geomap-engine exec tsx -e "…"` → the same `validationContract` note (they are not runnable by consumers)
+   - References to in-repo docs in SKILL primer/header blocks (`docs/use-cases/visual.md`, `docs/superpowers/specs/2026-09-09-visual-engine-practice-mode-spec.md`, `docs/superpowers/specs/2026-09-10-visual-use-cases-implementation-plan.md` and any other `docs/superpowers/specs/…` in `educational-visual`) → remove those list items; the files do not ship.
+
    Keep the prose verbatim apart from these substitutions.
+
+   **Guard:** after rewriting, fail loudly if any generated `SKILL.md` still contains the substrings `packages/` or `docs/`. If a future edit to an in-repo skill introduces a new in-repo path, the generator error names the file so the rewrite table is extended before the change is committed.
 
 2. **schema.json**:
    - For `chart`, `diagram`, `geomap`, `timeline`: copy the existing full-envelope schema as-is.
@@ -312,7 +331,13 @@ Do not invent kind values.
 
 3. **skill-example.json**: copy from the fixture source.
 
-4. **manifest.json**: build from `package.json` version and kind constants; include `validationContract` per engine (see design spec §3.1). For composition use `{ package: "@knowledgeassemble/interactive-engine", symbol: "Lesson", method: "load" }`.
+4. **manifest.json**: build from `package.json` version and kind constants (schema-derived, per the table above); include `validationContract` per engine (see design spec §3.1):
+   - `visual` → `{ package: "@knowledgeassemble/visual-engine", symbol: "VisualEngine", method: "validate" }`
+   - `chart` → `{ package: "@knowledgeassemble/chart-engine", symbol: "ChartEngine", method: "validate" }`
+   - `diagram` → `{ package: "@knowledgeassemble/diagram-engine", symbol: "DiagramEngine", method: "validate" }`
+   - `geomap` → `{ package: "@knowledgeassemble/geomap-engine", symbol: "GeoMapEngine", method: "validate" }`
+   - `timeline` → `{ package: "@knowledgeassemble/timeline-engine", symbol: "TimelineEngine", method: "validate" }`
+   - `composition` → `{ package: "@knowledgeassemble/engine-skills", symbol: "validateSpec", method: "composition" }` — composition has **no** exported single-argument runtime validator (`Lesson.load(input, registry)` is two-argument instantiation), so its contract resolves to this package's portable ajv validator against `schema.json`.
 
 ### Done when
 
@@ -330,6 +355,8 @@ runs green and produces all six `skills/<engine>/` directories plus `manifest.js
 - `packages/engine-skills/test/manifest.test.ts`
 - `packages/engine-skills/test/schema-roundtrip.test.ts`
 - `packages/engine-skills/test/full-spec-schema.test.ts`
+- `packages/engine-skills/test/portability.test.ts`
+- `packages/engine-skills/test/runtime-parity.test.ts`
 
 ### `manifest.test.ts`
 
@@ -377,6 +404,15 @@ describe('manifest', () => {
       expect(e.validationContract.method).toBeTruthy();
     }
   });
+
+  it('composition validationContract resolves via engine-skills validateSpec', () => {
+    const entry = getEngineEntry('composition')!;
+    expect(entry.validationContract).toEqual({
+      package: '@knowledgeassemble/engine-skills',
+      symbol: 'validateSpec',
+      method: 'composition',
+    });
+  });
 });
 ```
 
@@ -385,6 +421,8 @@ describe('manifest', () => {
 ```ts
 import { describe, it, expect } from 'vitest';
 import { validateSkillExample } from '../src/validate-example.js';
+import { loadSkillExample } from '../src/manifest.js';
+import { validateEnvelope, type EngineSpec } from '@knowledgeassemble/interactive-engine';
 
 const ENGINES = ['visual', 'chart', 'geomap', 'timeline', 'diagram', 'composition'];
 
@@ -396,6 +434,19 @@ describe('skill-example round-trip', () => {
       expect(result.valid).toBe(true);
     });
   }
+});
+
+describe('composition embedded L1 round-trip', () => {
+  it('every engines[].spec passes envelope validation', () => {
+    const lesson = loadSkillExample('composition') as {
+      engines: { spec: unknown }[];
+    };
+    for (const entry of lesson.engines) {
+      const result = validateEnvelope(entry.spec);
+      expect(result.valid).toBe(true);
+      expect(result.issues).toEqual([]);
+    }
+  });
 });
 ```
 
@@ -420,6 +471,48 @@ describe('visual full-spec schema', () => {
 });
 ```
 
+### `portability.test.ts`
+
+```ts
+import { describe, it, expect } from 'vitest';
+import { MANIFEST, loadSkillDoc } from '../src/manifest.js';
+
+describe('published SKILL.md portability', () => {
+  for (const e of MANIFEST.engines) {
+    it(`${e.type} SKILL.md contains no in-repo paths`, () => {
+      const doc = loadSkillDoc(e.type);
+      expect(doc).not.toContain('packages/');
+      expect(doc).not.toContain('docs/');
+    });
+  }
+});
+```
+
+### `runtime-parity.test.ts`
+
+```ts
+import { describe, it, expect } from 'vitest';
+import { VisualEngine } from '@knowledgeassemble/visual-engine';
+import { ChartEngine } from '@knowledgeassemble/chart-engine';
+import { loadSkillExample } from '../src/manifest.js';
+
+describe('runtime parity for newly extracted fixtures', () => {
+  it('visual example passes VisualEngine.validate', () => {
+    const example = loadSkillExample('visual');
+    const result = VisualEngine.validate(example);
+    expect(result.valid).toBe(true);
+    expect(result.issues).toEqual([]);
+  });
+
+  it('chart example passes ChartEngine.validate', () => {
+    const example = loadSkillExample('chart');
+    const result = ChartEngine.validate(example);
+    expect(result.valid).toBe(true);
+    expect(result.issues).toEqual([]);
+  });
+});
+```
+
 Fix the test code above as needed.
 
 ### Done when
@@ -440,9 +533,9 @@ is green.
    - Ensure `prebuild` or `build` runs `generate` for this package.
 
 2. Add a CI freshness check. Create `scripts/check-engine-skills-fresh.mjs` at repo root that:
-   - Runs `pnpm --filter @knowledgeassemble/engine-skills generate`
-   - Runs `git diff --exit-code packages/engine-skills/manifest.json packages/engine-skills/skills/`
-   - Exits non-zero if there is a diff.
+   - Runs `pnpm --filter @knowledgeassemble/engine-skills generate` (the generator itself already fails on any generated `SKILL.md` that still contains a `packages/` or `docs/` fragment).
+   - Runs `git status --porcelain -- packages/engine-skills/manifest.json packages/engine-skills/skills/` and `git diff --exit-code packages/engine-skills/manifest.json packages/engine-skills/skills/`.
+   - Exits non-zero on any output from either command. `--porcelain` (not just `git diff`) is required so that a **newly generated, untracked** file fails the check; `git diff` alone would silently ignore it.
 
 3. Add the freshness check to the full exit gate (see Task 11).
 
@@ -457,25 +550,31 @@ returns 0 immediately after a clean generation.
 
 ## 9. Update installed-package smoke
 
-The existing smoke (`scripts/p7-publish-smoke.mjs` or similar) should verify the new package too.
+Extend the existing `scripts/p7-publish-smoke.mjs` to also verify the new package. Build first, because the published tarball contains `dist` (in `files`):
+
+```bash
+pnpm --filter @knowledgeassemble/engine-skills build
+```
 
 ### Changes
 
 Extend the smoke script to:
-1. Pack and install `@knowledgeassemble/engine-skills` into a temp consumer.
+1. Pack `packages/engine-skills` and install it into the temp consumer.
 2. Import `{ MANIFEST, validateSkillExample }` from the installed package.
 3. Call `validateSkillExample` for all six engines and assert all are valid.
 4. Read `MANIFEST.engines` and assert length === 6.
+5. **Assert the shipped paths resolve** — because `dist/` sits one level below the package root, `MANIFEST_PATH`, `loadSchema`, and `loadSkillExample` must resolve `../manifest.json` / `./skills/...` from `import.meta.url` and read the **installed** tarball files, not the workspace sources. A failure here means Task 3's resolution logic is wrong and any consumer install would break.
 
-If the smoke script does not exist yet, create a minimal version in `packages/engine-skills/scripts/install-smoke.mjs`.
+The smoke runs against the installed tarball (the P7 discipline), never against the workspace symlink.
 
 ### Done when
 
 ```bash
+pnpm --filter @knowledgeassemble/engine-skills build
 pnpm publish:dry
-# or the package-specific smoke script
+pnpm publish:smoke
 ```
-passes and exercises the new package.
+all pass, and the smoke exercises the engine-skills tarball specifically.
 
 ---
 
@@ -505,8 +604,11 @@ pnpm typecheck
 pnpm lint
 pnpm -w test
 pnpm playwright
+pnpm build
 pnpm publish:dry
 ```
+
+`pnpm build` must precede `publish:dry`: `files` ships `dist`, so a truthful publish dry-run needs the package built first (root `typecheck` only builds `interactive-engine`).
 
 All must be green.
 
@@ -522,15 +624,15 @@ All must be green.
 
 1. Stage intended files.
 2. Inspect `git diff` to ensure no unrelated changes.
-3. Commit per task/phase:
-   - `P8 T1: scaffold @knowledgeassemble/engine-skills package`
-   - `P8 T2: add visual and chart skill-example fixtures`
-   - `P8 T3-5: manifest, validate-example, index public surface`
-   - `P8 T6: generate-skills.mjs generator for all six engines`
-   - `P8 T7: manifest, schema round-trip, and full-spec schema tests`
-   - `P8 T8-9: CI freshness guard and installed-package smoke`
-   - `P8 T11: full exit gate green`
-4. Open PR: `gh pr create --title "P8: publishable @knowledgeassemble/engine-skills package"`.
+3. Commit per task/phase (neutral `skills-consumable` prefix — this is an add-on, not a tracked P8 workstream item):
+   - `skills-consumable T1: scaffold @knowledgeassemble/engine-skills package`
+   - `skills-consumable T2: add visual and chart skill-example fixtures`
+   - `skills-consumable T3-5: manifest, validate-example, index public surface`
+   - `skills-consumable T6: generate-skills.mjs generator for all six engines`
+   - `skills-consumable T7: manifest, schema round-trip, portability, and full-spec schema tests`
+   - `skills-consumable T8-9: CI freshness guard and installed-package smoke`
+   - `skills-consumable T11: full exit gate green`
+4. Open PR: `gh pr create --title "skills-consumable: publishable @knowledgeassemble/engine-skills package"`.
 5. Merge with `gh pr merge <n> --merge --delete-branch` after review.
 
 ---
@@ -541,5 +643,5 @@ All must be green.
 - Do **not** add `@open-edu/*` imports anywhere.
 - Keep all relative imports with `.js` specifiers (`module: "NodeNext"`).
 - No emojis in files or commits.
-- If a kind enum is not exported from an engine package, read it from the schema JSON and leave a comment in the generator explaining the fallback.
+- If a kind enum is not present in an engine's schema, use `[]` (the schema is the single source of truth for `kinds`). Do not import engine packages in the generator — their dev `exports` point at `src/index.ts`, which plain `node` cannot load.
 - If the visual full-spec schema composition proves difficult, spike a minimal merge first (envelope + content required), get the test green, then refine.
