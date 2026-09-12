@@ -1,0 +1,70 @@
+{
+  "id": "skill-composition-example",
+  "title": "Composition skill canonical example",
+  "engines": [
+    {
+      "instanceId": "timeline-a",
+      "engine": "timeline",
+      "spec": {
+        "type": "timeline",
+        "version": "1.0.0",
+        "id": "timeline-a",
+        "content": {
+          "kind": "events",
+          "events": [
+            {
+              "id": "event-1",
+              "label": "First",
+              "date": "1850",
+              "links": {
+                "visualEntityId": "figure-1"
+              }
+            }
+          ]
+        },
+        "interaction": {
+          "actions": [
+            "select"
+          ]
+        }
+      }
+    },
+    {
+      "instanceId": "visual-b",
+      "engine": "visual",
+      "spec": {
+        "type": "visual",
+        "version": "1.0.0",
+        "id": "visual-b",
+        "content": {
+          "kind": "illustration",
+          "entities": [
+            {
+              "id": "figure-1",
+              "label": "Caption of figure 1"
+            }
+          ]
+        },
+        "interaction": {
+          "actions": [
+            "focus"
+          ]
+        },
+        "accessibility": {
+          "label": "Figure illustration"
+        }
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "on": "timeline.event-selected",
+      "from": "timeline-a",
+      "dispatch": {
+        "to": "visual-b",
+        "action": "focus",
+        "targetIdFrom": "links.visualEntityId"
+      }
+    }
+  ]
+}

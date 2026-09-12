@@ -1,0 +1,54 @@
+{
+  "type": "chart",
+  "version": "1.0.0",
+  "id": "rainfall-monthly",
+  "purpose": {
+    "learningObjective": "Compare rainfall across months",
+    "reasoningMode": "compare"
+  },
+  "content": {
+    "kind": "bar",
+    "dimensions": [
+      {
+        "id": "month",
+        "type": "ordinal"
+      }
+    ],
+    "measures": [
+      {
+        "id": "rainfall",
+        "type": "quantitative",
+        "unit": "mm"
+      }
+    ],
+    "data": [
+      {
+        "id": "row-jan",
+        "month": "Jan",
+        "rainfall": 20
+      },
+      {
+        "id": "row-may",
+        "month": "May",
+        "rainfall": 110
+      }
+    ]
+  },
+  "interaction": {
+    "mode": "explore",
+    "actions": [
+      "select",
+      "focus",
+      "filter",
+      "reset"
+    ]
+  },
+  "sources": [
+    {
+      "class": "authoritative"
+    }
+  ],
+  "accessibility": {
+    "label": "Bar chart of monthly rainfall in millimeters"
+  }
+}

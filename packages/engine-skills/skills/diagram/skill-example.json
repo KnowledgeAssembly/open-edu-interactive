@@ -1,0 +1,90 @@
+{
+  "type": "diagram",
+  "version": "1.0.0",
+  "id": "skill-diagram-example",
+  "metadata": {
+    "title": "Photosynthesis flow"
+  },
+  "purpose": {
+    "learningObjective": "Trace the inputs and outputs of photosynthesis",
+    "reasoningMode": "explore"
+  },
+  "content": {
+    "kind": "flow",
+    "nodes": [
+      {
+        "id": "sunlight",
+        "label": "Sunlight",
+        "links": {
+          "visualEntityId": "sun-figure"
+        }
+      },
+      {
+        "id": "water",
+        "label": "Water"
+      },
+      {
+        "id": "co2",
+        "label": "Carbon dioxide"
+      },
+      {
+        "id": "chloroplast",
+        "label": "Chloroplast"
+      },
+      {
+        "id": "glucose",
+        "label": "Glucose"
+      },
+      {
+        "id": "oxygen",
+        "label": "Oxygen"
+      }
+    ],
+    "edges": [
+      {
+        "from": "sunlight",
+        "to": "chloroplast",
+        "relationship": "leads-to"
+      },
+      {
+        "from": "water",
+        "to": "chloroplast",
+        "relationship": "leads-to"
+      },
+      {
+        "from": "co2",
+        "to": "chloroplast",
+        "relationship": "leads-to"
+      },
+      {
+        "from": "chloroplast",
+        "to": "glucose",
+        "relationship": "leads-to"
+      },
+      {
+        "from": "chloroplast",
+        "to": "oxygen",
+        "relationship": "leads-to"
+      }
+    ]
+  },
+  "interaction": {
+    "mode": "explore",
+    "actions": [
+      "select",
+      "deselect",
+      "focus",
+      "follow",
+      "reset"
+    ]
+  },
+  "questions": [],
+  "sources": [
+    {
+      "class": "authoritative"
+    }
+  ],
+  "accessibility": {
+    "label": "Photosynthesis flow: sunlight, water, and carbon dioxide are fixed by the chloroplast into glucose and oxygen."
+  }
+}
