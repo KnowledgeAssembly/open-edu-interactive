@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openedu.org/schemas/composition.schema.json",
+  "title": "OpenEdu Interactive Lesson Composition",
+  "description": "Lesson-level composition: multiple engine instances and event-to-action bindings (DESIGN D8). Normative at P2.5; embedded engine specs MUST also validate against interactive-engine.schema.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "engines",
+    "bindings"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier for this composed lesson or harness fixture.",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engines": {
+      "type": "array",
+      "description": "Engine instances participating in the lesson.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "instanceId",
+          "engine",
+          "spec"
+        ],
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "description": "Unique instance id within this composition.",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$"
+          },
+          "engine": {
+            "type": "string",
+            "description": "Semantic engine type; MUST match spec.type.",
+            "enum": [
+              "visual",
+              "geomap",
+              "chart",
+              "timeline",
+              "diagram"
+            ]
+          },
+          "spec": {
+            "type": "object",
+            "description": "Engine specification envelope. MUST validate against interactive-engine.schema.json and the engine-specific schema when available.",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "description": "Routes namespaced result events from one instance to D5 actions on another.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "on",
+          "from",
+          "dispatch"
+        ],
+        "properties": {
+          "on": {
+            "type": "string",
+            "description": "Namespaced event name (e.g. timeline.event-selected).",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$"
+          },
+          "from": {
+            "type": "string",
+            "description": "Source engine instanceId.",
+            "minLength": 1
+          },
+          "dispatch": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "to",
+              "action"
+            ],
+            "properties": {
+              "to": {
+                "type": "string",
+                "description": "Target engine instanceId.",
+                "minLength": 1
+              },
+              "action": {
+                "$ref": "interactive-engine.schema.json#/$defs/actionType"
+              },
+              "targetIdFrom": {
+                "type": "string",
+                "description": "Field path on the emitted event payload used to resolve the action target id (e.g. links.visualEntityId)."
+              },
+              "targetId": {
+                "type": "string",
+                "description": "Fixed action target id when not derived from the event payload."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

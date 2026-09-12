@@ -10,6 +10,7 @@
     "test": "pnpm -r test",
     "playground": "pnpm --filter @knowledgeassemble/playground dev",
     "build:fixtures": "node scripts/build-fixture-catalog.mjs",
+    "generate:skills": "pnpm --filter @knowledgeassemble/engine-skills generate",
     "playwright": "pnpm -r --workspace-concurrency=1 playwright",
     "publish:dry": "pnpm -r publish --dry-run --no-git-checks",
     "publish:smoke": "node scripts/p7-publish-smoke.mjs"

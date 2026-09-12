@@ -14,6 +14,7 @@ const PACKAGE_DIRS = [
   'timeline-engine',
   'visual-engine',
   'interactive-react',
+  'engine-skills',
 ];
 
 function run(command, { cwd = ROOT } = {}) {
@@ -114,6 +115,7 @@ import { GeoMapEngine } from '@knowledgeassemble/geomap-engine';
 import { TimelineEngine } from '@knowledgeassemble/timeline-engine';
 import { DiagramEngine } from '@knowledgeassemble/diagram-engine';
 import { InteractiveNode, InteractiveLesson, bridgeToHost } from '@knowledgeassemble/interactive-react';
+import { MANIFEST, validateSkillExample } from '@knowledgeassemble/engine-skills';
 import type { OpenEduBridge, InteractiveNodeHandle, InteractiveLessonProps } from '@knowledgeassemble/interactive-react';
 import { createElement } from 'react';
 import { engineReps, composedLesson } from './fixtures.js';
@@ -153,7 +155,16 @@ for (const engineType of engineTypes) {
 
 const visual = new VisualEngine();
 const numberLine = engineReps.visual as IE.EngineSpec;
-assert(!visual.validate({ type: 'visual', version: '1.0.0', id: 'greedy', content: { kind: 'timeline' } } as IE.EngineSpec).valid, 'visual must reject a timeline kind (closed set / no widening)');
+const vs = visual.validate({ type: 'visual', version: '1.0.0', id: 'greedy', content: { kind: 'timeline' } } as IE.EngineSpec);
+assert(!vs.valid, 'visual must reject a timeline kind (closed set / no widening)');
+
+// Engine skills smoke
+assert(MANIFEST.engines.length === 6, 'engine-skills manifest must have 6 engines');
+for (const eng of MANIFEST.engines) {
+  const result = validateSkillExample(eng.type);
+  assert(result.valid, eng.type + ' skill-example must validate against its schema: ' + result.errors.join('; '));
+  assert(eng.validationContract.package.startsWith('@knowledgeassemble/'), 'validationContract package must be @knowledgeassemble/*');
+}
 
 const host: EngineHost = {
   locale: 'en',
