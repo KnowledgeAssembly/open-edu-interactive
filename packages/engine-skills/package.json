@@ -1,0 +1,42 @@
+{
+  "name": "@knowledgeassemble/engine-skills",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "manifest.json",
+    "skills/**",
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "generate": "node scripts/generate-skills.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src test",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm generate && pnpm build && pnpm typecheck && pnpm lint && pnpm test"
+  },
+  "dependencies": {
+    "@knowledgeassemble/interactive-engine": "workspace:*",
+    "ajv": "^8.20.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@knowledgeassemble/chart-engine": "workspace:*",
+    "@knowledgeassemble/diagram-engine": "workspace:*",
+    "@knowledgeassemble/geomap-engine": "workspace:*",
+    "@knowledgeassemble/timeline-engine": "workspace:*",
+    "@knowledgeassemble/visual-engine": "workspace:*",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
