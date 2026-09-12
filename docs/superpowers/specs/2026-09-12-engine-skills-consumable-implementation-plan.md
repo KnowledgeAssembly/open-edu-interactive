@@ -640,6 +640,7 @@ All must be green.
 ## Agent notes
 
 - Do **not** modify engine runtime code. If a test fails because an engine schema is missing a property, fix the generator or the example, not the engine.
+- Engine-schema drift (a schema file diverges from the engine's zod runtime): fix the schema **file** to match the runtime, then drop any generator workaround (no silent `additionalProperties` relaxing).
 - Do **not** add `@open-edu/*` imports anywhere.
 - Keep all relative imports with `.js` specifiers (`module: "NodeNext"`).
 - No emojis in files or commits.

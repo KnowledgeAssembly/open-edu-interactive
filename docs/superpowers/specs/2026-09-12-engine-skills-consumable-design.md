@@ -146,7 +146,7 @@ Each published SKILL.md's validate/cite steps are rewritten from in-repo paths t
 | `packages/<engine>/src/schemas/<e>-spec.schema.json` | `./schema.json` — generated full spec schema (envelope + content), validate with ajv |
 | `packages/interactive-engine/src/schemas/interactive-engine.schema.json` (envelope reference in `chart` / `diagram`) | `./schema.json` — the full spec schema already bundles the envelope |
 | `docs/schemas/composition.schema.json` | `./schema.json` for `composition` — the full lesson spec |
-| `docs/schemas/interactive-engine.schema.json` (embedded-spec reference in `composition`) | `./schema.json` |
+| `docs/schemas/interactive-engine.schema.json` (embedded-spec reference in `composition`) | a `validateEnvelope(spec)` call from `@knowledgeassemble/interactive-engine` — `./schema.json` is the lesson schema, not the envelope |
 | `<X>Engine.validate(spec)` (any engine) | `validationContract` from manifest: install `package`, import `symbol`, call `method(spec)` |
 | Inline `pnpm --filter @knowledgeassemble/<engine> exec tsx -e "…"` verification snippets | a portable note pointing at the manifest `validationContract` |
 | `docs/fixtures/<engine>/skill-example.json` | `./skill-example.json` |
