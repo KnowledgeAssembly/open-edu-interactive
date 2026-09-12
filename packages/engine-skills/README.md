@@ -2,6 +2,20 @@
 
 Authoring skills for the OpenEdu Interactive engines, packaged for consumers.
 
+## Source of truth
+
+Everything under `skills/` is a **generated/committed projection**. Never hand-edit it.
+
+- The authorable copy lives in-repo: `docs/engines/<engine>/skills/<skill>/SKILL.md` (prose, may reference in-repo docs) and `docs/fixtures/<engine>/skill-example.json` (machine input). Engine schemas and `docs/schemas/composition.schema.json` complete the inputs.
+- Edit those, run `pnpm generate`, and commit both sides. The freshness guard
+  (`scripts/check-engine-skills-fresh.mjs`) fails if regeneration produces a diff.
+- Generated artifacts must contain **zero** `packages/` or `docs/` path fragments; the
+  generator fails loudly otherwise. Composition's embedded-spec line says
+  `validateEnvelope(spec)` from `@knowledgeassemble/interactive-engine` — `./schema.json`
+  is the lesson schema, not the envelope.
+
+## Layout
+
 Each skill is a folder under `skills/` containing:
 
 - `SKILL.md` — instructions for a course authoring agent (what the interactive means, `content` shape, acceptance criteria).
@@ -32,4 +46,4 @@ validateSpec('visual', mySpec);                   // validates any candidate spe
 | tests | `pnpm test` |
 
 Generated artifacts are committed; regeneration must produce a byte-identical
-tree (guarded by `scripts/check-engine-skills-fresh.mjs` via `pnpm fresh`).
+tree, enforced by `node scripts/check-engine-skills-fresh.mjs` (repo root).

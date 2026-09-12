@@ -43,14 +43,27 @@ Conflict rule: when docs disagree, fix the **higher** document, never the implem
 packages/interactive-engine/   core: engine, registry, state, action, event, host,
                                validation/ (L1–L4 pipeline), runtime/ (reducer, event-log,
                                instance), accessibility/, composition/ (placeholder), schemas/
+packages/engine-skills/        published authoring skills: generated/committed projection of
+                               docs/engines/*/skills/* + docs/fixtures/*/skill-example.json
 packages/dev-harness/          shared mount logic: stub host, fixture catalog, loadSpec (conformance + playground)
 apps/conformance/              Playwright e2e harness (port 5173); engine routes delegate to dev-harness
 apps/playground/               React dev UI for manual verification (port 5174, pnpm playground)
 docs/                          DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN, PLAN-P1,
-                               PLAN-P8, README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md
+                               PLAN-P8, README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md + skills/
 ```
 
 Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readiness** (`docs/PLAN-P8.md`). Start Workstream A (slice honesty); do not start new engine kinds (Workstream D) or library adapters until A is green. OpenEdu CourseRuntime proof is Workstream B (`docs/p7-acceptance.md`).
+
+## Engine skills package
+
+`packages/engine-skills/` publishes the authoring guidance for content-creator agents. It is a **generated/committed projection**, never hand-edited:
+
+- **Source of truth:** `docs/engines/<engine>/skills/<skill>/SKILL.md` (full authoring guidance, may reference in-repo docs) and `docs/fixtures/<engine>/skill-example.json` (machine-input example). The engine schemas and `docs/schemas/composition.schema.json` complete the inputs.
+- **Workflow:** edit the `docs/` sources → `pnpm generate` → commit both sides. The freshness guard (`scripts/check-engine-skills-fresh.mjs`) fails the gate if regeneration produces any diff.
+- **Portability rule:** generated `skills/*` must contain **zero** `packages/` or `docs/` path fragments (generator fails loudly, tests and freshness guard enforce). Composition's embedded-spec line points at `validateEnvelope(spec)` from `@knowledgeassemble/interactive-engine` — never at `./schema.json` (that is the lesson schema).
+- **Do not** import engine packages in the generator — their dev `exports` map to `src/index.ts`, which plain `node` cannot load. Clause kinds derive from schema JSON `content.kind.enum`. Runtime deps stay minimal (`ajv`, `ajv-formats`).
+- **Fixtures split:** `packages/<engine>/fixture/<kind>/` = private pipeline goldens asserted by that engine's own tests (never shipped/catalogued). `docs/fixtures/` = shared contract consumed by dev-harness/conformance/playground, the generator, and the fixture catalog. No fixture file lives in both places; add to the location whose consumers you serve.
+- Engine-schema drift (schema file diverges from the engine's zod runtime): fix the schema **file** to match the runtime, then drop any generator workaround — never silently relax `additionalProperties`.
 
 ## Tech stack
 
@@ -64,6 +77,8 @@ Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readin
 | Lint | `pnpm lint` |
 | Unit tests | `pnpm -w test` (Vitest) |
 | Browser e2e | `pnpm playwright` (starts the conformance dev server itself) |
+| Regenerate engine skills | `pnpm generate:skills` (then commit both sides) |
+| Freshness guard | `node scripts/check-engine-skills-fresh.mjs` |
 | Full exit gate | `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright` |
 
 Package-scoped: `pnpm --filter @knowledgeassemble/interactive-engine <script>`.
