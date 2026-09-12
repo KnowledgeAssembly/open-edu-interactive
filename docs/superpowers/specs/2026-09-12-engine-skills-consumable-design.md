@@ -51,21 +51,21 @@ New package **`@knowledgeassemble/engine-skills`** at `packages/engine-skills/`.
 ```
 packages/engine-skills/
   package.json
-  manifest.json                # versioned, machine-readable catalog (below)
+  manifest.json                # generated/committed catalog (§3.2)
   README.md                    # consumer orientation: discovery, APIs, validation contract
+  src/
+    index.ts                   # public surface (§3.3)
+    manifest.ts                # manifest types + load helpers
+    validate-example.ts        # ajv round-trip of skill-example.json against schema.json
   skills/<engine>/
-    SKILL.md                   # portable rewrite of docs/engines/<e>/skills/<s>/SKILL.md
-    schema.json                # copy of the engine's spec schema (ajv-checkable)
-    example.json               # canonical example fixture (works on docs + ajv round-trip)
-features/
-  actions.ts                   # D5 closed action enum (re-exported, structural)
-  validate-example.ts          # ajv validation of example.json against schema.json
-index.ts                       # public surface (below)
+    SKILL.md                   # generated/committed portable rewrite
+    schema.json                # generated/committed full spec schema (envelope + content)
+    skill-example.json         # generated/committed canonical example fixture
 ```
 
-- Per-engine skill content is **self-contained** (SKILL.md + schema.json + example.json) so a consumer can load a single engine without walking the repo.
+- Per-engine skill content is **self-contained** (`SKILL.md` + `schema.json` + `skill-example.json`) so a consumer can load a single engine without walking the repo.
 - `package.json` follows engine conventions: ESM (`type: module`), per-file `tsc` emit, `.js` import specifiers, `zod` allowed, no bundler, engine isolation (no `@open-edu/*`).
-- `files` must include `manifest.json`, `skills/**`, `schema.json` copies, `dist`. **Not** `src` only.
+- `files` must include the generated skill content (`manifest.json`, `skills/**`), compiled code (`dist`), and source (`src`). The package is not publishable if `skills/` or `manifest.json` are omitted.
 
 ### 3.1 `manifest.json` (canonical discovery view)
 
@@ -73,7 +73,7 @@ index.ts                       # public surface (below)
 {
   "package": "@knowledgeassemble/engine-skills",
   "version": "0.1.0",
-  "schemaVersion": 1,                       // bump on incompatible shape change (ADR-0009 precedent)
+  "schemaVersion": 1,
   "engines": [
     {
       "type": "visual",
@@ -83,10 +83,11 @@ index.ts                       # public surface (below)
                 "illustration", "fraction-circle"],
       "skillDoc": "./skills/visual/SKILL.md",
       "schema": "./skills/visual/schema.json",
-      "example": "./skills/visual/example.json",
+      "example": "./skills/visual/skill-example.json",
       "validationContract": {
         "package": "@knowledgeassemble/visual-engine",
-        "validate": "VisualEngine.validate"
+        "symbol": "VisualEngine",
+        "method": "validate"
       },
       "namespacedEvents": ["visual.*-selected", "visual.*-focused"]
     }
@@ -95,30 +96,68 @@ index.ts                       # public surface (below)
 }
 ```
 
+- `manifest.json` is a **generated/committed artifact**. A build script reads `package.json` version and each engine package's kind constants (`CHART_KINDS`, `DIAGRAM_KINDS`, `VISUAL_KINDS`, …) to produce the `engines[]` array. It is checked in so the package remains a stable shipping artifact with no runtime build dependency. CI freshness guard: regeneration produces no diff.
 - Field semantics mirror the OpenEdu `widget-catalog-data.json` discovery pattern: agents/companions enumerate `engines[]`, never hardcode engine lists.
-- `kinds` are **derived from the engine packages' own kind enums at build/CI time** (`CHART_KINDS`, `DIAGRAM_KINDS`, `VISUAL_KINDS`, …), never hand-typed — keeps the manifest honest against the frozen enums.
+- `validationContract` is machine-resolvable: install `package`, import `symbol`, call `method(spec)`. For `composition` the contract points to `@knowledgeassemble/interactive-engine` (`Lesson.load` at runtime; ajv against `schema.json` for portable draft validation).
+- Paths are package-relative (from the installed package root). `index.ts` exposes resolved helpers so consumers do not hardcode path math.
+
+### 3.2 Full-spec schema generation
+
+Each `skills/<engine>/schema.json` is a **generated/committed, self-contained full spec schema** that validates the entire envelope (`type`, `version`, `id`, …) plus engine content.
+
+- For engines whose existing JSON Schema is already full-envelope (`chart`, `diagram`, `geomap`, `timeline`), the generator copies it as-is.
+- For `composition` — whose runtime lives in `@knowledgeassemble/interactive-engine` — `schema.json` is the lesson-level `composition.schema.json` and the validation contract points to that package (`Lesson.load` at runtime; ajv against `schema.json` for portable validation).
+- For `visual` — whose published schema (`visual-spec.schema.json`) describes the `content` block only — the generator composes `interactive-engine.schema.json` (envelope) with the visual content schema and emits a single self-contained `schema.json`.
+- The generator is a build script in `packages/engine-skills/scripts/generate-skills.mjs`. It is the single place where envelope + content are combined; consumers see only the resulting full schema.
+
+This closes the gap that would otherwise make `visual` example validation fail against a content-only schema.
+
+### 3.3 Public surface (`src/index.ts`)
+
+```ts
+export { MANIFEST, MANIFEST_PATH } from './manifest.js';
+export type {
+  EngineSkillsManifest,
+  EngineSkillEntry,
+  ValidationContract,
+} from './manifest.js';
+export {
+  loadSkillDoc,
+  loadSchema,
+  loadSkillExample,
+  getEngineEntry,
+} from './manifest.js';
+export { validateSkillExample } from './validate-example.js';
+// Re-export authoritative D5 action enum from the core contract
+export { ACTION_TYPES } from '@knowledgeassemble/interactive-engine';
+export type { ActionType } from '@knowledgeassemble/interactive-engine';
+```
+
+No D5 action enum is re-declared in this package; `ACTION_TYPES` is imported from `@knowledgeassemble/interactive-engine` to avoid drift.
 
 ## 4. Portability rewrites (the SKILL.md delta)
 
-Each copied SKILL.md's validate/cite steps are rewritten from in-repo paths to **package-relative paths**:
+Each published SKILL.md's validate/cite steps are rewritten from in-repo paths to **package-relative paths**:
 
 | Today (in-repo) | Published (consumer) |
 |------------------|------------------------|
-| `packages/<engine>/src/schemas/<e>-spec.schema.json` | `./schema.json` (same file, copied) validate with ajv |
-| `ChartEngine.validate(spec)` / `VisualEngine.validate` | `validationContract.validate` from the manifest; runtime via installed `@knowledgeassemble/<engine>-engine` |
-| `docs/fixtures/<engine>/skill-example.json` | `./example.json` |
-| references to `docs/schemas/interactive-engine.schema.json`, `composition.schema.json` | `./schema.json` (envelope) / composition example round-trip |
+| `packages/<engine>/src/schemas/<e>-spec.schema.json` | `./schema.json` — generated full spec schema (envelope + content), validate with ajv |
+| `docs/schemas/composition.schema.json` | `./schema.json` for `composition` — the full lesson spec |
+| `ChartEngine.validate(spec)` / `VisualEngine.validate` | `validationContract` from manifest: install `package`, import `symbol`, call `method(spec)` |
+| `docs/fixtures/<engine>/skill-example.json` | `./skill-example.json` |
+| Inline full-envelope examples in `educational-visual` / `quantitative-chart` SKILL.md | `./skill-example.json` extracted and checked in |
 
 Rules:
-- SKILL.md remains **prose-first**; consumers load it into agent context verbatim. The published copy is generated from the in-repo doc so the two cannot drift — the repo doc stays the source, the package copy is a generated view (CI freshness guard: regeneration produces no diff).
-- Every published example must round-trip ajv against its schema.json in the **installed** package (consumers validate with the tarball, not the workspace — mirrors P7 `publish:smoke` discipline).
-- `visual` and `chart` get a first canonical `skill-example.json` extracted from their SKILL.md full-envelope examples (`example-nl` in educational-visual; `rainfall-monthly` in quantitative-chart) and checked in — closing the gap that these two currently lack a file fixture. The canonical example must round-trip validation exactly like the four existing fixtures.
+- `skills/<engine>/SKILL.md`, `schema.json`, and `skill-example.json` are **generated/committed artifacts** produced by `scripts/generate-skills.mjs` from the in-repo source. The in-repo docs stay the authoring source; the package copies are the stable shipping view. CI freshness guard: regeneration produces no diff for any of the three files.
+- SKILL.md remains **prose-first**; consumers load it into agent context verbatim.
+- Every published `skill-example.json` must round-trip ajv against its `schema.json` in the **installed** package (consumers validate with the tarball, not the workspace — mirrors P7 `publish:smoke` discipline).
+- `visual` and `chart` get a first canonical `skill-example.json` extracted from their SKILL.md full-envelope examples (`example-nl` in educational-visual; `rainfall-monthly` in quantitative-chart) and checked in — closing the gap that these two currently lack a file fixture. If an extracted example is not yet valid, the generator normalizes it (e.g. adding required envelope fields) and the change is reviewed; the canonical example must round-trip validation exactly like the four existing fixtures.
 
 ## 5. Symmetric consumption on the OpenEdu side
 
 ### 5.1 External `openedu-course-authoring` skill
 
-- New script `scripts/engine-skill-catalog.mjs` (mirrors `widget-catalog.mjs`, reads `openedu-adapter.mjs`): resolves `node_modules/@knowledgeassemble/engine-skills/manifest.json` from the detected repo, exposes `engines[]`, and loads a chosen engine's `SKILL.md` + `example.json` + `schema.json` into context.
+- New script `scripts/engine-skill-catalog.mjs` (mirrors `widget-catalog.mjs`, reads `openedu-adapter.mjs`): resolves `node_modules/@knowledgeassemble/engine-skills/manifest.json` from the detected repo, exposes `engines[]`, and loads a chosen engine's `SKILL.md` + `skill-example.json` + `schema.json` into context.
 - Repository-adapter discovery gains a capability flag `engineSkillsCatalog: boolean` (like `widgetCatalog`); when false, portable mode instructs the agent to `pnpm add @knowledgeassemble/engine-skills`.
 - New `references/interactive-authoring.md` — "when to emit `{type:"interactive", engine, spec}` vs a legacy `widget` activity; load the engine's skill, follow its rules, round-trip against its schema, then hand the spec to the lesson node". Authoring rules stay in the engine skill; the reference only routes to it.
 
@@ -126,7 +165,7 @@ Rules:
 
 - The published manifest is read at server start; the dev-server registers one `@open-edu/companion` `CompanionSkill` per engine (or a single `interactive-authoring` skill), translating:
   - `skillDoc` → `instructions` (markdown loaded verbatim),
-  - `schema` → draft-validation input (ajv + the `InteractiveLesson` envelope),
+  - `schema` → draft-validation input (ajv against the full `schema.json`; optional runtime check via `validationContract`),
   - `example` → few-shot exemplar in the prompt layer.
 - Registered via the existing `InMemorySkillRegistry` + `createSkillResolver` (`apps/dev-server/src/studio/ai/`); no companion contract change needed.
 
@@ -140,10 +179,11 @@ Rules:
 
 | Gate | Where | Assertion |
 |------|-------|-----------|
-| Example ↔ schema round-trip | `packages/engine-skills/test/` | every `skills/*/example.json` validates ajv against its `schema.json`; composition example additionally round-trips embedded-L1 |
+| Example ↔ schema round-trip | `packages/engine-skills/test/` | every `skills/*/skill-example.json` validates ajv against its `schema.json`; composition example additionally round-trips embedded-L1 |
+| Full-spec schema generation | `packages/engine-skills/test/` | `skills/visual/schema.json` validates the full envelope (not only the content block); no unresolved `$ref` |
 | Manifest ↔ engine enums | `packages/engine-skills/test/` | `manifest.engines[*].kinds` equals the kind constants from each engine package (import from published source) |
-| Skill-doc freshness | CI script | regenerating published SKILL.md copies from `docs/engines/*/skills/*/SKILL.md` produces no diff |
-| Installed-package smoke | `scripts/` + `publish:smoke` | a temp consumer installs the tarball, ajv-validates each `example.json` against the **installed** `schema.json`, reads `manifest.json` via exports |
+| Skill content freshness | CI script | regenerating `skills/<engine>/SKILL.md`, `schema.json`, and `skill-example.json` from in-repo sources produces no diff |
+| Installed-package smoke | `scripts/` + `publish:smoke` | a temp consumer installs the tarball, ajv-validates each `skill-example.json` against the **installed** `schema.json`, reads `manifest.json` via exports |
 | Cross-repo shared fixtures | OpenEdu (open item) | `openedu-course-authoring`'s `engine-skill-catalog.mjs` and companion resolver run the same manifest fixtures and agree |
 
 Full exit gate (in-repo): `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright`, plus `pnpm publish:dry`.
@@ -153,6 +193,7 @@ Full exit gate (in-repo): `pnpm typecheck && pnpm lint && pnpm -w test && pnpm p
 1. Exact measure of `domain-guidance` ingestion (structured view vs. pointer to manifest) — decide in OpenEdu, ADR-0009 sequencing.
 2. Whether the Studio companion registers six `CompanionSkill`s or one — OpenEdu product call.
 3. How the course spec models interactive activities today vs `{type:"interactive"}` lesson nodes — depends on p7-acceptance item #2 (schema adoption), not on this package.
+4. Optional: whether `@knowledgeassemble/engine-skills` should also ship `interactive-lesson-node.schema.json` as a convenience for OpenEdu lesson-node authoring. Out of scope for the first slice.
 
 ## 8. Alternatives considered
 
