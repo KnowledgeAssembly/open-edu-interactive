@@ -426,6 +426,14 @@ export const catalog = [
     "title": "number-line-identify-marked"
   },
   {
+    "id": "chart/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "chart",
+    "specPath": "docs/fixtures/chart/skill-example.json",
+    "title": "skill-example"
+  },
+  {
     "id": "lesson/narrative-timeline-visual",
     "kind": "composition",
     "slug": "narrative-timeline-visual",
@@ -469,5 +477,13 @@ export const catalog = [
     "engine": "timeline",
     "specPath": "docs/fixtures/timeline/skill-example.json",
     "title": "Indian independence — key events"
+  },
+  {
+    "id": "visual/skill-example",
+    "kind": "engine",
+    "slug": "skill-example",
+    "engine": "visual",
+    "specPath": "docs/fixtures/visual/skill-example.json",
+    "title": "skill-example"
   }
 ] as const;
