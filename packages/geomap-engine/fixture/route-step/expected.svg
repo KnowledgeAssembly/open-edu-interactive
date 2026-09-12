@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Route stepping map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <g id="geom-journey" data-oedu-role="layer" aria-label="Journey">
+    <g id="geom-journey-r1" data-oedu-role="route" aria-label="Journey">
+      <polyline id="geom-journey-r1" data-oedu-role="route" aria-label="Journey" points="148,552 316,384 484,216 652,48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle id="geom-journey-r1-seg-0" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Start" cx="148" cy="552" r="3" fill="currentColor" opacity="0.5"/>
+      <circle id="geom-journey-r1-seg-1" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Stop B" cx="316" cy="384" r="3" fill="currentColor" opacity="0.5"/>
+      <circle id="geom-journey-r1-seg-2" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Stop C" cx="484" cy="216" r="3" fill="currentColor" opacity="0.5"/>
+      <circle id="geom-journey-r1-seg-3" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="End" cx="652" cy="48" r="3" fill="currentColor" opacity="0.5"/>
+    </g>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="100 KM">
+    <line x1="26" y1="530" x2="188" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="188" y1="526" x2="188" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+    </g>
+  </g>
+</svg>

@@ -427,6 +427,36 @@ Supported metadata MAY include:
 
 ---
 
+### 8.1 Node-id convention
+
+Scene node ids follow a deterministic convention (used by renderer, event target ids, and `snapshot.scene.semantics`):
+
+| Node kind | Id pattern |
+|---|---|
+| layer container | `geom-<layerId>` |
+| entity item | `geom-<layerId>-<entityId>` |
+| route node | `geom-<layerId>-<routeId>` |
+| route segment | `geom-<layerId>-<routeId>-seg-<i>` |
+| legend item | `geom-legend-item-<i>` |
+| scale bar | `geom-scale-bar` |
+
+Layer containers are `role: 'layer'`; route segments are `role: 'route-segment'` (derived to `route-completed`/`route-active` as steps advance).
+
+### 8.2 New content fields (P8)
+
+The content schema additionally accepts:
+
+- `content.scaleBar: { visible?, unit?: 'km' | 'mi' }` — static scale bar (D5).
+- `LayerSchema.encoding: { attribute, type: 'fill' | 'size', breakpoints: [[number, number], ...] }` — attr-encoding.
+- Item `measure: { attribute, value }` — bucket source for encoding.
+- `EntitySchema.categories: string[]` and `adjacentTo: string[]` — filter categories and adjacency.
+- Route item `interactive: boolean`, `label: boolean` — segment interactivity.
+- Legend item `linkedEntities: string[]`, `interactive: boolean` — legend-link.
+
+All new objects carry `additionalProperties: false`.
+
+---
+
 # 9. Viewport
 
 The viewport defines the initial map framing.
@@ -472,41 +502,25 @@ The renderer MAY adapt viewport behavior to device size.
 
 Projection defines how geographic coordinates are represented visually.
 
-Example:
-
-```json
-{
-  "projection": {
-    "type": "geographic"
-  }
-}
-```
-
-Supported projection categories SHOULD include:
+Implemented enum (validated, strict):
 
 ```text
-geographic
-mercator
 equirectangular
-equal-area
-orthographic
-custom
+mercator
+albers
 ```
-
-Projection configuration MUST remain semantic.
 
 Example:
 
 ```json
 {
   "projection": {
-    "type": "equal-area",
-    "region": "india"
+    "type": "mercator"
   }
 }
 ```
 
-The renderer determines the implementation.
+Projection configuration MUST remain semantic. The renderer determines the implementation (this engine uses d3-geo). Unknown types (e.g. `orthographic` in the current slice) are validation errors (`INVALID_ENTITY`).
 
 ---
 
@@ -1111,6 +1125,7 @@ focus
 unfocus
 filter
 clear-filter
+toggle
 open-annotation
 close-annotation
 zoom
@@ -1121,6 +1136,21 @@ play-pause
 step
 reset
 ```
+
+`toggle` targets a layer node id (`geom-<layerId>`) toggling its visibility.
+`step`/`scrub` target a route node id (`geom-<layerId>-<routeId>`).
+`filter` accepts payload `{ ids: string[] }` or `{ categories: string[] }` (engine resolves categories to node ids).
+
+GeoMap emits the following namespaced events:
+
+| Event | Payload | Trigger |
+|-------|---------|---------|
+| `geomap.layer-toggled` | `{ layerId, hidden }` | `toggle` |
+| `geomap.route-step` | `{ routeId, step }` | `step` / `scrub` |
+| `geomap.filter-applied` | `{ ids, categories? }` | `filter` / `clear-filter` |
+| `geomap.legend-linked` | `{ legendItemId, entityIds }` | `focus` on legend item |
+| `geomap.entity-selected` | entity metadata | `select` |
+| `geomap.entity-focused` | entity metadata | `focus` |
 
 Namespaced GeoMap extensions MAY include `geomap.center` when documented. `highlight`, `show`, `hide`, `open-info`, and `play-animation` are superseded (`select` / `focus` / `open-annotation` / `play-pause`).
 
@@ -1241,60 +1271,44 @@ Comparison MAY involve:
 
 # 36. Timeline
 
-GeoMap can represent spatial change over time.
+GeoMap has NO internal timeline. Time-based change is OUT OF SCOPE for the GeoMap engine itself: GeoMap is a rendering/state engine over a static scene, and it MUST NOT host an internal timeline, clock, or temporal layer scheduler.
 
-```json
-{
-  "timeline": {
-    "start": -500,
-    "end": 500,
-    "unit": "year",
-    "current": 0
-  }
-}
+Temporal behavior is achieved ONLY by composition with the Timeline engine (see §64): the OpenEdu runtime (host) owns the timeline, listens for Timeline events, and routes `toggle` D5 actions to GeoMap. GeoMap consumers SHALL NOT author a `timeline` block inside GeoMap content — in strict schemas an unknown `timeline` key is a validation error.
+
+### 36.1 Layer-visibility pattern (host routing)
+
+The host drives time-based layer visibility:
+
+```text
+Timeline engine emits timeline step/changed
+        ↓
+host maps timeline bucket -> layer id
+        ↓
+host dispatches { type: 'toggle', target: { id: 'geom-<layerId>' } } to GeoMap
+        ↓
+GeoMap emits geomap.layer-toggled { layerId, hidden }
 ```
 
-Historical dates SHOULD use explicit signed years where appropriate.
-
-Example:
-
-```json
-{
-  "timeline": {
-    "start": -500,
-    "end": 500,
-    "events": [
-      {
-        "year": -322,
-        "label": "Mauryan Empire begins"
-      }
-    ]
-  }
-}
-```
+Each layer's authored `visible: boolean` sets the initial frame; subsequent frames are reachable through `toggle`. GeoMap does not read Timeline events and never imports the Timeline engine (engine isolation, DESIGN D2/§6).
 
 ---
 
 # 37. Temporal Layers
 
-Layers MAY change based on time.
+There is NO `temporal` property on GeoMap layers. The former "engine determines visibility based on the active timeline state" behavior is REMOVED: GeoMap decides layer visibility ONLY from (a) authored `layer.visible`, and (b) `toggle` actions recorded in the engine-local display fold.
+
+As with §36, time-varying layers are a composition concern:
 
 ```json
 {
-  "layers": [
-    {
-      "id": "maurya",
-      "type": "region",
-      "temporal": {
-        "from": -322,
-        "to": -185
-      }
-    }
-  ]
+  "id": "maurya-layer",
+  "type": "region",
+  "visible": false,
+  "items": [ ]
 }
 ```
 
-The engine determines visibility based on the active timeline state.
+The host decides when to `toggle` this layer on/off in response to Timeline events. GeoMap exposes `snapshot.displayState.hiddenLayerIds` so the host/debug tooling can inspect the resulting layer visibility deterministically.
 
 ---
 
@@ -1951,27 +1965,31 @@ GeoMap remains responsible for spatial semantics.
 
 # 64. GeoMap + Timeline Engine
 
-Historical learning may combine:
+GeoMap composes with the Timeline engine THROUGH the host event bus, not by import (DESIGN D2/§6). The host owns the timeline and routes `toggle` D5 actions to GeoMap instances.
+
+## Routing pattern
+
+For a layer that should appear at timeline position `t`:
+
+1. Author the GeoMap content layer with `visible: false`.
+2. Host listens for Timeline state change events.
+3. Host maps timeline bucket → `geom-<layerId>`.
+4. Host dispatches `{ type: 'toggle', target: { id: 'geom-<layerId>' } }`.
+5. GeoMap emits `geomap.layer-toggled { layerId, hidden }` and shows the layer.
+
+This pattern is the only way to achieve time-based layer visibility. GeoMap does not read timeline state or import the Timeline engine.
+
+## Example
 
 ```text
-GeoMap
-+
-Timeline
+Timeline: frame t=3 → host knows "maurya" layer active
+  ↓
+host.dispatch({ type: 'toggle', target: { id: 'geom-boundaries-maurya' } })
+  ↓
+GeoMap → geomap.layer-toggled { layerId: 'geom-boundaries-maurya', hidden: false }
+  ↓
+snapshot.displayState.hiddenLayerIds ← updated
 ```
-
-Example:
-
-```text
--500
- ↓
--322
- ↓
--185
- ↓
-100
-```
-
-Timeline changes geographic state.
 
 ---
 

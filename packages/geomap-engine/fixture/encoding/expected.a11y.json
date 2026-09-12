@@ -1,0 +1,32 @@
+[
+  {
+    "id": "geom-eco-r1",
+    "role": "button",
+    "label": "R1-Low",
+    "children": []
+  },
+  {
+    "id": "geom-eco-r2",
+    "role": "button",
+    "label": "R2-Medium",
+    "children": []
+  },
+  {
+    "id": "geom-eco-r3",
+    "role": "button",
+    "label": "R3-High",
+    "children": []
+  },
+  {
+    "id": "geom-eco-r4",
+    "role": "button",
+    "label": "R4-VHigh",
+    "children": []
+  },
+  {
+    "id": "geom-eco-r5",
+    "role": "button",
+    "label": "R5-Same",
+    "children": []
+  }
+]

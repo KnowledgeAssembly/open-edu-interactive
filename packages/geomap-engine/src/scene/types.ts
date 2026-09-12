@@ -1,6 +1,7 @@
 export type GeoMapSemanticRole =
   | 'map' | 'layer' | 'region' | 'marker' | 'route' | 'route-segment'
-  | 'label' | 'legend' | 'legend-item' | 'selectable' | 'group';
+  | 'route-completed' | 'route-active'
+  | 'label' | 'legend' | 'legend-item' | 'selectable' | 'group' | 'scale-bar';
 
 export interface Bounds {
   x: number;
@@ -21,6 +22,7 @@ export interface SceneNode {
   geometry?: { type: string; coordinates: unknown };
   bounds?: Bounds;
   path?: XY[];
+  rings?: XY[][];
   points?: XY[];
   hidden?: boolean;
   label?: string;

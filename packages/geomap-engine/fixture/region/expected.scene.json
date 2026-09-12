@@ -1,84 +1,142 @@
 {
   "nodes": [
     {
-      "id": "geom-regions-r1",
-      "role": "region",
-      "kind": "region",
-      "label": "Region One",
-      "interactive": true,
-      "acceptsActions": [
-        "select",
-        "focus"
-      ],
+      "id": "geom-regions",
+      "role": "layer",
+      "kind": "layer",
+      "label": "regions",
       "hidden": false,
+      "interactive": false,
       "metadata": {
-        "entityId": "r1",
-        "entityType": "region",
-        "name": "Region One",
-        "location": {
-          "source": "src",
-          "featureId": "r1"
-        },
-        "sourceClass": "illustrative",
-        "lat": 0.4,
-        "lon": 0.4
+        "layerId": "regions"
       },
-      "children": [],
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              0,
-              0
-            ],
-            [
-              1,
-              0
-            ],
-            [
-              1,
-              1
-            ],
-            [
-              0,
-              1
-            ],
-            [
-              0,
-              0
+      "children": [
+        {
+          "id": "geom-regions-r1",
+          "role": "region",
+          "kind": "region",
+          "label": "Region One",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r1",
+            "entityType": "region",
+            "name": "Region One",
+            "location": {
+              "source": "src",
+              "featureId": "r1"
+            },
+            "sourceClass": "illustrative",
+            "lat": 0.5000063423219491,
+            "lon": 0.4999999999998905
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
             ]
-          ]
-        ]
-      },
-      "path": [
-        {
-          "x": 148,
-          "y": 552
-        },
-        {
-          "x": 652,
-          "y": 552
-        },
-        {
-          "x": 652,
-          "y": 48
-        },
-        {
-          "x": 148,
-          "y": 48
-        },
-        {
-          "x": 148,
-          "y": 552
+          },
+          "rings": [
+            [
+              {
+                "x": 148,
+                "y": 552
+              },
+              {
+                "x": 652,
+                "y": 552
+              },
+              {
+                "x": 652,
+                "y": 48
+              },
+              {
+                "x": 148,
+                "y": 48
+              },
+              {
+                "x": 148,
+                "y": 552
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 148,
+              "y": 552
+            },
+            {
+              "x": 652,
+              "y": 552
+            },
+            {
+              "x": 652,
+              "y": 48
+            },
+            {
+              "x": 148,
+              "y": 48
+            },
+            {
+              "x": 148,
+              "y": 552
+            }
+          ],
+          "bounds": {
+            "x": 148,
+            "y": 48,
+            "width": 504,
+            "height": 504
+          }
         }
-      ],
+      ]
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "50 KM",
       "bounds": {
-        "x": 148,
-        "y": 48,
-        "width": 504,
-        "height": 504
-      }
+        "x": 24,
+        "y": 512,
+        "width": 233,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 50,
+        "lengthPx": 227,
+        "unit": "km",
+        "label": "50 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
     }
   ],
   "semantics": {
@@ -102,8 +160,8 @@
           "featureId": "r1"
         },
         "sourceClass": "illustrative",
-        "lat": 0.4,
-        "lon": 0.4
+        "lat": 0.5000063423219491,
+        "lon": 0.4999999999998905
       },
       "children": [],
       "geometry": {
@@ -133,6 +191,30 @@
           ]
         ]
       },
+      "rings": [
+        [
+          {
+            "x": 148,
+            "y": 552
+          },
+          {
+            "x": 652,
+            "y": 552
+          },
+          {
+            "x": 652,
+            "y": 48
+          },
+          {
+            "x": 148,
+            "y": 48
+          },
+          {
+            "x": 148,
+            "y": 552
+          }
+        ]
+      ],
       "path": [
         {
           "x": 148,
@@ -161,6 +243,123 @@
         "width": 504,
         "height": 504
       }
+    },
+    "geom-regions": {
+      "id": "geom-regions",
+      "role": "layer",
+      "kind": "layer",
+      "label": "regions",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "regions"
+      },
+      "children": [
+        {
+          "id": "geom-regions-r1",
+          "role": "region",
+          "kind": "region",
+          "label": "Region One",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "r1",
+            "entityType": "region",
+            "name": "Region One",
+            "location": {
+              "source": "src",
+              "featureId": "r1"
+            },
+            "sourceClass": "illustrative",
+            "lat": 0.5000063423219491,
+            "lon": 0.4999999999998905
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  1,
+                  1
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 148,
+                "y": 552
+              },
+              {
+                "x": 652,
+                "y": 552
+              },
+              {
+                "x": 652,
+                "y": 48
+              },
+              {
+                "x": 148,
+                "y": 48
+              },
+              {
+                "x": 148,
+                "y": 552
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 148,
+              "y": 552
+            },
+            {
+              "x": 652,
+              "y": 552
+            },
+            {
+              "x": 652,
+              "y": 48
+            },
+            {
+              "x": 148,
+              "y": 48
+            },
+            {
+              "x": 148,
+              "y": 552
+            }
+          ],
+          "bounds": {
+            "x": 148,
+            "y": 48,
+            "width": 504,
+            "height": 504
+          }
+        }
+      ]
     }
   }
 }

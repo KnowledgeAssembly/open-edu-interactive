@@ -3,7 +3,14 @@
   <desc>An interactive geographic map</desc>
   <g id="map-root">
     <g id="map-layers">
-  <path id="geom-regions-r1" data-oedu-role="region" data-oedu-interactive="true" aria-label="Region One" d="M 148 552 L 652 552 L 652 48 L 148 48 L 148 552 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  <g id="geom-regions" data-oedu-role="layer" aria-label="regions">
+    <path id="geom-regions-r1" data-oedu-role="region" data-oedu-interactive="true" aria-label="Region One" d="M 148 552 L 652 552 L 652 48 L 148 48 L 148 552 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="50 KM">
+    <line x1="26" y1="530" x2="255" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="255" y1="526" x2="255" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
     </g>
   </g>
 </svg>

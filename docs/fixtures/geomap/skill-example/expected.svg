@@ -3,8 +3,17 @@
   <desc>An interactive geographic map</desc>
   <g id="map-root">
     <g id="map-layers">
-  <path id="geom-states-odisha" data-oedu-role="region" data-oedu-interactive="true" aria-label="Odisha" title="A state on the eastern coast of India." d="M 64 501.72 L 415.42 501.72 L 415.42 150.3 L 64 150.3 L 64 501.72 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-  <circle id="geom-cities-bhubaneswar" data-oedu-role="marker" data-oedu-interactive="true" aria-label="Bhubaneswar" title="Capital of Odisha." cx="736" cy="98.28" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  <g id="geom-states" data-oedu-role="layer" aria-label="states">
+    <path id="geom-states-odisha" data-oedu-role="region" data-oedu-interactive="true" aria-label="Odisha" title="A state on the eastern coast of India." d="M 64 501.72 L 415.42 501.72 L 415.42 150.3 L 64 150.3 L 64 501.72 Z" fill="currentColor" opacity="0.3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+  </g>
+  <g id="geom-cities" data-oedu-role="layer" aria-label="cities">
+    <circle id="geom-cities-bhubaneswar" data-oedu-role="marker" data-oedu-interactive="true" aria-label="Bhubaneswar" title="Capital of Odisha." cx="736" cy="98.28" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="100 KM">
+    <line x1="26" y1="530" x2="195" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="195" y1="526" x2="195" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
     </g>
   </g>
 </svg>

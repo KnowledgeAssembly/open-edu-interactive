@@ -3,7 +3,13 @@
     "entityId": "r1",
     "type": "region",
     "name": "Region One",
-    "location": "0.4000, 0.4000",
+    "location": "0.5000, 0.5000",
     "sourceClass": "illustrative"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "50 KM",
+    "location": "50 KM"
   }
 ]

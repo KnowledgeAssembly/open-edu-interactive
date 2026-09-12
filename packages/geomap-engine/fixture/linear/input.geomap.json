@@ -1,0 +1,47 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "linear",
+  "metadata": { "title": "River with interactive segments" },
+  "purpose": { "learningObjective": "Test interactive linear route segments, adjacency, and legend-link" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [
+        {
+          "id": "src",
+          "type": "geojson",
+          "class": "illustrative",
+          "data": { "type": "FeatureCollection", "features": [] }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "upstream", "type": "place", "name": "Upstream", "location": { "coordinates": { "lat": 10, "lon": 20 } } },
+      { "id": "mid", "type": "place", "name": "Mid", "location": { "coordinates": { "lat": 11, "lon": 21 } } },
+      { "id": "delta", "type": "place", "name": "Delta", "location": { "coordinates": { "lat": 12, "lon": 22 } } },
+      { "id": "north", "type": "place", "name": "North", "location": { "coordinates": { "lat": 14, "lon": 20 } }, "adjacentTo": ["south"] },
+      { "id": "south", "type": "place", "name": "South", "location": { "coordinates": { "lat": 8, "lon": 20 } }, "adjacentTo": ["north"] }
+    ],
+    "layers": [
+      {
+        "id": "river",
+        "type": "route",
+        "title": "River",
+        "items": [{ "id": "main", "path": ["upstream", "mid", "delta"], "interactive": true }]
+      },
+      { "id": "places", "type": "marker", "items": [{ "entity": "north", "interactive": true }, { "entity": "south", "interactive": true }] }
+    ],
+    "legend": {
+      "visible": true,
+      "items": [
+        { "role": "river", "label": "River route", "linkedEntities": ["upstream", "mid", "delta"], "interactive": true },
+        { "role": "marker", "label": "Places" }
+      ]
+    }
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Linear feature map" }
+}

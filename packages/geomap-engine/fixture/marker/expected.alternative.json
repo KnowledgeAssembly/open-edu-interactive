@@ -4,5 +4,11 @@
     "type": "city",
     "name": "Test City",
     "location": "20.0000, 85.0000"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "2000 KM",
+    "location": "2000 KM"
   }
 ]

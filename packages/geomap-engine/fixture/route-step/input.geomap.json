@@ -1,0 +1,34 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "route-step",
+  "metadata": { "title": "Route with scale bar and steps" },
+  "purpose": { "learningObjective": "Test route stepping with scale bar" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "scaleBar": { "visible": true, "unit": "km" },
+    "geography": {
+      "sources": [
+        {
+          "id": "src",
+          "type": "geojson",
+          "class": "illustrative",
+          "data": { "type": "FeatureCollection", "features": [] }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "a", "type": "city", "name": "Start", "location": { "coordinates": { "lat": 18, "lon": 82 } } },
+      { "id": "b", "type": "city", "name": "Stop B", "location": { "coordinates": { "lat": 19, "lon": 83 } } },
+      { "id": "c", "type": "city", "name": "Stop C", "location": { "coordinates": { "lat": 20, "lon": 84 } } },
+      { "id": "d", "type": "city", "name": "End", "location": { "coordinates": { "lat": 21, "lon": 85 } } }
+    ],
+    "layers": [
+      { "id": "journey", "type": "route", "title": "Journey", "items": [{ "id": "r1", "path": ["a", "b", "c", "d"], "interactive": true }] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "step", "scrub", "reset"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Route stepping map" }
+}

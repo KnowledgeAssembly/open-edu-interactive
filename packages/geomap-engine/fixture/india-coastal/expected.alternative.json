@@ -1,0 +1,85 @@
+[
+  {
+    "entityId": "odisha",
+    "type": "state",
+    "name": "Odisha",
+    "location": "20.5130, 84.4195",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "west-bengal",
+    "type": "state",
+    "name": "West Bengal",
+    "location": "23.8453, 87.9733",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "andhra-pradesh",
+    "type": "state",
+    "name": "Andhra Pradesh",
+    "location": "15.7533, 79.9469",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "chhattisgarh",
+    "type": "state",
+    "name": "Chhattisgarh",
+    "location": "21.2583, 82.0272",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "jharkhand",
+    "type": "state",
+    "name": "Jharkhand",
+    "location": "23.6533, 85.5651",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "bhubaneswar",
+    "type": "city",
+    "name": "Bhubaneswar",
+    "description": "Capital of Odisha.",
+    "location": "20.2961, 85.8245",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "cuttack",
+    "type": "city",
+    "name": "Cuttack",
+    "description": "A major city of Odisha.",
+    "location": "20.4625, 85.8830",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "chilika",
+    "type": "lake",
+    "name": "Chilika Lake",
+    "description": "A brackish lagoon on the Odisha coast.",
+    "location": "19.6965, 85.3482",
+    "sourceClass": "authoritative"
+  },
+  {
+    "entityId": "mahanadi-upper",
+    "type": "river",
+    "name": "Mahanadi upper course",
+    "location": "20.5990, 80.6250"
+  },
+  {
+    "entityId": "mahanadi-middle",
+    "type": "river",
+    "name": "Mahanadi middle course",
+    "location": "21.5200, 83.8570"
+  },
+  {
+    "entityId": "mahanadi-delta",
+    "type": "river",
+    "name": "Mahanadi delta",
+    "location": "20.1430, 86.1590"
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "500 KM",
+    "location": "500 KM"
+  }
+]

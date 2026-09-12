@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Linear feature map</title>
+  <desc>An interactive geographic map</desc>
+  <g id="map-root">
+    <g id="map-layers">
+  <g id="geom-river" data-oedu-role="layer" aria-label="River">
+    <g id="geom-river-main" data-oedu-role="route" aria-label="River">
+      <polyline id="geom-river-main" data-oedu-role="route" aria-label="River" points="316,384 400,300 484,216" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle id="geom-river-main-seg-0" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Upstream" cx="316" cy="384" r="3" fill="currentColor" opacity="0.5"/>
+      <circle id="geom-river-main-seg-1" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Mid" cx="400" cy="300" r="3" fill="currentColor" opacity="0.5"/>
+      <circle id="geom-river-main-seg-2" data-oedu-role="route-segment" data-oedu-interactive="true" aria-label="Delta" cx="484" cy="216" r="3" fill="currentColor" opacity="0.5"/>
+    </g>
+  </g>
+  <g id="geom-places" data-oedu-role="layer" aria-label="places">
+    <circle id="geom-places-north" data-oedu-role="marker" data-oedu-interactive="true" aria-label="North" cx="316" cy="48" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+    <circle id="geom-places-south" data-oedu-role="marker" data-oedu-interactive="true" aria-label="South" cx="316" cy="552" r="22" fill="currentColor" opacity="0.7" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+  <g id="geom-legend" data-oedu-role="legend" aria-label="Legend">
+    <text id="geom-legend-item-0" data-oedu-role="legend-item" aria-label="River route" x="22" y="22" text-anchor="start" dominant-baseline="central" font-size="12">River route</text>
+    <text id="geom-legend-item-1" data-oedu-role="legend-item" aria-label="Places" x="22" y="40" text-anchor="start" dominant-baseline="central" font-size="12">Places</text>
+  </g>
+  <g id="geom-scale-bar" data-oedu-role="scale-bar" aria-label="200 KM">
+    <line x1="26" y1="530" x2="182" y2="530" stroke="currentColor" stroke-width="2"/>
+    <line x1="26" y1="526" x2="26" y2="534" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="182" y1="526" x2="182" y2="534" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+    </g>
+  </g>
+</svg>

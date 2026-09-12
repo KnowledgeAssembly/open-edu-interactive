@@ -31,9 +31,30 @@ describe('Schema ↔ Zod parity', () => {
     expect(schemaJson.properties.content.properties.geography.properties.sources.items.properties.type.const).toBe('geojson');
   });
 
-  it('projection.type.enum === ["equirectangular"]', () => {
+  it('projection.type.enum === ["equirectangular", "mercator", "albers"]', () => {
     const projEnum: string[] = schemaJson.properties.content.properties.projection.properties.type.enum;
-    expect(projEnum).toEqual(['equirectangular']);
+    expect(projEnum).toEqual(['equirectangular', 'mercator', 'albers']);
+  });
+
+  it('scaleBar.unit.enum === ["km", "mi"]', () => {
+    const unitEnum: string[] = schemaJson.properties.content.properties.scaleBar.properties.unit.enum;
+    expect(unitEnum).toEqual(['km', 'mi']);
+  });
+
+  it('encoding.type.enum === ["fill", "size"]', () => {
+    const typeEnum: string[] = schemaJson.properties.content.properties.layers.items.properties.encoding.properties.type.enum;
+    expect(typeEnum).toEqual(['fill', 'size']);
+  });
+
+  it('entity categories/adjacentTo are optional arrays of strings', () => {
+    const entityProps = schemaJson.properties.content.properties.entities.items.properties;
+    expect(entityProps.categories.type).toBe('array');
+    expect(entityProps.adjacentTo.type).toBe('array');
+  });
+
+  it('route items allow interactive and label booleans', () => {
+    const itemsSchema = schemaJson.properties.content.properties.layers.items.properties.items;
+    expect(itemsSchema.type).toBe('array');
   });
 
   it('no LLM-pleaser or geometry keys in content surface', () => {

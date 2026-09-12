@@ -1,0 +1,32 @@
+[
+  {
+    "id": "geom-river-main-seg-0",
+    "role": "button",
+    "label": "Upstream",
+    "children": []
+  },
+  {
+    "id": "geom-river-main-seg-1",
+    "role": "button",
+    "label": "Mid",
+    "children": []
+  },
+  {
+    "id": "geom-river-main-seg-2",
+    "role": "button",
+    "label": "Delta",
+    "children": []
+  },
+  {
+    "id": "geom-places-north",
+    "role": "button",
+    "label": "North",
+    "children": []
+  },
+  {
+    "id": "geom-places-south",
+    "role": "button",
+    "label": "South",
+    "children": []
+  }
+]

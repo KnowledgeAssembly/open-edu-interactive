@@ -64,7 +64,7 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
         version: '1.0.0',
         id: 'bad-proj',
         content: {
-          projection: { type: 'mercator' },
+          projection: { type: 'orthographic' },
           geography: { sources: [{ id: 'src', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }] },
           entities: [{ id: 'pt', type: 'city', name: 'Pt', location: { coordinates: { lat: 0, lon: 0 } } }],
           layers: [{ id: 'l', type: 'marker', items: [{ entity: 'pt' }] }],
@@ -142,6 +142,37 @@ test.describe('GeoMap Engine — odisha-coastal e2e', () => {
     });
     expect(result.ok).toBe(false);
     expect(result.code).toBe('INVALID_SPEC');
+  });
+
+  test('toggle-layer: dispatch toggle hides the layer and emits geomap.layer-toggled; a second toggle restores it', async ({ page }) => {
+    const svgBefore = await page.evaluate(() => {
+      return (window as unknown as { __geomapHarness: { svg(): string } }).__geomapHarness.svg();
+    });
+    expect(svgBefore).toContain('id="geom-water"');
+
+    const afterFirstToggle = await page.evaluate(() => {
+      const h = (window as unknown as { __geomapHarness: { dispatch(a: unknown): void; snapshot(): { svgResult?: { svg?: string }; displayState: { hiddenLayerIds: string[] } }; events(): Array<{ name: string }> } }).__geomapHarness;
+      const before = h.events().length;
+      h.dispatch({ type: 'toggle', target: { id: 'geom-water' } });
+      const newEvents = h.events().slice(before).map((e: { name: string }) => e.name);
+      const snap = h.snapshot();
+      return { newEvents, hiddenLayerIds: snap.displayState.hiddenLayerIds, svg: snap.svgResult?.svg ?? '' };
+    });
+    expect(afterFirstToggle.newEvents).toContain('geomap.layer-toggled');
+    expect(afterFirstToggle.hiddenLayerIds).toContain('geom-water');
+    expect(afterFirstToggle.svg).not.toContain('id="geom-water"');
+
+    const afterSecondToggle = await page.evaluate(() => {
+      const h = (window as unknown as { __geomapHarness: { dispatch(a: unknown): void; snapshot(): { svgResult?: { svg?: string }; displayState: { hiddenLayerIds: string[] } }; events(): Array<{ name: string }> } }).__geomapHarness;
+      const before = h.events().length;
+      h.dispatch({ type: 'toggle', target: { id: 'geom-water' } });
+      const newEvents = h.events().slice(before).map((e: { name: string }) => e.name);
+      const snap = h.snapshot();
+      return { newEvents, hiddenLayerIds: snap.displayState.hiddenLayerIds, svg: snap.svgResult?.svg ?? '' };
+    });
+    expect(afterSecondToggle.newEvents).toContain('geomap.layer-toggled');
+    expect(afterSecondToggle.hiddenLayerIds).not.toContain('geom-water');
+    expect(afterSecondToggle.svg).toContain('id="geom-water"');
   });
 
   test('rejection: unknown "flow" layer type fails strict content schema (INVALID_SPEC)', async ({ page }) => {

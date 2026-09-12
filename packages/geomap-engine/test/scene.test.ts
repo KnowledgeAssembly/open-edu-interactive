@@ -24,22 +24,21 @@ const odishaContent: GeoMapContent = {
 describe('buildScene', () => {
   it('produces region and marker nodes from the §2 example', () => {
     const scene = buildScene(odishaContent, identityAsset);
-    expect(scene.nodes.length).toBeGreaterThanOrEqual(2);
-    const regionNode = scene.nodes.find((n) => n.role === 'region');
+    const regionNode = scene.semantics['geom-states-odisha'];
     expect(regionNode).toBeDefined();
     expect(regionNode!.metadata?.entityId).toBe('odisha');
     expect(regionNode!.metadata?.name).toBe('Odisha');
 
-    const markerNode = scene.nodes.find((n) => n.role === 'marker');
+    const markerNode = scene.semantics['geom-cities-bhubaneswar'];
     expect(markerNode).toBeDefined();
     expect(markerNode!.metadata?.entityId).toBe('bhubaneswar');
   });
 
   it('produces deterministic ids geom-<layerId>-<entityId>', () => {
     const scene = buildScene(odishaContent, identityAsset);
-    const regionNode = scene.nodes.find((n) => n.role === 'region');
+    const regionNode = scene.semantics['geom-states-odisha'];
     expect(regionNode!.id).toBe('geom-states-odisha');
-    const markerNode = scene.nodes.find((n) => n.role === 'marker');
+    const markerNode = scene.semantics['geom-cities-bhubaneswar'];
     expect(markerNode!.id).toBe('geom-cities-bhubaneswar');
   });
 
@@ -57,11 +56,49 @@ describe('buildScene', () => {
       ],
     };
     const scene = buildScene(routeContent, identityAsset);
-    const routeNode = scene.nodes.find((n) => n.role === 'route');
+    const routeNode = scene.semantics['geom-route1-my-route'];
     expect(routeNode).toBeDefined();
     expect(routeNode!.children.length).toBe(2);
     expect(routeNode!.children[0]!.id).toBe('geom-route1-my-route-seg-0');
     expect(routeNode!.children[1]!.id).toBe('geom-route1-my-route-seg-1');
+  });
+
+  it('indexes interactive route segments in semantics (opt-in)', () => {
+    const routeContent: GeoMapContent = {
+      geography: {
+        sources: [{ id: 'points', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
+      },
+      entities: [
+        { id: 'a', type: 'city', name: 'City A', location: { coordinates: { lat: 10, lon: 20 } } },
+        { id: 'b', type: 'city', name: 'City B', location: { coordinates: { lat: 11, lon: 21 } } },
+      ],
+      layers: [
+        { id: 'route1', type: 'route', items: [{ id: 'my-route', path: ['a', 'b'], interactive: true }] },
+      ],
+    };
+    const scene = buildScene(routeContent, identityAsset);
+    const seg0 = scene.semantics['geom-route1-my-route-seg-0'];
+    const seg1 = scene.semantics['geom-route1-my-route-seg-1'];
+    expect(seg0).toBeDefined();
+    expect(seg0!.interactive).toBe(true);
+    expect(seg1).toBeDefined();
+  });
+
+  it('does not index non-interactive route segments in semantics', () => {
+    const routeContent: GeoMapContent = {
+      geography: {
+        sources: [{ id: 'points', type: 'geojson', class: 'illustrative', data: { type: 'FeatureCollection', features: [] } }],
+      },
+      entities: [
+        { id: 'a', type: 'city', name: 'City A', location: { coordinates: { lat: 10, lon: 20 } } },
+        { id: 'b', type: 'city', name: 'City B', location: { coordinates: { lat: 11, lon: 21 } } },
+      ],
+      layers: [
+        { id: 'route1', type: 'route', items: [{ id: 'my-route', path: ['a', 'b'] }] },
+      ],
+    };
+    const scene = buildScene(routeContent, identityAsset);
+    expect(scene.semantics['geom-route1-my-route-seg-0']).toBeUndefined();
   });
 
   it('throws INVALID_REFERENCE for missing featureId in source', () => {
@@ -96,11 +133,10 @@ describe('buildScene', () => {
         { id: 'l2', type: 'marker', items: [{ entity: 'same' }] },
       ],
     };
-    // Second layer should cause duplicate source id if source is duplicate, but here entity ids are not unique across layers
     const scene = buildScene(dupContent, identityAsset);
-    // Both nodes should exist with different ids due to layer prefix
     expect(scene.nodes.length).toBe(2);
-    expect(scene.nodes[0]!.id).not.toBe(scene.nodes[1]!.id);
+    expect(scene.nodes[0]!.id).toBe('geom-l1');
+    expect(scene.nodes[1]!.id).toBe('geom-l2');
   });
 
   it('throws INVALID_REFERENCE for unknown entity in layer', () => {

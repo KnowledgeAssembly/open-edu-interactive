@@ -58,6 +58,8 @@ export const EntitySchema = z
         .strict(),
     ]),
     links: z.record(z.string()).optional(),
+    categories: z.array(z.string()).optional(),
+    adjacentTo: z.array(z.string()).optional(),
   })
   .strict();
 
@@ -66,6 +68,7 @@ const ItemSchema = z
     entity: z.string(),
     label: z.boolean().optional(),
     interactive: z.boolean().optional(),
+    measure: z.object({ attribute: z.string(), value: z.number() }).strict().optional(),
   })
   .strict();
 
@@ -73,6 +76,8 @@ const RouteItemSchema = z
   .object({
     id: z.string().min(1).max(128).regex(ID_PATTERN),
     path: z.array(z.string()).min(2),
+    interactive: z.boolean().optional(),
+    label: z.boolean().optional(),
   })
   .strict();
 
@@ -88,6 +93,11 @@ export const LayerSchema = z
       })
       .strict()
       .optional(),
+    encoding: z.object({
+      attribute: z.string(),
+      type: z.enum(['fill', 'size']),
+      breakpoints: z.array(z.tuple([z.number(), z.number()])).min(1),
+    }).strict().optional(),
     items: z.array(z.union([ItemSchema, RouteItemSchema])).min(1),
   })
   .strict();
@@ -106,7 +116,14 @@ export const GeoMapContentSchema = z
     viewport: ViewportSpecSchema.optional(),
     projection: z
       .object({
-        type: z.literal('equirectangular'),
+        type: z.enum(['equirectangular', 'mercator', 'albers']),
+      })
+      .strict()
+      .optional(),
+    scaleBar: z
+      .object({
+        visible: z.boolean().optional(),
+        unit: z.enum(['km', 'mi']).optional(),
       })
       .strict()
       .optional(),
@@ -127,6 +144,8 @@ export const GeoMapContentSchema = z
               .object({
                 role: z.string().min(1),
                 label: z.string().min(1),
+                linkedEntities: z.array(z.string()).optional(),
+                interactive: z.boolean().optional(),
               })
               .strict(),
           )

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "geom-journey-r1-seg-0",
+    "role": "button",
+    "label": "Start",
+    "children": []
+  },
+  {
+    "id": "geom-journey-r1-seg-1",
+    "role": "button",
+    "label": "Stop B",
+    "children": []
+  },
+  {
+    "id": "geom-journey-r1-seg-2",
+    "role": "button",
+    "label": "Stop C",
+    "children": []
+  },
+  {
+    "id": "geom-journey-r1-seg-3",
+    "role": "button",
+    "label": "End",
+    "children": []
+  }
+]

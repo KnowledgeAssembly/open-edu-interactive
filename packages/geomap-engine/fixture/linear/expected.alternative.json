@@ -1,0 +1,44 @@
+[
+  {
+    "entityId": "upstream",
+    "type": "place",
+    "name": "Upstream",
+    "location": "10.0000, 20.0000"
+  },
+  {
+    "entityId": "mid",
+    "type": "place",
+    "name": "Mid",
+    "location": "11.0000, 21.0000"
+  },
+  {
+    "entityId": "delta",
+    "type": "place",
+    "name": "Delta",
+    "location": "12.0000, 22.0000"
+  },
+  {
+    "entityId": "north",
+    "type": "place",
+    "name": "North",
+    "location": "14.0000, 20.0000",
+    "adjacentTo": [
+      "south"
+    ]
+  },
+  {
+    "entityId": "south",
+    "type": "place",
+    "name": "South",
+    "location": "8.0000, 20.0000",
+    "adjacentTo": [
+      "north"
+    ]
+  },
+  {
+    "entityId": "geom-scale-bar",
+    "type": "scale-bar",
+    "name": "200 KM",
+    "location": "200 KM"
+  }
+]

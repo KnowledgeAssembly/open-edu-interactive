@@ -4,9 +4,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { GeoMapEngine } from '../src/engine.js';
 import { buildScene } from '../src/scene/build.js';
-import { layout } from '../src/layout/engine.js';
+import { layout, fitScene } from '../src/layout/engine.js';
 import type { LayoutContext } from '../src/layout/engine.js';
 import { svgFrom } from '../src/render/svg.js';
+import { deriveDisplay, emptyMaps, computeScaleBar, makeScaleBarNode } from '../src/scene/derive.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = join(HERE, '..', 'fixture');
@@ -32,23 +33,30 @@ function expectationFiles(name: string, dir: string): { scene: string; svg: stri
 function renderResult(spec: Record<string, unknown>) {
   const content = spec['content'] as Record<string, unknown>;
   const accessibility = spec['accessibility'] as { label?: string; description?: string } | undefined;
-  const scene = layout(
-    buildScene(content as never, (id: string) => id),
-    CTX,
-    (content['viewport'] as never) ?? undefined,
-  );
-  const result = svgFrom(scene, CTX, accessibility?.label, accessibility?.description);
-  return { scene, result };
+  const projectionType = (content['projection'] as { type?: string } | undefined)?.type as 'equirectangular' | 'mercator' | 'albers' | undefined;
+  const scene = buildScene(content as never, (id: string) => id);
+  const laidOut = layout(scene, CTX, (content['viewport'] as never) ?? undefined, projectionType);
+  const fit = fitScene(scene, CTX, (content['viewport'] as never) ?? undefined, projectionType);
+  const scaleBarCfg = (content['scaleBar'] as { visible?: boolean; unit?: 'km' | 'mi' } | undefined) ?? {};
+  const scaleBarUnit = scaleBarCfg.unit ?? 'km';
+  const centerLat = (content['viewport'] as { center?: { lat?: number } } | undefined)?.center?.lat ?? fit.centerLat;
+  const scaleBarVisible = scaleBarCfg.visible !== false;
+  const scaleBarConfig = computeScaleBar(CTX, centerLat, fit.projector, scaleBarUnit);
+  const scaleBarNode = scaleBarVisible ? makeScaleBarNode(scaleBarConfig, CTX.minTouchTarget, CTX.height) : undefined;
+  const displayScene = deriveDisplay(emptyMaps(), laidOut, scaleBarNode);
+  const result = svgFrom(displayScene, CTX, accessibility?.label, accessibility?.description);
+  return { scene: displayScene, result };
 }
 
 function writeOrCompare(name: string, dir: string, spec: Record<string, unknown>) {
   const { scene, result } = renderResult(spec);
   const files = expectationFiles(name, dir);
+  const safeJson = (s: string) => s + '\n';
   const renders = [
-    { file: files.scene, payload: JSON.stringify(scene, null, 2) + '\n' },
-    { file: files.svg, payload: result.svg + '\n' },
-    { file: files.a11y, payload: JSON.stringify(result.a11y, null, 2) + '\n' },
-    { file: files.alternative, payload: JSON.stringify(result.alternative, null, 2) + '\n' },
+    { file: files.scene, payload: safeJson(JSON.stringify(scene, null, 2)) },
+    { file: files.svg, payload: result.svg },
+    { file: files.a11y, payload: safeJson(JSON.stringify(result.a11y, null, 2)) },
+    { file: files.alternative, payload: safeJson(JSON.stringify(result.alternative, null, 2)) },
   ];
   if (GENERATE) {
     for (const r of renders) {
@@ -59,18 +67,18 @@ function writeOrCompare(name: string, dir: string, spec: Record<string, unknown>
   }
   for (const r of renders) {
     expect(existsSync(r.file), `missing golden file ${r.file}`).toBe(true);
+    expect(readFileSync(r.file, 'utf8')).toBe(r.payload);
   }
-  expect(JSON.parse(readFileSync(files.scene, 'utf8'))).toEqual(scene);
-  expect(readFileSync(files.svg, 'utf8')).toBe(result.svg);
-  expect(JSON.parse(readFileSync(files.a11y, 'utf8'))).toEqual(result.a11y);
-  expect(JSON.parse(readFileSync(files.alternative, 'utf8'))).toEqual(result.alternative);
 }
 
-const FIXTURES = ['region', 'marker', 'route', 'odisha-coastal'];
+const FIXTURES = ['region', 'marker', 'route', 'odisha-coastal', 'encoding', 'overlay', 'route-step', 'linear'];
 
 function validateFixture(name: string, spec: unknown) {
   const result = ENGINE.validate(spec as never);
   if (GENERATE) {
+    if (!result.valid) {
+      console.log(`INVALID (${name}):`, JSON.stringify(result.issues, null, 2));
+    }
     return result;
   }
   const expected = JSON.parse(readFileSync(join(FIXTURE_DIR, name, 'validation.json'), 'utf8')) as {

@@ -1,0 +1,1003 @@
+{
+  "nodes": [
+    {
+      "id": "geom-risk",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Risk Zones",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "risk"
+      },
+      "children": [
+        {
+          "id": "geom-risk-nz",
+          "role": "region",
+          "kind": "region",
+          "label": "North Zone",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "nz",
+            "entityType": "region",
+            "name": "North Zone",
+            "location": {
+              "source": "src",
+              "featureId": "nz"
+            },
+            "sourceClass": "illustrative",
+            "lat": 44.962159672441786,
+            "lon": 5.000000000000101
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  40
+                ],
+                [
+                  10,
+                  40
+                ],
+                [
+                  10,
+                  50
+                ],
+                [
+                  0,
+                  50
+                ],
+                [
+                  0,
+                  40
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 148.8
+              },
+              {
+                "x": 425.2,
+                "y": 148.8
+              },
+              {
+                "x": 425.2,
+                "y": 48
+              },
+              {
+                "x": 324.4,
+                "y": 48
+              },
+              {
+                "x": 324.4,
+                "y": 148.8
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 148.8
+            },
+            {
+              "x": 425.2,
+              "y": 148.8
+            },
+            {
+              "x": 425.2,
+              "y": 48
+            },
+            {
+              "x": 324.4,
+              "y": 48
+            },
+            {
+              "x": 324.4,
+              "y": 148.8
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 48,
+            "width": 100.80000000000001,
+            "height": 100.80000000000001
+          }
+        },
+        {
+          "id": "geom-risk-sz",
+          "role": "region",
+          "kind": "region",
+          "label": "South Zone",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "sz",
+            "entityType": "region",
+            "name": "South Zone",
+            "location": {
+              "source": "src",
+              "featureId": "sz"
+            },
+            "sourceClass": "illustrative",
+            "lat": 34.51977440445422,
+            "lon": 4.999999999999999
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  30
+                ],
+                [
+                  10,
+                  30
+                ],
+                [
+                  10,
+                  39
+                ],
+                [
+                  0,
+                  39
+                ],
+                [
+                  0,
+                  30
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 249.60000000000002
+              },
+              {
+                "x": 425.2,
+                "y": 249.60000000000002
+              },
+              {
+                "x": 425.2,
+                "y": 158.88000000000005
+              },
+              {
+                "x": 324.4,
+                "y": 158.88000000000005
+              },
+              {
+                "x": 324.4,
+                "y": 249.60000000000002
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 249.60000000000002
+            },
+            {
+              "x": 425.2,
+              "y": 249.60000000000002
+            },
+            {
+              "x": 425.2,
+              "y": 158.88000000000005
+            },
+            {
+              "x": 324.4,
+              "y": 158.88000000000005
+            },
+            {
+              "x": 324.4,
+              "y": 249.60000000000002
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 158.88000000000005,
+            "width": 100.80000000000001,
+            "height": 90.71999999999997
+          }
+        }
+      ]
+    },
+    {
+      "id": "geom-boundary",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Boundary",
+      "hidden": true,
+      "interactive": false,
+      "metadata": {
+        "layerId": "boundary"
+      },
+      "children": [
+        {
+          "id": "geom-boundary-bd",
+          "role": "region",
+          "kind": "region",
+          "label": "Boundary Area",
+          "interactive": false,
+          "hidden": true,
+          "metadata": {
+            "entityId": "bd",
+            "entityType": "region",
+            "name": "Boundary Area",
+            "location": {
+              "source": "src",
+              "featureId": "bd"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.029490975213978,
+            "lon": 7.499999999999987
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  15,
+                  0
+                ],
+                [
+                  15,
+                  10
+                ],
+                [
+                  0,
+                  10
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 552
+              },
+              {
+                "x": 475.59999999999997,
+                "y": 552
+              },
+              {
+                "x": 475.59999999999997,
+                "y": 451.2
+              },
+              {
+                "x": 324.4,
+                "y": 451.2
+              },
+              {
+                "x": 324.4,
+                "y": 552
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 552
+            },
+            {
+              "x": 475.59999999999997,
+              "y": 552
+            },
+            {
+              "x": 475.59999999999997,
+              "y": 451.2
+            },
+            {
+              "x": 324.4,
+              "y": 451.2
+            },
+            {
+              "x": 324.4,
+              "y": 552
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 451.20000000000005,
+            "width": 151.2,
+            "height": 100.80000000000001
+          }
+        }
+      ]
+    },
+    {
+      "id": "geom-scale-bar",
+      "role": "scale-bar",
+      "kind": "scale-bar",
+      "label": "2000 KM",
+      "bounds": {
+        "x": 24,
+        "y": 512,
+        "width": 206,
+        "height": 68
+      },
+      "interactive": false,
+      "metadata": {
+        "lengthKm": 2000,
+        "lengthPx": 200,
+        "unit": "km",
+        "label": "2000 KM",
+        "scaleBarKind": "scale-bar"
+      },
+      "children": []
+    }
+  ],
+  "semantics": {
+    "geom-risk-nz": {
+      "id": "geom-risk-nz",
+      "role": "region",
+      "kind": "region",
+      "label": "North Zone",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "nz",
+        "entityType": "region",
+        "name": "North Zone",
+        "location": {
+          "source": "src",
+          "featureId": "nz"
+        },
+        "sourceClass": "illustrative",
+        "lat": 44.962159672441786,
+        "lon": 5.000000000000101
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              40
+            ],
+            [
+              10,
+              40
+            ],
+            [
+              10,
+              50
+            ],
+            [
+              0,
+              50
+            ],
+            [
+              0,
+              40
+            ]
+          ]
+        ]
+      },
+      "rings": [
+        [
+          {
+            "x": 324.4,
+            "y": 148.8
+          },
+          {
+            "x": 425.2,
+            "y": 148.8
+          },
+          {
+            "x": 425.2,
+            "y": 48
+          },
+          {
+            "x": 324.4,
+            "y": 48
+          },
+          {
+            "x": 324.4,
+            "y": 148.8
+          }
+        ]
+      ],
+      "path": [
+        {
+          "x": 324.4,
+          "y": 148.8
+        },
+        {
+          "x": 425.2,
+          "y": 148.8
+        },
+        {
+          "x": 425.2,
+          "y": 48
+        },
+        {
+          "x": 324.4,
+          "y": 48
+        },
+        {
+          "x": 324.4,
+          "y": 148.8
+        }
+      ],
+      "bounds": {
+        "x": 324.4,
+        "y": 48,
+        "width": 100.80000000000001,
+        "height": 100.80000000000001
+      }
+    },
+    "geom-risk-sz": {
+      "id": "geom-risk-sz",
+      "role": "region",
+      "kind": "region",
+      "label": "South Zone",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "hidden": false,
+      "metadata": {
+        "entityId": "sz",
+        "entityType": "region",
+        "name": "South Zone",
+        "location": {
+          "source": "src",
+          "featureId": "sz"
+        },
+        "sourceClass": "illustrative",
+        "lat": 34.51977440445422,
+        "lon": 4.999999999999999
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              30
+            ],
+            [
+              10,
+              30
+            ],
+            [
+              10,
+              39
+            ],
+            [
+              0,
+              39
+            ],
+            [
+              0,
+              30
+            ]
+          ]
+        ]
+      },
+      "rings": [
+        [
+          {
+            "x": 324.4,
+            "y": 249.60000000000002
+          },
+          {
+            "x": 425.2,
+            "y": 249.60000000000002
+          },
+          {
+            "x": 425.2,
+            "y": 158.88000000000005
+          },
+          {
+            "x": 324.4,
+            "y": 158.88000000000005
+          },
+          {
+            "x": 324.4,
+            "y": 249.60000000000002
+          }
+        ]
+      ],
+      "path": [
+        {
+          "x": 324.4,
+          "y": 249.60000000000002
+        },
+        {
+          "x": 425.2,
+          "y": 249.60000000000002
+        },
+        {
+          "x": 425.2,
+          "y": 158.88000000000005
+        },
+        {
+          "x": 324.4,
+          "y": 158.88000000000005
+        },
+        {
+          "x": 324.4,
+          "y": 249.60000000000002
+        }
+      ],
+      "bounds": {
+        "x": 324.4,
+        "y": 158.88000000000005,
+        "width": 100.80000000000001,
+        "height": 90.71999999999997
+      }
+    },
+    "geom-risk": {
+      "id": "geom-risk",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Risk Zones",
+      "hidden": false,
+      "interactive": false,
+      "metadata": {
+        "layerId": "risk"
+      },
+      "children": [
+        {
+          "id": "geom-risk-nz",
+          "role": "region",
+          "kind": "region",
+          "label": "North Zone",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "nz",
+            "entityType": "region",
+            "name": "North Zone",
+            "location": {
+              "source": "src",
+              "featureId": "nz"
+            },
+            "sourceClass": "illustrative",
+            "lat": 44.962159672441786,
+            "lon": 5.000000000000101
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  40
+                ],
+                [
+                  10,
+                  40
+                ],
+                [
+                  10,
+                  50
+                ],
+                [
+                  0,
+                  50
+                ],
+                [
+                  0,
+                  40
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 148.8
+              },
+              {
+                "x": 425.2,
+                "y": 148.8
+              },
+              {
+                "x": 425.2,
+                "y": 48
+              },
+              {
+                "x": 324.4,
+                "y": 48
+              },
+              {
+                "x": 324.4,
+                "y": 148.8
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 148.8
+            },
+            {
+              "x": 425.2,
+              "y": 148.8
+            },
+            {
+              "x": 425.2,
+              "y": 48
+            },
+            {
+              "x": 324.4,
+              "y": 48
+            },
+            {
+              "x": 324.4,
+              "y": 148.8
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 48,
+            "width": 100.80000000000001,
+            "height": 100.80000000000001
+          }
+        },
+        {
+          "id": "geom-risk-sz",
+          "role": "region",
+          "kind": "region",
+          "label": "South Zone",
+          "interactive": true,
+          "acceptsActions": [
+            "select",
+            "focus"
+          ],
+          "hidden": false,
+          "metadata": {
+            "entityId": "sz",
+            "entityType": "region",
+            "name": "South Zone",
+            "location": {
+              "source": "src",
+              "featureId": "sz"
+            },
+            "sourceClass": "illustrative",
+            "lat": 34.51977440445422,
+            "lon": 4.999999999999999
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  30
+                ],
+                [
+                  10,
+                  30
+                ],
+                [
+                  10,
+                  39
+                ],
+                [
+                  0,
+                  39
+                ],
+                [
+                  0,
+                  30
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 249.60000000000002
+              },
+              {
+                "x": 425.2,
+                "y": 249.60000000000002
+              },
+              {
+                "x": 425.2,
+                "y": 158.88000000000005
+              },
+              {
+                "x": 324.4,
+                "y": 158.88000000000005
+              },
+              {
+                "x": 324.4,
+                "y": 249.60000000000002
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 249.60000000000002
+            },
+            {
+              "x": 425.2,
+              "y": 249.60000000000002
+            },
+            {
+              "x": 425.2,
+              "y": 158.88000000000005
+            },
+            {
+              "x": 324.4,
+              "y": 158.88000000000005
+            },
+            {
+              "x": 324.4,
+              "y": 249.60000000000002
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 158.88000000000005,
+            "width": 100.80000000000001,
+            "height": 90.71999999999997
+          }
+        }
+      ]
+    },
+    "geom-boundary-bd": {
+      "id": "geom-boundary-bd",
+      "role": "region",
+      "kind": "region",
+      "label": "Boundary Area",
+      "interactive": false,
+      "hidden": true,
+      "metadata": {
+        "entityId": "bd",
+        "entityType": "region",
+        "name": "Boundary Area",
+        "location": {
+          "source": "src",
+          "featureId": "bd"
+        },
+        "sourceClass": "illustrative",
+        "lat": 5.029490975213978,
+        "lon": 7.499999999999987
+      },
+      "children": [],
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              0,
+              0
+            ],
+            [
+              15,
+              0
+            ],
+            [
+              15,
+              10
+            ],
+            [
+              0,
+              10
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        ]
+      },
+      "rings": [
+        [
+          {
+            "x": 324.4,
+            "y": 552
+          },
+          {
+            "x": 475.59999999999997,
+            "y": 552
+          },
+          {
+            "x": 475.59999999999997,
+            "y": 451.2
+          },
+          {
+            "x": 324.4,
+            "y": 451.2
+          },
+          {
+            "x": 324.4,
+            "y": 552
+          }
+        ]
+      ],
+      "path": [
+        {
+          "x": 324.4,
+          "y": 552
+        },
+        {
+          "x": 475.59999999999997,
+          "y": 552
+        },
+        {
+          "x": 475.59999999999997,
+          "y": 451.2
+        },
+        {
+          "x": 324.4,
+          "y": 451.2
+        },
+        {
+          "x": 324.4,
+          "y": 552
+        }
+      ],
+      "bounds": {
+        "x": 324.4,
+        "y": 451.20000000000005,
+        "width": 151.2,
+        "height": 100.80000000000001
+      }
+    },
+    "geom-boundary": {
+      "id": "geom-boundary",
+      "role": "layer",
+      "kind": "layer",
+      "label": "Boundary",
+      "hidden": true,
+      "interactive": false,
+      "metadata": {
+        "layerId": "boundary"
+      },
+      "children": [
+        {
+          "id": "geom-boundary-bd",
+          "role": "region",
+          "kind": "region",
+          "label": "Boundary Area",
+          "interactive": false,
+          "hidden": true,
+          "metadata": {
+            "entityId": "bd",
+            "entityType": "region",
+            "name": "Boundary Area",
+            "location": {
+              "source": "src",
+              "featureId": "bd"
+            },
+            "sourceClass": "illustrative",
+            "lat": 5.029490975213978,
+            "lon": 7.499999999999987
+          },
+          "children": [],
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  15,
+                  0
+                ],
+                [
+                  15,
+                  10
+                ],
+                [
+                  0,
+                  10
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "rings": [
+            [
+              {
+                "x": 324.4,
+                "y": 552
+              },
+              {
+                "x": 475.59999999999997,
+                "y": 552
+              },
+              {
+                "x": 475.59999999999997,
+                "y": 451.2
+              },
+              {
+                "x": 324.4,
+                "y": 451.2
+              },
+              {
+                "x": 324.4,
+                "y": 552
+              }
+            ]
+          ],
+          "path": [
+            {
+              "x": 324.4,
+              "y": 552
+            },
+            {
+              "x": 475.59999999999997,
+              "y": 552
+            },
+            {
+              "x": 475.59999999999997,
+              "y": 451.2
+            },
+            {
+              "x": 324.4,
+              "y": 451.2
+            },
+            {
+              "x": 324.4,
+              "y": 552
+            }
+          ],
+          "bounds": {
+            "x": 324.4,
+            "y": 451.20000000000005,
+            "width": 151.2,
+            "height": 100.80000000000001
+          }
+        }
+      ]
+    }
+  }
+}

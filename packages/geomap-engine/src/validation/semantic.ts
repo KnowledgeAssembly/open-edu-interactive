@@ -35,8 +35,8 @@ export function validateSemantic(spec: GeoMapSpec): ValidationResult {
   const geomapContent = content as GeoMapContent;
 
   const projection = content.projection;
-  if (projection && projection.type !== 'equirectangular') {
-    issues.push({ level: 'L2', code: 'INVALID_ENTITY', message: `projection.type must be "equirectangular", got "${projection.type}"` });
+  if (projection && !['equirectangular', 'mercator', 'albers'].includes(projection.type)) {
+    issues.push({ level: 'L2', code: 'INVALID_ENTITY', message: `projection.type must be "equirectangular", "mercator", or "albers", got "${projection.type}"` });
   }
 
   const geography = content.geography;

@@ -86,6 +86,48 @@ export const catalog = [
     "title": "Water cycle"
   },
   {
+    "id": "geomap/encoding",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "encoding",
+    "specPath": "packages/geomap-engine/fixture/encoding/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/encoding/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/encoding/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/encoding/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/encoding/expected.svg"
+    },
+    "title": "Encoding map with 5 regions, 3 breakpoints, categories"
+  },
+  {
+    "id": "geomap/india-coastal",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "india-coastal",
+    "specPath": "packages/geomap-engine/fixture/india-coastal/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/india-coastal/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/india-coastal/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/india-coastal/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/india-coastal/expected.svg"
+    },
+    "title": "Odisha and the eastern coast (real boundaries)"
+  },
+  {
+    "id": "geomap/linear",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "linear",
+    "specPath": "packages/geomap-engine/fixture/linear/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/linear/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/linear/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/linear/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/linear/expected.svg"
+    },
+    "title": "River with interactive segments"
+  },
+  {
     "id": "geomap/marker",
     "kind": "engine",
     "engine": "geomap",
@@ -114,6 +156,20 @@ export const catalog = [
     "title": "Odisha and its coastal neighbours"
   },
   {
+    "id": "geomap/overlay",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "overlay",
+    "specPath": "packages/geomap-engine/fixture/overlay/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/overlay/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/overlay/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/overlay/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/overlay/expected.svg"
+    },
+    "title": "Overlay with two region layers"
+  },
+  {
     "id": "geomap/region",
     "kind": "engine",
     "engine": "geomap",
@@ -140,6 +196,20 @@ export const catalog = [
       "svg": "packages/geomap-engine/fixture/route/expected.svg"
     },
     "title": "Route only"
+  },
+  {
+    "id": "geomap/route-step",
+    "kind": "engine",
+    "engine": "geomap",
+    "slug": "route-step",
+    "specPath": "packages/geomap-engine/fixture/route-step/input.geomap.json",
+    "golden": {
+      "scene": "packages/geomap-engine/fixture/route-step/expected.scene.json",
+      "a11y": "packages/geomap-engine/fixture/route-step/expected.a11y.json",
+      "alternative": "packages/geomap-engine/fixture/route-step/expected.alternative.json",
+      "svg": "packages/geomap-engine/fixture/route-step/expected.svg"
+    },
+    "title": "Route with scale bar and steps"
   },
   {
     "id": "timeline/events",

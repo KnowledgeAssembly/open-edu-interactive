@@ -1,0 +1,40 @@
+{
+  "type": "geomap",
+  "version": "1.0.0",
+  "id": "overlay",
+  "metadata": { "title": "Overlay with two region layers" },
+  "purpose": { "learningObjective": "Test layer toggle and overlay" },
+  "content": {
+    "projection": { "type": "equirectangular" },
+    "geography": {
+      "sources": [
+        {
+          "id": "src",
+          "type": "geojson",
+          "class": "illustrative",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              { "id": "nz", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 40], [10, 40], [10, 50], [0, 50], [0, 40]]] } },
+              { "id": "sz", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 30], [10, 30], [10, 39], [0, 39], [0, 30]]] } },
+              { "id": "bd", "type": "Feature", "properties": {}, "geometry": { "type": "Polygon", "coordinates": [[[0, 0], [15, 0], [15, 10], [0, 10], [0, 0]]] } }
+            ]
+          }
+        }
+      ]
+    },
+    "entities": [
+      { "id": "nz", "type": "region", "name": "North Zone", "location": { "source": "src", "featureId": "nz" } },
+      { "id": "sz", "type": "region", "name": "South Zone", "location": { "source": "src", "featureId": "sz" } },
+      { "id": "bd", "type": "region", "name": "Boundary Area", "location": { "source": "src", "featureId": "bd" } }
+    ],
+    "layers": [
+      { "id": "risk", "type": "region", "title": "Risk Zones", "items": [{ "entity": "nz", "interactive": true }, { "entity": "sz", "interactive": true }] },
+      { "id": "boundary", "type": "region", "title": "Boundary", "visible": false, "items": [{ "entity": "bd", "interactive": true }] }
+    ]
+  },
+  "interaction": { "mode": "explore", "actions": ["select", "focus", "toggle", "filter", "clear-filter"] },
+  "questions": [],
+  "sources": [{ "class": "illustrative" }],
+  "accessibility": { "label": "Overlay map with two layers" }
+}
