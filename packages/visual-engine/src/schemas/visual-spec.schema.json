@@ -28,8 +28,7 @@
       }
     },
     "data": {
-      "type": "object",
-      "additionalProperties": false
+      "type": "object"
     },
     "elements": {
       "type": "array",
@@ -61,7 +60,7 @@
         "properties": {
           "id": { "$ref": "#/$defs/idPattern" },
           "type": { "type": "string" },
-          "props": { "type": "object", "additionalProperties": false },
+          "props": { "type": "object" },
           "layout": { "type": "object", "additionalProperties": true },
           "style": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-z]+\\.[a-z]+$" } },
           "accessibility": { "type": "object", "additionalProperties": true },

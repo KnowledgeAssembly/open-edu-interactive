@@ -92,6 +92,10 @@ function writeJson(path, data) {
 }
 
 function rewriteSkillDoc(doc) {
+  // composition's embedded-spec line must NOT become `./schema.json`: that file is the
+  // LESSON schema, so point embedded engine specs at interactive-engine's envelope validator.
+  const CONTRACT_NOTE = 'the manifest `validationContract` (install `package`, import `symbol`, call `method(spec)`)';
+
   const pathReplacements = [
     [/packages\/chart-engine\/src\/schemas\/chart-spec\.schema\.json/g, './schema.json'],
     [/packages\/diagram-engine\/src\/schemas\/diagram-spec\.schema\.json/g, './schema.json'],
@@ -100,6 +104,10 @@ function rewriteSkillDoc(doc) {
     [/packages\/visual-engine\/src\/schemas\/visual-spec\.schema\.json/g, './schema.json'],
     [/packages\/interactive-engine\/src\/schemas\/interactive-engine\.schema\.json/g, './schema.json'],
     [/docs\/schemas\/composition\.schema\.json/g, './schema.json'],
+    [
+      /validate against `docs\/schemas\/interactive-engine\.schema\.json`/g,
+      'validate the envelope with `validateEnvelope(spec)` from `@knowledgeassemble/interactive-engine`',
+    ],
     [/docs\/schemas\/interactive-engine\.schema\.json/g, './schema.json'],
     [/docs\/fixtures\/([\w-]+)\/skill-example\.json/g, './skill-example.json'],
   ];
@@ -109,12 +117,24 @@ function rewriteSkillDoc(doc) {
   }
 
   result = result.replace(
-    /(?:ChartEngine|VisualEngine|DiagramEngine|GeoMapEngine|TimelineEngine)\.validate\(spec\)/g,
-    'runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))',
+    /- Runtime: `(?:ChartEngine|VisualEngine|DiagramEngine|GeoMapEngine|TimelineEngine)\.validate\(spec\)` returns `\{ valid: true, issues: \[\] \}` for a correct spec\./g,
+    `- Runtime: validate via ${CONTRACT_NOTE}; a correct spec returns \`{ valid: true, issues: [] }\`.`,
+  );
+  result = result.replace(
+    /- Runtime: `(?:ChartEngine|VisualEngine|DiagramEngine|GeoMapEngine|TimelineEngine)\.validate\(spec\)` returns `\{ valid: true, issues: \[\] \}`\./g,
+    `- Runtime: validate via ${CONTRACT_NOTE}.`,
+  );
+  result = result.replace(
+    /Run `(?:ChartEngine|VisualEngine|DiagramEngine|GeoMapEngine|TimelineEngine)\.validate\(spec\)` which checks:/g,
+    `Validate via ${CONTRACT_NOTE}, which checks:`,
+  );
+  result = result.replace(
+    /`(?:ChartEngine|VisualEngine|DiagramEngine|GeoMapEngine|TimelineEngine)\.validate\(spec\)`/g,
+    CONTRACT_NOTE,
   );
   result = result.replace(
     /pnpm --filter @knowledgeassemble\/[\w-]+-engine exec tsx -e "[^"]*"/g,
-    'runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))',
+    `runtime validation is via ${CONTRACT_NOTE}`,
   );
 
   const lines = result.split('\n');
@@ -160,32 +180,7 @@ function composeVisualSchema(envelopeSchema, contentSchema) {
   }
   envelope.additionalProperties = false;
 
-  relaxProps(envelope.properties.content);
-
   return envelope;
-}
-
-function relaxProps(schema) {
-  if (schema == null || typeof schema !== 'object') return;
-  if (Array.isArray(schema)) {
-    for (const item of schema) relaxProps(item);
-    return;
-  }
-  if (
-    schema.type === 'object' &&
-    schema.additionalProperties === false &&
-    !schema.oneOf &&
-    !schema.anyOf &&
-    !schema.$ref
-  ) {
-    const definedProps = schema.properties;
-    if (!definedProps || typeof definedProps !== 'object' || Object.keys(definedProps).length === 0) {
-      schema.additionalProperties = true;
-    }
-  }
-  for (const value of Object.values(schema)) {
-    relaxProps(value);
-  }
 }
 
 function getKinds(engine) {

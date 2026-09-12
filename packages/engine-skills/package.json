@@ -27,7 +27,7 @@
   "dependencies": {
     "@knowledgeassemble/interactive-engine": "workspace:*",
     "ajv": "^8.20.0",
-    "zod": "^3.23.0"
+    "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
     "@knowledgeassemble/chart-engine": "workspace:*",

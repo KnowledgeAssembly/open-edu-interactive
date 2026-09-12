@@ -54,5 +54,5 @@ Use a **single engine spec** when one interactive stands alone. Composition buys
 ## Validate
 
 - Lesson: validate against `./schema.json`.
-- Each `engines[].spec`: validate against `./schema.json`.
+- Each `engines[].spec`: validate the envelope with `validateEnvelope(spec)` from `@knowledgeassemble/interactive-engine`.
 - Runtime proof: `Lesson.load(lesson, registry)` succeeds and the smoke interaction routes the expected namespaced event to the target action.

@@ -42,7 +42,7 @@ See `./skill-example.json`.
 
 ```sh
 # Validate a spec
-runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))
+runtime validation is via the manifest `validationContract` (install `package`, import `symbol`, call `method(spec)`)
 ```
 
 Always validate before publishing. The engine rejects invented boundaries, invalid coordinates, unresolved references, and missing accessibility labels.

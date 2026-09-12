@@ -65,4 +65,4 @@ Use the shared Interactive Engine envelope (`type: "diagram"`, `version`, `id`).
 ## Validate
 
 - Spec: `./schema.json`; envelope: `./schema.json`.
-- Runtime: `runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))` returns `{ valid: true, issues: [] }`.
+- Runtime: validate via the manifest `validationContract` (install `package`, import `symbol`, call `method(spec)`).

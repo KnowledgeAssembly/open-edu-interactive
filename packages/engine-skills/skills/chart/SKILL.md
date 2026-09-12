@@ -68,4 +68,4 @@ Use the shared Interactive Engine envelope (`type: "chart"`, `version`, `id`). C
 
 - Spec: validate against `./schema.json`.
 - Envelope: validate against `./schema.json`.
-- Runtime: `runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))` returns `{ valid: true, issues: [] }` for a correct spec.
+- Runtime: validate via the manifest `validationContract` (install `package`, import `symbol`, call `method(spec)`); a correct spec returns `{ valid: true, issues: [] }`.

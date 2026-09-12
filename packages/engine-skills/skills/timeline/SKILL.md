@@ -74,7 +74,7 @@ Invalid: `yesterday`, `Aug 1947`, `47 BC`, `2026-13-01` (months are structural �
 
 ## Validation
 
-Run `runtime validation is via the manifest `validationContract` (install package, import symbol, call method(spec))` which checks:
+Validate via the manifest `validationContract` (install `package`, import `symbol`, call `method(spec)`), which checks:
 - L1: envelope (`type`, `version`, `id`) per `interactive-engine.schema.json`
 - L2: `content.kind === "events"`, references resolve, IDs unique, dates match grammar, periods `.from ≤ .to`, actions ⊆ D5
 - L3: layout feasible (bounds on canvas)
