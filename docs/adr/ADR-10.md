@@ -6,15 +6,23 @@
 
 ## Context
 
-PLAN-P8 §0 non-goals ban d3-geo until Workstream A is green. Meanwhile the GeoMap engine already ships `d3-geo` (`d3-geo@^3.1.1`, `@types/d3-geo`) as a production dependency and uses it in `packages/geomap-engine/src/geo.ts` for `geoCentroid`, `geoArea`, `geoDistance`, `geoInterpolate`, and `geoPath`. The doc-vs-code contradiction was surfaced by the 2026-09-13 architecture review.
+PLAN-P8 §0 non-goals ban d3-geo until Workstream A is green. Meanwhile the GeoMap engine already ships `d3-geo` (`d3-geo@^3.1.1`, `@types/d3-geo`) as a production dependency. The doc-vs-code contradiction was surfaced by the 2026-09-13 architecture review.
+
+The initial review draft claimed d3-geo was "isolated behind `src/geo.ts`" (a module that does not exist) and listed `geoInterpolate`/`geoPath` as used functions (they are not). The verified usage, per-import, is:
+
+- `packages/geomap-engine/src/layout/projection.ts` — `geoEquirectangular`, `geoMercator`, `geoAlbers` (projection constructors);
+- `packages/geomap-engine/src/scene/build.ts` — `geoCentroid`, `geoArea` (region centroid / reversal detection);
+- `packages/geomap-engine/src/scene/derive.ts` — `geoDistance` (radial scale calibration).
+
+There is no `src/geo.ts` facade: d3-geo is imported directly by scene/layout modules. The isolation claim in this ADR therefore means **semantic isolation** (pure math only), not a module boundary.
 
 ## Decision
 
 `d3-geo` is an accepted, documented exception for the GeoMap engine only:
 
 - it provides **deterministic spherical math** (P4: identical input → identical output; no randomness in any function used);
-- it is consumed only behind the `src/geo.ts` module boundary — never in scene/layout/render code paths that touch the spec surface;
-- no other D3 (d3-scale, d3-time, d3-selection/DOM), ELK, Dagre, Recharts, or MapLibre may be introduced;
+- every call site is a **pure-math transform** — projection constructors, centroid/area, distance — with no DOM access, no event handling, and no spec-surface coupling; none of the imported symbols touch the spec/envelope surface;
+- `d3-geo` must never appear in `render/` or `validation/` paths, and no D3 module beyond the pure-math surface (no d3-scale, d3-time, d3-selection/DOM) may be introduced;
 - the exception is re-reviewed when Workstream A is green.
 
 ## Consequences

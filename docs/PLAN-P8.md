@@ -25,7 +25,7 @@ Renderer(SVG) that matches the slice SPEC → Playground honesty → published p
 - Build a second OpenEdu (Studio, scoring, telemetry store, i18n product, PWA) in this repo (D6).
 - Widen frozen `kind` / layer / projection enums to make playground look fuller (DESIGN §15).
 - Adopt Recharts, MapLibre, Konva, or a “super library” as the semantic model.
-- Introduce D3 / d3-geo / ELK **until Workstream A is green** and a later SPEC slice names the math (P4/P6 explicitly banned those libraries for the MVP determinism gate). **Exception (ADR-10):** the GeoMap engine already ships `d3-geo` as a production dependency for deterministic spherical math (`geoCentroid`/`geoArea`/`geoDistance`/`geoInterpolate`), isolated in `src/geo.ts`. No other D3 (d3-scale/d3-time/DOM), ELK, or library use is permitted; the exception is re-reviewed when Workstream A is green.
+- Introduce D3 / d3-geo / ELK **until Workstream A is green** and a later SPEC slice names the math (P4/P6 explicitly banned those libraries for the MVP determinism gate). **Exception (ADR-10):** the GeoMap engine already ships `d3-geo` as a production dependency for deterministic spherical math (projection constructors `geoEquirectangular`/`geoMercator`/`geoAlbers`, `geoCentroid`, `geoArea`, `geoDistance`), consumed only as pure-math transforms in `layout/projection.ts` and `scene/build.ts`/`scene/derive.ts`. No other D3 (d3-scale/d3-time/DOM), ELK, or library use is permitted; the exception is re-reviewed when Workstream A is green.
 - Write a parallel `VISUALIZATION-TECHNOLOGY-STRATEGY.md` that outranks DESIGN/STRUCTURE. Adapter policy stays in STRUCTURE §16–20 + a DESIGN decision if one is recorded later.
 
 **Operating rule.** Own educational semantics, state, events, a11y, composition, and renderer *integration*. Do not hand-build a general charting/GIS/graph-layout product. Borrow commodity math **behind adapters** only when a gated SPEC slice requires it. Empty or stub SVG for entities the slice already claims is **slice debt**, not a reason to add libraries.
@@ -96,7 +96,7 @@ Number-line satisfied PLAN.md P2 **exit**. Production still needs PLAN.md P2 ite
 
 For every catalog fixture, a human (and a test where practical) sees the slice the SPEC names. After A1, audit Chart → GeoMap → Timeline → Visual the same way: **hollow render** vs **layout bug** vs **harness**. Fix hollow/layout in-engine; do not “fix” with a library.
 
-> **Remaining (2026-09-13):** Chart (2 fixtures: `bar`, `line`) and Timeline (4 fixtures: `events`, `independence`, `periods`, `tracks`) have **input + validation.json only** — no `expected.{scene,svg,a11y}.json`. GeoMap/Visual/Diagram already carry full goldens. This is the concrete A3 remaining work (N1 in the next-phase plan).
+> **Remaining (2026-09-13):** Chart (2 fixtures: `bar`, `line`) has `input.chart.json` + `validation.json` but no `expected.{scene,svg,a11y}.json`; Timeline (4 fixtures: `events`, `independence`, `periods`, `tracks`) has `input.timeline.json` only — no `validation.json` and no `expected.{scene,svg,a11y}.json`. GeoMap/Visual/Diagram already carry full goldens. This is the concrete A3 remaining work (N1 in the next-phase plan).
 
 ### A4 — Test bar
 

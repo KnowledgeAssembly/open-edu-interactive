@@ -16,7 +16,7 @@
 | PLAN-P8 Workstream A: "A2 — Visual D9 kinds hollow layout, only number-line has strategy" | **DONE.** `packages/visual-engine/src/layout/engine.ts` has dedicated strategies for all 7 D9 kinds + `illustration`. 14 fixture dirs exist with golden SVGs. |
 | PLAN-P8 Workstream A: "A3 — Audit honesty: chart/timeline hollow render" | **OPEN.** Chart has 2 fixtures (`bar`, `line`) with `input.chart.json` + `validation.json` only — no `expected.{scene,svg,a11y}.json`. Timeline has 4 fixtures (`events`, `independence`, `periods`, `tracks`) — same gap. Tests assert validation parity only. |
 | PLAN-P8 Workstream A: "A4 — Test bar: non-stub render tests" | **PARTIAL.** Diagram/visual have golden fixtures + e2e. Chart/timeline lack scene/svg/a11y goldens; no render tests asserting visible SVG primitives. |
-| PLAN-P8 non-goal: "No D3/d3-geo until Workstream A green" | **VIOLATED.** `packages/geomap-engine/package.json` has production dependency `d3-geo: ^3.1.1` + `@types/d3-geo`. Used in `src/geo.ts` for `geoCentroid`, `geoArea`, `geoDistance`, `geoInterpolate`, `geoPath`. Deterministic pure math — accepted exception (see ADR-10). |
+| PLAN-P8 non-goal: "No D3/d3-geo until Workstream A green" | **VIOLATED.** `packages/geomap-engine/package.json` has production dependency `d3-geo: ^3.1.1` + `@types/d3-geo`. Used in `layout/projection.ts` (geoEquirectangular/geoMercator/geoAlbers), `scene/build.ts` (geoCentroid/geoArea), `scene/derive.ts` (geoDistance). All pure-math transforms, no DOM/spec-surface use — accepted exception (see ADR-10). |
 | DESIGN.md §3: "Chart JSON Schema missing (TODO)" | **Stale.** `packages/chart-engine/src/schemas/chart-spec.schema.json` exists and is authoritative. Not mirrored to `docs/schemas/` — canonical location gap. |
 | docs/engines/visual/VISION.md | **Does not exist.** DESIGN §3 says "—" for Visual VISION maturity — correct. Visual SPEC.md (3115 lines) is the de facto vision+spec combined. |
 
@@ -130,7 +130,7 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 
 **Goal:** Record the accepted exception for d3-geo usage in geomap-engine.
 
-**Why:** PLAN-P8 §0 bans "D3/d3-geo/ELK until Workstream A green" but geomap already uses d3-geo for pure deterministic math (no randomness, no rendering). The dependency is real, shipped, and architecturally sound — it should be documented, not ignored.
+**Why:** PLAN-P8 §0 bans "D3/d3-geo/ELK until Workstream A green" but geomap already uses d3-geo for pure deterministic math (no randomness, no DOM, no spec-surface coupling). The dependency is real, shipped, and architecturally sound — it should be documented, not ignored.
 
 **Affected files:**
 - `docs/adr/ADR-10.md` (new)
@@ -140,8 +140,8 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 **Requirements:**
 - Status: Accepted
 - Supersedes: PLAN-P8 §0 "no d3" non-goal (partial)
-- Context: geomap needs centroid, area, distance, interpolation for geographic content. d3-geo provides deterministic spherical math. No alternatives as compact.
-- Decision: d3-geo is an accepted exception behind `src/geo.ts` isolation boundary. No d3-scale, d3-time, d3 DOM, or ELK. Exception applies only to geomap-engine. Reviewed at A-green.
+- Context: geomap needs spherical centroid/area/distance math and projection constructors for geographic content. d3-geo provides deterministic spherical math. No alternatives as compact.
+- Decision: d3-geo is an accepted exception for `layout/projection.ts` + `scene/` pure-math call sites; there is **no** `src/geo.ts` facade — isolation is *semantic* (pure math only), never a module boundary. No d3-scale, d3-time, d3 DOM, or ELK. Exception applies only to geomap-engine. Reviewed at A-green.
 - Consequences: documentation debt resolved; geomap package has production dep; other engines remain d3-free.
 
 **Tests required:** None.
@@ -631,7 +631,7 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 | `docs/PLAN-P8.md` | Workstreams A–E (production readiness) |
 | `docs/p7-acceptance.md` | Cross-repo acceptance items (Workstream B) |
 | `docs/STRUCTURE.md` | Package layout, tech stack |
-| `docs/adr/ADR-01..10.md` | Decision records |
+| `docs/adr/ADR-01..12.md` | Decision records |
 | `docs/use-cases/*.md` | Per-engine use-case catalogs |
 | `docs/superpowers/specs/2026-09-09-p8-workstream-a-plan.md` | Prior A1/A2 plan (now stale for A1/A2 status) |
 | `docs/superpowers/specs/2026-09-10-visual-use-cases-implementation-plan.md` | Visual UC implementation plan |
