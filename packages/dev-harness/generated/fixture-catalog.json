@@ -5,6 +5,11 @@
     "engine": "chart",
     "slug": "bar",
     "specPath": "packages/chart-engine/fixture/bar/input.chart.json",
+    "golden": {
+      "scene": "packages/chart-engine/fixture/bar/expected.scene.json",
+      "a11y": "packages/chart-engine/fixture/bar/expected.a11y.json",
+      "svg": "packages/chart-engine/fixture/bar/expected.svg"
+    },
     "title": "bar"
   },
   {
@@ -13,6 +18,11 @@
     "engine": "chart",
     "slug": "line",
     "specPath": "packages/chart-engine/fixture/line/input.chart.json",
+    "golden": {
+      "scene": "packages/chart-engine/fixture/line/expected.scene.json",
+      "a11y": "packages/chart-engine/fixture/line/expected.a11y.json",
+      "svg": "packages/chart-engine/fixture/line/expected.svg"
+    },
     "title": "line"
   },
   {
@@ -217,6 +227,11 @@
     "engine": "timeline",
     "slug": "events",
     "specPath": "packages/timeline-engine/fixture/events/input.timeline.json",
+    "golden": {
+      "scene": "packages/timeline-engine/fixture/events/expected.scene.json",
+      "a11y": "packages/timeline-engine/fixture/events/expected.a11y.json",
+      "svg": "packages/timeline-engine/fixture/events/expected.svg"
+    },
     "title": "Events-only test"
   },
   {
@@ -225,6 +240,11 @@
     "engine": "timeline",
     "slug": "independence",
     "specPath": "packages/timeline-engine/fixture/independence/input.timeline.json",
+    "golden": {
+      "scene": "packages/timeline-engine/fixture/independence/expected.scene.json",
+      "a11y": "packages/timeline-engine/fixture/independence/expected.a11y.json",
+      "svg": "packages/timeline-engine/fixture/independence/expected.svg"
+    },
     "title": "Indian independence — key events"
   },
   {
@@ -233,6 +253,11 @@
     "engine": "timeline",
     "slug": "periods",
     "specPath": "packages/timeline-engine/fixture/periods/input.timeline.json",
+    "golden": {
+      "scene": "packages/timeline-engine/fixture/periods/expected.scene.json",
+      "a11y": "packages/timeline-engine/fixture/periods/expected.a11y.json",
+      "svg": "packages/timeline-engine/fixture/periods/expected.svg"
+    },
     "title": "Periods test"
   },
   {
@@ -241,6 +266,11 @@
     "engine": "timeline",
     "slug": "tracks",
     "specPath": "packages/timeline-engine/fixture/tracks/input.timeline.json",
+    "golden": {
+      "scene": "packages/timeline-engine/fixture/tracks/expected.scene.json",
+      "a11y": "packages/timeline-engine/fixture/tracks/expected.a11y.json",
+      "svg": "packages/timeline-engine/fixture/tracks/expected.svg"
+    },
     "title": "Tracks test"
   },
   {

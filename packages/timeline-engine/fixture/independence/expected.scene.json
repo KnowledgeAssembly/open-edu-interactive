@@ -1,0 +1,842 @@
+{
+  "nodes": [
+    {
+      "id": "gridline-0",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1775,
+      "children": []
+    },
+    {
+      "id": "gridline-1",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1800,
+      "children": []
+    },
+    {
+      "id": "gridline-2",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1825,
+      "children": []
+    },
+    {
+      "id": "gridline-3",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1850,
+      "children": []
+    },
+    {
+      "id": "gridline-4",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1875,
+      "children": []
+    },
+    {
+      "id": "gridline-5",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1900,
+      "children": []
+    },
+    {
+      "id": "gridline-6",
+      "role": "gridline",
+      "kind": "line",
+      "value": 1925,
+      "children": []
+    },
+    {
+      "id": "tick-0",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1775,
+      "bounds": {
+        "x": 163.20936211775182,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-1",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1800,
+      "bounds": {
+        "x": 252.3933726892748,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-2",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1825,
+      "bounds": {
+        "x": 341.5773832607978,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-3",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1850,
+      "bounds": {
+        "x": 430.7613938323207,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-4",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1875,
+      "bounds": {
+        "x": 519.9454044038437,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-5",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1900,
+      "bounds": {
+        "x": 609.1294149753667,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "tick-6",
+      "role": "tick",
+      "kind": "tick",
+      "value": 1925,
+      "bounds": {
+        "x": 698.3134255468896,
+        "y": 200,
+        "width": 2,
+        "height": 6
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-0",
+      "role": "label",
+      "kind": "text",
+      "value": 1775,
+      "label": "1775",
+      "bounds": {
+        "x": 134.20936211775182,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-1",
+      "role": "label",
+      "kind": "text",
+      "value": 1800,
+      "label": "1800",
+      "bounds": {
+        "x": 223.3933726892748,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-2",
+      "role": "label",
+      "kind": "text",
+      "value": 1825,
+      "label": "1825",
+      "bounds": {
+        "x": 312.5773832607978,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-3",
+      "role": "label",
+      "kind": "text",
+      "value": 1850,
+      "label": "1850",
+      "bounds": {
+        "x": 401.7613938323207,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-4",
+      "role": "label",
+      "kind": "text",
+      "value": 1875,
+      "label": "1875",
+      "bounds": {
+        "x": 490.94540440384367,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-5",
+      "role": "label",
+      "kind": "text",
+      "value": 1900,
+      "label": "1900",
+      "bounds": {
+        "x": 580.1294149753667,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-tick-6",
+      "role": "label",
+      "kind": "text",
+      "value": 1925,
+      "label": "1925",
+      "bounds": {
+        "x": 669.3134255468896,
+        "y": 208,
+        "width": 60,
+        "height": 18
+      },
+      "children": []
+    },
+    {
+      "id": "label-track-track-movement",
+      "role": "label",
+      "kind": "text",
+      "label": "National movement",
+      "bounds": {
+        "x": 4,
+        "y": 40,
+        "width": 92,
+        "height": 20
+      },
+      "children": []
+    },
+    {
+      "id": "label-track-track-reform",
+      "role": "label",
+      "kind": "text",
+      "label": "Constitutional reform",
+      "bounds": {
+        "x": 4,
+        "y": 100,
+        "width": 92,
+        "height": 20
+      },
+      "children": []
+    },
+    {
+      "id": "label-track-track-default",
+      "role": "label",
+      "kind": "text",
+      "label": "",
+      "bounds": {
+        "x": 4,
+        "y": 160,
+        "width": 92,
+        "height": 20
+      },
+      "children": []
+    },
+    {
+      "id": "track-track-movement",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "National movement",
+      "metadata": {
+        "eventIds": [
+          "event-1857",
+          "event-1919",
+          "event-1930",
+          "event-1942",
+          "event-1947"
+        ],
+        "label": "National movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 20,
+        "width": 680,
+        "height": 60
+      }
+    },
+    {
+      "id": "track-track-reform",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "Constitutional reform",
+      "metadata": {
+        "eventIds": [
+          "event-1885"
+        ],
+        "label": "Constitutional reform"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 80,
+        "width": 680,
+        "height": 60
+      }
+    },
+    {
+      "id": "track-track-default",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "",
+      "metadata": {
+        "eventIds": [
+          "event-1757"
+        ],
+        "label": ""
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 140,
+        "width": 680,
+        "height": 60
+      }
+    },
+    {
+      "id": "period-period-company",
+      "role": "period-band",
+      "kind": "period-band",
+      "label": "Company rule (1757 – 1858)",
+      "interactive": false,
+      "metadata": {
+        "fromDay": 2362792,
+        "toDay": 2399681,
+        "from": "1757",
+        "to": "1858",
+        "label": "Company rule",
+        "role": "secondary-period"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 20,
+        "width": 360.30105858864425,
+        "height": 180
+      }
+    },
+    {
+      "id": "period-period-crown",
+      "role": "period-band",
+      "kind": "period-band",
+      "label": "British Raj (1858 – 1947)",
+      "interactive": false,
+      "metadata": {
+        "fromDay": 2399681,
+        "toDay": 2432187,
+        "from": "1858",
+        "to": "1947",
+        "label": "British Raj",
+        "role": "primary-period"
+      },
+      "children": [],
+      "bounds": {
+        "x": 460.30105858864425,
+        "y": 20,
+        "width": 317.4915614541589,
+        "height": 180
+      }
+    },
+    {
+      "id": "event-1757",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Battle of Plassey (1757)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2362792,
+        "dateString": "1757",
+        "label": "Battle of Plassey",
+        "trackId": "track-default"
+      },
+      "children": [],
+      "bounds": {
+        "x": 78,
+        "y": 148,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1857",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "1857 uprising (1857)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2399316,
+        "dateString": "1857",
+        "label": "1857 uprising",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 434.73604228609184,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1885",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Congress founded (1885)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2409543,
+        "dateString": "1885",
+        "label": "Congress founded",
+        "trackId": "track-reform"
+      },
+      "children": [],
+      "bounds": {
+        "x": 534.6248689332242,
+        "y": 88,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1919",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Jallianwala Bagh (1919-04-13)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2422062,
+        "dateString": "1919-04-13",
+        "label": "Jallianwala Bagh",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 656.9000445267951,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1930",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Salt March (1930-03-12)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2426048,
+        "dateString": "1930-03-12",
+        "label": "Salt March",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 695.8319759842576,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1942",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Quit India (1942-08-08)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2430580,
+        "dateString": "1942-08-08",
+        "label": "Quit India",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 740.0967811436204,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    {
+      "id": "event-1947",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Independence (1947-08-15)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2432413,
+        "dateString": "1947-08-15",
+        "label": "Independence",
+        "trackId": "track-movement",
+        "links": {
+          "visualEntityId": "figure-independence"
+        }
+      },
+      "children": [],
+      "bounds": {
+        "x": 758,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "semantics": {
+    "event-1757": {
+      "id": "event-1757",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Battle of Plassey (1757)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2362792,
+        "dateString": "1757",
+        "label": "Battle of Plassey",
+        "trackId": "track-default"
+      },
+      "children": [],
+      "bounds": {
+        "x": 78,
+        "y": 148,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1857": {
+      "id": "event-1857",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "1857 uprising (1857)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2399316,
+        "dateString": "1857",
+        "label": "1857 uprising",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 434.73604228609184,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1885": {
+      "id": "event-1885",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Congress founded (1885)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2409543,
+        "dateString": "1885",
+        "label": "Congress founded",
+        "trackId": "track-reform"
+      },
+      "children": [],
+      "bounds": {
+        "x": 534.6248689332242,
+        "y": 88,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1919": {
+      "id": "event-1919",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Jallianwala Bagh (1919-04-13)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2422062,
+        "dateString": "1919-04-13",
+        "label": "Jallianwala Bagh",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 656.9000445267951,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1930": {
+      "id": "event-1930",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Salt March (1930-03-12)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2426048,
+        "dateString": "1930-03-12",
+        "label": "Salt March",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 695.8319759842576,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1942": {
+      "id": "event-1942",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Quit India (1942-08-08)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2430580,
+        "dateString": "1942-08-08",
+        "label": "Quit India",
+        "trackId": "track-movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 740.0967811436204,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "event-1947": {
+      "id": "event-1947",
+      "role": "selectable",
+      "kind": "event-marker",
+      "label": "Independence (1947-08-15)",
+      "interactive": true,
+      "acceptsActions": [
+        "select",
+        "focus"
+      ],
+      "metadata": {
+        "date": 2432413,
+        "dateString": "1947-08-15",
+        "label": "Independence",
+        "trackId": "track-movement",
+        "links": {
+          "visualEntityId": "figure-independence"
+        }
+      },
+      "children": [],
+      "bounds": {
+        "x": 758,
+        "y": 28,
+        "width": 44,
+        "height": 44
+      }
+    },
+    "period-period-company": {
+      "id": "period-period-company",
+      "role": "period-band",
+      "kind": "period-band",
+      "label": "Company rule (1757 – 1858)",
+      "interactive": false,
+      "metadata": {
+        "fromDay": 2362792,
+        "toDay": 2399681,
+        "from": "1757",
+        "to": "1858",
+        "label": "Company rule",
+        "role": "secondary-period"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 20,
+        "width": 360.30105858864425,
+        "height": 180
+      }
+    },
+    "period-period-crown": {
+      "id": "period-period-crown",
+      "role": "period-band",
+      "kind": "period-band",
+      "label": "British Raj (1858 – 1947)",
+      "interactive": false,
+      "metadata": {
+        "fromDay": 2399681,
+        "toDay": 2432187,
+        "from": "1858",
+        "to": "1947",
+        "label": "British Raj",
+        "role": "primary-period"
+      },
+      "children": [],
+      "bounds": {
+        "x": 460.30105858864425,
+        "y": 20,
+        "width": 317.4915614541589,
+        "height": 180
+      }
+    },
+    "track-track-movement": {
+      "id": "track-track-movement",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "National movement",
+      "metadata": {
+        "eventIds": [
+          "event-1857",
+          "event-1919",
+          "event-1930",
+          "event-1942",
+          "event-1947"
+        ],
+        "label": "National movement"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 20,
+        "width": 680,
+        "height": 60
+      }
+    },
+    "track-track-reform": {
+      "id": "track-track-reform",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "Constitutional reform",
+      "metadata": {
+        "eventIds": [
+          "event-1885"
+        ],
+        "label": "Constitutional reform"
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 80,
+        "width": 680,
+        "height": 60
+      }
+    },
+    "track-track-default": {
+      "id": "track-track-default",
+      "role": "track-lane",
+      "kind": "track-lane",
+      "label": "",
+      "metadata": {
+        "eventIds": [
+          "event-1757"
+        ],
+        "label": ""
+      },
+      "children": [],
+      "bounds": {
+        "x": 100,
+        "y": 140,
+        "width": 680,
+        "height": 60
+      }
+    },
+    "axis-time": {
+      "id": "axis-time",
+      "role": "axis",
+      "kind": "axis",
+      "label": "Time",
+      "children": []
+    }
+  }
+}

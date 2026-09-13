@@ -29,9 +29,9 @@ runtime.
 ## Consuming
 
 ```ts
-import { getValidationContract, loadSkillExample, validateSkillExample, validateSpec } from '@knowledgeassemble/engine-skills';
+import { getEngineEntry, loadSkillExample, validateSkillExample, validateSpec } from '@knowledgeassemble/engine-skills';
 
-const contract = getValidationContract('visual'); // { package, symbol, method }
+const contract = getEngineEntry('visual')!.validationContract; // { package, symbol, method }
 validateSkillExample('visual');                   // { valid: true, errors: [] }
 validateSpec('visual', mySpec);                   // validates any candidate spec
 ```

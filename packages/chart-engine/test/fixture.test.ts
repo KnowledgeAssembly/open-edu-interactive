@@ -15,6 +15,17 @@ function loadFixture(name: string): { spec: Record<string, unknown>; expected: {
   return { spec, expected };
 }
 
+function stubHost() {
+  return {
+    locale: 'en' as const,
+    tokens: {} as Record<string, string>,
+    reducedMotion: false,
+    announce: () => {},
+    onEvent: () => {},
+    resolveAsset: (id: string) => id,
+  };
+}
+
 const FIXTURES = ['bar', 'line'];
 
 describe('chart engine golden fixtures', () => {
@@ -25,6 +36,24 @@ describe('chart engine golden fixtures', () => {
       const result = engine.validate(spec as never);
       expect(result.valid).toBe(expected.valid);
       expect(result.issues).toEqual(expected.issues);
+    });
+
+    it(`${name}: golden expected artifacts are byte-stable`, () => {
+      const { spec } = loadFixture(name);
+      const engine = new ChartEngine();
+      const inst = engine.instantiate(spec as never, stubHost(), `chart-${name}-golden`);
+      const snap = inst.snapshot() as unknown as {
+        scene: unknown;
+        svgResult: { svg: string; a11y: unknown; interactive: unknown };
+      };
+
+      expect(snap.svgResult.svg).toBe(readFileSync(resolve(__dirname, '..', 'fixture', name, 'expected.svg'), 'utf-8'));
+      expect(JSON.stringify(snap.scene, null, 2) + '\n').toBe(
+        readFileSync(resolve(__dirname, '..', 'fixture', name, 'expected.scene.json'), 'utf-8'),
+      );
+      expect(JSON.stringify({ a11y: snap.svgResult.a11y, interactive: snap.svgResult.interactive }, null, 2) + '\n').toBe(
+        readFileSync(resolve(__dirname, '..', 'fixture', name, 'expected.a11y.json'), 'utf-8'),
+      );
     });
   }
 });

@@ -1,0 +1,34 @@
+{
+  "a11y": [
+    {
+      "id": "e1",
+      "role": "button",
+      "label": "Event A (1900)",
+      "children": []
+    },
+    {
+      "id": "e2",
+      "role": "button",
+      "label": "Event B (1910)",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "e1",
+      "action": "select"
+    },
+    {
+      "id": "e1",
+      "action": "focus"
+    },
+    {
+      "id": "e2",
+      "action": "select"
+    },
+    {
+      "id": "e2",
+      "action": "focus"
+    }
+  ]
+}

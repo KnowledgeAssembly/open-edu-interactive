@@ -66,6 +66,8 @@ The architecture exists to enforce a small set of non-negotiable invariants, all
 
 An **engine instance** is a deterministic state machine exposed as `EngineInstance`. The core `createPlatformInstance` (`packages/interactive-engine/src/runtime/instance.ts`) is the canonical implementation; engines may build a richer instance but must conform to the same contract.
 
+> **Note (2026-09-13 review):** in the current code, all five engines implement their own instance lifecycle (own `EventLog`, listeners, dispatch/emit/teardown/announce) rather than consuming `createPlatformInstance`, which is exercised only by core unit tests. This is an accepted divergence — engines need per-engine hook points (namespaced result events, custom announce copy) — and is documented in `docs/adr/ADR-11.md` as a deliberate decision, not a bug.
+
 ### 3.1 Lifecycle
 
 An instance moves through a fixed set of phases:
@@ -95,6 +97,8 @@ interface EngineInstance {
 
 State changes only happen through `dispatch`. There is no mutation API. Every dispatch produces an ordered, serializable sequence of events written to the instance's `EventLog` and emitted to `host.onEvent` and subscribers.
 
+The canonical `EngineState` (`initialState`/`baseReducer` in `runtime/`) is renderer-independent: `{ instanceId, engine, phase, selection, focus, filter, annotations, expanded, playback, step, lastAction }`. Each engine's `snapshot()` may additionally expose renderer-specific output (e.g. `svgResult` with `svg`/`tabular`/`linear`/`alternative`); that output is engine-internal and consumed by the harness/rendering layer, not part of the shared contract that composition and OpenEdu consume.
+
 ### 3.3 Deterministic action/state processing
 
 `dispatch` applies the **base reducer** (`packages/interactive-engine/src/runtime/reducer.ts`) over the closed `ACTION_TYPES` enum. The core sequence (`createPlatformInstance`) is:
@@ -110,7 +114,7 @@ Engines may extend this sequence. The Visual engine, for example, reduces **befo
 
 ### 3.4 The event log
 
-The `EventLog` (serializable, replayable) records every event with a **monotonic `seq`**. Events carry `{ seq, name, instanceId, action?, state? }`. The full log for a session is the single source of truth: replay it and you reproduce the exact sequence of states (P4). Golden event logs are asserted byte-for-byte in tests.
+The `EventLog` (serializable, replayable) records every event with a **monotonic `seq`**. Events carry `{ id, seq, name, instanceId, action?, data? }` (the `data` field carries engine-specific payloads, e.g. the composition router's `event.data`; the canonical engine state is *not* embedded in events — it is derived by replay). The full log for a session is the single source of truth: replay it and you reproduce the exact sequence of states (P4). Golden event logs are asserted byte-for-byte in tests.
 
 ## 4. The engine contract
 
