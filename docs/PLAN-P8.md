@@ -72,7 +72,7 @@ Workstream D MUST NOT start until A is green for that engine family.
 
 Finish what PLAN-Px already required for the MVP picture, with tests that fail if the picture is hollow.
 
-> **Status (2026-09-13):** A1 (diagram edges + graph-order layout + edge L3 geometry + goldens + e2e) and A2 (visual D9 kinds with per-kind layout strategies + golden fixtures for all 14 visual fixture dirs) are **landed in `main`**. The remaining A work is **A3 audit of Chart and Timeline** (the only engines without scene/svg/a11y goldens) and **A4 render-honesty tests** for them. Executable plan: `docs/superpowers/specs/2026-09-13-interactive-engine-next-phase-implementation-plan.md` N1.
+> **Status (2026-09-13):** A1 (diagram edges + graph-order layout + edge L3 geometry + goldens + e2e) and A2 (visual D9 kinds with per-kind layout strategies + golden fixtures for all 14 visual fixture dirs) are **landed in `main`**. A3 (chart/timeline goldens) and A4 (render-honesty tests) are **DONE** with a green exit gate on the next-phase plan N1 (`feat/architecture-review-docs`; lands with that PR). Known follow-on: chart `kind: line` renders discrete point markers only — no series stroke — registered in the next-phase plan N1.8.
 
 ### A1 — Diagram (first; unblocks playground as a gate)
 
@@ -96,13 +96,13 @@ Number-line satisfied PLAN.md P2 **exit**. Production still needs PLAN.md P2 ite
 
 For every catalog fixture, a human (and a test where practical) sees the slice the SPEC names. After A1, audit Chart → GeoMap → Timeline → Visual the same way: **hollow render** vs **layout bug** vs **harness**. Fix hollow/layout in-engine; do not “fix” with a library.
 
-> **Remaining (2026-09-13):** Chart (2 fixtures: `bar`, `line`) has `input.chart.json` + `validation.json` but no `expected.{scene,svg,a11y}.json`; Timeline (4 fixtures: `events`, `independence`, `periods`, `tracks`) has `input.timeline.json` only — no `validation.json` and no `expected.{scene,svg,a11y}.json`. GeoMap/Visual/Diagram already carry full goldens. This is the concrete A3 remaining work (N1 in the next-phase plan).
+> **Status (2026-09-13):** **DONE** (next-phase plan N1 on `feat/architecture-review-docs`, gate green; lands with that PR) — Chart `bar`/`line` and Timeline `events`/`independence`/`periods`/`tracks` carry `expected.{scene,svg,a11y}.json`, asserted byte-stable per engine; Timeline fixtures gained `validation.json` parity. Chart `kind: line` is marker-only — tracked follow-on in next-phase plan N1.8.
 
 ### A4 — Test bar
 
 A feature in this workstream is done only when a test that would have passed on stub SVG now fails, then passes. Golden SVG updates are reviewed fixture changes (DESIGN §11).
 
-> **Remaining (2026-09-13):** Chart/Timeline need render tests asserting real primitives (`<rect>` bars, `<polyline>`/`<circle>` series, timeline event/period primitives) that fail on stub SVG (N1.7 in the next-phase plan).
+> **Status (2026-09-13):** **DONE** (next-phase plan N1 on `feat/architecture-review-docs`, gate green; lands with that PR) — `render.test.ts` added in chart (bar `<rect>` bars + labeled axes; line point markers; non-hollow) and timeline (period `<rect>` bands; event markers; labeled track lanes; non-overlapping lanes), failing on stub renderers; dev-harness honesty audit (125 tests) green.
 
 **Workstream A exit:** diagram fixtures show structure; Visual D9 kinds claimed in PLAN-P2 T7 have non-stub render tests; playground is an acceptance surface, not a screenshot of empty groups. **Exit is green when A3/A4 above are complete.**
 

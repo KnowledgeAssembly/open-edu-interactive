@@ -21,6 +21,15 @@ function loadSpec(name: string): EngineSpec {
   return JSON.parse(readFileSync(url, 'utf8')) as EngineSpec;
 }
 
+function laneRects(svg: string): Array<{ y: number; height: number }> {
+  const out: Array<{ y: number; height: number }> = [];
+  const re = /<rect[^>]*data-oedu-role="track-lane"[^>]*y="([\d.]+)"[^>]*height="([\d.]+)"/g;
+  for (const match of svg.matchAll(re)) {
+    out.push({ y: Number(match[1]), height: Number(match[2]) });
+  }
+  return out;
+}
+
 describe('TimelineEngine — render output has visible primitives (N1.7)', () => {
   it('events fixture SVG contains <circle> event markers and <text> labels', () => {
     const spec = loadSpec('events');
@@ -29,7 +38,9 @@ describe('TimelineEngine — render output has visible primitives (N1.7)', () =>
     const svg = (inst.snapshot() as unknown as { svgResult: { svg: string } }).svgResult.svg;
 
     expect(svg).toContain('<circle');
-    expect(svg).toMatch(/data-oedu-role="[^"]+"/);
+    expect(svg).toContain('<text');
+    expect(svg).toContain('data-oedu-role="track-lane"');
+    expect(svg).toMatch(/<text[^>]*aria-label="[^"]+"/);
     expect(svg).toContain('<title');
   });
 
@@ -43,16 +54,19 @@ describe('TimelineEngine — render output has visible primitives (N1.7)', () =>
     expect(svg).toContain('<circle');
   });
 
-  it('tracks fixture SVG shows track labels and event markers', () => {
+  it('tracks fixture SVG shows labeled track lanes and event markers', () => {
     const spec = loadSpec('tracks');
     const engine = new TimelineEngine();
     const inst = engine.instantiate(spec, stubHost(), 'tl-tracks-render');
     const svg = (inst.snapshot() as unknown as { svgResult: { svg: string } }).svgResult.svg;
 
-    expect(svg).toMatch(/data-oedu-role/);
+    const lanes = laneRects(svg);
+    expect(lanes.length).toBeGreaterThanOrEqual(2);
+    expect(svg).toMatch(/<text[^>]*data-oedu-role="label"[^>]*aria-label="[^"]+"/);
+    expect(svg).toContain('<circle');
   });
 
-  it('independence fixture SVG contains events, periods, and track markers', () => {
+  it('independence fixture SVG has non-overlapping track lanes with events and periods', () => {
     const spec = loadSpec('independence');
     const engine = new TimelineEngine();
     const inst = engine.instantiate(spec, stubHost(), 'tl-independence-render');
@@ -61,6 +75,12 @@ describe('TimelineEngine — render output has visible primitives (N1.7)', () =>
     expect(svg).toContain('<circle');
     expect(svg).toContain('<rect');
     expect(svg).toMatch(/data-oedu-role/);
+
+    const lanes = laneRects(svg).sort((a, b) => a.y - b.y);
+    expect(lanes.length).toBeGreaterThanOrEqual(2);
+    for (let i = 1; i < lanes.length; i += 1) {
+      expect(lanes[i]!.y).toBeGreaterThanOrEqual(lanes[i - 1]!.y + lanes[i - 1]!.height);
+    }
   });
 
   it('events fixture SVG is not hollow (has meaningful content)', () => {

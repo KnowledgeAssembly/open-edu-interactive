@@ -35,6 +35,10 @@ describe('fixture round-trip', () => {
       const result = engine.validate(spec);
       expect(result.valid, `fixture "${suite}" validation failed: ${result.issues.map((i) => i.message).join('; ')}`).toBe(true);
 
+      const expected = JSON.parse(readFileSync(new URL(`${suite}/validation.json`, FIXTURE_DIR), 'utf8')) as { valid: boolean; issues: Array<unknown> };
+      expect(result.valid).toBe(expected.valid);
+      expect(result.issues).toEqual(expected.issues);
+
       const host = { locale: 'en', tokens: {}, reducedMotion: false, announce: () => undefined, onEvent: () => undefined, resolveAsset: (id: string) => id };
       const instance = engine.instantiate(spec, host, `fixture-${suite}`);
       const snap = instance.snapshot() as Record<string, unknown>;

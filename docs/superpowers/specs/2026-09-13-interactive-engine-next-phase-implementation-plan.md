@@ -14,8 +14,8 @@
 |-------|---------|
 | PLAN-P8 Workstream A: "A1 — Diagram edges render as empty `<g>`" | **DONE.** `packages/diagram-engine/src/render/svg.ts:28–44` renders `<path d="..." marker-end="url(#arrowhead)" ...>` with `data-oedu-relationship`. `layout/engine.ts:132` produces `edgeGeometry`. All 5 diagram fixtures have `expected.{svg,scene,a11y,alternative}.json`. e2e asserts edge primitives and `follow` action. |
 | PLAN-P8 Workstream A: "A2 — Visual D9 kinds hollow layout, only number-line has strategy" | **DONE.** `packages/visual-engine/src/layout/engine.ts` has dedicated strategies for all 7 D9 kinds + `illustration`. 14 fixture dirs exist with golden SVGs. |
-| PLAN-P8 Workstream A: "A3 — Audit honesty: chart/timeline hollow render" | **OPEN.** Chart has 2 fixtures (`bar`, `line`) with `input.chart.json` + `validation.json` only — no `expected.{scene,svg,a11y}.json`. Timeline has 4 fixtures (`events`, `independence`, `periods`, `tracks`) — same gap. Tests assert validation parity only. |
-| PLAN-P8 Workstream A: "A4 — Test bar: non-stub render tests" | **PARTIAL.** Diagram/visual have golden fixtures + e2e. Chart/timeline lack scene/svg/a11y goldens; no render tests asserting visible SVG primitives. |
+| PLAN-P8 Workstream A: "A3 — Audit honesty: chart/timeline hollow render" | **DONE (2026-09-13, gate green on `feat/architecture-review-docs` via N1).** Chart (`bar`, `line`) and Timeline (`events`, `independence`, `periods`, `tracks`) carry `expected.{scene,svg,a11y}.json` asserted byte-stable in each engine's `fixture.test.ts`; timeline fixtures gained `validation.json` parity. Goldens document chart `kind: line` as **discrete point markers only** — no connecting series stroke (tracked in N1.8). |
+| PLAN-P8 Workstream A: "A4 — Test bar: non-stub render tests" | **DONE (2026-09-13, gate green on `feat/architecture-review-docs` via N1).** `render.test.ts` added in chart (bar `<rect>` bars + labeled axes; line point markers, non-hollow) and timeline (period `<rect>` bands; event markers; labeled track lanes; non-overlapping lanes). dev-harness honesty audit (125 tests) passes. |
 | PLAN-P8 non-goal: "No D3/d3-geo until Workstream A green" | **VIOLATED.** `packages/geomap-engine/package.json` has production dependency `d3-geo: ^3.1.1` + `@types/d3-geo`. Used in `layout/projection.ts` (geoEquirectangular/geoMercator/geoAlbers), `scene/build.ts` (geoCentroid/geoArea), `scene/derive.ts` (geoDistance). All pure-math transforms, no DOM/spec-surface use — accepted exception (see ADR-10). |
 | DESIGN.md §3: "Chart JSON Schema missing (TODO)" | **Stale.** `packages/chart-engine/src/schemas/chart-spec.schema.json` exists and is authoritative. Not mirrored to `docs/schemas/` — canonical location gap. |
 | docs/engines/visual/VISION.md | **Does not exist.** DESIGN §3 says "—" for Visual VISION maturity — correct. Visual SPEC.md (3115 lines) is the de facto vision+spec combined. |
@@ -233,14 +233,14 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 
 ### N1.1 — Chart bar fixture golden set
 
-**Goal:** Generate `expected.{scene,svg,a11y}.json` for `packages/chart-engine/fixture/bar/simple`.
+**Goal:** Generate `expected.{scene,svg,a11y}.json` for `packages/chart-engine/fixture/bar`.
 
 **Why:** Chart bar has `input.chart.json` + `validation.json` only. No golden assertions for visible SVG output.
 
 **Affected files:**
-- `packages/chart-engine/fixture/bar/simple/expected.scene.json` (new)
-- `packages/chart-engine/fixture/bar/simple/expected.svg` (new)
-- `packages/chart-engine/fixture/bar/simple/expected.a11y.json` (new)
+- `packages/chart-engine/fixture/bar/expected.scene.json` (new)
+- `packages/chart-engine/fixture/bar/expected.svg` (new)
+- `packages/chart-engine/fixture/bar/expected.a11y.json` (new)
 
 **Dependencies:** N0 complete.
 
@@ -254,12 +254,12 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 - Extend `packages/chart-engine/test/fixture.test.ts` to assert:
   - `expected.scene.json` byte-match (like visual/diagram fixtures do)
   - SVG contains at least one `<rect>` (bars visible)
-  - a11y tree has labeled axes
+  - SVG axis/bar `<text>` elements carry `aria-label`; `expected.a11y.json` exposes the selectable bars as labeled buttons
 
-**Fixture required:** `expected.{scene,svg,a11y}.json` for `bar/simple`
+**Fixture required:** `expected.{scene,svg,a11y}.json` for `bar`
 
 **Acceptance criteria:**
-- [ ] `bar/simple` has all 3 golden files
+- [ ] `bar` has all 3 golden files
 - [ ] `fixture.test.ts` asserts byte-stability of scene + presence of SVG bar primitives
 - [ ] SVG is not hollow (bars are `<rect>`, not empty `<g>`)
 
@@ -269,54 +269,55 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 
 ### N1.2 — Chart line fixture golden set
 
-**Goal:** Same as N1.1 for `packages/chart-engine/fixture/line/simple`.
+**Goal:** Same as N1.1 for `packages/chart-engine/fixture/line`.
 
 **Affected files:**
-- `packages/chart-engine/fixture/line/simple/expected.{scene,svg,a11y}.json` (new)
+- `packages/chart-engine/fixture/line/expected.{scene,svg,a11y}.json` (new)
 
 **Requirements:**
-- Assert SVG contains `<polyline>` or `<path>` for data series + `<circle>` for data points
-- a11y tree has labeled axes and series
+- Assert SVG contains `<circle>` for every data point plus `<text>` axis labels with `aria-label`
+- Verified (2026-09-13): as of N1 the chart line kind emits **discrete point markers only** — `packages/chart-engine/src/` contains no `<polyline>`/`<path>` series-stroke code. The original plan text ("assert `<polyline>`/`<path>` for data series") was unfulfillable without a layout change, which N1's non-goals exclude; it is tracked in N1.8 instead of being silently dropped.
 
 **Tests required:**
 - Extend `fixture.test.ts` to assert golden byte-stability + SVG primitive presence
 
 **Acceptance criteria:**
-- [ ] `line/simple` has full golden set
-- [ ] Render tests pass
+- [ ] `line` has full golden set
+- [ ] Render tests assert visible point markers + labeled axes (no series-stroke claim)
+- [ ] Marker-only line representation is tracked as a follow-on
 
 ---
 
 ### N1.3 — Timeline events fixture golden set
 
-**Goal:** Generate `expected.{scene,svg,a11y}.json` for `packages/timeline-engine/fixture/events/simple`.
+**Goal:** Generate `expected.{scene,svg,a11y}.json` for `packages/timeline-engine/fixture/events`.
 
 **Why:** Timeline has 4 fixtures but no golden assertions for visible SVG.
 
 **Affected files:**
-- `packages/timeline-engine/fixture/events/simple/expected.{scene,svg,a11y}.json` (new)
+- `packages/timeline-engine/fixture/events/expected.{scene,svg,a11y}.json` (new)
 
 **Dependencies:** N0 complete.
 
 **Requirements:**
-- Assert SVG contains `<rect>` for periods and `<circle>` for events (not empty groups)
-- a11y tree has labeled tracks and events
+- Assert SVG contains `<circle>` event markers inside a `<rect>` track lane, plus `<text>` labels (the events fixture is events-only; period bands are asserted in N1.4)
+- a11y tree has labeled events
 
 **Tests required:**
 - Extend `packages/timeline-engine/test/fixture.test.ts` to assert golden byte-stability + SVG primitive presence
 
 **Acceptance criteria:**
-- [ ] `events/simple` has full golden set
+- [ ] `events` has full golden set
 - [ ] Render tests pass
 
 ---
 
 ### N1.4 — Timeline periods fixture golden set
 
-**Goal:** Same as N1.3 for `packages/timeline-engine/fixture/periods/simple`.
+**Goal:** Same as N1.3 for `packages/timeline-engine/fixture/periods`.
 
 **Affected files:**
-- `packages/timeline-engine/fixture/periods/simple/expected.{scene,svg,a11y}.json` (new)
+- `packages/timeline-engine/fixture/periods/expected.{scene,svg,a11y}.json` (new)
 
 **Requirements:**
 - Assert SVG contains `<rect>` bars for period durations
@@ -325,19 +326,19 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 
 ### N1.5 — Timeline tracks fixture golden set
 
-**Goal:** Same for `packages/timeline-engine/fixture/tracks/simple`.
+**Goal:** Same for `packages/timeline-engine/fixture/tracks`.
 
 **Requirements:**
-- Assert SVG has track labels + period/event positioning within tracks
+- Assert SVG has `data-oedu-role="label"` track label text with `aria-label`, `data-oedu-role="track-lane"` rects, and `<circle>` event markers inside lanes
 
 ---
 
 ### N1.6 — Timeline independence fixture golden set
 
-**Goal:** Same for `packages/timeline-engine/fixture/independence/simple`.
+**Goal:** Same for `packages/timeline-engine/fixture/independence`.
 
 **Requirements:**
-- Assert SVG has non-overlapping track layers
+- Assert SVG has multiple `data-oedu-role="track-lane"` rects whose y-ranges do not overlap, with event/period markers positioned inside lanes
 
 ---
 
@@ -359,6 +360,13 @@ N0 — Architecture/contract cleanup (doc updates, ADRs, schema parity)
 **Acceptance criteria:**
 - [ ] Both render test files exist and pass
 - [ ] Tests would fail if the engine returned empty `<g>` wrappers
+
+### N1.8 — Post-N1 follow-ons (tracked, out of N1 scope)
+
+N1's exit gate is green — `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright && node scripts/check-engine-skills-fresh.mjs` — on `feat/architecture-review-docs`. The honesty work surfaced these items; they stay in N1's non-goal (no chart spec/layout changes):
+
+- **Chart `kind: line` renders discrete point markers only.** `packages/chart-engine/src/` has no connecting `<polyline>`/`<path>` series-stroke code, and the goldens/tests assert none. Decide in a chart SPEC slice (Workstream D/E) whether line should draw a series stroke; update `expected.svg` + N1.2 wording when it does.
+- **A11y-tree scope:** `svgResult.a11y` surfaces interactive entities (selectable → `button` role); axis/tick labels are `aria-label` on SVG elements, not a11y-tree nodes. Promoting axis labels into the tree would be a snapshot contract change (recorded, not implemented).
 
 ---
 
