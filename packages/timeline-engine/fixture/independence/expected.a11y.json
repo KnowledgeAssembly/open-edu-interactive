@@ -1,0 +1,104 @@
+{
+  "a11y": [
+    {
+      "id": "event-1757",
+      "role": "button",
+      "label": "Battle of Plassey (1757)",
+      "children": []
+    },
+    {
+      "id": "event-1857",
+      "role": "button",
+      "label": "1857 uprising (1857)",
+      "children": []
+    },
+    {
+      "id": "event-1885",
+      "role": "button",
+      "label": "Congress founded (1885)",
+      "children": []
+    },
+    {
+      "id": "event-1919",
+      "role": "button",
+      "label": "Jallianwala Bagh (1919-04-13)",
+      "children": []
+    },
+    {
+      "id": "event-1930",
+      "role": "button",
+      "label": "Salt March (1930-03-12)",
+      "children": []
+    },
+    {
+      "id": "event-1942",
+      "role": "button",
+      "label": "Quit India (1942-08-08)",
+      "children": []
+    },
+    {
+      "id": "event-1947",
+      "role": "button",
+      "label": "Independence (1947-08-15)",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "event-1757",
+      "action": "select"
+    },
+    {
+      "id": "event-1757",
+      "action": "focus"
+    },
+    {
+      "id": "event-1857",
+      "action": "select"
+    },
+    {
+      "id": "event-1857",
+      "action": "focus"
+    },
+    {
+      "id": "event-1885",
+      "action": "select"
+    },
+    {
+      "id": "event-1885",
+      "action": "focus"
+    },
+    {
+      "id": "event-1919",
+      "action": "select"
+    },
+    {
+      "id": "event-1919",
+      "action": "focus"
+    },
+    {
+      "id": "event-1930",
+      "action": "select"
+    },
+    {
+      "id": "event-1930",
+      "action": "focus"
+    },
+    {
+      "id": "event-1942",
+      "action": "select"
+    },
+    {
+      "id": "event-1942",
+      "action": "focus"
+    },
+    {
+      "id": "event-1947",
+      "action": "select"
+    },
+    {
+      "id": "event-1947",
+      "action": "focus"
+    }
+  ]
+}

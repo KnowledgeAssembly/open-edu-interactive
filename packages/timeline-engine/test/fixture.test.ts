@@ -12,6 +12,21 @@ function loadFixture(name: string): EngineSpec {
   return JSON.parse(readFileSync(url, 'utf8')) as EngineSpec;
 }
 
+function stubHost() {
+  return {
+    locale: 'en' as const,
+    tokens: {} as Record<string, string>,
+    reducedMotion: false,
+    announce: () => {},
+    onEvent: () => {},
+    resolveAsset: (id: string) => id,
+  };
+}
+
+function goldenPath(name: string, file: string): URL {
+  return new URL(`${name}/${file}`, FIXTURE_DIR);
+}
+
 describe('fixture round-trip', () => {
   for (const suite of SUITES) {
     it(`${suite}: validates and instantiates`, () => {
@@ -27,6 +42,24 @@ describe('fixture round-trip', () => {
       expect(snap).toHaveProperty('svgResult');
       expect(snap).toHaveProperty('linear');
       instance.teardown();
+    });
+
+    it(`${suite}: golden expected artifacts are byte-stable`, () => {
+      const spec = loadFixture(suite);
+      const engine = new TimelineEngine();
+      const inst = engine.instantiate(spec, stubHost(), `timeline-${suite}-golden`);
+      const snap = inst.snapshot() as unknown as {
+        scene: unknown;
+        svgResult: { svg: string; a11y: unknown; interactive: unknown };
+      };
+
+      const expectedSvg = readFileSync(goldenPath(suite, 'expected.svg'), 'utf-8');
+      const expectedScene = readFileSync(goldenPath(suite, 'expected.scene.json'), 'utf-8');
+      const expectedA11y = readFileSync(goldenPath(suite, 'expected.a11y.json'), 'utf-8');
+
+      expect(snap.svgResult.svg).toBe(expectedSvg);
+      expect(JSON.stringify(snap.scene, null, 2) + '\n').toBe(expectedScene);
+      expect(JSON.stringify({ a11y: snap.svgResult.a11y, interactive: snap.svgResult.interactive }, null, 2) + '\n').toBe(expectedA11y);
     });
   }
 

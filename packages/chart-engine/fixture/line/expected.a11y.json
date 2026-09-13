@@ -1,0 +1,62 @@
+{
+  "a11y": [
+    {
+      "id": "temp-point-row-jan",
+      "role": "button",
+      "label": "Jan: 5 °C",
+      "children": []
+    },
+    {
+      "id": "temp-point-row-apr",
+      "role": "button",
+      "label": "Apr: 14 °C",
+      "children": []
+    },
+    {
+      "id": "temp-point-row-jul",
+      "role": "button",
+      "label": "Jul: 22 °C",
+      "children": []
+    },
+    {
+      "id": "temp-point-row-oct",
+      "role": "button",
+      "label": "Oct: 11 °C",
+      "children": []
+    }
+  ],
+  "interactive": [
+    {
+      "id": "temp-point-row-jan",
+      "action": "select"
+    },
+    {
+      "id": "temp-point-row-jan",
+      "action": "focus"
+    },
+    {
+      "id": "temp-point-row-apr",
+      "action": "select"
+    },
+    {
+      "id": "temp-point-row-apr",
+      "action": "focus"
+    },
+    {
+      "id": "temp-point-row-jul",
+      "action": "select"
+    },
+    {
+      "id": "temp-point-row-jul",
+      "action": "focus"
+    },
+    {
+      "id": "temp-point-row-oct",
+      "action": "select"
+    },
+    {
+      "id": "temp-point-row-oct",
+      "action": "focus"
+    }
+  ]
+}
