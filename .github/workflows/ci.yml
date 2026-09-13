@@ -35,3 +35,6 @@ jobs:
 
       - name: Run exit gate
         run: pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright
+
+      - name: Check engine-skills freshness
+        run: node scripts/check-engine-skills-fresh.mjs
