@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://knowledgeassemble.com/schemas/chart-spec.schema.json",
+  "title": "Chart Specification",
+  "description": "Canonical JSON Schema for the Chart Engine spec: the chart content block plus the chart-specific envelope surface (required provenance).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "version", "id", "content", "sources"],
+  "properties": {
+    "type": {
+      "const": "chart"
+    },
+    "version": {
+      "type": "string"
+    },
+    "id": {
+      "$ref": "#/$defs/idPattern"
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "dimensions", "measures", "data"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["bar", "line"]
+        },
+        "dimensions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "$ref": "#/$defs/idPattern" },
+              "type": { "type": "string", "enum": ["ordinal", "categorical", "quantitative", "time"] }
+            }
+          }
+        },
+        "measures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "$ref": "#/$defs/idPattern" },
+              "type": { "type": "string", "const": "quantitative" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "data": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Dynamic-key row; keys match dimension/measure ids. L2 validates key-consistency and value typing."
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["class"],
+        "description": "Provenance per DESIGN §9: every factual claim MUST carry an accuracy class.",
+        "properties": {
+          "class": {
+            "type": "string",
+            "enum": ["authoritative", "illustrative", "simulated"]
+          },
+          "title": { "type": "string" },
+          "citation": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Envelope-mirrored; actions are refined at L2 against the D5 set."
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Envelope-mirrored; label is required (checked at L4)."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "purpose": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    }
+  },
+  "$defs": {
+    "idPattern": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9._-]*$",
+      "maxLength": 128
+    }
+  }
+}

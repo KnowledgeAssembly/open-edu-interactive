@@ -25,7 +25,7 @@ Renderer(SVG) that matches the slice SPEC → Playground honesty → published p
 - Build a second OpenEdu (Studio, scoring, telemetry store, i18n product, PWA) in this repo (D6).
 - Widen frozen `kind` / layer / projection enums to make playground look fuller (DESIGN §15).
 - Adopt Recharts, MapLibre, Konva, or a “super library” as the semantic model.
-- Introduce D3 / d3-geo / ELK **until Workstream A is green** and a later SPEC slice names the math (P4/P6 explicitly banned those libraries for the MVP determinism gate).
+- Introduce D3 / d3-geo / ELK **until Workstream A is green** and a later SPEC slice names the math (P4/P6 explicitly banned those libraries for the MVP determinism gate). **Exception (ADR-10):** the GeoMap engine already ships `d3-geo` as a production dependency for deterministic spherical math (`geoCentroid`/`geoArea`/`geoDistance`/`geoInterpolate`), isolated in `src/geo.ts`. No other D3 (d3-scale/d3-time/DOM), ELK, or library use is permitted; the exception is re-reviewed when Workstream A is green.
 - Write a parallel `VISUALIZATION-TECHNOLOGY-STRATEGY.md` that outranks DESIGN/STRUCTURE. Adapter policy stays in STRUCTURE §16–20 + a DESIGN decision if one is recorded later.
 
 **Operating rule.** Own educational semantics, state, events, a11y, composition, and renderer *integration*. Do not hand-build a general charting/GIS/graph-layout product. Borrow commodity math **behind adapters** only when a gated SPEC slice requires it. Empty or stub SVG for entities the slice already claims is **slice debt**, not a reason to add libraries.
@@ -72,31 +72,39 @@ Workstream D MUST NOT start until A is green for that engine family.
 
 Finish what PLAN-Px already required for the MVP picture, with tests that fail if the picture is hollow.
 
+> **Status (2026-09-13):** A1 (diagram edges + graph-order layout + edge L3 geometry + goldens + e2e) and A2 (visual D9 kinds with per-kind layout strategies + golden fixtures for all 14 visual fixture dirs) are **landed in `main`**. The remaining A work is **A3 audit of Chart and Timeline** (the only engines without scene/svg/a11y goldens) and **A4 render-honesty tests** for them. Executable plan: `docs/superpowers/specs/2026-09-13-interactive-engine-next-phase-implementation-plan.md` N1.
+
 ### A1 — Diagram (first; unblocks playground as a gate)
 
-| ID | Task | Plan source |
-|----|------|-------------|
-| A1.1 | Edges render as `<line>` or `<path>` with arrowhead; not empty `<g>` | PLAN-P6 T4 |
-| A1.2 | Layout uses the graph: radial by deterministic cycle/walk order (not sorted ids); hierarchical keeps topo layers; grid uses content or BFS order | PLAN-P6 T3 |
-| A1.3 | Edge geometry assigned in layout; L3 “geometry inside canvas” applies to edges | PLAN-P6 T3/T5 |
-| A1.4 | Goldens + e2e assert presence of edge primitives; playground: all diagram fixtures show nodes **and** relationships | PLAN §2, PLAN-P6 T7 |
-| A1.5 | No ELK/Dagre/d3 for A1. Fixtures are small; this is OpenEdu SVG from owned bounds | PLAN-P6 deps rule |
+| ID | Task | Plan source | Status |
+|----|------|-------------|--------|
+| A1.1 | Edges render as `<line>` or `<path>` with arrowhead; not empty `<g>` | PLAN-P6 T4 | **DONE** (`render/svg.ts` emits `<path d="…" marker-end="url(#arrowhead)"/>`, `<line>`, `data-oedu-relationship`) |
+| A1.2 | Layout uses the graph: radial by deterministic cycle/walk order (not sorted ids); hierarchical keeps topo layers; grid uses content or BFS order | PLAN-P6 T3 | **DONE** (per-strategy ordering policy; no `ids.sort()` in ordering paths) |
+| A1.3 | Edge geometry assigned in layout; L3 “geometry inside canvas” applies to edges | PLAN-P6 T3/T5 | **DONE** (`layout/engine.ts` produces `edgeGeometry` clamp-checked in canvas) |
+| A1.4 | Goldens + e2e assert presence of edge primitives; playground: all diagram fixtures show nodes **and** relationships | PLAN §2, PLAN-P6 T7 | **DONE** (5 fixtures with `expected.{svg,scene,a11y,alternative}.json`; e2e asserts edge rows + relationship + follow) |
+| A1.5 | No ELK/Dagre/d3 for A1. Fixtures are small; this is OpenEdu SVG from owned bounds | PLAN-P6 deps rule | **DONE** (no diagram imports of d3/ELK/dagre) |
 
 ### A2 — Visual closed set (D9)
 
 Number-line satisfied PLAN.md P2 **exit**. Production still needs PLAN.md P2 item 5 / PLAN-P2 T7: `counting-set`, `fraction-bar`, `fraction-circle`, `clock`, `coordinate-grid`, `geometry-shape`, `comparison` as real scene + accessible SVG + tests (full goldens per kind as claimed). No timeline/flowchart/label-diagram in Visual (D9).
 
-- Visual use-case catalog drives slice honesty; first slice = `nl-identify-marked` + `cg-plot-point`.
+> **Status (2026-09-13):** **DONE on landed `main`** — `layout/engine.ts` has a dedicated strategy per D9 kind + `illustration`; all 14 visual fixture dirs carry `expected.{svg,scene,a11y}.json`; `number-line-identify-marked` (label-target discovery) and `coordinate-grid-practice` (guided) land on the current use-case catalog (`nl-identify-marked`, `cg-plot-point`).
+
+- Visual use-case catalog drives slice honesty; first slice = `nl-identify-marked` + `cg-plot-point`. **DONE.**
 
 ### A3 — Playground honesty bar
 
 For every catalog fixture, a human (and a test where practical) sees the slice the SPEC names. After A1, audit Chart → GeoMap → Timeline → Visual the same way: **hollow render** vs **layout bug** vs **harness**. Fix hollow/layout in-engine; do not “fix” with a library.
 
+> **Remaining (2026-09-13):** Chart (2 fixtures: `bar`, `line`) and Timeline (4 fixtures: `events`, `independence`, `periods`, `tracks`) have **input + validation.json only** — no `expected.{scene,svg,a11y}.json`. GeoMap/Visual/Diagram already carry full goldens. This is the concrete A3 remaining work (N1 in the next-phase plan).
+
 ### A4 — Test bar
 
 A feature in this workstream is done only when a test that would have passed on stub SVG now fails, then passes. Golden SVG updates are reviewed fixture changes (DESIGN §11).
 
-**Workstream A exit:** diagram fixtures show structure; Visual D9 kinds claimed in PLAN-P2 T7 have non-stub render tests; playground is an acceptance surface, not a screenshot of empty groups.
+> **Remaining (2026-09-13):** Chart/Timeline need render tests asserting real primitives (`<rect>` bars, `<polyline>`/`<circle>` series, timeline event/period primitives) that fail on stub SVG (N1.7 in the next-phase plan).
+
+**Workstream A exit:** diagram fixtures show structure; Visual D9 kinds claimed in PLAN-P2 T7 have non-stub render tests; playground is an acceptance surface, not a screenshot of empty groups. **Exit is green when A3/A4 above are complete.**
 
 ---
 

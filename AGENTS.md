@@ -42,7 +42,8 @@ Conflict rule: when docs disagree, fix the **higher** document, never the implem
 ```text
 packages/interactive-engine/   core: engine, registry, state, action, event, host,
                                validation/ (L1–L4 pipeline), runtime/ (reducer, event-log,
-                               instance), accessibility/, composition/ (placeholder), schemas/
+                               instance), accessibility/, composition/ (lesson+router+schema,
+                               implemented — not a placeholder), schemas/
 packages/engine-skills/        published authoring skills: generated/committed projection of
                                docs/engines/*/skills/* + docs/fixtures/*/skill-example.json
 packages/dev-harness/          shared mount logic: stub host, fixture catalog, loadSpec (conformance + playground)
@@ -52,7 +53,7 @@ docs/                          DESIGN, INTERACTIVE-ENGINE-SPEC, STRUCTURE, PLAN,
                                PLAN-P8, README, schemas/, fixtures/, engines/<engine>/{VISION,SPEC}.md + skills/
 ```
 
-Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readiness** (`docs/PLAN-P8.md`). Start Workstream A (slice honesty); do not start new engine kinds (Workstream D) or library adapters until A is green. OpenEdu CourseRuntime proof is Workstream B (`docs/p7-acceptance.md`).
+Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readiness** (`docs/PLAN-P8.md`). Workstream A is in progress: A1 (diagram edges) and A2 (Visual D9 kinds) are landed in `main`; the remaining A-slice work is chart/timeline golden fixtures + render honesty tests (see `docs/superpowers/specs/2026-09-13-interactive-engine-next-phase-implementation-plan.md` N1). Do not start new engine kinds (Workstream D) or library adapters until A is green. OpenEdu CourseRuntime proof is Workstream B (`docs/p7-acceptance.md`).
 
 ## Engine skills package
 
@@ -78,8 +79,8 @@ Current status: **P0–P7 in-repo gates DONE.** Next: **P8 — Production readin
 | Unit tests | `pnpm -w test` (Vitest) |
 | Browser e2e | `pnpm playwright` (starts the conformance dev server itself) |
 | Regenerate engine skills | `pnpm generate:skills` (then commit both sides) |
-| Freshness guard | `node scripts/check-engine-skills-fresh.mjs` |
-| Full exit gate | `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright` |
+| Freshness guard | `node scripts/check-engine-skills-fresh.mjs` (also runs in CI) |
+| Full exit gate | `pnpm typecheck && pnpm lint && pnpm -w test && pnpm playwright && node scripts/check-engine-skills-fresh.mjs` |
 
 Package-scoped: `pnpm --filter @knowledgeassemble/interactive-engine <script>`.
 

@@ -67,10 +67,10 @@ All five engines share:
 | Engine | Vision | Normative spec | JSON Schema |
 |--------|--------|----------------|-------------|
 | Visual | — | `SPEC.md` (v1.0) | inline in spec |
-| GeoMap | `VISION.md` | `SPEC.md` (v1.0.0) | missing (TODO) |
-| Chart | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
-| Timeline | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
-| Diagram | `VISION.md` | `SPEC.md` (thin) | missing (TODO) |
+| GeoMap | `VISION.md` | `SPEC.md` (v1.0.0) | `docs/schemas/geomap-spec.schema.json` |
+| Chart | `VISION.md` | `SPEC.md` (thin) | `docs/schemas/chart-spec.schema.json` (canonical source: `packages/chart-engine/src/schemas/`) |
+| Timeline | `VISION.md` | `SPEC.md` (thin) | `docs/schemas/timeline-spec.schema.json` |
+| Diagram | `VISION.md` | `SPEC.md` (thin) | `docs/schemas/diagram-spec.schema.json` |
 
 **Relationship to OpenEdu widgets.** OpenEdu already ships a widget system (`core.multiple-choice`, `social.map`, `math.number-line`, …) — UI components answering *"How do I display this UI?"*. Engines are a separate, richer layer: semantic interactive systems answering *"What does this interactive educational object mean, and how can the learner reason through it?"* (shared contract §96).
 
