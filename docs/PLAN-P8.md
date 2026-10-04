@@ -175,12 +175,73 @@ Update `docs/PLAN.md` §10/§11 when a substage completes — do not mark all of
 
 ---
 
+## 8a. Layout library evaluation (settled — do not reopen)
+
+A hand-rolled radial ring skewed its arrows (the 5-node media cycle rendered arrows of
+171/81/132/81/171px, a 2.12 ratio) and the obvious response was to adopt an industry
+layout library. Both real candidates were built and measured against the actual failing
+fixture rather than judged on reputation.
+
+| Candidate | 5-node cycle result | Verdict |
+|-----------|--------------------|---------|
+| Hand-rolled ring (baseline) | fits 800x600, arrows 171/81/132/81/171, ratio **2.12** | baseline |
+| **Graphviz `circo`** (`@hpcc-js/wasm`) | perfect ring (radius spread 0.0px), fits 800x600 at 653x580, arrows 49/156/49/128/128, ratio **3.16** | 49% worse; 37 MB unpacked WASM + asset loading |
+| Graphviz `dot` | 282x768, does not fit, arrows 36/32/32/36/537, ratio **16.64** | rejected |
+| Graphviz `twopi` | not a ring (radius spread 192px), ratio ~1055 | rejected |
+| **ELK `layered`** (`elkjs`) | 1180x140, does not fit, arrows 20…802, ratio **40.1** | rejected for cycles |
+| ELK `radial` | `IllegalArgumentException: The given graph is not a tree!` | rejects cycles outright |
+| ELK `stress` / `mrtree` | 8 overlaps / collapses to a 220x680 column | rejected |
+
+Additional costs that would apply even where a library looked competitive:
+
+- `elkjs` is asynchronous, so adopting it forces `layout()` async across diagram-engine,
+  interactive-engine, dev-harness's sync `tryCreate`, and the whole Playwright suite.
+- `elkjs` is a 1.53 MB bundled dependency and `@hpcc-js/wasm` is 37 MB unpacked with a WASM
+  asset. Both conflict with STRUCTURE §40-41 (plain per-file `tsc` ESM emit, engine-level
+  tree-shaking).
+- No candidate performs canvas fitting. A 12-stage flow came back from ELK at 2140x48, so
+  the fitting code in `layout/fit.ts` would stay regardless.
+
+**Decision: no third-party layout dependency.** Layout quality is instead asserted as CI
+invariants in `packages/diagram-engine/test/media-layout.test.ts` (no overlap, canvas +
+label fit, `NODE_GAP` clearance, centring, determinism, and an arrow-ratio ceiling).
+
+### Why the ring skews, and what actually moves the number
+
+On a ring every centre-to-centre chord is equal, so arrow length is decided entirely by how
+much chord each media box absorbs. That inset depends on the chord direction against the
+box aspect: a horizontal chord gives up `width`, a vertical one gives up `height`. With a
+220x120 slot that is 220 vs 120, hence the 2.12 ratio — and the ratio is invariant to box
+size (2.05 at the 120x65 floor), which is why scaling fixes did not help.
+
+The only lever that moves it is equalising the two insets, so radial layouts take **square**
+media slots (`RADIAL_BOX_MAX = 170`, falling back to the 11:6 box on canvases too small for
+a 120x120 square):
+
+| Canvas | Slot | Arrow ratio |
+|--------|------|-------------|
+| 1600x1200 | 170x170 | 1.62 |
+| 1200x900 | 170x170 | 1.62 |
+| 800x600 | 152x152 | 1.56 |
+| 700x520 | 125x125 | 1.47 |
+| 640x480 | 183x100 (fallback) | 2.11 — known debt |
+
+Grid and hierarchical keep the 11:6 slot; only the ring needs squares.
+
+Not yet exploited: routing every ring edge radially out to a shared outer routing circle and
+back would make all arrows identical by symmetry (ratio 1.0) at the cost of a wider footprint
+and a new visual idiom. Deliberately out of scope here.
+
+---
+
 ## 9. Anti-patterns for this phase
 
 1. Reverse-engineering playground bugs into a new architecture. Map bugs to A1–A4 or to a named Workstream D slice.
 2. “Introduce D3 now” to fix stub edges or alphabetical radial order.
 3. New published packages (`interactive-svg`, `interactive-data`, …) before a second engine actually shares the code.
 4. Expanding Visual VISION/SPEC prose instead of implementing PLAN-P2 T7 kinds.
+5. Re-litigating the layout library decision in §8a without new measurements — the table above
+   is the evidence, and it covers the two libraries that actually do rings or layered layouts.
 
 ---
 
@@ -189,3 +250,4 @@ Update `docs/PLAN.md` §10/§11 when a substage completes — do not mark all of
 | Date | Change |
 |------|--------|
 | 2026-09-09 | Initial P8: production-readiness workstreams A–E derived from PLAN.md + PLAN-P1…P7 + p7-acceptance (not from ad-hoc playground archaeology). |
+| 2026-10-04 | §8a: evaluated `elkjs` and Graphviz for diagram layout against the failing media cycle; both measured worse than the existing ring, so no layout dependency was added. Radial now uses square media slots (arrow ratio 2.12 → ~1.56) with the ratio asserted as a CI invariant. |
